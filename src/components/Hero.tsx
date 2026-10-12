@@ -1,0 +1,231 @@
+import React from 'react';
+import { WhatsAppIcon } from './WhatsAppIcon';
+import { SITE_CONFIG } from '../types';
+import { ArrowDown, CheckCircle2, Code2, Smartphone } from 'lucide-react';
+import { Interactive3DCard } from './Interactive3DCard';
+
+interface HeroProps {
+  onNavigateToPortfolio?: () => void;
+  onNavigateToServices?: () => void;
+}
+
+export const Hero: React.FC<HeroProps> = ({
+  onNavigateToPortfolio,
+  onNavigateToServices,
+}) => {
+
+  const whatsappUrl = `https://wa.me/${SITE_CONFIG.whatsappNumber}?text=${encodeURIComponent(
+    SITE_CONFIG.heroWhatsappMessage
+  )}`;
+
+  const handleScrollToPortfolio = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (onNavigateToPortfolio) {
+      onNavigateToPortfolio();
+    } else {
+      const portfolio = document.querySelector('#portfolio');
+      if (portfolio) {
+        portfolio.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
+  const targetAudiences = [
+    'Personal Trainers',
+    'Advogados',
+    'Barbearias & Salões',
+    'Esteticistas & Clínicas',
+    'Autônomos & Negócios Locais',
+  ];
+
+  return (
+    <section
+      id="inicio"
+      className="relative pt-28 pb-16 sm:pt-36 sm:pb-24 lg:pt-40 lg:pb-32 overflow-hidden bg-[#070B16]/65 backdrop-blur-[2px]"
+    >
+      {/* Background subtle tech grid & glow */}
+      <div className="absolute inset-0 tech-grid-pattern opacity-60 pointer-events-none" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[350px] bg-indigo-600/10 blur-[130px] rounded-full pointer-events-none" />
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          {/* Coluna de Conteúdo Principal */}
+          <div className="lg:col-span-7 text-left space-y-6 sm:space-y-8">
+            {/* Tag de Posicionamento */}
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-indigo-950/60 border border-indigo-800/50 text-indigo-300 text-xs sm:text-sm font-medium">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span>
+                Criação de Sites com <span className="text-[#7f87f6] font-semibold">SEO Técnico</span> & Entrega em 7 Dias
+              </span>
+            </div>
+
+            {/* Headline Principal */}
+            <h1 className="font-display text-3.5xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.15]">
+              Criação de sites profissionais com{' '}
+              <span className="text-[#7f87f6] underline decoration-[#7f87f6]/50 underline-offset-8">
+                SEO técnico
+              </span>{' '}
+              e foco em conversão.
+            </h1>
+
+            {/* Subtítulo Direto e Comercial */}
+            <p className="text-base sm:text-lg lg:text-xl text-slate-300 font-normal leading-relaxed max-w-2xl">
+              Desenvolvemos a presença digital completa e estratégica para o seu negócio. Sites institucionais
+              e landing pages sob medida, com alta velocidade, arquitetura semântica para o Google e estrutura
+              otimizada para transformar visitantes em contatos no seu WhatsApp.
+            </p>
+
+            {/* Segmentos Atendidos */}
+            <div className="pt-1">
+              <span className="text-xs uppercase tracking-wider text-slate-400 font-medium block mb-2.5">
+                Desenvolvimento sob medida para:
+              </span>
+              <div className="flex flex-wrap gap-2">
+                {targetAudiences.map((item) => (
+                  <span
+                    key={item}
+                    className="inline-flex items-center px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-xs text-slate-300 font-medium"
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Ações / CTAs */}
+            <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
+              <a
+                id="hero-cta-whatsapp"
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cta-primary inline-flex items-center justify-center gap-3 px-6 py-4 rounded-xl text-base font-semibold text-white transition-all duration-200 shadow-lg shadow-indigo-600/30 border border-indigo-400/30 active:scale-[0.98] group bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500"
+              >
+                <WhatsAppIcon className="w-5 h-5 text-emerald-300 group-hover:scale-110 transition-transform" />
+                <span>Solicitar Orçamento no WhatsApp</span>
+              </a>
+
+              <a
+                id="hero-cta-portfolio"
+                href="#portfolio"
+                onClick={handleScrollToPortfolio}
+                className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl text-base font-semibold bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 text-slate-200 hover:text-white transition-colors"
+              >
+                <span>Ver Modelos no Ar</span>
+                <ArrowDown className="w-4 h-4 text-indigo-400" />
+              </a>
+            </div>
+
+            {/* Micro-credenciais de confiabilidade */}
+            <div className="pt-2 flex flex-wrap items-center gap-4 text-xs text-slate-400">
+              <div className="flex items-center gap-1.5">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                <span>Entrega rápida em até 7 dias</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <CheckCircle2 className="w-4 h-4 text-[#7f87f6]" />
+                <span>
+                  <strong className="text-[#7f87f6] font-medium">SEO técnico</strong> e Schema.org inclusos
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <CheckCircle2 className="w-4 h-4 text-indigo-400" />
+                <span>Design exclusivo sem templates genéricos</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Coluna Visual: Painel Estrutural do Processo com Interação 3D */}
+          <div className="lg:col-span-5">
+            <Interactive3DCard maxTilt={5}>
+              <div className="relative rounded-2xl bg-[#0B101D] border border-slate-800 p-1 shadow-2xl shadow-black/60">
+                {/* Barra de título do terminal */}
+                <div className="flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 border-b border-slate-800/80 bg-slate-950/60 rounded-t-xl gap-2">
+                  <div className="flex items-center gap-1.5 sm:gap-2">
+                    <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-rose-500/80 inline-block" />
+                    <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-amber-500/80 inline-block" />
+                    <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-emerald-500/80 inline-block" />
+                  </div>
+
+                  <span className="text-[10px] text-emerald-400 font-mono bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-800/40 inline-block">
+                    ONLINE
+                  </span>
+                </div>
+
+                {/* Corpo do Terminal CLI */}
+                <div className="p-4 sm:p-5 font-mono text-xs sm:text-[13px] leading-relaxed space-y-3 text-slate-300">
+                    <div className="text-slate-400 flex items-center gap-2">
+                      <span className="text-indigo-400 font-semibold">$</span>
+                      <span>elosites build --focus=conversion</span>
+                    </div>
+
+                    <div className="space-y-1.5 pl-3 border-l-2 border-indigo-500/30">
+                      <div className="flex items-center gap-2 text-slate-300">
+                        <span className="text-emerald-400">✓</span>
+                        <span>Estratégia de conteúdo e posicionamento</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-slate-300">
+                        <span className="text-emerald-400">✓</span>
+                        <span>Design sob medida alinhado ao seu nicho</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-slate-300">
+                        <span className="text-emerald-400">✓</span>
+                        <span>Projeto pensado para boa experiência no celular</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-slate-300">
+                        <span className="text-emerald-400">✓</span>
+                        <span>Integração estratégica com WhatsApp</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-slate-300">
+                        <span className="text-emerald-400">✓</span>
+                        <span>Estrutura semântica e código limpo</span>
+                      </div>
+                    </div>
+
+                    <div className="pt-2">
+                      <div className="text-slate-400 flex items-center gap-2">
+                        <span className="text-indigo-400 font-semibold">$</span>
+                        <span className="text-slate-200">elosites deploy --status=ready</span>
+                      </div>
+                      <div className="mt-2 p-3 rounded-lg bg-indigo-950/40 border border-indigo-800/40 text-indigo-200 flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                          <span className="font-semibold text-white">✓ Pronto para publicar</span>
+                        </div>
+                        <span className="text-[11px] text-indigo-300">Produção</span>
+                      </div>
+                    </div>
+
+                    {/* Destaques estruturais */}
+                    <div className="grid grid-cols-3 gap-2 pt-2 border-t border-slate-800/80">
+                      <div className="bg-slate-900/90 rounded-lg p-2.5 border border-slate-800/60 text-center">
+                        <div className="flex justify-center mb-1 text-emerald-400">
+                          <Code2 className="w-4 h-4" />
+                        </div>
+                        <span className="block text-white font-bold text-xs sm:text-sm">Moderna</span>
+                        <span className="text-[10px] text-slate-400">Tecnologia</span>
+                      </div>
+                      <div className="bg-slate-900/90 rounded-lg p-2.5 border border-slate-800/60 text-center">
+                        <div className="flex justify-center mb-1 text-indigo-400">
+                          <Smartphone className="w-4 h-4" />
+                        </div>
+                        <span className="block text-white font-bold text-xs sm:text-sm">Responsivo</span>
+                        <span className="text-[10px] text-slate-400">Mobile First</span>
+                      </div>
+                      <div className="bg-slate-900/90 rounded-lg p-2.5 border border-slate-800/60 text-center">
+                        <div className="flex justify-center mb-1 text-emerald-400">
+                          <WhatsAppIcon className="w-4 h-4 text-emerald-400" />
+                        </div>
+                        <span className="block text-white font-bold text-xs sm:text-sm">Conversão</span>
+                        <span className="text-[10px] text-slate-400">Foco WhatsApp</span>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </Interactive3DCard>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};

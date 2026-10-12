@@ -1,0 +1,173 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+html {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color-scheme: dark;
+  scroll-behavior: smooth;
+}
+
+.font-display {
+  font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+}
+
+.font-mono-code {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Subtle tech grid pattern for backdrop */
+.tech-grid-pattern {
+  background-image: radial-gradient(rgba(99, 102, 241, 0.12) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Smooth focus visible styles */
+*:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+}
+
+/* Subtle continuous breathing pulse for floating WhatsApp button */
+@keyframes subtlePulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.35), 0 0 0 0 rgba(99, 102, 241, 0.4);
+  }
+  50% {
+    transform: scale(1.06);
+    box-shadow: 0 15px 30px -5px rgba(99, 102, 241, 0.55), 0 0 0 10px rgba(99, 102, 241, 0);
+  }
+}
+
+.animate-subtle-pulse {
+  animation: subtlePulse 2.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-subtle-pulse {
+    animation: none;
+  }
+}
+
+/* Botões de CTA Principal - Gradiente MENU com efeito Neon Glow Premium */
+.cta-primary {
+  background-image: linear-gradient(to right, #4f46e5, #6366f1, #9333ea) !important;
+  background-color: #4f46e5 !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(165, 180, 252, 0.4) !important;
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35), 0 0 14px rgba(99, 102, 241, 0.25) !important;
+  letter-spacing: 0.015em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cta-primary:hover {
+  background-image: linear-gradient(to right, #6366f1, #7c3aed, #a855f7) !important;
+  border-color: rgba(199, 210, 254, 0.7) !important;
+  box-shadow: 0 6px 22px rgba(99, 102, 241, 0.45), 0 0 24px rgba(147, 51, 234, 0.6), 0 0 42px rgba(99, 102, 241, 0.35) !important;
+  transform: translateY(-1.5px);
+}
+
+.cta-primary:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 2px 10px rgba(99, 102, 241, 0.4), 0 0 32px rgba(168, 85, 247, 0.8) !important;
+}
+
+/* Botões Verdes WhatsApp - Alta Legibilidade e Efeito Neon Glow Premium */
+a[href*="wa.me"],
+button[id*="whatsapp"],
+a[id*="whatsapp"] {
+  letter-spacing: 0.015em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+/* Efeito neon premium em ícones interativos */
+button:hover > svg,
+a:hover > svg {
+  filter: drop-shadow(0 0 6px rgba(129, 140, 248, 0.65));
+  transition: filter 0.25s ease;
+}
+
+a[href*="wa.me"]:hover > svg,
+button[id*="whatsapp"]:hover > svg,
+a[id*="whatsapp"]:hover > svg {
+  filter: drop-shadow(0 0 8px rgba(74, 222, 128, 0.85));
+}
+
+/* Rotação dinâmica do ícone dentro de #floating-whatsapp-btn (500ms ease-out exclusivamente no hover ou ao clicar) */
+#floating-whatsapp-btn svg {
+  transition: transform 500ms ease-out;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+#floating-whatsapp-btn:hover svg,
+#floating-whatsapp-btn:active svg {
+  transform: rotate(360deg) scale(1.1);
+  transition: transform 500ms ease-out;
+}
+
+/* Modo de Alto Contraste para acessibilidade visual */
+.high-contrast {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+.high-contrast header,
+.high-contrast footer,
+.high-contrast nav,
+.high-contrast section,
+.high-contrast main,
+.high-contrast article,
+.high-contrast aside,
+.high-contrast div[class*="bg-"] {
+  border-color: rgba(255, 255, 255, 0.35) !important;
+}
+
+.high-contrast p,
+.high-contrast span,
+.high-contrast li,
+.high-contrast label {
+  color: #f1f5f9 !important;
+}
+
+.high-contrast h1,
+.high-contrast h2,
+.high-contrast h3,
+.high-contrast h4,
+.high-contrast h5,
+.high-contrast strong {
+  color: #ffffff !important;
+}
+
+.high-contrast .text-slate-400,
+.high-contrast .text-slate-500,
+.high-contrast .text-slate-300 {
+  color: #e2e8f0 !important;
+}
+
+.high-contrast button:not([class*="bg-"]):not([class*="cta-"]),
+.high-contrast a:not([class*="bg-"]):not([class*="cta-"]) {
+  color: #ffffff !important;
+}
+
+.high-contrast input,
+.high-contrast textarea,
+.high-contrast select {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 2px solid #ffffff !important;
+}
+
+.high-contrast input:focus,
+.high-contrast textarea:focus,
+.high-contrast select:focus {
+  outline: 3px solid #facc15 !important;
+  outline-offset: 2px !important;
+}
+
