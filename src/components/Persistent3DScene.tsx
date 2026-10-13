@@ -12,10 +12,10 @@ function createNodeGlowTexture(): THREE.CanvasTexture {
   if (ctx) {
     const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
     gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
-    gradient.addColorStop(0.2, 'rgba(0, 245, 255, 0.95)');
+    gradient.addColorStop(0.2, 'rgba(129, 140, 248, 0.95)');
     gradient.addColorStop(0.5, 'rgba(99, 102, 241, 0.6)');
-    gradient.addColorStop(0.85, 'rgba(255, 0, 127, 0.2)');
-    gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    gradient.addColorStop(0.85, 'rgba(148, 163, 184, 0.2)');
+    gradient.addColorStop(1, 'rgba(11, 15, 26, 0)');
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, 64, 64);
   }
@@ -33,7 +33,7 @@ export const Persistent3DScene: React.FC = () => {
 
     // Configuração de Cena, Névoa Atmosférica e Câmera
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x060914, 0.022);
+    scene.fog = new THREE.FogExp2(0x0b0f1a, 0.022);
 
     const camera = new THREE.PerspectiveCamera(
       50,
@@ -44,26 +44,36 @@ export const Persistent3DScene: React.FC = () => {
     camera.position.set(0, 0, 12);
 
     // Renderer WebGL autônomo com buffer alpha e ACESFilmicToneMapping
-    const renderer = new THREE.WebGLRenderer({
-      alpha: true,
-      antialias: true,
-      powerPreference: 'high-performance',
-    });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    const isMobile = window.innerWidth < 768;
+    const DPR_CAP = 1.5;
+
+    // Se o WebGL falhar, não renderiza nada (o fundo CSS da página continua).
+    let renderer: THREE.WebGLRenderer;
+    try {
+      renderer = new THREE.WebGLRenderer({
+        alpha: true,
+        antialias: !isMobile,
+        powerPreference: 'high-performance',
+      });
+    } catch (err) {
+      console.warn('WebGL indisponível; mantendo apenas o fundo CSS.', err);
+      return;
+    }
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, DPR_CAP));
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.25;
     container.appendChild(renderer.domElement);
 
     // Iluminação
-    const ambientLight = new THREE.AmbientLight(0x091124, 1.2);
+    const ambientLight = new THREE.AmbientLight(0x0b0f1a, 1.2);
     scene.add(ambientLight);
 
-    const dirLight1 = new THREE.DirectionalLight(0x00f5ff, 2.5);
+    const dirLight1 = new THREE.DirectionalLight(0x818cf8, 2.5);
     dirLight1.position.set(10, 10, 8);
     scene.add(dirLight1);
 
-    const dirLight2 = new THREE.DirectionalLight(0xff007f, 2.2);
+    const dirLight2 = new THREE.DirectionalLight(0x94a3b8, 2.0);
     dirLight2.position.set(-10, -8, 6);
     scene.add(dirLight2);
 
@@ -73,7 +83,7 @@ export const Persistent3DScene: React.FC = () => {
     const nodesGroup = new THREE.Group();
     scene.add(nodesGroup);
 
-    const NODE_COUNT = 90;
+    const NODE_COUNT = isMobile ? 45 : 90;
     const nodeTexture = createNodeGlowTexture();
     const nodePositions: THREE.Vector3[] = [];
     const nodeVelocities: THREE.Vector3[] = [];
@@ -83,10 +93,9 @@ export const Persistent3DScene: React.FC = () => {
     const nodePosArray = new Float32Array(NODE_COUNT * 3);
     const nodeColorArray = new Float32Array(NODE_COUNT * 3);
 
-    const cyanCol = new THREE.Color(0x00f5ff);
     const indigoCol = new THREE.Color(0x6366f1);
-    const magentaCol = new THREE.Color(0xff007f);
-    const limeCol = new THREE.Color(0x00ffaa);
+    const lilacCol = new THREE.Color(0x818cf8);
+    const slateCol = new THREE.Color(0x94a3b8);
 
     for (let i = 0; i < NODE_COUNT; i++) {
       const x = (Math.random() - 0.5) * 32;
@@ -108,7 +117,7 @@ export const Persistent3DScene: React.FC = () => {
       nodePosArray[i * 3 + 2] = z;
 
       const rnd = Math.random();
-      const col = rnd < 0.45 ? cyanCol : rnd < 0.8 ? indigoCol : rnd < 0.92 ? magentaCol : limeCol;
+      const col = rnd < 0.5 ? indigoCol : rnd < 0.82 ? lilacCol : slateCol;
       nodeColorArray[i * 3] = col.r;
       nodeColorArray[i * 3 + 1] = col.g;
       nodeColorArray[i * 3 + 2] = col.b;
@@ -130,7 +139,7 @@ export const Persistent3DScene: React.FC = () => {
     nodesGroup.add(nodesMesh);
 
     // Conexões dinâmicas entre nós próximos (Linhas de dados)
-    const MAX_CONNECTIONS = 280;
+    const MAX_CONNECTIONS = isMobile ? 130 : 280;
     const lineGeo = new THREE.BufferGeometry();
     const linePositions = new Float32Array(MAX_CONNECTIONS * 2 * 3);
     const lineColors = new Float32Array(MAX_CONNECTIONS * 2 * 3);
@@ -153,8 +162,8 @@ export const Persistent3DScene: React.FC = () => {
     // 2. GRID CIBERNÉTICO EM PERSPECTIVA 3D COM PULSOS DE LUZ (CHÃO & TETO)
     // =========================================================================
     const gridStep = 1.8;
-    const gridRows = 32;
-    const gridCols = 28;
+    const gridRows = isMobile ? 20 : 32;
+    const gridCols = isMobile ? 18 : 28;
     const gridWidth = gridCols * gridStep;
     const gridLength = gridRows * gridStep;
 
@@ -165,7 +174,7 @@ export const Persistent3DScene: React.FC = () => {
 
     const groundGridGeo = new THREE.PlaneGeometry(gridWidth, gridLength, gridCols, gridRows);
     const groundGridMat = new THREE.MeshBasicMaterial({
-      color: 0x00f5ff,
+      color: 0x6366f1,
       wireframe: true,
       transparent: true,
       opacity: 0.28,
@@ -173,7 +182,7 @@ export const Persistent3DScene: React.FC = () => {
     const groundGridMesh = new THREE.Mesh(groundGridGeo, groundGridMat);
     groundGridGroup.add(groundGridMesh);
 
-    // Grid do teto em magenta
+    // Grid do teto em lilás
     const ceilingGridGroup = new THREE.Group();
     scene.add(ceilingGridGroup);
     ceilingGridGroup.position.set(0, 6.8, -18);
@@ -181,7 +190,7 @@ export const Persistent3DScene: React.FC = () => {
 
     const ceilingGridGeo = new THREE.PlaneGeometry(gridWidth, gridLength, gridCols, gridRows);
     const ceilingGridMat = new THREE.MeshBasicMaterial({
-      color: 0xff007f,
+      color: 0x818cf8,
       wireframe: true,
       transparent: true,
       opacity: 0.18,
@@ -206,7 +215,7 @@ export const Persistent3DScene: React.FC = () => {
     }
 
     const circuitTracks: CircuitTrack[] = [];
-    const TRACK_COUNT = 16;
+    const TRACK_COUNT = isMobile ? 8 : 16;
     const sphereSharedGeo = new THREE.SphereGeometry(0.12, 10, 10);
     const sphereMats: THREE.MeshBasicMaterial[] = [];
 
@@ -233,8 +242,8 @@ export const Persistent3DScene: React.FC = () => {
       const points = curve.getPoints(50);
       const trackGeo = new THREE.BufferGeometry().setFromPoints(points);
 
-      const isCyan = t % 2 === 0;
-      const trackCol = isCyan ? 0x00f5ff : 0xff007f;
+      const isIndigo = t % 2 === 0;
+      const trackCol = isIndigo ? 0x6366f1 : 0x818cf8;
       const trackMat = new THREE.LineBasicMaterial({
         color: trackCol,
         transparent: true,
@@ -247,7 +256,7 @@ export const Persistent3DScene: React.FC = () => {
 
       // Pulso luminoso correndo pelo circuito
       const sMat = new THREE.MeshBasicMaterial({
-        color: isCyan ? 0x00f5ff : 0xff007f,
+        color: isIndigo ? 0x6366f1 : 0x818cf8,
       });
       sphereMats.push(sMat);
       const pulseSphere = new THREE.Mesh(sphereSharedGeo, sMat);
@@ -292,7 +301,7 @@ export const Persistent3DScene: React.FC = () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, DPR_CAP));
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -303,10 +312,13 @@ export const Persistent3DScene: React.FC = () => {
     // =========================================================================
     // 5. LOOP DE ANIMAÇÃO 60FPS
     // =========================================================================
-    let animationFrameId: number;
+    let animationFrameId = 0;
+    let running = false;
+    let onScreen = true;
     const clock = new THREE.Clock();
 
     const animate = () => {
+      if (!running) return;
       animationFrameId = requestAnimationFrame(animate);
 
       const delta = clock.getDelta();
@@ -375,11 +387,11 @@ export const Persistent3DScene: React.FC = () => {
             posArr[lineIndex * 6 + 4] = nodePositions[j].y;
             posArr[lineIndex * 6 + 5] = nodePositions[j].z;
 
-            // Gradiente ciano/índigo pulsante
+            // Gradiente índigo/lilás pulsante
             const p = 0.5 + Math.sin(time * 2.0 + lineIndex) * 0.5;
-            const r = THREE.MathUtils.lerp(0.0, 0.4, p) * alpha;
-            const g = THREE.MathUtils.lerp(0.96, 0.4, p) * alpha;
-            const b = THREE.MathUtils.lerp(1.0, 0.95, p) * alpha;
+            const r = THREE.MathUtils.lerp(0.39, 0.51, p) * alpha;
+            const g = THREE.MathUtils.lerp(0.4, 0.55, p) * alpha;
+            const b = THREE.MathUtils.lerp(0.95, 0.97, p) * alpha;
 
             colArr[lineIndex * 6] = r;
             colArr[lineIndex * 6 + 1] = g;
@@ -456,13 +468,38 @@ export const Persistent3DScene: React.FC = () => {
       renderer.render(scene, camera);
     };
 
-    animate();
+    const start = () => {
+      if (running || document.hidden || !onScreen) return;
+      running = true;
+      clock.getDelta(); // descarta o tempo parado
+      animate();
+    };
+    const stop = () => {
+      running = false;
+      cancelAnimationFrame(animationFrameId);
+    };
+    const handleVisibility = () => (document.hidden ? stop() : start());
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    let observer: IntersectionObserver | null = null;
+    if (typeof IntersectionObserver !== 'undefined') {
+      observer = new IntersectionObserver((entries) => {
+        onScreen = Boolean(entries[0]?.isIntersecting);
+        if (onScreen) start();
+        else stop();
+      });
+      observer.observe(container);
+    }
+
+    start();
 
     // =========================================================================
     // LIMPEZA E DESALOCAÇÃO
     // =========================================================================
     return () => {
-      cancelAnimationFrame(animationFrameId);
+      stop();
+      observer?.disconnect();
+      document.removeEventListener('visibilitychange', handleVisibility);
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('pointermove', handlePointerMove);
       window.removeEventListener('resize', handleResize);

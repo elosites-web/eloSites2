@@ -1,21 +1,27 @@
-# Sequências de Quadros Flow (WebP) — ēloSites
+# Assets de movimento (Flow)
 
-Este diretório armazena as sequências de quadros extraídas dos seus vídeos gerados no Flow.
+Tudo aqui é lido a partir de `manifest.json` (contagem de frames, dimensões, vídeos e pôsteres).
+Nada disso deve ser fixado no código.
 
-## Estrutura de Pastas por Cena:
-1. `/public/assets/flow/hero/` — Cena 1: Dois elos de corrente se encaixando (Hero).
-2. `/public/assets/flow/processo/` — Cena 2: Blocos de layout se encaixando no celular (Como Funciona).
-3. `/public/assets/flow/cliente/` — Cena 3: Fachada e smartphone conectados pelo feixe de luz (Portfólio / Diferenciais).
-4. `/public/assets/flow/corrente/` — Cena 4: Corrente completa iluminada (CTA Final).
+## Cenas com scroll (sequência de frames)
 
-## Como Nomear os Arquivos:
-Nomeie os quadros sequencialmente no formato:
-`frame_001.webp`, `frame_002.webp`, `frame_003.webp`, ... até `frame_060.webp` (ou quantos frames o clipe tiver).
+| Cena       | Pasta        | Onde aparece                  |
+| ---------- | ------------ | ----------------------------- |
+| `hero`     | `hero/`      | Tela inicial (Hero)           |
+| `corrente` | `corrente/`  | Tela final de contato / CTA   |
 
-## Dica de Extração com FFmpeg:
-Se tiver o vídeo MP4 em mãos (ex: `cena1.mp4`):
-```bash
-ffmpeg -i cena1.mp4 -vf "scale=960:-1:flags=lanczos,fps=15" -c:v libwebp -lossless 0 -compression_level 6 -q:v 75 frame_%03d.webp
-```
+- Arquivos: `frame_001.webp`, `frame_002.webp`, ... (numeração começa em 1).
+- Componente: `src/components/FlowFrameSequencePlayer.tsx` (progresso pelo scroll, vai e volta).
+- Sem frames, `prefers-reduced-motion` ou `saveData`: aparece só o pôster estático (`posters/`).
 
-*Nota: Enquanto os arquivos WebP não forem inseridos, o site renderiza automaticamente simulações procedurais 3D interativas em tempo real de alta fidelidade!*
+## Vídeos de fundo em loop (mudos)
+
+| Chave           | Arquivo                  | Onde aparece           |
+| --------------- | ------------------------ | ---------------------- |
+| `hands-viewing` | `video/hands-viewing.mp4` | Tela "Como funciona"   |
+| `hands-near`    | `video/hands-near.mp4`    | Tela "Diferenciais"    |
+
+- Componente: `src/components/AmbientLoopVideo.tsx` (toca só quando visível).
+- Com `prefers-reduced-motion` ou `saveData`: só o pôster.
+
+Para trocar uma animação, substitua os frames/vídeos mantendo os nomes e atualize o `manifest.json`.

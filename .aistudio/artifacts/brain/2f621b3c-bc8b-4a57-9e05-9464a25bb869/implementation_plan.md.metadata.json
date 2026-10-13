@@ -1,6 +1,0 @@
-{
-  "summary": "Plano de implementação detalhado para:\n1. Arquitetura de site multitelas (SPA com alternância de telas exclusivas por seção em vez de página contínua longa).\n2. Botão único \"MENU DE NAVEGAÇÃO\" no Navbar abrindo menu expansivo de telas com atalhos e indicador da tela ativa.\n3. Portfólio atualizado com as imagens reais em /public e alternador interativo triplo (Mockup Composto Desktop+Mobile, Desktop isolado, Mobile isolado).\n4. Seção de Serviços e Termos de Pagamento atualizada com as 4 modalidades exatas (Orçamento sob medida, 50/50 PIX, 20% de desconto à vista, até 5x sem juros no cartão ou 6x a 12x com juros).",
-  "updatedAt": "2026-10-12T16:23:09.511216216Z",
-  "requestFeedback": true,
-  "userFacing": true
-}

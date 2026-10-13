@@ -6,3 +6,9 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# agent tooling (not part of the site)
+.agents/
+agent/
+.aistudio/
+skills-lock.json

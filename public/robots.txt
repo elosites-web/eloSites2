@@ -1,10 +1,8 @@
-# robots.txt para https://elosites.ai.br
+# robots.txt para https://www.elosites.ia.br
 # Checklist Básico de Implementação SEO - Item 2
 
 User-agent: *
 Allow: /
-Allow: /politica-de-privacidade
-Allow: /termos-de-uso
 
 # Bloqueio de pastas administrativas, scripts e resultados internos irrelevantes
 Disallow: /admin/
@@ -17,4 +15,4 @@ Disallow: /search
 Disallow: /busca
 
 # Sitemap canônico para o Google Search Console
-Sitemap: https://elosites.ai.br/sitemap.xml
+Sitemap: https://www.elosites.ia.br/sitemap.xml

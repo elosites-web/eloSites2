@@ -66,7 +66,7 @@ export const LegalModals: React.FC<LegalModalProps> = ({ isOpen, onClose, type }
               <section className="space-y-1.5">
                 <h4 className="font-bold text-white text-sm">4. Controlador e solicitação de exclusão</h4>
                 <p>
-                  O controlador responsável pelo tratamento de dados é a <strong>ēloSites</strong> (contato: <a href="mailto:contato@elosites.ai.br" className="text-indigo-400 underline">contato@elosites.ai.br</a>). A qualquer momento você pode solicitar a confirmação, correção ou exclusão definitiva de seus dados nos termos da LGPD (Lei Geral de Proteção de Dados - Lei nº 13.709/2018).
+                  O controlador responsável pelo tratamento de dados é a <strong>ēloSites</strong> (contato: <a href="mailto:contato@elosites.ia.br" className="text-indigo-400 underline">contato@elosites.ia.br</a>). A qualquer momento você pode solicitar a confirmação, correção ou exclusão definitiva de seus dados nos termos da LGPD (Lei Geral de Proteção de Dados - Lei nº 13.709/2018).
                 </p>
               </section>
             </>

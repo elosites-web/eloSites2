@@ -36,7 +36,7 @@ export const Footer: React.FC<FooterProps> = ({
           <div className="md:col-span-5 space-y-4">
             <EloLogo size="md" />
             <p className="text-slate-300 text-sm sm:text-base leading-relaxed max-w-sm">
-              Criação de sites profissionais com SEO técnico e foco em conversão para pequenos negócios e profissionais liberais. Entrega ágil em até 7 dias úteis.
+              Criação de sites profissionais com SEO técnico e foco em conversão para pequenos negócios e profissionais liberais. Entrega ágil, sem prometer prazo absoluto.
             </p>
             <div className="flex items-center gap-3 pt-2">
               <a

@@ -188,17 +188,17 @@ export interface MeetingBookingData {
 
 export const SITE_CONFIG = {
   name: 'ēloSites',
-  domain: 'elosites.ai.br',
-  canonicalUrl: 'https://elosites.ai.br',
-  tagline: 'Criação de sites profissionais com SEO técnico, foco em conversão e entrega em até 7 dias.',
+  domain: 'www.elosites.ia.br',
+  canonicalUrl: 'https://www.elosites.ia.br',
+  tagline: 'Criação de sites profissionais com SEO técnico, foco em conversão e entrega ágil, sem prometer prazo absoluto.',
   subtagline: 'Desenvolvemos a presença digital completa e estratégica para pequenos negócios e profissionais liberais.',
-  email: 'contato@elosites.ai.br',
+  email: 'contato@elosites.ia.br',
   // Número oficial da ēloSites
   whatsappNumber: '5511995722584',
   whatsappDisplay: '+55 (11) 99572-2584',
   // Mensagens contextuais para cada CTA
   heroWhatsappMessage:
-    'Olá! Conheci a ēloSites e gostaria de solicitar um orçamento para criar o site profissional do meu negócio com entrega em até 7 dias.',
+    'Olá! Conheci a ēloSites e gostaria de solicitar um orçamento para criar o site profissional do meu negócio.',
   headerWhatsappMessage:
     'Olá! Gostaria de falar sobre a criação de um site profissional para o meu negócio.',
   portfolioWhatsappMessage:

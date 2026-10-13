@@ -1,5 +1,6 @@
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { Persistent3DBackground } from './components/Persistent3DBackground';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { ProcessSection } from './components/ProcessSection';
@@ -23,9 +24,6 @@ import {
 } from 'lucide-react';
 
 // Cena 3D persistente carregada de forma assíncrona
-const Persistent3DScene = lazy(() =>
-  import('./components/Persistent3DScene').then((mod) => ({ default: mod.Persistent3DScene }))
-);
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<ScreenId>('inicio');
@@ -133,9 +131,7 @@ export default function App() {
   return (
     <div className={`min-h-screen bg-[#090D16] text-slate-100 flex flex-col selection:bg-indigo-500 selection:text-white relative ${isHighContrast ? 'high-contrast' : ''}`}>
       {/* Cena 3D Persistente procedural no fundo */}
-      <Suspense fallback={null}>
-        <Persistent3DScene />
-      </Suspense>
+      <Persistent3DBackground />
 
       {/* Header Fixo com Botão Único "MENU DE NAVEGAÇÃO" */}
       <Header

@@ -6,6 +6,8 @@ import { FaqItem, SITE_CONFIG, whatsappUrl } from '../types';
 export const FaqSection: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
+  // ATENÇÃO: estas mesmas perguntas e respostas (texto idêntico) estão replicadas no JSON-LD FAQPage
+  // em index.html. Ao editar qualquer item aqui, atualize o JSON-LD para mantê-lo sincronizado.
   const faqs: FaqItem[] = [
     {
       id: 'faq-1',

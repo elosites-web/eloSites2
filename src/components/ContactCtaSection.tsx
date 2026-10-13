@@ -2,6 +2,7 @@ import React from 'react';
 import { WhatsAppIcon } from './WhatsAppIcon';
 import { SITE_CONFIG, whatsappUrl } from '../types';
 import { Mail } from 'lucide-react';
+import { FlowFrameSequencePlayer } from './FlowFrameSequencePlayer';
 
 interface ContactCtaSectionProps {
   onNavigateToOrcamento?: () => void;
@@ -31,6 +32,8 @@ export const ContactCtaSection: React.FC<ContactCtaSectionProps> = ({ onNavigate
         <p className="text-base sm:text-lg text-slate-300/95 leading-relaxed max-w-2xl mx-auto">
           Conte sobre o seu trabalho pelo WhatsApp. Conversamos sobre o formato, o conteúdo e te enviamos um orçamento específico para o seu projeto.
         </p>
+
+        <FlowFrameSequencePlayer scene="corrente" title={SITE_CONFIG.name} className="mx-auto max-w-3xl" />
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
           <a
