@@ -42,8 +42,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
     contactName: '',
     businessName: '',
     segment: 'Barbearia',
-    projectType: 'Landing Page de Conversão',
-    timeline: '1 a 2 semanas',
+    projectType: 'Landing Page de Conversão (Foco em WhatsApp)',
     description: '',
     whatsappContact: '',
     agreedToLgpd: true,
@@ -80,12 +79,6 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
     'Landing Page de Conversão (Foco em WhatsApp)',
     'Site Institucional Completo (Sobre, Serviços, FAQ)',
     'Projeto Sob Medida / Personalizado',
-  ];
-
-  const timelinesList = [
-    'Urgente (3 a 5 dias úteis)',
-    '1 a 2 semanas (Padrão)',
-    'Sem pressa (Planejamento futuro)',
   ];
 
   const timeSlotsList = [
@@ -287,6 +280,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                   </div>
 
                   <form onSubmit={handleBriefingSubmit} className="space-y-6">
+                    {/* Linha 1: Dados de Contato Direto (Nome & WhatsApp) */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                       <div>
                         <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
@@ -309,6 +303,28 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
 
                       <div>
                         <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+                          Seu WhatsApp para Retorno *
+                        </label>
+                        <input
+                          type="tel"
+                          required
+                          value={briefingData.whatsappContact}
+                          onChange={(e) =>
+                            setBriefingData({ ...briefingData, whatsappContact: e.target.value })
+                          }
+                          placeholder="Ex: (11) 99999-9999"
+                          className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-white/[0.1] text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-all"
+                        />
+                        {formErrors.whatsappContact && (
+                          <p className="mt-1 text-xs text-rose-400">{formErrors.whatsappContact}</p>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Linha 2: Sobre a Empresa / Negócio (Nome do Negócio & Ramo de Atuação) */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      <div>
+                        <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
                           Nome do Negócio / Empresa *
                         </label>
                         <input
@@ -325,9 +341,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                           <p className="mt-1 text-xs text-rose-400">{formErrors.businessName}</p>
                         )}
                       </div>
-                    </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                       <div>
                         <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
                           Ramo de Atuação
@@ -351,77 +365,34 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                           </div>
                         </div>
                       </div>
-
-                      <div>
-                        <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
-                          Tipo de Site Desejado
-                        </label>
-                        <div className="relative">
-                          <select
-                            value={briefingData.projectType}
-                            onChange={(e) =>
-                              setBriefingData({ ...briefingData, projectType: e.target.value })
-                            }
-                            className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-white/[0.1] text-white text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-all appearance-none cursor-pointer"
-                          >
-                            {projectTypesList.map((item) => (
-                              <option key={item} value={item} className="bg-slate-900 text-white">
-                                {item}
-                              </option>
-                            ))}
-                          </select>
-                          <div className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs">
-                            ▼
-                          </div>
-                        </div>
-                      </div>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                      <div>
-                        <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
-                          Prazo Desejado
-                        </label>
-                        <div className="relative">
-                          <select
-                            value={briefingData.timeline}
-                            onChange={(e) =>
-                              setBriefingData({ ...briefingData, timeline: e.target.value })
-                            }
-                            className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-white/[0.1] text-white text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-all appearance-none cursor-pointer"
-                          >
-                            {timelinesList.map((item) => (
-                              <option key={item} value={item} className="bg-slate-900 text-white">
-                                {item}
-                              </option>
-                            ))}
-                          </select>
-                          <div className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs">
-                            ▼
-                          </div>
-                        </div>
-                      </div>
-
-                      <div>
-                        <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
-                          Seu WhatsApp para Retorno *
-                        </label>
-                        <input
-                          type="tel"
-                          required
-                          value={briefingData.whatsappContact}
+                    {/* Linha 3: Formato do Site Desejado */}
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+                        Tipo de Site Desejado
+                      </label>
+                      <div className="relative">
+                        <select
+                          value={briefingData.projectType}
                           onChange={(e) =>
-                            setBriefingData({ ...briefingData, whatsappContact: e.target.value })
+                            setBriefingData({ ...briefingData, projectType: e.target.value })
                           }
-                          placeholder="Ex: (11) 99999-9999"
-                          className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-white/[0.1] text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-all"
-                        />
-                        {formErrors.whatsappContact && (
-                          <p className="mt-1 text-xs text-rose-400">{formErrors.whatsappContact}</p>
-                        )}
+                          className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-white/[0.1] text-white text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-all appearance-none cursor-pointer"
+                        >
+                          {projectTypesList.map((item) => (
+                            <option key={item} value={item} className="bg-slate-900 text-white">
+                              {item}
+                            </option>
+                          ))}
+                        </select>
+                        <div className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs">
+                          ▼
+                        </div>
                       </div>
                     </div>
 
+                    {/* Linha 4: Objetivos e Detalhes do Projeto */}
                     <div>
                       <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
                         Conte um pouco sobre o projeto e seus objetivos

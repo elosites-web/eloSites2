@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { WhatsAppIcon } from './WhatsAppIcon';
 import { SITE_CONFIG } from '../types';
@@ -18,8 +18,8 @@ const isWithinBusinessHours = (): boolean => {
 
 export const FloatingWhatsApp: React.FC = () => {
   const [showTooltip, setShowTooltip] = useState(false);
-  const [hasDismissed, setHasDismissed] = useState(false);
   const [isOnline, setIsOnline] = useState<boolean>(() => isWithinBusinessHours());
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     // Atualiza status do horário periodicamente
@@ -31,26 +31,40 @@ export const FloatingWhatsApp: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // Exibe o balão convidativo após 2.5 segundos
-    const showTimer = setTimeout(() => {
-      if (!hasDismissed) {
-        setShowTooltip(true);
-      }
-    }, 2500);
+    // 1) Aparece exatamente após 10 segundos (10.000 ms) de inatividade ou carregamento inicial
+    timerRef.current = setTimeout(() => {
+      setShowTooltip(true);
+    }, 10000);
 
-    return () => clearTimeout(showTimer);
-  }, [hasDismissed]);
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
 
   useEffect(() => {
-    // Recolhe automaticamente o balão para o ícone compacto após 6 segundos de exibição no celular/desktop
-    if (showTooltip) {
-      const collapseTimer = setTimeout(() => {
-        setShowTooltip(false);
-      }, 6000);
+    // 2) Quando o balão aparece, fecha sozinho após 10 segundos da aparição
+    if (!showTooltip) return;
 
-      return () => clearTimeout(collapseTimer);
-    }
+    const autoCloseTimer = setTimeout(() => {
+      setShowTooltip(false);
+      // Se fechar sozinho após os 10 segundos: reaparece 2 minutos e 30 segundos (150.000 ms) após fechar sozinho
+      if (timerRef.current) clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(() => {
+        setShowTooltip(true);
+      }, 150000);
+    }, 10000);
+
+    return () => clearTimeout(autoCloseTimer);
   }, [showTooltip]);
+
+  // Se o usuário fechar antes (manualmente), reaparece 2 minutos (120.000 ms) após ser fechado
+  const handleManualClose = () => {
+    setShowTooltip(false);
+    if (timerRef.current) clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => {
+      setShowTooltip(true);
+    }, 120000);
+  };
 
   const whatsappUrl = `https://wa.me/${SITE_CONFIG.whatsappNumber}?text=${encodeURIComponent(
     SITE_CONFIG.floatingWhatsappMessage
@@ -61,40 +75,36 @@ export const FloatingWhatsApp: React.FC = () => {
       aria-label="Atendimento rápido via WhatsApp"
       className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end pointer-events-none select-none"
     >
-      {/* Tooltip / Popup Convidativo Centralizado com animação suave de mola (spring) via Framer Motion */}
+      {/* Tooltip / Popup Convidativo Centralizado com animação acentuada fade-in-up via Framer Motion */}
       <AnimatePresence>
-        {showTooltip && !hasDismissed && (
+        {showTooltip && (
           <motion.div
             key="whatsapp-popup-tooltip"
             id="whatsapp-popup-tooltip"
-            initial={{ opacity: 0, y: 16, scale: 0.88 }}
+            initial={{ opacity: 0, y: 36, scale: 0.92 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 10, scale: 0.92, transition: { duration: 0.2, ease: 'easeOut' } }}
+            exit={{ opacity: 0, y: 20, scale: 0.94, transition: { duration: 0.25, ease: 'easeOut' } }}
             transition={{
-              type: 'spring',
-              stiffness: 260,
-              damping: 20,
-              mass: 0.65,
-              bounce: 0.28,
+              duration: 0.48,
+              ease: [0.34, 1.25, 0.45, 1],
+              opacity: { duration: 0.4, ease: [0.4, 0, 0.2, 1] },
+              y: { duration: 0.48, ease: [0.34, 1.25, 0.45, 1] },
             }}
             className="mb-3 w-[min(265px,calc(100vw-2rem))] bg-slate-900/95 border border-indigo-500/30 text-white rounded-2xl p-3.5 sm:p-4 shadow-2xl shadow-black/80 backdrop-blur-md pointer-events-auto relative origin-bottom-right z-50"
           >
-            {/* Botão de Fechar discreto no canto superior direito */}
+            {/* Botão de Fechar com p-3, rounded-full, transition-colors duration-300 e hover:bg-indigo-500/20 */}
             <button
               type="button"
               id="close-whatsapp-tooltip"
-              onClick={() => {
-                setShowTooltip(false);
-                setHasDismissed(true);
-              }}
-              className="absolute top-2 right-2 text-slate-400 hover:text-white p-1 rounded-md transition-colors"
+              onClick={handleManualClose}
+              className="absolute top-1 right-1 p-3 rounded-full text-slate-400 hover:text-white hover:bg-indigo-500/20 active:bg-indigo-500/30 transition-colors duration-300 flex items-center justify-center cursor-pointer min-w-[36px] min-h-[36px]"
               aria-label="Fechar mensagem de atendimento"
             >
               <X className="w-3.5 h-3.5" />
             </button>
 
             {/* Indicador de Horário de Funcionamento (Schema: 09:00 - 18:00) */}
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium mb-2 bg-slate-950/80 border border-white/[0.08] w-fit">
+            <div className="flex items-center justify-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium mb-2.5 bg-slate-950/80 border border-white/[0.08] w-fit mx-auto">
               <span className="relative flex h-2 w-2">
                 {isOnline ? (
                   <>
@@ -110,12 +120,12 @@ export const FloatingWhatsApp: React.FC = () => {
               </span>
             </div>
 
-            {/* Conteúdo Convidativo */}
-            <div className="pt-0.5 space-y-1">
-              <span className="font-semibold block text-xs sm:text-sm text-indigo-300">
+            {/* Conteúdo Convidativo Centralizado com leading-7 e título text-indigo-100 font-extrabold tracking-wider */}
+            <div className="pt-0.5 space-y-1.5 text-center">
+              <span className="font-extrabold tracking-wider block text-xs sm:text-sm text-indigo-100 text-center">
                 Precisa de um site?
               </span>
-              <p className="text-slate-300 text-[11px] sm:text-xs leading-relaxed">
+              <p className="text-slate-300 text-[11px] sm:text-xs leading-7 text-center">
                 Fale diretamente comigo pelo WhatsApp para tirar dúvidas sobre seu projeto.
               </p>
             </div>

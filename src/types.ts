@@ -168,7 +168,6 @@ export interface ProjectBriefData {
   businessName: string;
   segment: string;
   projectType: string;
-  timeline: string;
   description: string;
   whatsappContact: string;
   agreedToLgpd: boolean;
@@ -188,9 +187,9 @@ export interface MeetingBookingData {
 
 export const SITE_CONFIG = {
   name: 'ēloSites',
-  domain: 'www.elosites.ia.br',
-  canonicalUrl: 'https://www.elosites.ia.br',
-  tagline: 'Criação de sites profissionais com SEO técnico, foco em conversão e entrega ágil, sem prometer prazo absoluto.',
+  domain: 'elosites.ia.br',
+  canonicalUrl: 'https://elosites.ia.br',
+  tagline: 'Criação de sites profissionais com SEO técnico, foco em conversão e arquitetura de alta performance.',
   subtagline: 'Desenvolvemos a presença digital completa e estratégica para pequenos negócios e profissionais liberais.',
   email: 'contato@elosites.ia.br',
   // Número oficial da ēloSites
@@ -198,13 +197,13 @@ export const SITE_CONFIG = {
   whatsappDisplay: '+55 (11) 99572-2584',
   // Mensagens contextuais para cada CTA
   heroWhatsappMessage:
-    'Olá! Conheci a ēloSites e gostaria de solicitar um orçamento para criar o site profissional do meu negócio.',
+    'Olá! Conheci a ēloSites e gostaria de solicitar um orçamento para criar o site profissional do meu negócio com foco em conversão e SEO técnico.',
   headerWhatsappMessage:
     'Olá! Gostaria de falar sobre a criação de um site profissional para o meu negócio.',
   portfolioWhatsappMessage:
     'Olá! Vi os projetos da ēloSites e quero um site com esse padrão e SEO técnico para o meu negócio.',
   landingPageWhatsappMessage:
-    'Olá! Tenho interesse em uma Landing Page de alta conversão para o meu negócio com entrega rápida.',
+    'Olá! Tenho interesse em uma Landing Page de alta conversão para o meu negócio com código otimizado.',
   siteInstitucionalWhatsappMessage:
     'Olá! Tenho interesse em um site institucional completo com SEO técnico para a minha empresa.',
   personalizadoWhatsappMessage:
@@ -249,7 +248,6 @@ export function formatBriefingWhatsappMessage(data: ProjectBriefData): string {
     `*🏢 Negócio:* ${data.businessName.trim()}`,
     `*🏷️ Segmento:* ${data.segment}`,
     `*💻 Tipo de Projeto:* ${data.projectType}`,
-    `*⏱️ Prazo Desejado:* ${data.timeline}`,
     `*📱 WhatsApp do Cliente:* ${data.whatsappContact.trim()}`,
     data.description.trim() ? `*📝 Detalhes e Objetivos:*\n${data.description.trim()}` : '',
     ``,

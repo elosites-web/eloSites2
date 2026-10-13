@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'motion/react';
 import { EloLogo } from './EloLogo';
 import { WhatsAppIcon } from './WhatsAppIcon';
 import { ScreenId, SCREENS, SITE_CONFIG, whatsappUrl } from '../types';
@@ -132,11 +133,18 @@ export const Header: React.FC<HeaderProps> = ({
                 <EloLogo size="md" />
               </button>
 
-              {/* Indicador sutil da tela ativa atual */}
+              {/* Indicador sutil da tela ativa atual com layoutId contínuo */}
               <div className="hidden lg:flex items-center pl-3 border-l border-white/[0.08]">
-                <span className="text-xs font-semibold text-slate-300">
-                  {currentMeta.shortTitle}
-                </span>
+                <motion.div
+                  layoutId="shared-active-screen-header-pill"
+                  transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-indigo-950/60 border border-indigo-500/25"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-xs font-semibold text-slate-200">
+                    {currentMeta.shortTitle}
+                  </span>
+                </motion.div>
               </div>
             </div>
 
@@ -239,6 +247,13 @@ export const Header: React.FC<HeaderProps> = ({
                         : 'bg-slate-950/70 border-white/[0.08] hover:border-indigo-400/50 hover:bg-slate-900/90 hover:shadow-[0_0_20px_rgba(99,102,241,0.2)]'
                     }`}
                   >
+                    {isActive && (
+                      <motion.div
+                        layoutId="modal-active-card-glow"
+                        className="absolute inset-0 rounded-2xl border-2 border-indigo-400/90 shadow-[0_0_24px_rgba(99,102,241,0.45)] pointer-events-none z-10"
+                        transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                      />
+                    )}
                     {/* Topo do card */}
                     <div className="flex items-center justify-between w-full">
                       <div className="flex items-center gap-2">

@@ -4,15 +4,18 @@ import { Persistent3DBackground } from './components/Persistent3DBackground';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { ProcessSection } from './components/ProcessSection';
-import { PortfolioSection } from './components/PortfolioSection';
-import { ServicesSection } from './components/ServicesSection';
-import { DifferentialsSection } from './components/DifferentialsSection';
 import { FaqSection } from './components/FaqSection';
 import { ContactCtaSection } from './components/ContactCtaSection';
-import { ProjectBriefBookingSection } from './components/ProjectBriefBookingSection';
 import { Footer } from './components/Footer';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { LegalModals } from './components/LegalModals';
+import { ReadingProgressBar } from './components/ReadingProgressBar';
+import {
+  DifferentialsSkeleton,
+  PortfolioSkeleton,
+  ServicesSkeleton,
+  BookingSkeleton,
+} from './components/SectionSkeletons';
 import { ScreenId, SCREENS } from './types';
 import {
   ChevronLeft,
@@ -22,6 +25,22 @@ import {
   Layers,
   Sparkles,
 } from 'lucide-react';
+
+// Code-splitting via React.lazy para acelerar a carga inicial da tela Início
+const PortfolioSection = lazy(() =>
+  import('./components/PortfolioSection').then((mod) => ({ default: mod.PortfolioSection }))
+);
+const ServicesSection = lazy(() =>
+  import('./components/ServicesSection').then((mod) => ({ default: mod.ServicesSection }))
+);
+const DifferentialsSection = lazy(() =>
+  import('./components/DifferentialsSection').then((mod) => ({ default: mod.DifferentialsSection }))
+);
+const ProjectBriefBookingSection = lazy(() =>
+  import('./components/ProjectBriefBookingSection').then((mod) => ({
+    default: mod.ProjectBriefBookingSection,
+  }))
+);
 
 // Cena 3D persistente carregada de forma assíncrona
 
@@ -126,10 +145,67 @@ export default function App() {
     return () => window.removeEventListener('keydown', handleKeyNav);
   }, [previousScreen, nextScreen]);
 
+  // Sincronização dinâmica de meta tags OpenGraph, Twitter Cards, Canonical e Title para cada seção/tela
+  useEffect(() => {
+    const meta = SCREENS.find((s) => s.id === currentScreen) || SCREENS[0];
+    const isHome = currentScreen === 'inicio';
+
+    const pageTitle = isHome
+      ? 'ēloSites — Criação de Sites Profissionais com SEO Técnico e Conversão'
+      : `${meta.title} | ēloSites — Sites Profissionais com SEO Técnico`;
+
+    const pageDesc = isHome
+      ? 'Criação de sites profissionais e landing pages com SEO técnico e foco em conversão para pequenos negócios e profissionais liberais. Alta performance e código limpo.'
+      : `${meta.description} Desenvolvimento de sites institucionais e landing pages de alta conversão pela ēloSites.`;
+
+    const canonicalUrl = isHome
+      ? 'https://elosites.ia.br/'
+      : `https://elosites.ia.br/#${currentScreen}`;
+
+    // Atualiza o <title> do documento
+    document.title = pageTitle;
+
+    // Helper para atualizar ou criar meta tag
+    const updateMeta = (selector: string, attrName: 'name' | 'property', attrValue: string, content: string) => {
+      let element = document.querySelector<HTMLMetaElement>(selector);
+      if (!element) {
+        element = document.createElement('meta');
+        element.setAttribute(attrName, attrValue);
+        document.head.appendChild(element);
+      }
+      element.setAttribute('content', content);
+    };
+
+    // Meta Description padrão
+    updateMeta('meta[name="description"]', 'name', 'description', pageDesc);
+
+    // Canonical Tag
+    let canonicalLink = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    if (!canonicalLink) {
+      canonicalLink = document.createElement('link');
+      canonicalLink.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonicalLink);
+    }
+    canonicalLink.setAttribute('href', canonicalUrl);
+
+    // OpenGraph dinâmico
+    updateMeta('meta[property="og:title"]', 'property', 'og:title', pageTitle);
+    updateMeta('meta[property="og:description"]', 'property', 'og:description', pageDesc);
+    updateMeta('meta[property="og:url"]', 'property', 'og:url', canonicalUrl);
+
+    // Twitter Cards dinâmico
+    updateMeta('meta[name="twitter:title"]', 'name', 'twitter:title', pageTitle);
+    updateMeta('meta[name="twitter:description"]', 'name', 'twitter:description', pageDesc);
+    updateMeta('meta[name="twitter:url"]', 'name', 'twitter:url', canonicalUrl);
+  }, [currentScreen]);
+
   const currentMeta = SCREENS[currentIndex] || SCREENS[0];
 
   return (
     <div className={`min-h-screen bg-[#090D16] text-slate-100 flex flex-col selection:bg-indigo-500 selection:text-white relative ${isHighContrast ? 'high-contrast' : ''}`}>
+      {/* Barra de Progresso de Leitura no Topo */}
+      <ReadingProgressBar key={currentScreen} currentScreen={currentScreen} />
+
       {/* Cena 3D Persistente procedural no fundo */}
       <Persistent3DBackground />
 
@@ -144,9 +220,23 @@ export default function App() {
       {/* Barra de Status e Transição da Tela Atual */}
       <div className="pt-20 sm:pt-24 pb-2 px-4 sm:px-8 border-b border-white/[0.04] bg-[#070A12]/90 backdrop-blur-md relative z-20">
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs text-slate-400">
-          {/* Breadcrumb da tela atual */}
+          {/* Breadcrumb da tela atual com layoutId contínuo */}
           <div className="flex items-center gap-2">
-            <span className="text-white font-semibold">{currentMeta.title}</span>
+            <motion.span
+              layoutId="status-bar-active-number"
+              transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+              className="px-2 py-0.5 rounded-md bg-indigo-950/70 border border-indigo-500/30 text-indigo-300 font-mono text-[11px] font-bold"
+            >
+              {currentMeta.number}
+            </motion.span>
+            <motion.span
+              key={`title-${currentScreen}`}
+              layoutId="status-bar-active-title"
+              transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+              className="text-white font-semibold"
+            >
+              {currentMeta.title}
+            </motion.span>
           </div>
 
           {/* Atalhos rápidos de anterior / próximo */}
@@ -190,78 +280,44 @@ export default function App() {
           >
             {/* TELA 01: Início & Apresentação */}
             {currentScreen === 'inicio' && (
-              <div>
-                <Hero
-                  onNavigateToPortfolio={() => navigateToScreen('portfolio')}
-                  onNavigateToServices={() => navigateToScreen('servicos')}
-                />
-
-                {/* Painel de Destaques e Acesso Rápido às outras 7 Telas */}
-                <section className="py-12 sm:py-16 bg-[#080B15]/90 border-t border-white/[0.05]">
-                  <div className="page-shell page-x">
-                    <div className="text-center max-w-2xl mx-auto space-y-2 mb-8">
-                      <span className="text-xs font-mono uppercase bg-indigo-950/80 text-indigo-300 border border-indigo-500/30 px-3 py-1 rounded-full font-semibold">
-                        Arquitetura Multitelas ēloSites
-                      </span>
-                      <h3 className="text-xl sm:text-2xl font-bold font-display text-white">
-                        Explore cada seção em uma tela dedicada
-                      </h3>
-                      <p className="text-xs sm:text-sm text-slate-400">
-                        Sem rolagem infinita confusa: cada tela tem um propósito comercial objetivo.
-                      </p>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-                      {SCREENS.filter((s) => s.id !== 'inicio').map((screen) => (
-                        <button
-                          key={screen.id}
-                          type="button"
-                          onClick={() => navigateToScreen(screen.id)}
-                          className="p-4 rounded-xl border border-white/[0.07] bg-slate-950/60 hover:bg-slate-900/80 hover:border-indigo-400/40 text-left transition-all group flex flex-col justify-between"
-                        >
-                          <div className="flex items-center justify-end text-xs font-mono text-slate-400 mb-2">
-                            <span className="text-indigo-400 group-hover:translate-x-1 transition-transform">
-                              →
-                            </span>
-                          </div>
-                          <div>
-                            <h4 className="text-sm font-bold text-white group-hover:text-indigo-200 transition-colors">
-                              {screen.shortTitle}
-                            </h4>
-                            <p className="text-xs text-slate-400 mt-1 line-clamp-2 leading-relaxed">
-                              {screen.description}
-                            </p>
-                          </div>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </section>
-              </div>
+              <Hero
+                onNavigateToPortfolio={() => navigateToScreen('portfolio')}
+                onNavigateToServices={() => navigateToScreen('servicos')}
+              />
             )}
 
             {/* TELA 02: Portfólio de Projetos Reais */}
             {currentScreen === 'portfolio' && (
-              <PortfolioSection
-                onNavigateToServices={() => navigateToScreen('servicos')}
-                onNavigateToOrcamento={() => navigateToScreen('orcamento')}
-              />
+              <Suspense fallback={<PortfolioSkeleton />}>
+                <PortfolioSection
+                  onNavigateToServices={() => navigateToScreen('servicos')}
+                  onNavigateToOrcamento={() => navigateToScreen('orcamento')}
+                />
+              </Suspense>
             )}
 
             {/* TELA 03: Serviços & Condições Comerciais */}
             {currentScreen === 'servicos' && (
-              <ServicesSection onNavigateToOrcamento={() => navigateToScreen('orcamento')} />
+              <Suspense fallback={<ServicesSkeleton />}>
+                <ServicesSection onNavigateToOrcamento={() => navigateToScreen('orcamento')} />
+              </Suspense>
             )}
 
             {/* TELA 04: Processo em 4 Etapas */}
             {currentScreen === 'processo' && <ProcessSection />}
 
             {/* TELA 05: Diferenciais */}
-            {currentScreen === 'diferenciais' && <DifferentialsSection />}
+            {currentScreen === 'diferenciais' && (
+              <Suspense fallback={<DifferentialsSkeleton />}>
+                <DifferentialsSection onNavigateToPortfolio={() => navigateToScreen('portfolio')} />
+              </Suspense>
+            )}
 
             {/* TELA 06: Briefing & Agendamento */}
             {currentScreen === 'orcamento' && (
-              <ProjectBriefBookingSection onOpenPrivacy={() => setLegalModal('privacy')} />
+              <Suspense fallback={<BookingSkeleton />}>
+                <ProjectBriefBookingSection onOpenPrivacy={() => setLegalModal('privacy')} />
+              </Suspense>
             )}
 
             {/* TELA 07: Perguntas Frequentes (FAQ) */}
@@ -305,14 +361,21 @@ export default function App() {
                   title={`${s.number}. ${s.title}`}
                   aria-label={`Ir para ${s.title}`}
                   aria-current={isSelected ? 'page' : undefined}
-                  className={`flex items-center justify-center transition-all ${
+                  className={`flex items-center justify-center transition-all relative ${
                     isSelected
-                      ? 'px-3 py-1.5 rounded-lg bg-indigo-600 text-white font-bold text-xs shadow-md shadow-indigo-600/40 ring-1 ring-indigo-400'
+                      ? 'px-3 py-1.5 rounded-lg text-white font-bold text-xs'
                       : 'w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-slate-950/80 hover:bg-slate-800 text-slate-400 hover:text-white text-[11px] font-mono border border-white/[0.05]'
                   }`}
                 >
+                  {isSelected && (
+                    <motion.div
+                      layoutId="stepper-active-indicator"
+                      className="absolute inset-0 rounded-lg bg-indigo-600 shadow-md shadow-indigo-600/40 ring-1 ring-indigo-400 -z-0"
+                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    />
+                  )}
                   {isSelected ? (
-                    <span className="flex items-center gap-1.5">
+                    <span className="flex items-center gap-1.5 relative z-10">
                       <span>{s.number}</span>
                       <span className="hidden md:inline font-sans font-semibold">{s.shortTitle}</span>
                     </span>
@@ -343,6 +406,7 @@ export default function App() {
         onOpenPrivacy={() => setLegalModal('privacy')}
         onOpenTerms={() => setLegalModal('terms')}
         onSelectScreen={navigateToScreen}
+        currentScreen={currentScreen}
         isHighContrast={isHighContrast}
         onToggleHighContrast={toggleHighContrast}
       />

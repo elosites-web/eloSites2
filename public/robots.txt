@@ -1,18 +1,8 @@
-# robots.txt para https://www.elosites.ia.br
-# Checklist Básico de Implementação SEO - Item 2
+# robots.txt para https://elosites.ia.br
+# Configurado para permitir a indexação de todo o site e apontar para o sitemap canônico
 
 User-agent: *
 Allow: /
 
-# Bloqueio de pastas administrativas, scripts e resultados internos irrelevantes
-Disallow: /admin/
-Disallow: /admin
-Disallow: /painel/
-Disallow: /api/
-Disallow: /obrigado/
-Disallow: /checkout/
-Disallow: /search
-Disallow: /busca
-
-# Sitemap canônico para o Google Search Console
-Sitemap: https://www.elosites.ia.br/sitemap.xml
+# Aponta para o sitemap canônico para indexação de motores de busca
+Sitemap: https://elosites.ia.br/sitemap.xml

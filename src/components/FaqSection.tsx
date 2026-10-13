@@ -25,7 +25,7 @@ export const FaqSection: React.FC = () => {
       id: 'faq-3',
       question: 'Quanto custa e como é o pagamento?',
       answer:
-        'Cada projeto é diferente, então o valor é definido em um orçamento específico depois de entendermos seu negócio e o que você precisa no site. O pagamento é dividido em duas etapas: 50% para iniciar o projeto e 50% na entrega final. Fale com a gente pelo WhatsApp para receber sua proposta.',
+        'Cada projeto tem seu escopo específico, então o valor é definido em um orçamento sob medida após entendermos seu modelo de negócio e necessidades. Para o pagamento, oferecemos 4 modalidades flexíveis: 1) 50% de entrada no início e 50% na entrega e aprovação final (via PIX); 2) 20% de desconto para pagamento integral à vista no fechamento; 3) Até 5x sem juros no cartão de crédito (1 entrada + 4 parcelas fixas); ou 4) Parcelamento estendido de 6x até 12x no cartão de crédito (com repasse das taxas de juros da operadora). Fale com a gente pelo WhatsApp para receber sua proposta detalhada.',
     },
     {
       id: 'faq-4',

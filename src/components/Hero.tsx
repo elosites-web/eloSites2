@@ -3,7 +3,6 @@ import { WhatsAppIcon } from './WhatsAppIcon';
 import { SITE_CONFIG } from '../types';
 import { ArrowDown, CheckCircle2, Code2, Smartphone } from 'lucide-react';
 import { Interactive3DCard } from './Interactive3DCard';
-import { FlowFrameSequencePlayer } from './FlowFrameSequencePlayer';
 
 interface HeroProps {
   onNavigateToPortfolio?: () => void;
@@ -56,14 +55,14 @@ export const Hero: React.FC<HeroProps> = ({
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-indigo-950/60 border border-indigo-800/50 text-indigo-300 text-xs sm:text-sm font-medium">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               <span>
-                Criação de Sites com <span className="text-[#7f87f6] font-semibold">SEO Técnico</span> & Foco em Conversão
+                Sites com <span className="text-[#a855f7] font-semibold">SEO Técnico</span> & Foco em Conversão
               </span>
             </div>
 
             {/* Headline Principal */}
             <h1 className="font-display text-3.5xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.15]">
-              Criação de sites profissionais com{' '}
-              <span className="text-[#7f87f6] underline decoration-[#7f87f6]/50 underline-offset-8">
+              Criação de sites institucionais e landing pages profissionais sob medida com{' '}
+              <span className="text-[#a855f7] underline decoration-[#a855f7]/50 underline-offset-8">
                 SEO técnico
               </span>{' '}
               e foco em conversão.
@@ -121,12 +120,12 @@ export const Hero: React.FC<HeroProps> = ({
             <div className="pt-2 flex flex-wrap items-center gap-4 text-xs text-slate-400">
               <div className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                <span>Entrega ágil, sem prometer prazo absoluto</span>
+                <span>Arquitetura de alta conversão & código limpo</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-[#7f87f6]" />
+                <CheckCircle2 className="w-4 h-4 text-[#a855f7]" />
                 <span>
-                  <strong className="text-[#7f87f6] font-medium">SEO técnico</strong> e Schema.org inclusos
+                  <strong className="text-[#a855f7] font-medium">SEO técnico</strong> e Schema.org inclusos
                 </span>
               </div>
               <div className="flex items-center gap-1.5">
@@ -137,8 +136,7 @@ export const Hero: React.FC<HeroProps> = ({
           </div>
 
           {/* Coluna Visual: Painel Estrutural do Processo com Interação 3D */}
-          <div className="lg:col-span-5 space-y-6">
-            <FlowFrameSequencePlayer scene="hero" title={SITE_CONFIG.name} />
+          <div className="lg:col-span-5">
             <Interactive3DCard maxTilt={5}>
               <div className="relative rounded-2xl bg-[#0B101D] border border-slate-800 p-1 shadow-2xl shadow-black/60">
                 {/* Barra de título do terminal */}

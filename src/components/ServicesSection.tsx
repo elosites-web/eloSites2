@@ -109,7 +109,7 @@ const SERVICES: ServiceCategory[] = [
       'Suporte direto com o desenvolvedor durante todo o ciclo',
     ],
     scopeNote:
-      'Orçamento específico dimensionado a partir da complexidade técnica e do prazo desejado.',
+      'Orçamento específico dimensionado a partir da complexidade técnica e dos objetivos do seu projeto.',
     excluded: [
       'Domínio próprio registrado em conta de terceiros',
       'Funcionalidades que fujam do escopo técnico aprovado',
@@ -155,7 +155,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
               Formatos sob medida com pagamento flexível
             </h2>
             <p className="text-base sm:text-lg text-slate-300/95 leading-relaxed">
-              Cada projeto recebe um <strong>orçamento personalizado</strong> considerando escopo, seções, conteúdo e prazo. Sem mensalidades surpresa e com opções de parcelamento no cartão ou desconto à vista no PIX.
+              Cada projeto recebe um <strong>orçamento personalizado</strong> considerando escopo, seções e conteúdo necessário. Sem mensalidades surpresa e com opções de parcelamento no cartão ou desconto à vista no PIX.
             </p>
           </div>
 
@@ -260,14 +260,16 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
 
           {/* SEÇÃO DESTACADA: CONDIÇÕES DE PAGAMENTO ATUALIZADAS */}
           <div className="mt-14 sm:mt-20">
-            <div className="max-w-3xl mx-auto text-center space-y-3 mb-10">
-              <span className="text-xs font-mono uppercase bg-emerald-950/80 text-emerald-300 border border-emerald-500/30 px-3 py-1 rounded-full font-semibold">
-                Formas de Pagamento Transparentes
-              </span>
+            <div className="max-w-3xl mx-auto text-center mb-10">
+              <div className="mb-4">
+                <span className="inline-block text-xs font-mono uppercase bg-emerald-950/80 text-emerald-300 border border-emerald-500/30 px-3 py-1 rounded-full font-semibold">
+                  Formas de Pagamento Transparentes
+                </span>
+              </div>
               <h3 className="font-display text-2xl sm:text-3xl font-bold text-white">
                 Como funciona o pagamento na ēloSites
               </h3>
-              <p className="text-sm sm:text-base text-slate-300">
+              <p className="mt-3 text-sm sm:text-base text-slate-300">
                 Você escolhe a melhor modalidade financeira para o momento da sua empresa, com total segurança e clareza contratual.
               </p>
             </div>

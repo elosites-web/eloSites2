@@ -452,7 +452,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
               Gostou do nível dos projetos da ēloSites?
             </h3>
             <p className="text-sm text-slate-300 max-w-xl">
-              Cada projeto recebe um orçamento específico baseado no escopo. 50% de entrada no início + 50% na aprovação final (PIX), ou 20% de desconto à vista.
+              Cada projeto recebe um orçamento específico baseado no escopo. 50% de entrada no início + 50% na aprovação final (PIX), 20% de desconto à vista, até 5x sem juros ou de 6x a 12x no cartão.
             </p>
           </div>
 
