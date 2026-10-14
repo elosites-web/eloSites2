@@ -63,17 +63,16 @@ export const CLIENT_TESTIMONIALS: TestimonialItem[] = [
 
 interface TestimonialsSectionProps {
   onNavigateToServices?: () => void;
-  onNavigateToOrcamento?: () => void;
 }
 
 export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
   onNavigateToServices,
-  onNavigateToOrcamento,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [isPaused, setIsPaused] = useState(false);
   const touchStartXRef = useRef<number | null>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
 
   const testimonials = CLIENT_TESTIMONIALS;
   const current = testimonials[currentIndex];
@@ -93,9 +92,16 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
     setCurrentIndex(index);
   };
 
-  // Suporte a teclado acessível quando em foco
+  // Suporte a teclado acessível apenas quando o foco está dentro do carrossel.
+  // O listener fica no próprio carrossel e interrompe a propagação para que o
+  // atalho global de setas (navegação entre telas) não também dispare.
   useEffect(() => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+
       const activeElement = document.activeElement;
       const isInput =
         activeElement?.tagName === 'INPUT' ||
@@ -105,14 +111,16 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
       if (isInput) return;
 
       if (e.key === 'ArrowLeft') {
+        e.stopPropagation();
         handlePrev();
       } else if (e.key === 'ArrowRight') {
+        e.stopPropagation();
         handleNext();
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    carousel.addEventListener('keydown', handleKeyDown);
+    return () => carousel.removeEventListener('keydown', handleKeyDown);
   }, [currentIndex]);
 
   // Rotação suave do carrossel (pausada ao passar o mouse ou focar)
@@ -207,6 +215,8 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
 
         {/* Carrossel de Testemunhos */}
         <div
+          ref={carouselRef}
+          data-testimonials-carousel
           className="relative max-w-4xl mx-auto"
           role="region"
           aria-roledescription="carousel"
