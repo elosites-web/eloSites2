@@ -1,7 +1,8 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Persistent3DBackground } from './components/Persistent3DBackground';
-import { AmbientLoopVideo } from './components/AmbientLoopVideo';
+import { AnimatedBackdrop } from './components/AnimatedBackdrop';
+import { SectionErrorBoundary } from './components/SectionErrorBoundary';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { ProcessSection } from './components/ProcessSection';
@@ -50,7 +51,6 @@ const ProjectBriefBookingSection = lazy(() =>
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<ScreenId>('inicio');
-  const [slideDirection, setSlideDirection] = useState<number>(1);
   const [legalModal, setLegalModal] = useState<'privacy' | 'terms' | null>(null);
 
   // Modo de alto contraste para acessibilidade
@@ -89,12 +89,7 @@ export default function App() {
       const rawHash = window.location.hash.replace('#', '');
       if (validIds.includes(rawHash as ScreenId)) {
         const screen = rawHash as ScreenId;
-        setCurrentScreen((prev) => {
-          const prevIdx = SCREENS.findIndex((s) => s.id === prev);
-          const newIdx = SCREENS.findIndex((s) => s.id === screen);
-          setSlideDirection(newIdx >= prevIdx ? 1 : -1);
-          return screen;
-        });
+        setCurrentScreen(screen);
       } else if (rawHash === 'testemunhos' || rawHash === 'depoimentos' || rawHash === 'social-proof') {
         setCurrentScreen('portfolio');
         setTimeout(() => {
@@ -111,11 +106,8 @@ export default function App() {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
-  // Ao trocar de tela, calcula a direção lateral (slide-in), atualiza o hash e rola para o topo
+  // Ao trocar de tela, atualiza o hash e rola para o topo
   const navigateToScreen = (screenId: ScreenId) => {
-    const currentIdx = SCREENS.findIndex((s) => s.id === currentScreen);
-    const targetIdx = SCREENS.findIndex((s) => s.id === screenId);
-    setSlideDirection(targetIdx >= currentIdx ? 1 : -1);
     setCurrentScreen(screenId);
     window.location.hash = screenId;
     window.scrollTo({ top: 0, behavior: 'instant' });
@@ -140,10 +132,22 @@ export default function App() {
   // Suporte a navegação por setas do teclado (Esquerda e Direita)
   useEffect(() => {
     const handleKeyNav = (e: KeyboardEvent) => {
-      const targetTag = (e.target as HTMLElement)?.tagName?.toLowerCase();
-      if (targetTag === 'input' || targetTag === 'textarea' || targetTag === 'select') {
-        return;
+      // Atalhos com modificadores pertencem ao navegador (ex.: Alt+Seta = voltar)
+      if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+
+      const target = e.target as HTMLElement | null;
+      if (target) {
+        const targetTag = target.tagName?.toLowerCase();
+        if (targetTag === 'input' || targetTag === 'textarea' || targetTag === 'select') {
+          return;
+        }
+        if (target.isContentEditable) return;
+        // O carrossel de depoimentos trata as setas por conta própria
+        if (target.closest('[data-testimonials-carousel]')) return;
       }
+
+      // Não navegar quando um modal/diálogo (legal ou menu) está aberto
+      if (document.querySelector('[role="dialog"][aria-modal="true"]')) return;
 
       if (e.key === 'ArrowLeft' && previousScreen) {
         handlePrevious();
@@ -214,11 +218,24 @@ export default function App() {
 
   return (
     <div className={`min-h-screen bg-[#090D16] text-slate-100 flex flex-col selection:bg-indigo-500 selection:text-white relative ${isHighContrast ? 'high-contrast' : ''}`}>
+      {/* Link de pular para o conteúdo (primeiro elemento focável) */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-indigo-600 focus:text-white focus:text-sm focus:font-semibold focus:shadow-lg"
+      >
+        Pular para o conteúdo
+      </a>
+
+      {/* Região viva: anuncia a tela atual para leitores de tela */}
+      <div className="sr-only" role="status" aria-live="polite">
+        {`Tela ${currentMeta.number}: ${currentMeta.title}`}
+      </div>
+
       {/* Barra de Progresso de Leitura no Topo */}
       <ReadingProgressBar key={currentScreen} currentScreen={currentScreen} />
 
-      {/* Background animado idêntico à Tela 4 em movimento constante de 1 a 8 */}
-      <AmbientLoopVideo videoKey="hands-viewing" isFixed />
+      {/* Fundo animado leve em CSS puro (substitui o vídeo global) */}
+      <AnimatedBackdrop />
 
       {/* Cena 3D Persistente procedural no fundo */}
       <Persistent3DBackground />
@@ -281,7 +298,7 @@ export default function App() {
       </div>
 
       {/* Conteúdo Principal — Exibição Estratégica da Tela Ativa com Transição Fade-in-up Fluida */}
-      <main className="flex-1 relative z-10 overflow-x-hidden" id="main-content">
+      <main className="flex-1 relative z-10 overflow-x-hidden" id="main-content" tabIndex={-1}>
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={currentScreen}
@@ -307,23 +324,26 @@ export default function App() {
 
               {/* TELA 02: Portfólio de Projetos Reais & Depoimentos (Social Proof) */}
               {currentScreen === 'portfolio' && (
-                <Suspense fallback={<PortfolioSkeleton />}>
-                  <PortfolioSection
-                    onNavigateToServices={() => navigateToScreen('servicos')}
-                    onNavigateToOrcamento={() => navigateToScreen('orcamento')}
-                  />
-                  <TestimonialsSection
-                    onNavigateToServices={() => navigateToScreen('servicos')}
-                    onNavigateToOrcamento={() => navigateToScreen('orcamento')}
-                  />
-                </Suspense>
+                <SectionErrorBoundary>
+                  <Suspense fallback={<PortfolioSkeleton />}>
+                    <PortfolioSection
+                      onNavigateToServices={() => navigateToScreen('servicos')}
+                      onNavigateToOrcamento={() => navigateToScreen('orcamento')}
+                    />
+                    <TestimonialsSection
+                      onNavigateToServices={() => navigateToScreen('servicos')}
+                    />
+                  </Suspense>
+                </SectionErrorBoundary>
               )}
 
               {/* TELA 03: Serviços & Condições Comerciais */}
               {currentScreen === 'servicos' && (
-                <Suspense fallback={<ServicesSkeleton />}>
-                  <ServicesSection onNavigateToOrcamento={() => navigateToScreen('orcamento')} />
-                </Suspense>
+                <SectionErrorBoundary>
+                  <Suspense fallback={<ServicesSkeleton />}>
+                    <ServicesSection onNavigateToOrcamento={() => navigateToScreen('orcamento')} />
+                  </Suspense>
+                </SectionErrorBoundary>
               )}
 
               {/* TELA 04: Processo em 4 Etapas */}
@@ -331,16 +351,20 @@ export default function App() {
 
               {/* TELA 05: Diferenciais */}
               {currentScreen === 'diferenciais' && (
-                <Suspense fallback={<DifferentialsSkeleton />}>
-                  <DifferentialsSection onNavigateToPortfolio={() => navigateToScreen('portfolio')} />
-                </Suspense>
+                <SectionErrorBoundary>
+                  <Suspense fallback={<DifferentialsSkeleton />}>
+                    <DifferentialsSection onNavigateToPortfolio={() => navigateToScreen('portfolio')} />
+                  </Suspense>
+                </SectionErrorBoundary>
               )}
 
               {/* TELA 06: Briefing & Agendamento */}
               {currentScreen === 'orcamento' && (
-                <Suspense fallback={<BookingSkeleton />}>
-                  <ProjectBriefBookingSection onOpenPrivacy={() => setLegalModal('privacy')} />
-                </Suspense>
+                <SectionErrorBoundary>
+                  <Suspense fallback={<BookingSkeleton />}>
+                    <ProjectBriefBookingSection onOpenPrivacy={() => setLegalModal('privacy')} />
+                  </Suspense>
+                </SectionErrorBoundary>
               )}
 
               {/* TELA 07: Perguntas Frequentes (FAQ) */}

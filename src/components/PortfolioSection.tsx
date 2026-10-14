@@ -489,7 +489,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
           role="dialog"
           aria-modal="true"
           aria-label={zoomModal.title}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8 bg-black/90 backdrop-blur-md animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8 bg-black/90 animate-in fade-in duration-200"
           onClick={() => setZoomModal(null)}
         >
           <div
