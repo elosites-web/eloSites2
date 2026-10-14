@@ -4,7 +4,7 @@ import { WhatsAppIcon } from './WhatsAppIcon';
 import { SITE_CONFIG, whatsappUrl } from '../types';
 import { X } from 'lucide-react';
 
-// Função para verificar se está dentro do horário comercial do schema (Segunda a Sexta, 09:00 - 18:00)
+// Função para verificar se está dentro do horário comercial (Segunda a Sexta, 09:00 - 18:00)
 const isWithinBusinessHours = (): boolean => {
   const now = new Date();
   const day = now.getDay(); // 0 = Domingo, 1 = Segunda, ..., 5 = Sexta, 6 = Sábado
