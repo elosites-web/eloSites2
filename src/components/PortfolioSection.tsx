@@ -166,40 +166,40 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onOpenZoom, onNaviga
               type="button"
               onClick={() => setViewMode('composite')}
               aria-label="Ver mockup composto sobreposto"
-              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-all ${
+              className={`flex items-center justify-center text-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-all ${
                 viewMode === 'composite'
                   ? 'bg-indigo-600 text-white font-semibold shadow-sm'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
               <Layers className="w-3.5 h-3.5" />
-              <span className="hidden xs:inline">Composto</span>
+              <span className="hidden xs:inline text-center">Composto</span>
             </button>
             <button
               type="button"
               onClick={() => setViewMode('desktop')}
               aria-label="Ver imagem desktop"
-              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-all ${
+              className={`flex items-center justify-center text-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-all ${
                 viewMode === 'desktop'
                   ? 'bg-indigo-600 text-white font-semibold shadow-sm'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
               <Monitor className="w-3.5 h-3.5" />
-              <span>Desktop</span>
+              <span className="text-center">Desktop</span>
             </button>
             <button
               type="button"
               onClick={() => setViewMode('mobile')}
               aria-label="Ver imagem mobile"
-              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-all ${
+              className={`flex items-center justify-center text-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-all ${
                 viewMode === 'mobile'
                   ? 'bg-indigo-600 text-white font-semibold shadow-sm'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
               <Smartphone className="w-3.5 h-3.5" />
-              <span>Mobile</span>
+              <span className="text-center">Mobile</span>
             </button>
           </div>
 
@@ -330,7 +330,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onOpenZoom, onNaviga
             href={project.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-indigo-300 hover:text-white transition-colors"
+            className="inline-flex items-center justify-center text-center gap-1.5 text-xs sm:text-sm font-semibold text-indigo-300 hover:text-white transition-colors"
           >
             <span>Visitar site publicado</span>
             <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
@@ -340,10 +340,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onOpenZoom, onNaviga
             href={whatsappUrl(`Olá! Vi o projeto ${project.title} da ēloSites e gostaria de solicitar um orçamento similar para meu negócio.`)}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-[#25D366] hover:bg-[#20bd5a] text-white border border-emerald-400/40 shadow-md shadow-emerald-950/40 hover:shadow-[0_0_20px_rgba(37,211,102,0.6)] active:shadow-[0_0_28px_rgba(37,211,102,0.8)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
+            className="inline-flex items-center justify-center text-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-[#25D366] hover:bg-[#20bd5a] text-white border border-emerald-400/40 shadow-md shadow-emerald-950/40 hover:shadow-[0_0_20px_rgba(37,211,102,0.6)] active:shadow-[0_0_28px_rgba(37,211,102,0.8)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
           >
             <WhatsAppIcon className="w-3.5 h-3.5 text-white" />
-            <span className="text-white drop-shadow-sm">Quero igual</span>
+            <span className="text-white drop-shadow-sm text-center">Quero igual</span>
           </a>
         </div>
       </div>
@@ -399,7 +399,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
               <button
                 type="button"
                 onClick={() => setFilter('all')}
-                className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+                className={`inline-flex items-center justify-center text-center px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
                   filter === 'all'
                     ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
                     : 'bg-slate-900/80 text-slate-400 hover:text-white border border-white/[0.06]'
@@ -410,7 +410,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
               <button
                 type="button"
                 onClick={() => setFilter('landing')}
-                className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+                className={`inline-flex items-center justify-center text-center px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
                   filter === 'landing'
                     ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
                     : 'bg-slate-900/80 text-slate-400 hover:text-white border border-white/[0.06]'
@@ -421,7 +421,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
               <button
                 type="button"
                 onClick={() => setFilter('institutional')}
-                className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+                className={`inline-flex items-center justify-center text-center px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
                   filter === 'institutional'
                     ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
                     : 'bg-slate-900/80 text-slate-400 hover:text-white border border-white/[0.06]'
@@ -461,9 +461,9 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
               <button
                 type="button"
                 onClick={onNavigateToServices}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold text-slate-200 bg-slate-800/80 hover:bg-slate-700/80 border border-white/[0.08] transition-all"
+                className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold text-slate-200 bg-slate-800/80 hover:bg-slate-700/80 border border-white/[0.08] transition-all"
               >
-                <span>Ver Formatos & Condições</span>
+                <span className="text-center">Ver Formatos & Condições</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             )}
@@ -472,10 +472,10 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
               href={whatsappInquiryUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="cta-primary w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3 rounded-xl text-sm font-semibold text-white transition-all shadow-lg shadow-indigo-600/30"
+              className="cta-primary w-full sm:w-auto inline-flex items-center justify-center text-center gap-2.5 px-6 py-3 rounded-xl text-sm font-semibold text-white transition-all shadow-lg shadow-indigo-600/30"
             >
               <WhatsAppIcon className="w-4 h-4 text-emerald-300" />
-              <span>Solicitar Orçamento</span>
+              <span className="text-center">Solicitar Orçamento</span>
             </a>
           </div>
         </div>

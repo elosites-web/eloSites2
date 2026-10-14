@@ -75,20 +75,19 @@ export const FloatingWhatsApp: React.FC = () => {
       aria-label="Atendimento rápido via WhatsApp"
       className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end pointer-events-none select-none"
     >
-      {/* Tooltip / Popup Convidativo Centralizado com animação acentuada fade-in-up via Framer Motion */}
+      {/* Tooltip / Popup Convidativo Centralizado com animação fade-in-up orgânica com aceleração inicial via Framer Motion */}
       <AnimatePresence>
         {showTooltip && (
           <motion.div
             key="whatsapp-popup-tooltip"
             id="whatsapp-popup-tooltip"
-            initial={{ opacity: 0, y: 36, scale: 0.92 }}
+            initial={{ opacity: 0, y: 32, scale: 0.94 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.94, transition: { duration: 0.25, ease: 'easeOut' } }}
+            exit={{ opacity: 0, y: 16, scale: 0.96, transition: { duration: 0.22, ease: 'easeOut' } }}
             transition={{
-              duration: 0.48,
-              ease: [0.34, 1.25, 0.45, 1],
-              opacity: { duration: 0.4, ease: [0.4, 0, 0.2, 1] },
-              y: { duration: 0.48, ease: [0.34, 1.25, 0.45, 1] },
+              opacity: { duration: 0.42, ease: [0.3, 0, 0.2, 1] },
+              y: { duration: 0.52, ease: [0.22, 1.15, 0.36, 1] },
+              scale: { duration: 0.48, ease: [0.22, 1.08, 0.36, 1] },
             }}
             className="mb-3 w-[min(265px,calc(100vw-2rem))] bg-slate-900/95 border border-indigo-500/30 text-white rounded-2xl p-3.5 sm:p-4 shadow-2xl shadow-black/80 backdrop-blur-md pointer-events-auto relative origin-bottom-right z-50"
           >

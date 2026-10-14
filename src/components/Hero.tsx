@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'motion/react';
 import { WhatsAppIcon } from './WhatsAppIcon';
 import { SITE_CONFIG } from '../types';
 import { ArrowDown, CheckCircle2, Code2, Smartphone } from 'lucide-react';
@@ -50,7 +51,12 @@ export const Hero: React.FC<HeroProps> = ({
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           {/* Coluna de Conteúdo Principal */}
-          <div className="lg:col-span-7 text-left space-y-6 sm:space-y-8">
+          <motion.div
+            initial={{ opacity: 0, y: 22 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:col-span-7 text-left space-y-6 sm:space-y-8"
+          >
             {/* Tag de Posicionamento */}
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-indigo-950/60 border border-indigo-800/50 text-indigo-300 text-xs sm:text-sm font-medium">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
@@ -99,19 +105,19 @@ export const Hero: React.FC<HeroProps> = ({
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="cta-primary inline-flex items-center justify-center gap-3 px-6 py-4 rounded-xl text-base font-semibold text-white transition-all duration-200 shadow-lg shadow-indigo-600/30 border border-indigo-400/30 active:scale-[0.98] group bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500"
+                className="cta-primary inline-flex items-center justify-center text-center gap-3 px-6 py-4 rounded-xl text-base font-semibold text-white transition-all duration-200 shadow-lg shadow-indigo-600/30 border border-indigo-400/30 active:scale-[0.98] group bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500"
               >
                 <WhatsAppIcon className="w-5 h-5 text-emerald-300 group-hover:scale-110 transition-transform" />
-                <span>Solicitar Orçamento no WhatsApp</span>
+                <span className="text-center">Solicitar Orçamento no WhatsApp</span>
               </a>
 
               <a
                 id="hero-cta-portfolio"
                 href="#portfolio"
                 onClick={handleScrollToPortfolio}
-                className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl text-base font-semibold bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 text-slate-200 hover:text-white transition-colors"
+                className="inline-flex items-center justify-center text-center gap-2 px-6 py-4 rounded-xl text-base font-semibold bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 text-slate-200 hover:text-white transition-colors"
               >
-                <span>Ver Modelos no Ar</span>
+                <span className="text-center">Ver Modelos no Ar</span>
                 <ArrowDown className="w-4 h-4 text-indigo-400" />
               </a>
             </div>
@@ -133,10 +139,15 @@ export const Hero: React.FC<HeroProps> = ({
                 <span>Design exclusivo sem templates genéricos</span>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Coluna Visual: Painel Estrutural do Processo com Interação 3D */}
-          <div className="lg:col-span-5">
+          <motion.div
+            initial={{ opacity: 0, y: 26 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.54, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:col-span-5"
+          >
             <Interactive3DCard maxTilt={5}>
               <div className="relative rounded-2xl bg-[#0B101D] border border-slate-800 p-1 shadow-2xl shadow-black/60">
                 {/* Barra de título do terminal */}
@@ -223,7 +234,7 @@ export const Hero: React.FC<HeroProps> = ({
                   </div>
               </div>
             </Interactive3DCard>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

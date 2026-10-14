@@ -247,10 +247,10 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                       href={ctaUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="cta-primary w-full inline-flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl text-sm font-semibold text-white transition-all shadow-lg shadow-indigo-600/25 min-h-12"
+                      className="cta-primary w-full inline-flex items-center justify-center text-center gap-2 py-3.5 px-4 rounded-xl text-sm font-semibold text-white transition-all shadow-lg shadow-indigo-600/25 min-h-12"
                     >
                       <WhatsAppIcon className="w-4 h-4 text-emerald-300" />
-                      <span>{service.ctaLabel}</span>
+                      <span className="text-center">{service.ctaLabel}</span>
                     </a>
                   </div>
                 </article>
@@ -445,14 +445,14 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                   * Valores calculados para fins de demonstração. Cada proposta oficial detalha prazos e entregáveis específicos.
                 </p>
 
-                <div className="flex items-center gap-3 w-full sm:w-auto">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
                   {onNavigateToOrcamento && (
                     <button
                       type="button"
                       onClick={onNavigateToOrcamento}
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 border border-indigo-400/40 shadow-lg shadow-indigo-500/25 transition-all"
+                      className="w-full sm:w-auto min-h-12 sm:min-h-0 inline-flex items-center justify-center text-center gap-2 px-5 py-3 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 border border-indigo-400/40 shadow-lg shadow-indigo-500/25 transition-all duration-200 hover:scale-105 focus:scale-105 hover:ring-2 hover:ring-indigo-500/50 focus:ring-2 focus:ring-indigo-500/50 focus:outline-none cursor-pointer"
                     >
-                      <span>Montar Briefing</span>
+                      <span className="text-center">Montar Briefing</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                   )}
@@ -462,10 +462,10 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                     )}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-400/30 transition-all shadow-lg shadow-emerald-950/40"
+                    className="w-full sm:w-auto min-h-12 sm:min-h-0 inline-flex items-center justify-center text-center gap-2 px-5 py-3 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-400/30 transition-all duration-200 hover:scale-105 hover:shadow-lg focus:scale-105 focus:outline-none shadow-md shadow-emerald-950/40"
                   >
                     <WhatsAppIcon className="w-4 h-4 text-white" />
-                    <span>Pedir Proposta com Esta Condição</span>
+                    <span className="text-center">Pedir Proposta com Esta Condição</span>
                   </a>
                 </div>
               </div>

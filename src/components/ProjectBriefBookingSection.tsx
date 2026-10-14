@@ -222,7 +222,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
             <button
               type="button"
               onClick={() => setActiveTab('briefing')}
-              className={`relative z-10 py-3 px-4 rounded-xl text-xs sm:text-sm font-semibold transition-colors duration-160 flex items-center justify-center gap-2 pressable ${
+              className={`relative z-10 py-3 px-4 rounded-xl text-xs sm:text-sm font-semibold transition-colors duration-160 flex items-center justify-center text-center gap-2 pressable ${
                 activeTab === 'briefing' ? 'text-white' : 'text-slate-400 hover:text-slate-200'
               }`}
             >
@@ -234,13 +234,13 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                 />
               )}
               <FileText className="w-4 h-4 shrink-0" />
-              <span className="whitespace-nowrap">1. Descrever Projeto</span>
+              <span className="whitespace-nowrap text-center">1. Descrever Projeto</span>
             </button>
 
             <button
               type="button"
               onClick={() => setActiveTab('booking')}
-              className={`relative z-10 py-3 px-4 rounded-xl text-xs sm:text-sm font-semibold transition-colors duration-160 flex items-center justify-center gap-2 pressable ${
+              className={`relative z-10 py-3 px-4 rounded-xl text-xs sm:text-sm font-semibold transition-colors duration-160 flex items-center justify-center text-center gap-2 pressable ${
                 activeTab === 'booking' ? 'text-white' : 'text-slate-400 hover:text-slate-200'
               }`}
             >
@@ -252,7 +252,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                 />
               )}
               <Calendar className="w-4 h-4 shrink-0" />
-              <span className="whitespace-nowrap">2. Reunião 30 min</span>
+              <span className="whitespace-nowrap text-center">2. Reunião 30 min</span>
             </button>
           </div>
 
@@ -442,23 +442,23 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                     <div className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                       <button
                         type="submit"
-                        className="cta-primary inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-xl text-sm sm:text-base font-semibold text-white pressable min-h-12 flex-1"
+                        className="cta-primary inline-flex items-center justify-center text-center gap-2.5 px-6 py-4 rounded-xl text-sm sm:text-base font-semibold text-white pressable min-h-12 flex-1"
                       >
                         <WhatsAppIcon className="w-5 h-5 shrink-0" />
-                        <span>Enviar Briefing pelo WhatsApp</span>
+                        <span className="text-center">Enviar Briefing pelo WhatsApp</span>
                       </button>
 
                       <button
                         type="button"
                         onClick={handleCopyBriefing}
-                        className="cta-secondary inline-flex items-center justify-center gap-2 px-5 py-4 rounded-xl text-sm font-semibold border border-slate-700/80 text-slate-200 hover:text-white pressable min-h-12"
+                        className="cta-secondary inline-flex items-center justify-center text-center gap-2 px-5 py-4 rounded-xl text-sm font-semibold border border-slate-700/80 text-slate-200 hover:text-white pressable min-h-12"
                       >
                         {copied ? (
                           <Check className="w-4 h-4 text-emerald-400" />
                         ) : (
                           <Copy className="w-4 h-4 text-indigo-400" />
                         )}
-                        <span>{copied ? 'Copiado!' : 'Copiar Resumo'}</span>
+                        <span className="text-center">{copied ? 'Copiado!' : 'Copiar Resumo'}</span>
                       </button>
                     </div>
                   </form>
@@ -679,29 +679,29 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                     <div className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                       <button
                         type="submit"
-                        className="cta-primary inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-xl text-sm sm:text-base font-semibold text-white pressable min-h-12 flex-1"
+                        className="cta-primary inline-flex items-center justify-center text-center gap-2.5 px-6 py-4 rounded-xl text-sm sm:text-base font-semibold text-white pressable min-h-12 flex-1"
                       >
                         <WhatsAppIcon className="w-5 h-5 shrink-0" />
-                        <span>Confirmar Agendamento no WhatsApp</span>
+                        <span className="text-center">Confirmar Agendamento no WhatsApp</span>
                       </button>
 
                       <button
                         type="button"
                         onClick={handleOpenGoogleCalendar}
-                        className="cta-secondary inline-flex items-center justify-center gap-2 px-4 py-4 rounded-xl text-xs sm:text-sm font-semibold border border-slate-700/80 text-slate-200 hover:text-white pressable min-h-12"
+                        className="cta-secondary inline-flex items-center justify-center text-center gap-2 px-4 py-4 rounded-xl text-xs sm:text-sm font-semibold border border-slate-700/80 text-slate-200 hover:text-white pressable min-h-12"
                       >
                         <CalendarPlus className="w-4 h-4 text-indigo-400" />
-                        <span>Salvar no Google Agenda</span>
+                        <span className="text-center">Salvar no Google Agenda</span>
                       </button>
 
                       <button
                         type="button"
                         onClick={handleDownloadIcs}
-                        className="cta-secondary inline-flex items-center justify-center gap-2 px-4 py-4 rounded-xl text-xs sm:text-sm font-semibold border border-slate-700/80 text-slate-200 hover:text-white pressable min-h-12"
+                        className="cta-secondary inline-flex items-center justify-center text-center gap-2 px-4 py-4 rounded-xl text-xs sm:text-sm font-semibold border border-slate-700/80 text-slate-200 hover:text-white pressable min-h-12"
                         title="Baixar arquivo .ics para Apple Calendar ou Outlook"
                       >
                         <Download className="w-4 h-4 text-slate-400" />
-                        <span>Baixar .ics</span>
+                        <span className="text-center">Baixar .ics</span>
                       </button>
                     </div>
                   </form>

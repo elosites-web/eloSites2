@@ -51,20 +51,20 @@ export const Footer: React.FC<FooterProps> = ({
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-3.5 py-2 rounded-lg bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-300/40 text-white shadow-lg shadow-emerald-950/40 hover:shadow-[0_0_22px_rgba(37,211,102,0.65)] active:shadow-[0_0_30px_rgba(37,211,102,0.85)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 text-xs font-semibold tracking-wide"
+                className="inline-flex items-center justify-center text-center gap-2 px-3.5 py-2 rounded-lg bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-300/40 text-white shadow-lg shadow-emerald-950/40 hover:shadow-[0_0_22px_rgba(37,211,102,0.65)] active:shadow-[0_0_30px_rgba(37,211,102,0.85)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 text-xs font-semibold tracking-wide"
               >
                 <WhatsAppIcon className="w-4 h-4 text-white" />
-                <span className="text-white drop-shadow-sm">WhatsApp</span>
+                <span className="text-white drop-shadow-sm text-center">Falar no Whatsapp</span>
               </a>
 
               {SITE_CONFIG.email && (
                 <a
                   id="footer-email-link"
                   href={`mailto:${SITE_CONFIG.email}`}
-                  className="inline-flex items-center justify-center gap-2 px-3.5 py-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-indigo-500/50 hover:shadow-[0_0_15px_rgba(99,102,241,0.35)] transition-all text-xs font-medium"
+                  className="inline-flex items-center justify-center text-center gap-2 px-3.5 py-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-indigo-500/50 hover:shadow-[0_0_15px_rgba(99,102,241,0.35)] transition-all text-xs font-medium"
                 >
                   <Mail className="w-4 h-4 text-indigo-400" />
-                  <span>{SITE_CONFIG.email}</span>
+                  <span className="text-center">{SITE_CONFIG.email}</span>
                 </a>
               )}
             </div>
@@ -161,10 +161,10 @@ export const Footer: React.FC<FooterProps> = ({
           <button
             type="button"
             onClick={scrollToTop}
-            className="inline-flex items-center gap-1.5 text-slate-400 hover:text-white transition-colors"
+            className="inline-flex items-center justify-center text-center gap-1.5 text-slate-400 hover:text-white transition-colors"
             aria-label="Voltar ao início da página"
           >
-            <span>Voltar ao topo</span>
+            <span className="text-center">Voltar ao topo</span>
             <ArrowUp className="w-3.5 h-3.5" />
           </button>
         </div>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Persistent3DBackground } from './components/Persistent3DBackground';
 import { Header } from './components/Header';
@@ -29,6 +29,9 @@ import {
 // Code-splitting via React.lazy para acelerar a carga inicial da tela Início
 const PortfolioSection = lazy(() =>
   import('./components/PortfolioSection').then((mod) => ({ default: mod.PortfolioSection }))
+);
+const TestimonialsSection = lazy(() =>
+  import('./components/TestimonialsSection').then((mod) => ({ default: mod.TestimonialsSection }))
 );
 const ServicesSection = lazy(() =>
   import('./components/ServicesSection').then((mod) => ({ default: mod.ServicesSection }))
@@ -82,14 +85,21 @@ export default function App() {
     ];
 
     const handleHashChange = () => {
-      const hash = window.location.hash.replace('#', '') as ScreenId;
-      if (validIds.includes(hash)) {
+      const rawHash = window.location.hash.replace('#', '');
+      if (validIds.includes(rawHash as ScreenId)) {
+        const screen = rawHash as ScreenId;
         setCurrentScreen((prev) => {
           const prevIdx = SCREENS.findIndex((s) => s.id === prev);
-          const newIdx = SCREENS.findIndex((s) => s.id === hash);
+          const newIdx = SCREENS.findIndex((s) => s.id === screen);
           setSlideDirection(newIdx >= prevIdx ? 1 : -1);
-          return hash;
+          return screen;
         });
+      } else if (rawHash === 'testemunhos' || rawHash === 'depoimentos' || rawHash === 'social-proof') {
+        setCurrentScreen('portfolio');
+        setTimeout(() => {
+          const el = document.getElementById('testemunhos');
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }, 150);
       }
     };
 
@@ -245,7 +255,7 @@ export default function App() {
               type="button"
               disabled={!previousScreen}
               onClick={handlePrevious}
-              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-900/90 hover:bg-slate-800 disabled:opacity-30 disabled:pointer-events-none text-slate-300 border border-white/[0.06] transition-all"
+              className="inline-flex items-center justify-center text-center gap-1 px-2.5 py-1 rounded-lg bg-slate-900/90 hover:bg-slate-800 disabled:opacity-30 disabled:pointer-events-none text-slate-300 border border-white/[0.06] transition-all"
               title={previousScreen ? `Ir para ${previousScreen.shortTitle} (Seta Esquerda)` : ''}
             >
               <ChevronLeft className="w-3.5 h-3.5" />
@@ -256,7 +266,7 @@ export default function App() {
               type="button"
               disabled={!nextScreen}
               onClick={handleNext}
-              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-indigo-600/30 hover:bg-indigo-600/40 text-indigo-200 disabled:opacity-30 disabled:pointer-events-none border border-indigo-500/30 transition-all font-medium"
+              className="inline-flex items-center justify-center text-center gap-1 px-2.5 py-1 rounded-lg bg-indigo-600/30 hover:bg-indigo-600/40 text-indigo-200 disabled:opacity-30 disabled:pointer-events-none border border-indigo-500/30 transition-all font-medium"
               title={nextScreen ? `Ir para ${nextScreen.shortTitle} (Seta Direita)` : ''}
             >
               <span className="hidden sm:inline">Próxima: {nextScreen?.shortTitle}</span>
@@ -266,67 +276,77 @@ export default function App() {
         </div>
       </div>
 
-      {/* Conteúdo Principal — Exibição Estratégica da Tela Ativa com Efeito de Slide-in Lateral */}
+      {/* Conteúdo Principal — Exibição Estratégica da Tela Ativa com Transição Fade-in-up Fluida */}
       <main className="flex-1 relative z-10 overflow-x-hidden" id="main-content">
-        <AnimatePresence mode="wait" custom={slideDirection} initial={false}>
+        <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={currentScreen}
-            custom={slideDirection}
-            initial={{ opacity: 0, x: slideDirection * 60 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -slideDirection * 60 }}
-            transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+            initial={{ opacity: 0, y: 28 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -16 }}
+            transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
             className="w-full"
           >
-            {/* TELA 01: Início & Apresentação */}
-            {currentScreen === 'inicio' && (
-              <Hero
-                onNavigateToPortfolio={() => navigateToScreen('portfolio')}
-                onNavigateToServices={() => navigateToScreen('servicos')}
-              />
-            )}
-
-            {/* TELA 02: Portfólio de Projetos Reais */}
-            {currentScreen === 'portfolio' && (
-              <Suspense fallback={<PortfolioSkeleton />}>
-                <PortfolioSection
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.48, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
+              className="w-full"
+            >
+              {/* TELA 01: Início & Apresentação */}
+              {currentScreen === 'inicio' && (
+                <Hero
+                  onNavigateToPortfolio={() => navigateToScreen('portfolio')}
                   onNavigateToServices={() => navigateToScreen('servicos')}
-                  onNavigateToOrcamento={() => navigateToScreen('orcamento')}
                 />
-              </Suspense>
-            )}
+              )}
 
-            {/* TELA 03: Serviços & Condições Comerciais */}
-            {currentScreen === 'servicos' && (
-              <Suspense fallback={<ServicesSkeleton />}>
-                <ServicesSection onNavigateToOrcamento={() => navigateToScreen('orcamento')} />
-              </Suspense>
-            )}
+              {/* TELA 02: Portfólio de Projetos Reais & Depoimentos (Social Proof) */}
+              {currentScreen === 'portfolio' && (
+                <Suspense fallback={<PortfolioSkeleton />}>
+                  <PortfolioSection
+                    onNavigateToServices={() => navigateToScreen('servicos')}
+                    onNavigateToOrcamento={() => navigateToScreen('orcamento')}
+                  />
+                  <TestimonialsSection
+                    onNavigateToServices={() => navigateToScreen('servicos')}
+                    onNavigateToOrcamento={() => navigateToScreen('orcamento')}
+                  />
+                </Suspense>
+              )}
 
-            {/* TELA 04: Processo em 4 Etapas */}
-            {currentScreen === 'processo' && <ProcessSection />}
+              {/* TELA 03: Serviços & Condições Comerciais */}
+              {currentScreen === 'servicos' && (
+                <Suspense fallback={<ServicesSkeleton />}>
+                  <ServicesSection onNavigateToOrcamento={() => navigateToScreen('orcamento')} />
+                </Suspense>
+              )}
 
-            {/* TELA 05: Diferenciais */}
-            {currentScreen === 'diferenciais' && (
-              <Suspense fallback={<DifferentialsSkeleton />}>
-                <DifferentialsSection onNavigateToPortfolio={() => navigateToScreen('portfolio')} />
-              </Suspense>
-            )}
+              {/* TELA 04: Processo em 4 Etapas */}
+              {currentScreen === 'processo' && <ProcessSection />}
 
-            {/* TELA 06: Briefing & Agendamento */}
-            {currentScreen === 'orcamento' && (
-              <Suspense fallback={<BookingSkeleton />}>
-                <ProjectBriefBookingSection onOpenPrivacy={() => setLegalModal('privacy')} />
-              </Suspense>
-            )}
+              {/* TELA 05: Diferenciais */}
+              {currentScreen === 'diferenciais' && (
+                <Suspense fallback={<DifferentialsSkeleton />}>
+                  <DifferentialsSection onNavigateToPortfolio={() => navigateToScreen('portfolio')} />
+                </Suspense>
+              )}
 
-            {/* TELA 07: Perguntas Frequentes (FAQ) */}
-            {currentScreen === 'faq' && <FaqSection />}
+              {/* TELA 06: Briefing & Agendamento */}
+              {currentScreen === 'orcamento' && (
+                <Suspense fallback={<BookingSkeleton />}>
+                  <ProjectBriefBookingSection onOpenPrivacy={() => setLegalModal('privacy')} />
+                </Suspense>
+              )}
 
-            {/* TELA 08: Contato & Atendimento Direto */}
-            {currentScreen === 'contato' && (
-              <ContactCtaSection onNavigateToOrcamento={() => navigateToScreen('orcamento')} />
-            )}
+              {/* TELA 07: Perguntas Frequentes (FAQ) */}
+              {currentScreen === 'faq' && <FaqSection />}
+
+              {/* TELA 08: Contato & Atendimento Direto */}
+              {currentScreen === 'contato' && (
+                <ContactCtaSection onNavigateToOrcamento={() => navigateToScreen('orcamento')} />
+              )}
+            </motion.div>
           </motion.div>
         </AnimatePresence>
       </main>
@@ -342,7 +362,7 @@ export default function App() {
             type="button"
             disabled={!previousScreen}
             onClick={handlePrevious}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 disabled:opacity-30 disabled:pointer-events-none text-slate-300 border border-white/[0.06] transition-all"
+            className="flex items-center justify-center text-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 disabled:opacity-30 disabled:pointer-events-none text-slate-300 border border-white/[0.06] transition-all"
             aria-label={previousScreen ? `Voltar para Tela ${previousScreen.shortTitle}` : 'Sem tela anterior'}
           >
             <ChevronLeft className="w-4 h-4" />
@@ -361,7 +381,7 @@ export default function App() {
                   title={`${s.number}. ${s.title}`}
                   aria-label={`Ir para ${s.title}`}
                   aria-current={isSelected ? 'page' : undefined}
-                  className={`flex items-center justify-center transition-all relative ${
+                  className={`flex items-center justify-center text-center transition-all relative ${
                     isSelected
                       ? 'px-3 py-1.5 rounded-lg text-white font-bold text-xs'
                       : 'w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-slate-950/80 hover:bg-slate-800 text-slate-400 hover:text-white text-[11px] font-mono border border-white/[0.05]'
@@ -375,7 +395,7 @@ export default function App() {
                     />
                   )}
                   {isSelected ? (
-                    <span className="flex items-center gap-1.5 relative z-10">
+                    <span className="flex items-center justify-center text-center gap-1.5 relative z-10">
                       <span>{s.number}</span>
                       <span className="hidden md:inline font-sans font-semibold">{s.shortTitle}</span>
                     </span>
@@ -392,7 +412,7 @@ export default function App() {
             type="button"
             disabled={!nextScreen}
             onClick={handleNext}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 disabled:opacity-30 disabled:pointer-events-none text-white shadow-md shadow-indigo-600/25 transition-all"
+            className="flex items-center justify-center text-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 disabled:opacity-30 disabled:pointer-events-none text-white shadow-md shadow-indigo-600/25 transition-all"
             aria-label={nextScreen ? `Avançar para Tela ${nextScreen.shortTitle}` : 'Última tela'}
           >
             <span className="hidden sm:inline">Próxima</span>

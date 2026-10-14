@@ -299,9 +299,9 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = ({
                         window.location.hash = 'portfolio';
                       }
                     }}
-                    className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600/20 hover:bg-indigo-600/35 text-indigo-200 hover:text-white border border-indigo-500/30 hover:border-indigo-400/60 transition-all font-semibold text-xs sm:text-sm group cursor-pointer shadow-sm hover:shadow-[0_0_15px_rgba(99,102,241,0.35)] shrink-0"
+                    className="inline-flex items-center justify-center text-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600/20 hover:bg-indigo-600/35 text-indigo-200 hover:text-white border border-indigo-500/30 hover:border-indigo-400/60 transition-all font-semibold text-xs sm:text-sm group cursor-pointer shadow-sm hover:shadow-[0_0_15px_rgba(99,102,241,0.35)] shrink-0"
                   >
-                    <span>Ver projeto no portfólio</span>
+                    <span className="text-center">Ver projeto no portfólio</span>
                     <ArrowRight className="w-4 h-4 text-indigo-400 group-hover:translate-x-1 transition-transform" />
                   </button>
                 </div>
@@ -315,10 +315,10 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = ({
                 type="button"
                 onClick={handlePrevTestimonial}
                 aria-label="Depoimento anterior"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-900/90 hover:bg-slate-800 text-white border border-white/[0.08] shadow-lg hover:shadow-[0_0_18px_rgba(99,102,241,0.4)] transition-all cursor-pointer"
+                className="inline-flex items-center justify-center text-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-900/90 hover:bg-slate-800 text-white border border-white/[0.08] shadow-lg hover:shadow-[0_0_18px_rgba(99,102,241,0.4)] transition-all cursor-pointer"
               >
                 <ChevronLeft className="w-4 h-4 text-indigo-400" />
-                <span className="hidden sm:inline">Anterior</span>
+                <span className="hidden sm:inline text-center">Anterior</span>
               </button>
 
               {/* Indicadores de Paginação / Dots */}
@@ -345,9 +345,9 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = ({
                 type="button"
                 onClick={handleNextTestimonial}
                 aria-label="Próximo depoimento"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-900/90 hover:bg-slate-800 text-white border border-white/[0.08] shadow-lg hover:shadow-[0_0_18px_rgba(99,102,241,0.4)] transition-all cursor-pointer"
+                className="inline-flex items-center justify-center text-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-900/90 hover:bg-slate-800 text-white border border-white/[0.08] shadow-lg hover:shadow-[0_0_18px_rgba(99,102,241,0.4)] transition-all cursor-pointer"
               >
-                <span className="hidden sm:inline">Próximo</span>
+                <span className="hidden sm:inline text-center">Próximo</span>
                 <ChevronRight className="w-4 h-4 text-indigo-400" />
               </button>
             </div>

@@ -101,7 +101,7 @@ export const LegalModals: React.FC<LegalModalProps> = ({ isOpen, onClose, type }
           <button
             type="button"
             onClick={onClose}
-            className="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold transition-colors"
+            className="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold transition-colors inline-flex items-center justify-center text-center"
           >
             Entendido
           </button>

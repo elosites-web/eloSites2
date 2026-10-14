@@ -323,7 +323,7 @@ export const Header: React.FC<HeaderProps> = ({
                     onPreviousScreen();
                     setIsMenuOpen(false);
                   }}
-                  className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 disabled:opacity-40 disabled:pointer-events-none text-slate-300 border border-white/[0.07] transition-all"
+                  className="inline-flex items-center justify-center text-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 disabled:opacity-40 disabled:pointer-events-none text-slate-300 border border-white/[0.07] transition-all"
                 >
                   <ArrowLeft className="w-3.5 h-3.5" />
                   <span>Tela Anterior</span>
@@ -336,7 +336,7 @@ export const Header: React.FC<HeaderProps> = ({
                     onNextScreen();
                     setIsMenuOpen(false);
                   }}
-                  className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 disabled:opacity-40 disabled:pointer-events-none text-slate-300 border border-white/[0.07] transition-all"
+                  className="inline-flex items-center justify-center text-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 disabled:opacity-40 disabled:pointer-events-none text-slate-300 border border-white/[0.07] transition-all"
                 >
                   <span>Próxima Tela</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -351,7 +351,7 @@ export const Header: React.FC<HeaderProps> = ({
                   href={headerWhatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white transition-all shadow"
+                  className="inline-flex items-center justify-center text-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white transition-all shadow"
                 >
                   <WhatsAppIcon className="w-3.5 h-3.5 text-white" />
                   <span>Conversar no WhatsApp</span>

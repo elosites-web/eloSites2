@@ -57,6 +57,32 @@ export const FaqSection: React.FC = () => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.08,
+        delayChildren: 0.06,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: {
+      opacity: 0,
+      y: 20,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.45,
+        ease: [0.22, 1, 0.36, 1],
+      },
+    },
+  };
+
   return (
     <section
       id="faq"
@@ -78,14 +104,20 @@ export const FaqSection: React.FC = () => {
           </p>
         </div>
 
-        <div className="space-y-4">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="space-y-4"
+        >
           {faqs.map((faq, index) => {
             const isOpen = openIndex === index;
             const panelId = `faq-content-${index}`;
             const buttonId = `faq-btn-${index}`;
             return (
-              <div
+              <motion.div
                 key={faq.id}
+                variants={itemVariants}
                 className={`rounded-xl overflow-hidden transition-all duration-200 ${
                   isOpen
                     ? 'border border-indigo-400/35 bg-slate-900/85 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]'
@@ -123,21 +155,40 @@ export const FaqSection: React.FC = () => {
                       role="region"
                       aria-labelledby={buttonId}
                       initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.22, ease: [0.23, 1, 0.32, 1] }}
+                      animate={{
+                        opacity: 1,
+                        height: 'auto',
+                        transition: {
+                          height: { duration: 0.28, ease: [0.22, 1, 0.36, 1] },
+                          opacity: { duration: 0.24, delay: 0.04, ease: 'easeOut' },
+                        },
+                      }}
+                      exit={{
+                        opacity: 0,
+                        height: 0,
+                        transition: {
+                          height: { duration: 0.2, ease: [0.32, 0, 0.67, 0] },
+                          opacity: { duration: 0.15 },
+                        },
+                      }}
                       className="overflow-hidden"
                     >
-                      <div className="px-5 pb-5 sm:px-6 sm:pb-6 text-sm sm:text-base text-slate-300/95 leading-relaxed border-t border-white/[0.06] pt-4">
+                      <motion.div
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -4 }}
+                        transition={{ duration: 0.22, ease: 'easeOut' }}
+                        className="px-5 pb-5 sm:px-6 sm:pb-6 text-sm sm:text-base text-slate-300/95 leading-relaxed border-t border-white/[0.06] pt-4"
+                      >
                         {faq.answer}
-                      </div>
+                      </motion.div>
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </div>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
 
         <p className="mt-10 text-center text-sm text-slate-400">
           Outra dúvida sobre o seu negócio?{' '}

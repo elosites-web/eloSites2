@@ -54,6 +54,35 @@ html {
   }
 }
 
+/* Centralização global do texto de todos os botões do site */
+button,
+a[role="button"],
+.cta-primary,
+.cta-secondary,
+a.cta-primary,
+a.cta-secondary,
+button[type="button"],
+button[type="submit"],
+button[type="reset"] {
+  text-align: center !important;
+}
+
+button:not(.text-left):not(.text-right):not([data-align="left"]),
+a[role="button"]:not(.text-left),
+.cta-primary,
+.cta-secondary,
+a.cta-primary,
+a.cta-secondary {
+  justify-content: center;
+  align-items: center;
+}
+
+button > span,
+.cta-primary > span,
+.cta-secondary > span {
+  text-align: center;
+}
+
 /* Botões de CTA Principal - Gradiente MENU com efeito Neon Glow Premium */
 .cta-primary {
   background-image: linear-gradient(to right, #4f46e5, #6366f1, #9333ea) !important;
