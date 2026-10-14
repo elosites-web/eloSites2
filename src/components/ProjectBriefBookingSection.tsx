@@ -194,7 +194,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
   return (
     <section
       id="briefing-agendamento"
-      className="py-24 sm:py-32 bg-[#080C15] relative border-t border-white/[0.06] overflow-x-clip"
+      className="py-24 sm:py-32 bg-[#080C15]/75 backdrop-blur-[1px] relative border-t border-white/[0.06] overflow-x-clip"
     >
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent pointer-events-none" />
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[min(720px,100%)] h-[380px] bg-indigo-600/[0.09] blur-[150px] rounded-full pointer-events-none" />

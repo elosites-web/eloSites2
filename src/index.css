@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-  --font-display: 'Space Grotesk', system-ui, -apple-system, sans-serif;
-  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-display: 'Space Grotesk', system-ui, -apple-system, 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 }
 
 html {
-  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
   color-scheme: dark;
   scroll-behavior: smooth;
 }
@@ -109,6 +109,7 @@ button > span,
 
 /* Botões Verdes WhatsApp - Alta Legibilidade e Efeito Neon Glow Premium */
 a[href*="wa.me"],
+a[href*="whatsapp.com"],
 button[id*="whatsapp"],
 a[id*="whatsapp"] {
   letter-spacing: 0.015em;
@@ -123,6 +124,7 @@ a:hover > svg {
 }
 
 a[href*="wa.me"]:hover > svg,
+a[href*="whatsapp.com"]:hover > svg,
 button[id*="whatsapp"]:hover > svg,
 a[id*="whatsapp"]:hover > svg {
   filter: drop-shadow(0 0 8px rgba(74, 222, 128, 0.85));

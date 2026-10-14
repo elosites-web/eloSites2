@@ -41,14 +41,6 @@ export const DifferentialsSkeleton: React.FC = () => {
           ))}
         </div>
 
-        {/* Skeleton da Seção de Depoimentos */}
-        <div className="mt-24 pt-16 border-t border-white/[0.06]">
-          <div className="max-w-xl mx-auto text-center space-y-3 mb-10">
-            <div className="w-32 h-6 rounded-full bg-slate-800/80 mx-auto" />
-            <div className="w-64 h-8 rounded-xl bg-slate-800 mx-auto" />
-          </div>
-          <div className="max-w-4xl mx-auto rounded-3xl p-8 bg-[#0B101D]/90 border border-white/[0.05] min-h-[300px]" />
-        </div>
       </div>
     </section>
   );

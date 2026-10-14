@@ -1,6 +1,7 @@
 import React from 'react';
-import { AmbientLoopVideo } from './AmbientLoopVideo';
 import { MessageSquare, Layers, Code2, Globe2, UserCheck, ShieldCheck } from 'lucide-react';
+import { WhatsAppIcon } from './WhatsAppIcon';
+import { SITE_CONFIG, whatsappUrl } from '../types';
 
 export const ProcessSection: React.FC = () => {
   const steps = [
@@ -37,10 +38,9 @@ export const ProcessSection: React.FC = () => {
   return (
     <section
       id="como-funciona"
-      className="py-24 sm:py-32 bg-[#090D16] relative border-t border-white/[0.05] overflow-x-clip"
+      className="py-24 sm:py-32 bg-[#090D16]/70 backdrop-blur-[1px] relative border-t border-white/[0.05] overflow-x-clip"
     >
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-indigo-400/25 to-transparent pointer-events-none" />
-      <AmbientLoopVideo videoKey="hands-viewing" />
       <div className="page-shell page-x relative z-10">
         <div className="max-w-3xl mx-auto text-center space-y-5 mb-16 sm:mb-20">
           <div className="section-kicker inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/80 border border-white/[0.07] text-indigo-300 text-xs font-semibold uppercase">
@@ -102,6 +102,20 @@ export const ProcessSection: React.FC = () => {
               o acabamento é uma pessoa — do primeiro rascunho até o site no ar.
             </p>
           </div>
+        </div>
+
+        {/* CTA Contextual do Processo */}
+        <div className="mt-12 flex items-center justify-center">
+          <a
+            id="processo-cta-whatsapp"
+            href={whatsappUrl(SITE_CONFIG.processoWhatsappMessage)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="cta-primary inline-flex items-center justify-center text-center gap-2.5 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl text-sm sm:text-base font-bold text-white shadow-lg shadow-indigo-600/30 transition-all cursor-pointer"
+          >
+            <WhatsAppIcon className="w-4 h-4 text-emerald-300" />
+            <span>Tirar dúvidas sobre o processo no WhatsApp</span>
+          </a>
         </div>
       </div>
     </section>

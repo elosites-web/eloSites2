@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { EloLogo } from './EloLogo';
 import { WhatsAppIcon } from './WhatsAppIcon';
-import { NAVIGATION_ITEMS, SITE_CONFIG } from '../types';
+import { NAVIGATION_ITEMS, SITE_CONFIG, whatsappUrl } from '../types';
 import { Mail, ArrowUp } from 'lucide-react';
 
 import { ScreenId } from '../types';
@@ -26,9 +26,7 @@ export const Footer: React.FC<FooterProps> = ({
 }) => {
   const currentYear = new Date().getFullYear();
 
-  const whatsappUrl = `https://wa.me/${SITE_CONFIG.whatsappNumber}?text=${encodeURIComponent(
-    SITE_CONFIG.defaultWhatsappMessage
-  )}`;
+  const footerWhatsappUrl = whatsappUrl(SITE_CONFIG.footerWhatsappMessage);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -48,7 +46,7 @@ export const Footer: React.FC<FooterProps> = ({
             <div className="flex flex-col items-start gap-2.5 pt-2">
               <a
                 id="footer-whatsapp-link"
-                href={whatsappUrl}
+                href={footerWhatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center text-center gap-2 px-3.5 py-2 rounded-lg bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-300/40 text-white shadow-lg shadow-emerald-950/40 hover:shadow-[0_0_22px_rgba(37,211,102,0.65)] active:shadow-[0_0_30px_rgba(37,211,102,0.85)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 text-xs font-semibold tracking-wide"

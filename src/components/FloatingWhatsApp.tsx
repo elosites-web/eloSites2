@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { WhatsAppIcon } from './WhatsAppIcon';
-import { SITE_CONFIG } from '../types';
+import { SITE_CONFIG, whatsappUrl } from '../types';
 import { X } from 'lucide-react';
 
 // Função para verificar se está dentro do horário comercial do schema (Segunda a Sexta, 09:00 - 18:00)
@@ -66,68 +66,100 @@ export const FloatingWhatsApp: React.FC = () => {
     }, 120000);
   };
 
-  const whatsappUrl = `https://wa.me/${SITE_CONFIG.whatsappNumber}?text=${encodeURIComponent(
-    SITE_CONFIG.floatingWhatsappMessage
-  )}`;
+  const floatingWhatsappUrl = whatsappUrl(SITE_CONFIG.floatingWhatsappMessage);
 
   return (
     <aside
       aria-label="Atendimento rápido via WhatsApp"
       className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end pointer-events-none select-none"
     >
-      {/* Tooltip / Popup Convidativo Centralizado com animação fade-in-up orgânica com aceleração inicial via Framer Motion */}
+      {/* Balão de Pop-up remodelado no estilo conversa com bico indicador para o botão flutuante */}
       <AnimatePresence>
         {showTooltip && (
           <motion.div
             key="whatsapp-popup-tooltip"
             id="whatsapp-popup-tooltip"
-            initial={{ opacity: 0, y: 32, scale: 0.94 }}
+            initial={{ opacity: 0, y: 24, scale: 0.92 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 16, scale: 0.96, transition: { duration: 0.22, ease: 'easeOut' } }}
+            exit={{ opacity: 0, y: 12, scale: 0.95, transition: { duration: 0.2, ease: 'easeOut' } }}
             transition={{
-              opacity: { duration: 0.42, ease: [0.3, 0, 0.2, 1] },
-              y: { duration: 0.52, ease: [0.22, 1.15, 0.36, 1] },
-              scale: { duration: 0.48, ease: [0.22, 1.08, 0.36, 1] },
+              opacity: { duration: 0.38, ease: [0.3, 0, 0.2, 1] },
+              y: { duration: 0.45, ease: [0.22, 1.15, 0.36, 1] },
+              scale: { duration: 0.42, ease: [0.22, 1.08, 0.36, 1] },
             }}
-            className="mb-3 w-[min(265px,calc(100vw-2rem))] bg-slate-900/95 border border-indigo-500/30 text-white rounded-2xl p-3.5 sm:p-4 shadow-2xl shadow-black/80 backdrop-blur-md pointer-events-auto relative origin-bottom-right z-50"
+            className="mb-3.5 w-[min(285px,calc(100vw-2rem))] bg-[#0B101D]/98 border border-indigo-500/35 text-white rounded-2xl p-4 shadow-2xl shadow-black/90 backdrop-blur-xl pointer-events-auto relative origin-bottom-right z-50 ring-1 ring-white/[0.08]"
           >
-            {/* Botão de Fechar com p-3, rounded-full, transition-colors duration-300 e hover:bg-indigo-500/20 */}
-            <button
-              type="button"
-              id="close-whatsapp-tooltip"
-              onClick={handleManualClose}
-              className="absolute top-1 right-1 p-3 rounded-full text-slate-400 hover:text-white hover:bg-indigo-500/20 active:bg-indigo-500/30 transition-colors duration-300 flex items-center justify-center cursor-pointer min-w-[36px] min-h-[36px]"
-              aria-label="Fechar mensagem de atendimento"
+            {/* Ponta / Bico do balão de fala apontando para o botão flutuante */}
+            <div className="absolute -bottom-1.5 right-6 w-3 h-3 bg-[#0B101D] border-r border-b border-indigo-500/35 rotate-45 pointer-events-none" />
+
+            {/* Cabeçalho do balão com avatar, status online e botão de fechar */}
+            <div className="flex items-center justify-between pb-3 mb-3 border-b border-white/[0.08]">
+              <div className="flex items-center gap-2.5">
+                <div className="relative">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-white font-bold text-xs shadow-md border border-indigo-400/30">
+                    ēlo
+                  </div>
+                  <span className="absolute -bottom-0.5 -right-0.5 flex h-2.5 w-2.5">
+                    {isOnline ? (
+                      <>
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500 border border-[#0B101D]" />
+                      </>
+                    ) : (
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-400 border border-[#0B101D]" />
+                    )}
+                  </span>
+                </div>
+                <div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-bold text-xs text-white tracking-wide">ēloSites</span>
+                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-medium leading-none">
+                      Oficial
+                    </span>
+                  </div>
+                  <p className="text-[10px] text-emerald-400 font-medium mt-0.5">
+                    {isOnline ? 'Online agora' : 'Responderemos em breve'}
+                  </p>
+                </div>
+              </div>
+
+              {/* Botão de Fechar */}
+              <button
+                type="button"
+                id="close-whatsapp-tooltip"
+                onClick={handleManualClose}
+                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 active:bg-white/15 transition-colors cursor-pointer"
+                aria-label="Fechar mensagem de atendimento"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Corpo da Mensagem Remodelado: Balão de conversa limpo e objetivo */}
+            <a
+              href={floatingWhatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Abrir conversa no WhatsApp: Olá! Precisa de um site? Me fale sobre o seu projeto."
+              className="block group/balloon transition-all cursor-pointer"
             >
-              <X className="w-3.5 h-3.5" />
-            </button>
-
-            {/* Indicador de Horário de Funcionamento (Schema: 09:00 - 18:00) */}
-            <div className="flex items-center justify-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium mb-2.5 bg-slate-950/80 border border-white/[0.08] w-fit mx-auto">
-              <span className="relative flex h-2 w-2">
-                {isOnline ? (
-                  <>
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-                  </>
-                ) : (
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-400" />
-                )}
-              </span>
-              <span className={isOnline ? 'text-emerald-400 font-semibold' : 'text-amber-300 font-semibold'}>
-                {isOnline ? 'Estamos online agora' : 'Responderemos em breve'}
-              </span>
-            </div>
-
-            {/* Conteúdo Convidativo Centralizado com leading-7 e título text-indigo-100 font-extrabold tracking-wider */}
-            <div className="pt-0.5 space-y-1.5 text-center">
-              <span className="font-extrabold tracking-wider block text-xs sm:text-sm text-indigo-100 text-center">
-                Precisa de um site?
-              </span>
-              <p className="text-slate-300 text-[11px] sm:text-xs leading-7 text-center">
-                Fale diretamente comigo pelo WhatsApp para tirar dúvidas sobre seu projeto.
-              </p>
-            </div>
+              <div className="p-3.5 rounded-xl bg-slate-900/90 border border-indigo-500/25 group-hover/balloon:border-indigo-400/60 group-hover/balloon:bg-slate-800/90 text-slate-100 shadow-inner transition-all">
+                <p className="font-bold text-white text-[13px] leading-snug group-hover/balloon:text-indigo-200 transition-colors">
+                  Olá! Precisa de um site?
+                </p>
+                <p className="text-slate-300 text-xs mt-1.5 leading-relaxed">
+                  Me fale sobre o seu projeto.
+                </p>
+                <div className="mt-2.5 pt-2 border-t border-white/[0.08] flex items-center justify-between text-[11px] text-indigo-300/90 font-medium">
+                  <span className="text-slate-400 group-hover/balloon:text-slate-200 transition-colors">
+                    Fale no WhatsApp
+                  </span>
+                  <span className="text-emerald-400 font-bold group-hover/balloon:translate-x-0.5 transition-transform flex items-center gap-1">
+                    responder →
+                  </span>
+                </div>
+              </div>
+            </a>
           </motion.div>
         )}
       </AnimatePresence>
@@ -135,7 +167,7 @@ export const FloatingWhatsApp: React.FC = () => {
       {/* Botão Flutuante Principal com Animação Sutil de Pulsação Constante */}
       <a
         id="floating-whatsapp-btn"
-        href={whatsappUrl}
+        href={floatingWhatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Conversar no WhatsApp com a ēloSites"

@@ -4,14 +4,22 @@ import { shouldReduceMedia } from '../mediaPrefs';
 
 interface AmbientLoopVideoProps {
   /** chave em manifest.json > loopVideos (ex.: "hands-viewing", "hands-near") */
-  videoKey: string;
+  videoKey?: string;
+  isFixed?: boolean;
+  className?: string;
 }
 
 /**
- * Fundo de seção em vídeo (mudo, loop). Toca só enquanto visível.
- * Movimento reduzido / saveData: só o pôster. Overlay azul-marinho para manter o contraste do texto.
+ * Fundo de seção ou tela em vídeo (mudo, loop contínuo).
+ * Quando isFixed=true, atua como background animado persistente em movimento constante
+ * para todas as telas (de 1 a 8).
+ * Mantém contraste e legibilidade do texto com overlay profissional azul-marinho/índigo.
  */
-export const AmbientLoopVideo: React.FC<AmbientLoopVideoProps> = ({ videoKey }) => {
+export const AmbientLoopVideo: React.FC<AmbientLoopVideoProps> = ({
+  videoKey = 'hands-viewing',
+  isFixed = false,
+  className = '',
+}) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [cfg, setCfg] = useState<FlowLoopVideo | null>(null);
@@ -34,12 +42,26 @@ export const AmbientLoopVideo: React.FC<AmbientLoopVideoProps> = ({ videoKey }) 
     const el = containerRef.current;
     const video = videoRef.current;
     if (!allowPlayback || !el || !video) return;
-    video.muted = true; // exigência de autoplay em alguns navegadores
+    video.muted = true;
 
     const play = () => {
       const p = video.play();
       if (p && typeof p.catch === 'function') p.catch(() => {});
     };
+
+    if (isFixed) {
+      // No modo fixo global, o vídeo mantém movimento contínuo constante
+      play();
+      const handleVis = () => {
+        if (!document.hidden) play();
+        else video.pause();
+      };
+      document.addEventListener('visibilitychange', handleVis);
+      return () => {
+        document.removeEventListener('visibilitychange', handleVis);
+        video.pause();
+      };
+    }
 
     let inView = false;
     const sync = () => (inView && !document.hidden ? play() : video.pause());
@@ -66,7 +88,7 @@ export const AmbientLoopVideo: React.FC<AmbientLoopVideoProps> = ({ videoKey }) 
       document.removeEventListener('visibilitychange', sync);
       video.pause();
     };
-  }, [allowPlayback, cfg]);
+  }, [allowPlayback, cfg, isFixed]);
 
   const poster = cfg ? flowAssetUrl(cfg.poster) : undefined;
 
@@ -74,7 +96,9 @@ export const AmbientLoopVideo: React.FC<AmbientLoopVideoProps> = ({ videoKey }) 
     <div
       ref={containerRef}
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 overflow-hidden"
+      className={`pointer-events-none overflow-hidden ${
+        isFixed ? 'fixed inset-0 z-0' : 'absolute inset-0'
+      } ${className}`}
     >
       {poster && (
         <img
@@ -90,17 +114,18 @@ export const AmbientLoopVideo: React.FC<AmbientLoopVideoProps> = ({ videoKey }) 
           ref={videoRef}
           className="absolute inset-0 h-full w-full object-cover"
           muted
+          autoPlay
           loop
           playsInline
-          preload="none"
+          preload="auto"
           poster={poster}
         >
           <source src={flowAssetUrl(cfg.file)} type="video/mp4" />
         </video>
       )}
-      {/* overlay azul-marinho (contraste do texto) + tom índigo sutil */}
-      <div className="absolute inset-0 bg-[#0B0F1A]/75" />
-      <div className="absolute inset-0 bg-[#6366F1]/15 mix-blend-overlay" />
+      {/* Overlay com contraste apurado para legibilidade de texto em todas as 8 telas */}
+      <div className="absolute inset-0 bg-[#070A14]/78 backdrop-blur-[1px]" />
+      <div className="absolute inset-0 bg-[#4F46E5]/12 mix-blend-overlay" />
     </div>
   );
 };

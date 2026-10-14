@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { WhatsAppIcon } from './WhatsAppIcon';
-import { SITE_CONFIG } from '../types';
+import { SITE_CONFIG, whatsappUrl } from '../types';
 import { ArrowDown, CheckCircle2, Code2, Smartphone } from 'lucide-react';
 import { Interactive3DCard } from './Interactive3DCard';
 
@@ -15,9 +15,7 @@ export const Hero: React.FC<HeroProps> = ({
   onNavigateToServices,
 }) => {
 
-  const whatsappUrl = `https://wa.me/${SITE_CONFIG.whatsappNumber}?text=${encodeURIComponent(
-    SITE_CONFIG.heroWhatsappMessage
-  )}`;
+  const heroWhatsappUrl = whatsappUrl(SITE_CONFIG.heroWhatsappMessage);
 
   const handleScrollToPortfolio = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -102,7 +100,7 @@ export const Hero: React.FC<HeroProps> = ({
             <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
               <a
                 id="hero-cta-whatsapp"
-                href={whatsappUrl}
+                href={heroWhatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="cta-primary inline-flex items-center justify-center text-center gap-3 px-6 py-4 rounded-xl text-base font-semibold text-white transition-all duration-200 shadow-lg shadow-indigo-600/30 border border-indigo-400/30 active:scale-[0.98] group bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500"

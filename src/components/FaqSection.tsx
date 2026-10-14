@@ -193,12 +193,12 @@ export const FaqSection: React.FC = () => {
         <p className="mt-10 text-center text-sm text-slate-400">
           Outra dúvida sobre o seu negócio?{' '}
           <a
-            href={whatsappUrl(SITE_CONFIG.defaultWhatsappMessage)}
+            href={whatsappUrl(SITE_CONFIG.faqWhatsappMessage)}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-indigo-400 hover:text-indigo-300 underline underline-offset-4 font-medium"
+            className="text-indigo-400 hover:text-indigo-300 underline underline-offset-4 font-semibold"
           >
-            Fale no WhatsApp
+            Fale diretamente no WhatsApp
           </a>
          </p>
          </div>

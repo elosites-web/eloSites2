@@ -4,6 +4,7 @@ import { EloLogo } from './EloLogo';
 import { WhatsAppIcon } from './WhatsAppIcon';
 import { ScreenId, SCREENS, SITE_CONFIG, whatsappUrl } from '../types';
 import {
+  Menu,
   X,
   Compass,
   ArrowRight,
@@ -158,8 +159,9 @@ export const Header: React.FC<HeaderProps> = ({
                 aria-expanded={isMenuOpen}
                 aria-controls="multi-screen-navigation-modal"
                 aria-label="Abrir Menu de Navegação"
-                className="relative group inline-flex items-center justify-center px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-lg shadow-indigo-600/30 hover:shadow-[0_0_24px_rgba(99,102,241,0.55)] active:shadow-[0_0_32px_rgba(168,85,247,0.7)] hover:-translate-y-0.5 active:translate-y-0 transition-all border border-indigo-400/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 text-center shrink-0 cursor-pointer"
+                className="relative group inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-lg shadow-indigo-600/30 hover:shadow-[0_0_24px_rgba(99,102,241,0.55)] active:shadow-[0_0_32px_rgba(168,85,247,0.7)] hover:-translate-y-0.5 active:translate-y-0 transition-all border border-indigo-400/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 text-center shrink-0 cursor-pointer"
               >
+                <Menu className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white shrink-0 transition-transform duration-200 group-hover:scale-110" aria-hidden="true" />
                 <span className="tracking-wider uppercase font-bold text-xs sm:text-xs text-center drop-shadow-sm">
                   MENU
                 </span>
@@ -348,7 +350,7 @@ export const Header: React.FC<HeaderProps> = ({
                   Dúvidas sobre o projeto?
                 </span>
                 <a
-                  href={headerWhatsappUrl}
+                  href={whatsappUrl(SITE_CONFIG.mobileMenuWhatsappMessage)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center text-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white transition-all shadow"

@@ -1,6 +1,7 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Persistent3DBackground } from './components/Persistent3DBackground';
+import { AmbientLoopVideo } from './components/AmbientLoopVideo';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { ProcessSection } from './components/ProcessSection';
@@ -215,6 +216,9 @@ export default function App() {
     <div className={`min-h-screen bg-[#090D16] text-slate-100 flex flex-col selection:bg-indigo-500 selection:text-white relative ${isHighContrast ? 'high-contrast' : ''}`}>
       {/* Barra de Progresso de Leitura no Topo */}
       <ReadingProgressBar key={currentScreen} currentScreen={currentScreen} />
+
+      {/* Background animado idêntico à Tela 4 em movimento constante de 1 a 8 */}
+      <AmbientLoopVideo videoKey="hands-viewing" isFixed />
 
       {/* Cena 3D Persistente procedural no fundo */}
       <Persistent3DBackground />

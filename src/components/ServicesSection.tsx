@@ -137,7 +137,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
   return (
     <section
       id="servicos"
-      className="py-16 sm:py-24 bg-[#090D16] relative min-h-screen flex flex-col justify-between"
+      className="py-16 sm:py-24 bg-[#090D16]/75 backdrop-blur-[1px] relative min-h-screen flex flex-col justify-between"
     >
       {/* Luz ambiente de fundo */}
       <div className="absolute top-1/3 left-0 w-80 h-80 bg-indigo-500/[0.07] blur-[130px] rounded-full pointer-events-none" />
@@ -458,7 +458,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                   )}
                   <a
                     href={whatsappUrl(
-                      `Olá! Simulei uma condição de pagamento para o meu site (aproximadamente R$ ${simulatedValue},00) e gostaria de receber um orçamento oficial com escopo detalhado.`
+                      `Olá! 💰 Simulei uma condição de pagamento no site da *ēloSites* (valor base estimado em *R$ ${simulatedValue.toLocaleString('pt-BR')},00*).\n\nGostaria de receber um orçamento oficial com o escopo detalhado para o meu projeto!`
                     )}
                     target="_blank"
                     rel="noopener noreferrer"

@@ -337,7 +337,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onOpenZoom, onNaviga
           </a>
 
           <a
-            href={whatsappUrl(`Olá! Vi o projeto ${project.title} da ēloSites e gostaria de solicitar um orçamento similar para meu negócio.`)}
+            href={whatsappUrl(
+              `Olá! 💻 Vi o projeto *${project.title}* no portfólio da *ēloSites*.\n\nGostei muito do resultado e gostaria de solicitar um orçamento para desenvolver um site similar para o meu negócio!`
+            )}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center text-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-[#25D366] hover:bg-[#20bd5a] text-white border border-emerald-400/40 shadow-md shadow-emerald-950/40 hover:shadow-[0_0_20px_rgba(37,211,102,0.6)] active:shadow-[0_0_28px_rgba(37,211,102,0.8)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
@@ -373,7 +375,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
   return (
     <section
       id="portfolio"
-      className="py-16 sm:py-24 bg-[#090D16] relative min-h-screen flex flex-col justify-between"
+      className="py-16 sm:py-24 bg-[#090D16]/75 backdrop-blur-[1px] relative min-h-screen flex flex-col justify-between"
     >
       {/* Luz ambiente de fundo */}
       <div className="absolute top-1/4 left-0 w-96 h-96 bg-indigo-500/[0.08] blur-[140px] rounded-full pointer-events-none" />

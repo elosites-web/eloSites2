@@ -195,27 +195,62 @@ export const SITE_CONFIG = {
   // Número oficial da ēloSites
   whatsappNumber: '5511995722584',
   whatsappDisplay: '+55 (11) 99572-2584',
-  // Mensagens contextuais para cada CTA
-  heroWhatsappMessage:
-    'Olá! Conheci a ēloSites e gostaria de solicitar um orçamento para criar o site profissional do meu negócio com foco em conversão e SEO técnico.',
+
+  // 1) Cabeçalho Fixo
   headerWhatsappMessage:
-    'Olá! Gostaria de falar sobre a criação de um site profissional para o meu negócio.',
+    'Olá! 👋 Acessei o site da *ēloSites* através do cabeçalho.\n\nGostaria de conversar diretamente com o desenvolvedor sobre a criação de um *site profissional* para o meu negócio.',
+
+  // 2) Hero / Início (Tela 01)
+  heroWhatsappMessage:
+    'Olá! 🚀 Conheci a *ēloSites* pela página inicial.\n\nQuero solicitar um *orçamento sob medida* para desenvolver um site profissional com foco em *conversão no WhatsApp* e *SEO técnico* para minha marca.',
+
+  // 3) Portfólio (Tela 02)
   portfolioWhatsappMessage:
-    'Olá! Vi os projetos da ēloSites e quero um site com esse padrão e SEO técnico para o meu negócio.',
+    'Olá! 💻 Estive analisando o *portfólio de projetos reais* no site da *ēloSites*.\n\nGostei muito do padrão de acabamento, velocidade e responsividade. Gostaria de solicitar uma proposta comercial para um projeto com esse nível de qualidade!',
+
+  // 4) Serviços - Landing Page (Tela 03)
   landingPageWhatsappMessage:
-    'Olá! Tenho interesse em uma Landing Page de alta conversão para o meu negócio com código otimizado.',
+    'Olá! 🎯 Tenho interesse no formato *Landing Page de Alta Conversão* da *ēloSites*.\n\nPreciso de uma página única estratégica, veloz e otimizada para campanhas e captação de clientes no WhatsApp. Como podemos iniciar?',
+
+  // 5) Serviços - Site Institucional (Tela 03)
   siteInstitucionalWhatsappMessage:
-    'Olá! Tenho interesse em um site institucional completo com SEO técnico para a minha empresa.',
+    'Olá! 🏢 Tenho interesse no formato *Site Institucional Completo* da *ēloSites*.\n\nQuero fortalecer a autoridade da minha empresa no Google com *SEO técnico*, apresentação completa de serviços e credibilidade corporativa. Poderia me enviar uma proposta?',
+
+  // 6) Serviços - Projeto Personalizado (Tela 03)
   personalizadoWhatsappMessage:
-    'Olá! Gostaria de conversar sobre um projeto personalizado sob medida para o meu negócio com a ēloSites.',
+    'Olá! ⚡ Gostaria de conversar sobre um *Projeto Sob Medida / Personalizado* com a *ēloSites*.\n\nTenho requisitos específicos para o meu negócio e busco uma solução web exclusiva de alta performance.',
+
+  // 7) Processo / Como Funciona (Tela 04)
+  processoWhatsappMessage:
+    'Olá! 📋 Conheci o *processo ágil em 4 etapas* da *ēloSites*.\n\nGostei da transparência e do contato direto com quem desenvolve. Gostaria de entender os prazos para iniciar o meu site!',
+
+  // 8) Diferenciais (Tela 05)
+  diferenciaisWhatsappMessage:
+    'Olá! ✨ Li os *diferenciais estratégicos* da *ēloSites* (código autoral limpo, sem intermediários e foco total em conversão no WhatsApp).\n\nQuero entender como podemos aplicar esses diferenciais no site do meu negócio!',
+
+  // 9) FAQ (Tela 07)
+  faqWhatsappMessage:
+    'Olá! 💡 Estive lendo a seção de *Perguntas Frequentes (FAQ)* no site da *ēloSites*.\n\nAinda fiquei com algumas dúvidas sobre domínio, hospedagem ou prazos e gostaria de falar diretamente com o desenvolvedor.',
+
+  // 10) Contato Principal (Tela 08)
   finalCtaWhatsappMessage:
-    'Olá! Gostaria de iniciar o projeto do meu site profissional com a ēloSites.',
+    'Olá! 💬 Gostaria de dar o próximo passo e iniciar o projeto do meu *site profissional* com a *ēloSites*.\n\nPodemos conversar sobre o escopo, formato e orçamento?',
+
+  // 11) Balão Flutuante e Botão WhatsApp Fixo
   floatingWhatsappMessage:
-    'Olá! Gostaria de tirar dúvidas sobre a criação do meu site com a equipe da ēloSites.',
+    'Olá! 🚀 Preciso de um site profissional para o meu negócio.\n\nGostaria de tirar algumas dúvidas rápidas diretamente com a equipe da *ēloSites*!',
+
+  // 12) Modal de Navegação
   mobileMenuWhatsappMessage:
-    'Olá! Gostaria de conversar sobre a criação de um site para o meu negócio.',
+    'Olá! 📱 Estive navegando pelo menu da *ēloSites* e gostaria de receber mais informações sobre o desenvolvimento de sites profissionais.',
+
+  // 13) Rodapé
+  footerWhatsappMessage:
+    'Olá! 👋 Conheci o trabalho da *ēloSites* pelo rodapé do site.\n\nGostaria de solicitar uma análise e um orçamento personalizado para o meu projeto!',
+
+  // Padrão Geral
   defaultWhatsappMessage:
-    'Olá! Gostaria de saber mais sobre a criação de sites da ēloSites.',
+    'Olá! 👋 Gostaria de saber mais sobre a criação de sites profissionais da *ēloSites*.',
 };
 
 export const NAVIGATION_ITEMS: NavItem[] = [
@@ -229,55 +264,14 @@ export const NAVIGATION_ITEMS: NavItem[] = [
   { label: 'Contato', href: '#contato', id: 'nav-contato' },
 ];
 
-/**
- * Constrói URL direta do WhatsApp com o número oficial e texto codificado
- */
-export function whatsappUrl(message?: string): string {
-  const text = message || SITE_CONFIG.defaultWhatsappMessage;
-  return `https://wa.me/${SITE_CONFIG.whatsappNumber}?text=${encodeURIComponent(text)}`;
-}
-
-/**
- * Formata os dados de Briefing em mensagem estruturada para o WhatsApp
- */
-export function formatBriefingWhatsappMessage(data: ProjectBriefData): string {
-  return [
-    `*📋 NOVO BRIEFING — ēloSites*`,
-    ``,
-    `*👤 Nome:* ${data.contactName.trim()}`,
-    `*🏢 Negócio:* ${data.businessName.trim()}`,
-    `*🏷️ Segmento:* ${data.segment}`,
-    `*💻 Tipo de Projeto:* ${data.projectType}`,
-    `*📱 WhatsApp do Cliente:* ${data.whatsappContact.trim()}`,
-    data.description.trim() ? `*📝 Detalhes e Objetivos:*\n${data.description.trim()}` : '',
-    ``,
-    `Gostaria de receber uma proposta comercial personalizada considerando as opções de pagamento (PIX 50/50, 20% à vista ou cartão em até 5x sem juros).`,
-  ]
-    .filter(Boolean)
-    .join('\n');
-}
-
-/**
- * Formata os dados de Agendamento em mensagem estruturada para o WhatsApp
- */
-export function formatBookingWhatsappMessage(data: MeetingBookingData): string {
-  return [
-    `*📅 SOLICITAÇÃO DE REUNIÃO — ēloSites*`,
-    ``,
-    `*👤 Nome:* ${data.name.trim()}`,
-    `*🏢 Empresa:* ${data.businessName.trim()}`,
-    `*📞 Contato:* ${data.whatsappOrEmail.trim()}`,
-    `*🗓️ Data Sugerida:* ${data.preferredDate}`,
-    `*⏰ Horário:* ${data.preferredTimeSlot}`,
-    `*💻 Plataforma:* ${data.platform}`,
-    `*🎯 Pauta:* ${data.meetingTopic}`,
-    data.notes?.trim() ? `*📌 Observações:* ${data.notes.trim()}` : '',
-    ``,
-    `Gostaria de confirmar a disponibilidade para esta reunião e alinharmos o projeto!`,
-  ]
-    .filter(Boolean)
-    .join('\n');
-}
+export {
+  formatWhatsAppMessage,
+  buildWhatsAppUrl,
+  buildWhatsAppUrl as whatsappUrl,
+  formatBriefingWhatsappMessage,
+  formatBookingWhatsappMessage,
+} from './whatsappMessages';
+export type { WhatsAppContextParams, WhatsAppLocation } from './whatsappMessages';
 
 /**
  * Gera link para adição do evento no Google Calendar
