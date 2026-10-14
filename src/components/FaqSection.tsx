@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, type Variants } from 'motion/react';
 import { ChevronDown, HelpCircle } from 'lucide-react';
 import { FaqItem, SITE_CONFIG, whatsappUrl } from '../types';
 
@@ -68,7 +68,7 @@ export const FaqSection: React.FC = () => {
     },
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: {
       opacity: 0,
       y: 20,
