@@ -1,44 +1,77 @@
-import React, { useEffect, useState } from 'react';
-import { motion, useScroll, useSpring } from 'motion/react';
+import React, { useEffect, useState, useCallback } from 'react';
+import { motion, useMotionValue, useSpring, useTransform, useReducedMotion } from 'motion/react';
+import { shouldReduceMedia } from '../mediaPrefs';
 
 interface ReadingProgressBarProps {
   currentScreen?: string;
 }
 
 /**
- * Barra fina de progresso de leitura no topo da página
- * Acompanha a rolagem vertical de cada tela com animação suave e efeito luminoso neon.
+ * Barra horizontal de progresso de leitura no topo da página (logo acima do cabeçalho)
+ * Acompanha o progresso real de rolagem vertical da tela com a identidade visual da ēloSites
+ * (gradiente índigo/violeta) e uma ponta levemente brilhante (glowing tip) com beacon dinâmico.
  */
 export const ReadingProgressBar: React.FC<ReadingProgressBarProps> = ({ currentScreen }) => {
-  const { scrollYProgress } = useScroll();
+  const systemPrefersReduced = useReducedMotion();
+  const prefersReduced = Boolean(systemPrefersReduced || shouldReduceMedia());
 
-  // Mola para suavizar a aceleração e desaceleração do scroll
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 140,
-    damping: 26,
-    restDelta: 0.001,
+  // Valor de movimento direto para o progresso normalizado (0 a 1)
+  const progressMotion = useMotionValue(0);
+
+  // Mola para suavizar acelerações e frenagens tácteis no scroll
+  const springProgress = useSpring(progressMotion, {
+    stiffness: prefersReduced ? 1200 : 180,
+    damping: prefersReduced ? 100 : 28,
+    restDelta: 0.0005,
   });
 
-  const [hasScrolled, setHasScrolled] = useState(false);
   const [percent, setPercent] = useState(0);
 
+  // Mapeia o progresso para largura percentual com um valor mínimo sutil (0.4%)
+  // para que a pontinha brilhante fique elegantemente visível desde o início
+  const width = useTransform(springProgress, (val) => {
+    const clamped = Math.max(0, Math.min(1, val));
+    // Garante que haja pelo menos uma pontinha visível (ou 0 quando na largada estrita)
+    const pct = clamped * 100;
+    return `${Math.max(0.3, pct)}%`;
+  });
+
+  // Cálculo robusto do progresso de rolagem vertical da página
+  const updateScrollProgress = useCallback(() => {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop || 0;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+    let ratio = 0;
+    if (docHeight > 4) {
+      ratio = Math.min(1, Math.max(0, scrollTop / docHeight));
+    }
+
+    progressMotion.set(ratio);
+    setPercent(Math.round(ratio * 100));
+  }, [progressMotion]);
+
   useEffect(() => {
-    // Atualiza estado inicial
-    const initialVal = scrollYProgress.get();
-    setHasScrolled(initialVal > 0.005);
-    setPercent(Math.round(initialVal * 100));
+    // Atualização imediata na montagem
+    updateScrollProgress();
 
-    const unsubscribe = scrollYProgress.on('change', (latest) => {
-      setHasScrolled(latest > 0.005);
-      setPercent(Math.round(latest * 100));
-    });
+    // Reavalia após a renderização da tela/seção (caso haja lazy loading ou expansão do DOM)
+    const rafId = requestAnimationFrame(updateScrollProgress);
+    const timeoutId = setTimeout(updateScrollProgress, 120);
 
-    return () => unsubscribe();
-  }, [scrollYProgress, currentScreen]);
+    window.addEventListener('scroll', updateScrollProgress, { passive: true });
+    window.addEventListener('resize', updateScrollProgress, { passive: true });
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      clearTimeout(timeoutId);
+      window.removeEventListener('scroll', updateScrollProgress);
+      window.removeEventListener('resize', updateScrollProgress);
+    };
+  }, [updateScrollProgress, currentScreen]);
 
   return (
     <div
-      className="fixed top-0 left-0 right-0 z-50 pointer-events-none h-[3px] bg-white/[0.04] backdrop-blur-[1px]"
+      className="fixed top-0 left-0 right-0 z-[80] pointer-events-none h-[3.5px] bg-slate-950/70 border-b border-white/[0.04]"
       role="progressbar"
       aria-label="Progresso de leitura da página"
       aria-valuenow={percent}
@@ -46,15 +79,20 @@ export const ReadingProgressBar: React.FC<ReadingProgressBarProps> = ({ currentS
       aria-valuemax={100}
     >
       <motion.div
-        className={`h-full w-full origin-left bg-gradient-to-r from-indigo-500 via-indigo-400 to-cyan-400 relative transition-opacity duration-200 ${
-          hasScrolled
-            ? 'opacity-100 shadow-[0_0_12px_rgba(99,102,241,0.85),0_0_6px_rgba(34,211,238,0.75)]'
-            : 'opacity-0'
-        }`}
-        style={{ scaleX }}
+        className="h-full relative bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-500 shadow-[0_0_12px_rgba(99,102,241,0.85),0_0_5px_rgba(168,85,247,0.85)] will-change-[width] rounded-r-full"
+        style={{ width }}
       >
-        {/* Ponto de luz no ápice da barra de progresso para dinamismo visual */}
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-cyan-200 blur-[0.5px] shadow-[0_0_8px_#38bdf8,0_0_14px_#818cf8]" />
+        {/* Flare luminoso translúcido na borda de ataque da barra */}
+        <div
+          className="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-r from-transparent via-white/15 to-white/40 pointer-events-none"
+          aria-hidden="true"
+        />
+
+        {/* Pontinha da barra levemente brilhante: exatamente do tamanho da espessura da barra */}
+        <div
+          className="absolute right-0 top-0 h-full aspect-square rounded-full bg-white shadow-[0_0_4px_#ffffff,0_0_8px_#a855f7,0_0_12px_#6366f1] pointer-events-none"
+          aria-hidden="true"
+        />
       </motion.div>
     </div>
   );

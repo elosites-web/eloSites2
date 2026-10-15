@@ -150,3 +150,5 @@ export const SkeletonBooking: React.FC = () => {
     </section>
   );
 };
+
+export { SkeletonFloatingWhatsApp } from './FloatingWhatsApp';

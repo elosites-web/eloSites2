@@ -603,3 +603,5 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
     </section>
   );
 };
+
+export { TestimonialsSection } from './TestimonialsSection';

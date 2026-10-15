@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import {
   Quote,
   Star,
@@ -9,6 +9,8 @@ import {
   ExternalLink,
   ArrowRight,
   Sparkles,
+  LayoutGrid,
+  Layers,
 } from 'lucide-react';
 import { WhatsAppIcon } from './WhatsAppIcon';
 import { SITE_CONFIG, whatsappUrl } from '../types';
@@ -69,11 +71,16 @@ interface TestimonialsSectionProps {
 export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
   onNavigateToServices,
 }) => {
+  const [viewMode, setViewMode] = useState<'grid' | 'carousel'>('grid');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [isPaused, setIsPaused] = useState(false);
   const touchStartXRef = useRef<number | null>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
+
+  // Detecção de preferências de acessibilidade e redução de movimento
+  const systemPrefersReduced = useReducedMotion();
+  const prefersReduced = Boolean(systemPrefersReduced || shouldReduceMedia());
 
   const testimonials = CLIENT_TESTIMONIALS;
   const current = testimonials[currentIndex];
@@ -94,8 +101,6 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
   };
 
   // Suporte a teclado acessível apenas quando o foco está dentro do carrossel.
-  // O listener fica no próprio carrossel e interrompe a propagação para que o
-  // atalho global de setas (navegação entre telas) não também dispare.
   useEffect(() => {
     const carousel = carouselRef.current;
     if (!carousel) return;
@@ -124,9 +129,9 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
     return () => carousel.removeEventListener('keydown', handleKeyDown);
   }, [currentIndex]);
 
-  // Rotação suave do carrossel (pausada ao passar o mouse ou focar)
+  // Rotação suave do carrossel quando em modo carousel
   useEffect(() => {
-    if (isPaused) return;
+    if (viewMode !== 'carousel' || isPaused) return;
 
     const timer = setInterval(() => {
       setDirection(1);
@@ -134,7 +139,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
     }, 7000);
 
     return () => clearInterval(timer);
-  }, [isPaused, testimonials.length]);
+  }, [viewMode, isPaused, testimonials.length]);
 
   // Suporte a gestos touch (swipe) em dispositivos móveis
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -180,8 +185,25 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
       <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-96 h-96 bg-purple-600/[0.06] blur-[140px] rounded-full pointer-events-none" />
 
       <div className="page-shell page-x relative z-10">
-        {/* Cabeçalho da Seção */}
-        <div className="max-w-3xl mx-auto text-center space-y-4 mb-12 sm:mb-16">
+        {/* Cabeçalho da Seção com Reveal Suave */}
+        <motion.div
+          initial={
+            prefersReduced
+              ? { opacity: 1, y: 0 }
+              : { opacity: 0, y: 22 }
+          }
+          whileInView={
+            prefersReduced
+              ? { opacity: 1, y: 0 }
+              : { opacity: 1, y: 0 }
+          }
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{
+            duration: prefersReduced ? 0 : 0.45,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+          className="max-w-3xl mx-auto text-center space-y-4 mb-10 sm:mb-14"
+        >
           <div className="section-kicker inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-white/[0.08] text-indigo-300 text-xs sm:text-sm font-semibold uppercase">
             <Sparkles className="w-3.5 h-3.5 text-indigo-400" aria-hidden="true" />
             <span>Social Proof & Avaliações Reais</span>
@@ -212,177 +234,355 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
               <span className="text-slate-300">Projetos reais entregues no Netlify</span>
             </div>
           </div>
-        </div>
 
-        {/* Carrossel de Testemunhos */}
-        <div
-          ref={carouselRef}
-          data-testimonials-carousel
-          className="relative max-w-4xl mx-auto"
-          role="region"
-          aria-roledescription="carousel"
-          aria-label="Carrossel de Depoimentos"
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-        >
-          {/* Card Principal */}
-          <div className="relative rounded-3xl p-[1px] bg-gradient-to-b from-indigo-500/35 via-purple-500/20 to-white/[0.06] shadow-2xl shadow-indigo-950/40">
-            <div className="rounded-3xl p-6 sm:p-10 lg:p-12 bg-[#0B101D]/95 backdrop-blur-xl">
-              <AnimatePresence mode="wait" custom={direction}>
-                <motion.div
-                  key={current.id}
-                  custom={direction}
-                  initial={{ opacity: 0, x: shouldReduceMedia() ? 0 : (direction > 0 ? 16 : -16) }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: shouldReduceMedia() ? 0 : (direction > 0 ? -16 : 16) }}
-                  transition={{ duration: 0.24, ease: [0.23, 1, 0.32, 1] }}
-                  className="space-y-6 sm:space-y-8"
+          {/* Alternador de Visualização: Grade Completa (com fade-in sequencial) ou Carrossel de Destaque */}
+          <div className="pt-3 flex items-center justify-center gap-2">
+            <button
+              type="button"
+              onClick={() => setViewMode('grid')}
+              aria-label="Ver todas as avaliações em grade"
+              className={`inline-flex items-center justify-center text-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+                viewMode === 'grid'
+                  ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
+                  : 'bg-slate-900/80 text-slate-400 hover:text-white border border-white/[0.06]'
+              }`}
+            >
+              <LayoutGrid className="w-3.5 h-3.5" />
+              <span className="text-center">Todas as Avaliações ({testimonials.length})</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode('carousel')}
+              aria-label="Ver avaliações em carrossel"
+              className={`inline-flex items-center justify-center text-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+                viewMode === 'carousel'
+                  ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
+                  : 'bg-slate-900/80 text-slate-400 hover:text-white border border-white/[0.06]'
+              }`}
+            >
+              <Layers className="w-3.5 h-3.5" />
+              <span className="text-center">Carrossel Interativo</span>
+            </button>
+          </div>
+        </motion.div>
+
+        {/* MODO 1: GRADE COM ANIMAÇÃO DE FADE-IN SEQUENCIAL (STAGGER) AO ROLAR A PÁGINA */}
+        {viewMode === 'grid' && (
+          <div
+            data-testimonials-grid
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch max-w-6xl mx-auto"
+          >
+            {testimonials.map((item, index) => {
+              const isOddLastOnTwoCols =
+                testimonials.length === 3 && index === 2;
+              return (
+                <motion.article
+                  key={item.id}
+                  initial={
+                    prefersReduced
+                      ? { opacity: 1, scale: 1, y: 0 }
+                      : { opacity: 0, scale: 0.95, y: 24 }
+                  }
+                  whileInView={
+                    prefersReduced
+                      ? { opacity: 1, scale: 1, y: 0 }
+                      : { opacity: 1, scale: 1, y: 0 }
+                  }
+                  viewport={{ once: true, amount: 0.15 }}
+                  transition={{
+                    duration: prefersReduced ? 0 : 0.45,
+                    delay: prefersReduced ? 0 : index * 0.15,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                  className={`surface-card glass-panel glass-card-interactive flex flex-col justify-between h-full rounded-2xl p-6 sm:p-7 border border-white/[0.08] relative group ${
+                    isOddLastOnTwoCols
+                      ? 'md:col-span-2 md:w-[calc(50%-1rem)] md:mx-auto lg:col-span-1 lg:w-full lg:mx-0'
+                      : ''
+                  }`}
                 >
-                  {/* Top Bar do Card */}
-                  <div className="flex flex-wrap items-center justify-between gap-3 pb-5 border-b border-white/[0.08]">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-950/70 border border-indigo-400/30 text-indigo-300 text-xs font-semibold">
-                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" aria-hidden="true" />
-                      <span>{current.category}</span>
-                    </div>
+                  <div className="space-y-4">
+                    {/* Top Bar do Card de Depoimento */}
+                    <div className="flex flex-wrap items-center justify-between gap-2 pb-3.5 border-b border-white/[0.06]">
+                      <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-indigo-300 bg-indigo-950/70 border border-indigo-400/30 px-2.5 py-1 rounded-full">
+                        <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" aria-hidden="true" />
+                        <span>{item.category}</span>
+                      </span>
 
-                    <div className="flex items-center gap-3">
-                      {/* Classificação com 5 estrelas */}
-                      <div className="flex items-center gap-0.5 text-amber-400">
-                        {[...Array(current.rating)].map((_, i) => (
-                          <Star key={i} className="w-4 h-4 fill-amber-400" aria-hidden="true" />
+                      {/* 5 Estrelas */}
+                      <div className="flex items-center gap-0.5 text-amber-400" title="Classificação 5 de 5">
+                        {[...Array(item.rating)].map((_, i) => (
+                          <Star key={i} className="w-3.5 h-3.5 fill-amber-400" aria-hidden="true" />
                         ))}
                       </div>
-
-                      {/* Contador de slides */}
-                      <div className="font-mono text-xs text-slate-400 px-2.5 py-1 rounded-lg bg-slate-900 border border-white/[0.06]">
-                        0{currentIndex + 1} / 0{testimonials.length}
-                      </div>
                     </div>
-                  </div>
 
-                  {/* Citação do Cliente */}
-                  <div className="relative">
-                    <Quote className="w-10 h-10 text-indigo-400/30 mb-3" aria-hidden="true" />
-                    <blockquote className="text-base sm:text-lg lg:text-xl text-slate-100 font-normal leading-relaxed italic">
-                      "{current.quote}"
-                    </blockquote>
+                    {/* Citação do Cliente com Ícone de Aspas */}
+                    <div className="relative pt-1">
+                      <Quote className="w-8 h-8 text-indigo-400/25 mb-2" aria-hidden="true" />
+                      <blockquote className="text-sm sm:text-base text-slate-200 leading-relaxed italic">
+                        "{item.quote}"
+                      </blockquote>
+                    </div>
                   </div>
 
                   {/* Rodapé do Card com Dados do Cliente e Link para o Site */}
-                  <div className="pt-6 border-t border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-5">
-                    <div className="flex items-center gap-3.5">
-                      <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-600/30 to-purple-600/30 border border-indigo-400/40 flex items-center justify-center text-indigo-200 font-bold font-mono text-base shadow-inner shrink-0">
-                        {getInitials(current.name)}
+                  <div className="pt-5 mt-6 border-t border-white/[0.06] flex flex-col gap-3.5">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600/30 to-purple-600/30 border border-indigo-400/40 flex items-center justify-center text-indigo-200 font-bold font-mono text-sm shadow-inner shrink-0">
+                        {getInitials(item.name)}
                       </div>
-                      <div>
-                        <h3 className="font-display text-lg sm:text-xl font-bold text-white tracking-tight">
-                          {current.name}
+                      <div className="min-w-0">
+                        <h3 className="font-display text-base font-bold text-white tracking-tight truncate">
+                          {item.name}
                         </h3>
-                        <p className="text-xs sm:text-sm text-indigo-300 font-medium">
-                          {current.role}
+                        <p className="text-xs text-indigo-300 font-medium truncate">
+                          {item.role}
                         </p>
-                        <p className="text-[11px] text-slate-400 mt-0.5">
-                          Empresa / Projeto: <span className="text-slate-300">{current.companyOrProject}</span>
+                        <p className="text-[11px] text-slate-400 truncate mt-0.5">
+                          {item.companyOrProject}
                         </p>
                       </div>
                     </div>
 
-                    {/* Botão para visitar o projeto real no ar */}
-                    {current.projectUrl && (
+                    {/* Ações do Card */}
+                    <div className="flex items-center justify-between gap-2 pt-1">
+                      {item.projectUrl && (
+                        <a
+                          href={item.projectUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center text-center gap-1.5 text-xs font-semibold text-slate-300 hover:text-white transition-colors py-1 group/link"
+                          title={`Ver projeto real de ${item.name} no ar`}
+                        >
+                          <span className="text-center">Acessar projeto</span>
+                          <ExternalLink className="w-3 h-3 text-indigo-400 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
+                        </a>
+                      )}
+
                       <a
-                        href={current.projectUrl}
+                        href={whatsappUrl(
+                          `Olá! Vi o depoimento de *${item.name}* (${item.companyOrProject}) no site da *ēloSites* e gostaria de solicitar um orçamento para o meu negócio!`
+                        )}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center text-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-slate-200 hover:text-white border border-white/[0.1] hover:border-indigo-400/40 transition-all font-semibold text-xs sm:text-sm shrink-0 shadow-md group cursor-pointer"
+                        className="inline-flex items-center justify-center text-center gap-1 text-[11px] font-semibold text-emerald-400 hover:text-emerald-300 transition-colors py-1"
+                        title="Falar sobre projeto similar"
                       >
-                        <span className="text-center">Acessar projeto no ar</span>
-                        <ExternalLink className="w-3.5 h-3.5 text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                        <WhatsAppIcon className="w-3 h-3 text-emerald-400" />
+                        <span className="text-center">Quero similar</span>
                       </a>
-                    )}
+                    </div>
                   </div>
-                </motion.div>
-              </AnimatePresence>
-            </div>
+                </motion.article>
+              );
+            })}
           </div>
+        )}
 
-          {/* Controles de Navegação do Carrossel */}
-          <div className="mt-8 flex items-center justify-between gap-4">
-            {/* Botão Anterior */}
-            <button
-              type="button"
-              onClick={handlePrev}
-              aria-label="Depoimento anterior"
-              className="inline-flex items-center justify-center text-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-900/90 hover:bg-slate-800 text-white border border-white/[0.08] shadow-lg hover:shadow-[0_0_18px_rgba(99,102,241,0.4)] transition-all cursor-pointer"
-            >
-              <ChevronLeft className="w-4 h-4 text-indigo-400" />
-              <span className="hidden sm:inline text-center">Anterior</span>
-            </button>
+        {/* MODO 2: CARROSSEL DE TESTEMUNHOS COM ANIMAÇÃO AO ROLAR */}
+        {viewMode === 'carousel' && (
+          <motion.div
+            ref={carouselRef}
+            data-testimonials-carousel
+            initial={
+              prefersReduced
+                ? { opacity: 1, y: 0 }
+                : { opacity: 0, y: 24 }
+            }
+            whileInView={
+              prefersReduced
+                ? { opacity: 1, y: 0 }
+                : { opacity: 1, y: 0 }
+            }
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{
+              duration: prefersReduced ? 0 : 0.45,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            className="relative max-w-4xl mx-auto"
+            role="region"
+            aria-roledescription="carousel"
+            aria-label="Carrossel de Depoimentos"
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+          >
+            {/* Card Principal */}
+            <div className="relative rounded-3xl p-[1px] bg-gradient-to-b from-indigo-500/35 via-purple-500/20 to-white/[0.06] shadow-2xl shadow-indigo-950/40">
+              <div className="rounded-3xl p-6 sm:p-10 lg:p-12 bg-[#0B101D]/95 backdrop-blur-xl">
+                <AnimatePresence mode="wait" custom={direction}>
+                  <motion.div
+                    key={current.id}
+                    custom={direction}
+                    initial={{ opacity: 0, x: prefersReduced ? 0 : (direction > 0 ? 16 : -16) }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: prefersReduced ? 0 : (direction > 0 ? -16 : 16) }}
+                    transition={{ duration: prefersReduced ? 0 : 0.24, ease: [0.23, 1, 0.32, 1] }}
+                    className="space-y-6 sm:space-y-8"
+                  >
+                    {/* Top Bar do Card */}
+                    <div className="flex flex-wrap items-center justify-between gap-3 pb-5 border-b border-white/[0.08]">
+                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-950/70 border border-indigo-400/30 text-indigo-300 text-xs font-semibold">
+                        <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" aria-hidden="true" />
+                        <span>{current.category}</span>
+                      </div>
 
-            {/* Indicadores de Paginação / Pontos */}
-            <div className="flex items-center gap-2.5" role="tablist" aria-label="Slides do carrossel">
-              {testimonials.map((t, idx) => (
-                <button
-                  key={t.id}
-                  type="button"
-                  role="tab"
-                  aria-selected={currentIndex === idx}
-                  aria-label={`Ir para avaliação de ${t.name}`}
-                  onClick={() => goToIndex(idx)}
-                  className={`transition-all duration-300 rounded-full cursor-pointer ${
-                    currentIndex === idx
-                      ? 'w-8 h-2.5 bg-indigo-500 shadow-[0_0_12px_rgba(99,102,241,0.8)]'
-                      : 'w-2.5 h-2.5 bg-slate-700 hover:bg-slate-500'
-                  }`}
-                />
-              ))}
+                      <div className="flex items-center gap-3">
+                        {/* Classificação com 5 estrelas */}
+                        <div className="flex items-center gap-0.5 text-amber-400">
+                          {[...Array(current.rating)].map((_, i) => (
+                            <Star key={i} className="w-4 h-4 fill-amber-400" aria-hidden="true" />
+                          ))}
+                        </div>
+
+                        {/* Contador de slides */}
+                        <div className="font-mono text-xs text-slate-400 px-2.5 py-1 rounded-lg bg-slate-900 border border-white/[0.06]">
+                          0{currentIndex + 1} / 0{testimonials.length}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Citação do Cliente */}
+                    <div className="relative">
+                      <Quote className="w-10 h-10 text-indigo-400/30 mb-3" aria-hidden="true" />
+                      <blockquote className="text-base sm:text-lg lg:text-xl text-slate-100 font-normal leading-relaxed italic">
+                        "{current.quote}"
+                      </blockquote>
+                    </div>
+
+                    {/* Rodapé do Card com Dados do Cliente e Link para o Site */}
+                    <div className="pt-6 border-t border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+                      <div className="flex items-center gap-3.5">
+                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-600/30 to-purple-600/30 border border-indigo-400/40 flex items-center justify-center text-indigo-200 font-bold font-mono text-base shadow-inner shrink-0">
+                          {getInitials(current.name)}
+                        </div>
+                        <div>
+                          <h3 className="font-display text-lg sm:text-xl font-bold text-white tracking-tight">
+                            {current.name}
+                          </h3>
+                          <p className="text-xs sm:text-sm text-indigo-300 font-medium">
+                            {current.role}
+                          </p>
+                          <p className="text-[11px] text-slate-400 mt-0.5">
+                            Empresa / Projeto: <span className="text-slate-300">{current.companyOrProject}</span>
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Botão para visitar o projeto real no ar */}
+                      {current.projectUrl && (
+                        <a
+                          href={current.projectUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center text-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-slate-200 hover:text-white border border-white/[0.1] hover:border-indigo-400/40 transition-all font-semibold text-xs sm:text-sm shrink-0 shadow-md group cursor-pointer"
+                        >
+                          <span className="text-center">Acessar projeto no ar</span>
+                          <ExternalLink className="w-3.5 h-3.5 text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                        </a>
+                      )}
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
             </div>
 
-            {/* Botão Próximo */}
-            <button
-              type="button"
-              onClick={handleNext}
-              aria-label="Próximo depoimento"
-              className="inline-flex items-center justify-center text-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-900/90 hover:bg-slate-800 text-white border border-white/[0.08] shadow-lg hover:shadow-[0_0_18px_rgba(99,102,241,0.4)] transition-all cursor-pointer"
-            >
-              <span className="hidden sm:inline text-center">Próximo</span>
-              <ChevronRight className="w-4 h-4 text-indigo-400" />
-            </button>
-          </div>
-
-          {/* Bloco de Ação Rápida no Rodapé dos Testemunhos */}
-          <div className="mt-12 p-6 rounded-2xl bg-gradient-to-r from-indigo-950/40 via-slate-900/60 to-purple-950/40 border border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-6">
-            <div className="space-y-1 text-center sm:text-left">
-              <h4 className="font-display text-base sm:text-lg font-bold text-white">
-                Quer um site com essa mesma qualidade para o seu negócio?
-              </h4>
-              <p className="text-xs sm:text-sm text-slate-300">
-                Fale diretamente com quem vai desenvolver seu site, com prazos claros e condições transparentes.
-              </p>
-            </div>
-
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto shrink-0">
-              {onNavigateToServices && (
-                <button
-                  type="button"
-                  onClick={onNavigateToServices}
-                  className="inline-flex items-center justify-center text-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-200 bg-slate-800/80 hover:bg-slate-700/80 border border-white/[0.08] transition-all cursor-pointer"
-                >
-                  <span className="text-center">Ver Serviços & Condições</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-              )}
-              <a
-                href={whatsappUrl(SITE_CONFIG.portfolioWhatsappMessage)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="cta-primary inline-flex items-center justify-center text-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-white transition-all shadow-lg shadow-indigo-600/30 cursor-pointer"
+            {/* Controles de Navegação do Carrossel */}
+            <div className="mt-8 flex items-center justify-between gap-4">
+              {/* Botão Anterior */}
+              <button
+                type="button"
+                onClick={handlePrev}
+                aria-label="Depoimento anterior"
+                className="inline-flex items-center justify-center text-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-900/90 hover:bg-slate-800 text-white border border-white/[0.08] shadow-lg hover:shadow-[0_0_18px_rgba(99,102,241,0.4)] transition-all cursor-pointer"
               >
-                <WhatsAppIcon className="w-4 h-4 text-emerald-300" />
-                <span className="text-center">Conversar no WhatsApp</span>
-              </a>
+                <ChevronLeft className="w-4 h-4 text-indigo-400" />
+                <span className="hidden sm:inline text-center">Anterior</span>
+              </button>
+
+              {/* Indicadores de Paginação / Pontos */}
+              <div className="flex items-center gap-2.5" role="tablist" aria-label="Slides do carrossel">
+                {testimonials.map((t, idx) => (
+                  <button
+                    key={t.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={currentIndex === idx}
+                    aria-label={`Ir para avaliação de ${t.name}`}
+                    onClick={() => goToIndex(idx)}
+                    className={`transition-all duration-300 rounded-full cursor-pointer ${
+                      currentIndex === idx
+                        ? 'w-8 h-2.5 bg-indigo-500 shadow-[0_0_12px_rgba(99,102,241,0.8)]'
+                        : 'w-2.5 h-2.5 bg-slate-700 hover:bg-slate-500'
+                    }`}
+                  />
+                ))}
+              </div>
+
+              {/* Botão Próximo */}
+              <button
+                type="button"
+                onClick={handleNext}
+                aria-label="Próximo depoimento"
+                className="inline-flex items-center justify-center text-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-900/90 hover:bg-slate-800 text-white border border-white/[0.08] shadow-lg hover:shadow-[0_0_18px_rgba(99,102,241,0.4)] transition-all cursor-pointer"
+              >
+                <span className="hidden sm:inline text-center">Próximo</span>
+                <ChevronRight className="w-4 h-4 text-indigo-400" />
+              </button>
             </div>
+          </motion.div>
+        )}
+
+        {/* Bloco de Ação Rápida no Rodapé dos Testemunhos com Animação Suave */}
+        <motion.div
+          initial={
+            prefersReduced
+              ? { opacity: 1, y: 0 }
+              : { opacity: 0, y: 20 }
+          }
+          whileInView={
+            prefersReduced
+              ? { opacity: 1, y: 0 }
+              : { opacity: 1, y: 0 }
+          }
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{
+            duration: prefersReduced ? 0 : 0.45,
+            delay: prefersReduced ? 0 : 0.25,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+          className="mt-12 p-6 rounded-2xl bg-gradient-to-r from-indigo-950/40 via-slate-900/60 to-purple-950/40 border border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-6"
+        >
+          <div className="space-y-1 text-center sm:text-left">
+            <h4 className="font-display text-base sm:text-lg font-bold text-white">
+              Quer um site com essa mesma qualidade para o seu negócio?
+            </h4>
+            <p className="text-xs sm:text-sm text-slate-300">
+              Fale diretamente com quem vai desenvolver seu site, com prazos claros e condições transparentes.
+            </p>
           </div>
-        </div>
+
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto shrink-0">
+            {onNavigateToServices && (
+              <button
+                type="button"
+                onClick={onNavigateToServices}
+                className="inline-flex items-center justify-center text-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-200 bg-slate-800/80 hover:bg-slate-700/80 border border-white/[0.08] transition-all cursor-pointer"
+              >
+                <span className="text-center">Ver Serviços & Condições</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            )}
+            <a
+              href={whatsappUrl(SITE_CONFIG.portfolioWhatsappMessage)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="cta-primary inline-flex items-center justify-center text-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-white transition-all shadow-lg shadow-indigo-600/30 cursor-pointer"
+            >
+              <WhatsAppIcon className="w-4 h-4 text-emerald-300" />
+              <span className="text-center">Conversar no WhatsApp</span>
+            </a>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

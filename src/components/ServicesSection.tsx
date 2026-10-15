@@ -130,7 +130,7 @@ const SERVICES: ServiceCategory[] = [
       'Criação de identidade visual (logo) do zero',
       'Funcionalidades fora do escopo combinado no orçamento',
     ],
-    ctaLabel: 'Conversar sobre Projeto Sob Medida',
+    ctaLabel: 'Conversar sobre Projeto Personalizado',
     ctaId: 'service-cta-personalizado',
     ctaMessage: SITE_CONFIG.personalizadoWhatsappMessage,
   },
@@ -197,6 +197,14 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                     prefersReduced
                       ? { opacity: 1, scale: 1, y: 0 }
                       : { opacity: 1, scale: 1, y: 0 }
+                  }
+                  whileHover={
+                    prefersReduced
+                      ? undefined
+                      : {
+                          scale: 1.02,
+                          transition: { duration: 0.22, ease: [0.22, 1, 0.36, 1] },
+                        }
                   }
                   viewport={{ once: true, amount: 0.15 }}
                   transition={{
@@ -330,6 +338,14 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                     ? { opacity: 1, scale: 1, y: 0 }
                     : { opacity: 1, scale: 1, y: 0 }
                 }
+                whileHover={
+                  prefersReduced
+                    ? undefined
+                    : {
+                        scale: 1.02,
+                        transition: { duration: 0.22, ease: [0.22, 1, 0.36, 1] },
+                      }
+                }
                 viewport={{ once: true, amount: 0.15 }}
                 transition={{
                   duration: prefersReduced ? 0 : 0.4,
@@ -365,6 +381,14 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                   prefersReduced
                     ? { opacity: 1, scale: 1, y: 0 }
                     : { opacity: 1, scale: 1, y: 0 }
+                }
+                whileHover={
+                  prefersReduced
+                    ? undefined
+                    : {
+                        scale: 1.02,
+                        transition: { duration: 0.22, ease: [0.22, 1, 0.36, 1] },
+                      }
                 }
                 viewport={{ once: true, amount: 0.15 }}
                 transition={{
@@ -407,6 +431,14 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                     ? { opacity: 1, scale: 1, y: 0 }
                     : { opacity: 1, scale: 1, y: 0 }
                 }
+                whileHover={
+                  prefersReduced
+                    ? undefined
+                    : {
+                        scale: 1.02,
+                        transition: { duration: 0.22, ease: [0.22, 1, 0.36, 1] },
+                      }
+                }
                 viewport={{ once: true, amount: 0.15 }}
                 transition={{
                   duration: prefersReduced ? 0 : 0.4,
@@ -442,6 +474,14 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                   prefersReduced
                     ? { opacity: 1, scale: 1, y: 0 }
                     : { opacity: 1, scale: 1, y: 0 }
+                }
+                whileHover={
+                  prefersReduced
+                    ? undefined
+                    : {
+                        scale: 1.02,
+                        transition: { duration: 0.22, ease: [0.22, 1, 0.36, 1] },
+                      }
                 }
                 viewport={{ once: true, amount: 0.15 }}
                 transition={{

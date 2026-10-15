@@ -155,7 +155,7 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
             className="cta-primary inline-flex items-center justify-center text-center gap-2.5 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl text-sm sm:text-base font-bold text-white shadow-lg shadow-indigo-600/30 transition-all cursor-pointer"
           >
             <WhatsAppIcon className="w-4 h-4 text-emerald-300" />
-            <span>Falar sobre diferenciais para o meu negócio</span>
+            <span>Falar sobre um site para meu negócio</span>
           </a>
         </div>
       </div>
