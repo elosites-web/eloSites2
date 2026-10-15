@@ -79,13 +79,12 @@ export const FloatingWhatsApp: React.FC = () => {
           <motion.div
             key="whatsapp-popup-tooltip"
             id="whatsapp-popup-tooltip"
-            initial={{ opacity: 0, y: 24, scale: 0.92 }}
+            initial={{ opacity: 0, y: 8, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 12, scale: 0.95, transition: { duration: 0.2, ease: 'easeOut' } }}
+            exit={{ opacity: 0, y: 8, scale: 0.95 }}
             transition={{
-              opacity: { duration: 0.38, ease: [0.3, 0, 0.2, 1] },
-              y: { duration: 0.45, ease: [0.22, 1.15, 0.36, 1] },
-              scale: { duration: 0.42, ease: [0.22, 1.08, 0.36, 1] },
+              duration: 0.18,
+              ease: [0.23, 1, 0.32, 1],
             }}
             className="mb-3.5 w-[min(285px,calc(100vw-2rem))] bg-[#0B101D]/98 border border-indigo-500/35 text-white rounded-2xl p-4 shadow-2xl shadow-black/90 backdrop-blur-xl pointer-events-auto relative origin-bottom-right z-50 ring-1 ring-white/[0.08]"
           >

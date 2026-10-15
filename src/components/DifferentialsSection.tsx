@@ -97,7 +97,7 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
             return (
               <article
                 key={item.title}
-                className="surface-card h-full w-full rounded-2xl p-5 sm:p-6 lg:p-8 bg-[#0A0E17]/90 border border-white/[0.08] hover:border-indigo-500/35 transition-all duration-300 shadow-xl shadow-black/40 flex flex-col justify-between group"
+                className="surface-card glass-panel glass-card-interactive h-full w-full rounded-2xl p-5 sm:p-6 lg:p-8 flex flex-col justify-between group"
               >
                 <div>
                   <div className="flex items-center justify-between mb-5">

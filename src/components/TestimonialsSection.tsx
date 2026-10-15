@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { WhatsAppIcon } from './WhatsAppIcon';
 import { SITE_CONFIG, whatsappUrl } from '../types';
+import { shouldReduceMedia } from '../mediaPrefs';
 
 export interface TestimonialItem {
   id: string;
@@ -231,10 +232,10 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
                 <motion.div
                   key={current.id}
                   custom={direction}
-                  initial={{ opacity: 0, x: direction > 0 ? 30 : -30 }}
+                  initial={{ opacity: 0, x: shouldReduceMedia() ? 0 : (direction > 0 ? 16 : -16) }}
                   animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: direction > 0 ? -30 : 30 }}
-                  transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                  exit={{ opacity: 0, x: shouldReduceMedia() ? 0 : (direction > 0 ? -16 : 16) }}
+                  transition={{ duration: 0.24, ease: [0.23, 1, 0.32, 1] }}
                   className="space-y-6 sm:space-y-8"
                 >
                   {/* Top Bar do Card */}

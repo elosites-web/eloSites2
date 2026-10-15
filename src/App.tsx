@@ -19,6 +19,7 @@ import {
   BookingSkeleton,
 } from './components/SectionSkeletons';
 import { ScreenId, SCREENS } from './types';
+import { shouldReduceMedia } from './mediaPrefs';
 import {
   ChevronLeft,
   ChevronRight,
@@ -248,84 +249,77 @@ export default function App() {
         onNextScreen={handleNext}
       />
 
-      {/* Conteúdo Principal — Exibição Estratégica da Tela Ativa com Transição Fade-in-up Fluida */}
+      {/* Conteúdo Principal — Exibição Estratégica da Tela Ativa com Transição Fluida e Responsiva */}
       <main className="flex-1 relative z-10 overflow-x-hidden px-[2px] sm:px-1" id="main-content" tabIndex={-1}>
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={currentScreen}
-            initial={{ opacity: 0, y: 28 }}
+            initial={{ opacity: 0, y: shouldReduceMedia() ? 0 : 12 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
-            transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+            exit={{ opacity: 0, y: shouldReduceMedia() ? 0 : -12 }}
+            transition={{ duration: 0.22, ease: [0.23, 1, 0.32, 1] }}
             className="w-full"
           >
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.48, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
-              className="w-full"
-            >
-              {/* TELA 01: Início & Apresentação */}
-              {currentScreen === 'inicio' && (
-                <Hero
-                  onNavigateToPortfolio={() => navigateToScreen('portfolio')}
-                  onNavigateToServices={() => navigateToScreen('servicos')}
-                />
-              )}
+            {/* TELA 01: Início & Apresentação */}
+            {currentScreen === 'inicio' && (
+              <Hero
+                onNavigateToPortfolio={() => navigateToScreen('portfolio')}
+                onNavigateToServices={() => navigateToScreen('servicos')}
+              />
+            )}
 
-              {/* TELA 02: Portfólio de Projetos Reais & Depoimentos (Social Proof) */}
-              {currentScreen === 'portfolio' && (
-                <SectionErrorBoundary>
-                  <Suspense fallback={<PortfolioSkeleton />}>
-                    <PortfolioSection
-                      onNavigateToServices={() => navigateToScreen('servicos')}
-                      onNavigateToOrcamento={() => navigateToScreen('orcamento')}
-                    />
-                    <TestimonialsSection
-                      onNavigateToServices={() => navigateToScreen('servicos')}
-                    />
-                  </Suspense>
-                </SectionErrorBoundary>
-              )}
+            {/* TELA 02: Portfólio de Projetos Reais & Depoimentos (Social Proof) */}
+            {currentScreen === 'portfolio' && (
+              <SectionErrorBoundary>
+                <Suspense fallback={<PortfolioSkeleton />}>
+                  <PortfolioSection
+                    onNavigateToServices={() => navigateToScreen('servicos')}
+                    onNavigateToOrcamento={() => navigateToScreen('orcamento')}
+                  />
+                  <TestimonialsSection
+                    onNavigateToServices={() => navigateToScreen('servicos')}
+                  />
+                </Suspense>
+              </SectionErrorBoundary>
+            )}
 
-              {/* TELA 03: Serviços & Condições Comerciais */}
-              {currentScreen === 'servicos' && (
-                <SectionErrorBoundary>
-                  <Suspense fallback={<ServicesSkeleton />}>
-                    <ServicesSection onNavigateToOrcamento={() => navigateToScreen('orcamento')} />
-                  </Suspense>
-                </SectionErrorBoundary>
-              )}
+            {/* TELA 03: Serviços & Condições Comerciais */}
+            {currentScreen === 'servicos' && (
+              <SectionErrorBoundary>
+                <Suspense fallback={<ServicesSkeleton />}>
+                  <ServicesSection onNavigateToOrcamento={() => navigateToScreen('orcamento')} />
+                </Suspense>
+              </SectionErrorBoundary>
+            )}
 
-              {/* TELA 04: Processo em 4 Etapas */}
-              {currentScreen === 'processo' && <ProcessSection />}
+            {/* TELA 04: Processo em 4 Etapas */}
+            {currentScreen === 'processo' && <ProcessSection />}
 
-              {/* TELA 05: Diferenciais */}
-              {currentScreen === 'diferenciais' && (
-                <SectionErrorBoundary>
-                  <Suspense fallback={<DifferentialsSkeleton />}>
-                    <DifferentialsSection onNavigateToPortfolio={() => navigateToScreen('portfolio')} />
-                  </Suspense>
-                </SectionErrorBoundary>
-              )}
+            {/* TELA 05: Diferenciais */}
+            {currentScreen === 'diferenciais' && (
+              <SectionErrorBoundary>
+                <Suspense fallback={<DifferentialsSkeleton />}>
+                  <DifferentialsSection onNavigateToPortfolio={() => navigateToScreen('portfolio')} />
+                </Suspense>
+              </SectionErrorBoundary>
+            )}
 
-              {/* TELA 06: Briefing & Agendamento */}
-              {currentScreen === 'orcamento' && (
-                <SectionErrorBoundary>
-                  <Suspense fallback={<BookingSkeleton />}>
-                    <ProjectBriefBookingSection onOpenPrivacy={() => setLegalModal('privacy')} />
-                  </Suspense>
-                </SectionErrorBoundary>
-              )}
+            {/* TELA 06: Briefing & Agendamento */}
+            {currentScreen === 'orcamento' && (
+              <SectionErrorBoundary>
+                <Suspense fallback={<BookingSkeleton />}>
+                  <ProjectBriefBookingSection onOpenPrivacy={() => setLegalModal('privacy')} />
+                </Suspense>
+              </SectionErrorBoundary>
+            )}
 
-              {/* TELA 07: Perguntas Frequentes (FAQ) */}
-              {currentScreen === 'faq' && <FaqSection />}
+            {/* TELA 07: Perguntas Frequentes (FAQ) */}
+            {currentScreen === 'faq' && <FaqSection />}
 
-              {/* TELA 08: Contato & Atendimento Direto */}
-              {currentScreen === 'contato' && (
-                <ContactCtaSection onNavigateToOrcamento={() => navigateToScreen('orcamento')} />
-              )}
-            </motion.div>
+            {/* TELA 08: Contato & Atendimento Direto */}
+            {currentScreen === 'contato' && (
+              <ContactCtaSection onNavigateToOrcamento={() => navigateToScreen('orcamento')} />
+            )}
           </motion.div>
         </AnimatePresence>
       </main>

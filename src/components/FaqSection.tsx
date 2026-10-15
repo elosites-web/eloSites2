@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence, type Variants } from 'motion/react';
 import { ChevronDown, HelpCircle } from 'lucide-react';
 import { FaqItem, SITE_CONFIG, whatsappUrl } from '../types';
+import { shouldReduceMedia } from '../mediaPrefs';
 
 export const FaqSection: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
@@ -57,13 +58,15 @@ export const FaqSection: React.FC = () => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
+  const isReduced = shouldReduceMedia();
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.08,
-        delayChildren: 0.06,
+        staggerChildren: isReduced ? 0 : 0.05,
+        delayChildren: isReduced ? 0 : 0.03,
       },
     },
   };
@@ -71,14 +74,14 @@ export const FaqSection: React.FC = () => {
   const itemVariants: Variants = {
     hidden: {
       opacity: 0,
-      y: 20,
+      y: isReduced ? 0 : 12,
     },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.45,
-        ease: [0.22, 1, 0.36, 1],
+        duration: isReduced ? 0.2 : 0.35,
+        ease: [0.23, 1, 0.32, 1] as const,
       },
     },
   };
@@ -118,7 +121,7 @@ export const FaqSection: React.FC = () => {
               <motion.div
                 key={faq.id}
                 variants={itemVariants}
-                className={`rounded-xl overflow-hidden transition-all duration-200 ${
+                className={`rounded-xl overflow-hidden transition-colors duration-200 ${
                   isOpen
                     ? 'border border-indigo-400/35 bg-slate-900/85 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]'
                     : 'border border-white/[0.07] bg-slate-900/55 hover:border-indigo-400/25'
@@ -131,13 +134,13 @@ export const FaqSection: React.FC = () => {
                     onClick={() => toggleFaq(index)}
                     aria-expanded={isOpen}
                     aria-controls={panelId}
-                    className="w-full p-3.5 min-[360px]:p-5 sm:p-6 text-left flex items-center justify-between gap-3 min-[360px]:gap-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-inset min-h-12 transition-colors duration-200 pressable"
+                    className="w-full p-3.5 min-[360px]:p-5 sm:p-6 text-left flex items-center justify-between gap-3 min-[360px]:gap-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-inset min-h-12 transition-colors duration-200 pressable cursor-pointer"
                   >
                     <span className="font-display text-base sm:text-lg font-semibold text-white min-w-0 text-pretty text-left">
                       {faq.question}
                     </span>
                     <span
-                      className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+                      className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-transform duration-260 ease-[cubic-bezier(0.23,1,0.32,1)] ${
                         isOpen
                           ? 'rotate-180 bg-indigo-950 text-indigo-300'
                           : 'bg-slate-800/90 text-slate-300'
@@ -159,25 +162,25 @@ export const FaqSection: React.FC = () => {
                         opacity: 1,
                         height: 'auto',
                         transition: {
-                          height: { duration: 0.28, ease: [0.22, 1, 0.36, 1] },
-                          opacity: { duration: 0.24, delay: 0.04, ease: 'easeOut' },
+                          height: { duration: 0.26, ease: [0.23, 1, 0.32, 1] },
+                          opacity: { duration: 0.2, delay: 0.03, ease: 'easeOut' },
                         },
                       }}
                       exit={{
                         opacity: 0,
                         height: 0,
                         transition: {
-                          height: { duration: 0.2, ease: [0.32, 0, 0.67, 0] },
-                          opacity: { duration: 0.15 },
+                          height: { duration: 0.2, ease: [0.23, 1, 0.32, 1] },
+                          opacity: { duration: 0.14 },
                         },
                       }}
                       className="overflow-hidden"
                     >
                       <motion.div
-                        initial={{ opacity: 0, y: 6 }}
+                        initial={{ opacity: 0, y: isReduced ? 0 : 4 }}
                         animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -4 }}
-                        transition={{ duration: 0.22, ease: 'easeOut' }}
+                        exit={{ opacity: 0, y: isReduced ? 0 : -4 }}
+                        transition={{ duration: 0.2, ease: 'easeOut' }}
                         className="px-5 pb-5 sm:px-6 sm:pb-6 text-sm sm:text-base text-slate-300/95 leading-relaxed border-t border-white/[0.06] pt-4"
                       >
                         {faq.answer}

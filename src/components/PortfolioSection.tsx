@@ -118,7 +118,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   const [viewMode, setViewMode] = useState<ViewMode>('composite');
 
   return (
-    <article className="surface-card flex flex-col h-full rounded-2xl overflow-hidden border border-white/[0.08] hover:border-indigo-400/50 bg-[#0A0E17]/95 hover:-translate-y-2 hover:shadow-2xl hover:shadow-indigo-500/20 transition-all duration-300 group shadow-xl shadow-black/40">
+    <article className="surface-card glass-panel glass-card-interactive flex flex-col h-full rounded-2xl overflow-hidden group">
       {/* Top Header / Informações */}
       <div className="p-6 sm:p-7 border-b border-white/[0.06] bg-slate-950/60 space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-2">

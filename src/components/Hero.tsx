@@ -1,7 +1,8 @@
 import React from 'react';
-import { motion } from 'motion/react';
+import { motion, type Variants } from 'motion/react';
 import { WhatsAppIcon } from './WhatsAppIcon';
 import { SITE_CONFIG, whatsappUrl } from '../types';
+import { shouldReduceMedia } from '../mediaPrefs';
 import { ArrowDown, CheckCircle2, Code2, Smartphone } from 'lucide-react';
 import { Interactive3DCard } from './Interactive3DCard';
 
@@ -37,6 +38,31 @@ export const Hero: React.FC<HeroProps> = ({
     'Autônomos & Negócios Locais',
   ];
 
+  const isReduced = shouldReduceMedia();
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: isReduced ? 0 : 0.05,
+        delayChildren: isReduced ? 0 : 0.02,
+      },
+    },
+  };
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: isReduced ? 0 : 12 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: isReduced ? 0.2 : 0.4,
+        ease: [0.23, 1, 0.32, 1] as const,
+      },
+    },
+  };
+
   return (
     <section
       id="inicio"
@@ -50,37 +76,37 @@ export const Hero: React.FC<HeroProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           {/* Coluna de Conteúdo Principal — Centralizado no mobile (<lg) e alinhado à esquerda no desktop (>=lg) */}
           <motion.div
-            initial={{ opacity: 0, y: 22 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
             className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left space-y-6 sm:space-y-8"
           >
             {/* Tag de Posicionamento */}
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-indigo-950/60 border border-indigo-800/50 text-indigo-300 text-xs sm:text-sm font-medium mx-auto lg:mx-0">
+            <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-indigo-950/60 border border-indigo-800/50 text-indigo-300 text-xs sm:text-sm font-medium mx-auto lg:mx-0">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               <span>
                 Sites com <span className="text-[#a855f7] font-semibold">SEO Técnico</span> & Foco em Conversão
               </span>
-            </div>
+            </motion.div>
 
             {/* Headline Principal — Grande escala tanto no mobile quanto no desktop */}
-            <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-white leading-[1.15] text-balance">
+            <motion.h1 variants={itemVariants} className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-white leading-[1.15] text-balance">
               Criação de sites institucionais e landing pages profissionais sob medida com{' '}
               <span className="text-[#a855f7] underline decoration-[#a855f7]/50 underline-offset-8">
                 SEO técnico
               </span>{' '}
               e foco em conversão.
-            </h1>
+            </motion.h1>
 
             {/* Subtítulo Direto e Comercial */}
-            <p className="text-sm sm:text-base lg:text-lg text-slate-300 font-normal leading-relaxed max-w-2xl mx-auto lg:mx-0">
+            <motion.p variants={itemVariants} className="text-sm sm:text-base lg:text-lg text-slate-300 font-normal leading-relaxed max-w-2xl mx-auto lg:mx-0">
               Desenvolvemos a presença digital completa e estratégica para o seu negócio. Sites institucionais
               e landing pages sob medida, com alta velocidade, arquitetura semântica para o Google e estrutura
               otimizada para transformar visitantes em contatos no seu WhatsApp.
-            </p>
+            </motion.p>
 
             {/* Segmentos Atendidos */}
-            <div className="pt-1 w-full text-center lg:text-left">
+            <motion.div variants={itemVariants} className="pt-1 w-full text-center lg:text-left">
               <span className="text-xs uppercase tracking-wider text-slate-400 font-medium block mb-2.5 text-center lg:text-left">
                 Desenvolvimento sob medida para:
               </span>
@@ -94,16 +120,16 @@ export const Hero: React.FC<HeroProps> = ({
                   </span>
                 ))}
               </div>
-            </div>
+            </motion.div>
 
             {/* Ações / CTAs */}
-            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 w-full sm:w-auto">
+            <motion.div variants={itemVariants} className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 w-full sm:w-auto">
               <a
                 id="hero-cta-whatsapp"
                 href={heroWhatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="cta-primary w-full sm:w-auto inline-flex items-center justify-center text-center gap-3 px-6 py-4 rounded-xl text-base font-semibold text-white transition-all duration-200 shadow-lg shadow-indigo-600/30 border border-indigo-400/30 active:scale-[0.98] group bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500"
+                className="cta-primary w-full sm:w-auto inline-flex items-center justify-center text-center gap-3 px-6 py-4 rounded-xl text-base font-semibold text-white shadow-lg shadow-indigo-600/30 border border-indigo-400/30 group bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500"
               >
                 <WhatsAppIcon className="w-5 h-5 text-emerald-300 group-hover:scale-110 transition-transform" />
                 <span className="text-center">Solicitar Orçamento no WhatsApp</span>
@@ -113,15 +139,15 @@ export const Hero: React.FC<HeroProps> = ({
                 id="hero-cta-portfolio"
                 href="#portfolio"
                 onClick={handleScrollToPortfolio}
-                className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-2 px-6 py-4 rounded-xl text-base font-semibold bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 text-slate-200 hover:text-white transition-colors"
+                className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-2 px-6 py-4 rounded-xl text-base font-semibold bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 text-slate-200 hover:text-white transition-colors active:scale-[0.97]"
               >
                 <span className="text-center">Ver Modelos no Ar</span>
                 <ArrowDown className="w-4 h-4 text-indigo-400" />
               </a>
-            </div>
+            </motion.div>
 
             {/* Micro-credenciais de confiabilidade */}
-            <div className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs text-slate-400 text-center lg:text-left">
+            <motion.div variants={itemVariants} className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs text-slate-400 text-center lg:text-left">
               <div className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                 <span>Arquitetura de alta conversão & código limpo</span>
@@ -136,14 +162,14 @@ export const Hero: React.FC<HeroProps> = ({
                 <CheckCircle2 className="w-4 h-4 text-indigo-400" />
                 <span>Design exclusivo sem templates genéricos</span>
               </div>
-            </div>
+            </motion.div>
           </motion.div>
 
           {/* Coluna Visual: Painel Estrutural do Processo com Interação 3D */}
           <motion.div
-            initial={{ opacity: 0, y: 26 }}
+            initial={{ opacity: 0, y: isReduced ? 0 : 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.54, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: isReduced ? 0.2 : 0.45, delay: isReduced ? 0 : 0.08, ease: [0.23, 1, 0.32, 1] }}
             className="lg:col-span-5"
           >
             <Interactive3DCard maxTilt={5}>

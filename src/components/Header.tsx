@@ -189,11 +189,11 @@ export const Header: React.FC<HeaderProps> = ({
           role="dialog"
           aria-modal="true"
           aria-label="Menu de Navegação das Telas ēloSites"
-          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 pt-20 sm:pt-24 bg-black/85 animate-in fade-in duration-200 overflow-y-auto"
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 pt-20 sm:pt-24 bg-black/85 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto"
           onClick={() => setIsMenuOpen(false)}
         >
           <div
-            className="relative w-full max-w-5xl bg-[#090D16] border border-white/[0.12] rounded-3xl p-5 sm:p-8 shadow-2xl shadow-black my-auto max-h-[92vh] flex flex-col justify-between overflow-y-auto"
+            className="relative w-full max-w-5xl glass-panel border border-white/[0.12] rounded-3xl p-5 sm:p-8 shadow-2xl shadow-black my-auto max-h-[92vh] flex flex-col justify-between overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Topbar do Modal */}

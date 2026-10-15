@@ -81,7 +81,7 @@ export const LegalModals: React.FC<LegalModalProps> = ({ isOpen, onClose, type }
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 animate-fade-in"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in"
       onClick={onClose}
     >
       <div
@@ -90,7 +90,7 @@ export const LegalModals: React.FC<LegalModalProps> = ({ isOpen, onClose, type }
         aria-modal="true"
         aria-labelledby="legal-modal-title"
         tabIndex={-1}
-        className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden text-slate-300"
+        className="glass-panel rounded-2xl w-full max-w-xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden text-slate-300"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}

@@ -182,7 +182,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
               return (
                 <article
                   key={service.id}
-                  className="surface-card relative rounded-2xl p-5 sm:p-6 lg:p-8 border border-white/[0.08] bg-[#0A0E17]/90 hover:border-indigo-500/35 transition-all duration-300 shadow-xl shadow-black/40 flex flex-col space-y-5 lg:space-y-0 lg:row-span-5 lg:grid lg:grid-rows-subgrid"
+                  className="surface-card glass-panel glass-card-interactive relative rounded-2xl p-5 sm:p-6 lg:p-8 flex flex-col space-y-5 lg:space-y-0 lg:row-span-5 lg:grid lg:grid-rows-subgrid"
                 >
                   {/* Linha 1: Topo do card + Título + Descrição */}
                   <div className="space-y-4 lg:pb-4">
@@ -297,7 +297,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
             {/* 4 Blocos de Regras Comerciais */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
               {/* Regra 1: 50% Entrada + 50% Final */}
-              <div className="p-5 sm:p-6 rounded-2xl bg-[#0b101c] border border-white/[0.08] hover:border-indigo-400/40 transition-all shadow-md flex flex-col justify-between h-full">
+              <div className="glass-panel glass-card-interactive p-5 sm:p-6 rounded-2xl flex flex-col justify-between h-full">
                 <div className="space-y-3">
                   <div className="w-10 h-10 rounded-xl bg-indigo-950/90 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
                     <Split className="w-5 h-5" />
@@ -315,7 +315,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
               </div>
 
               {/* Regra 2: 20% de Desconto à Vista */}
-              <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-b from-emerald-950/30 to-[#0b101c] border border-emerald-500/30 hover:border-emerald-400/50 transition-all shadow-md flex flex-col justify-between h-full">
+              <div className="glass-panel glass-card-interactive p-5 sm:p-6 rounded-2xl bg-gradient-to-b from-emerald-950/30 to-[#0b101c] border-emerald-500/30 flex flex-col justify-between h-full">
                 <div className="space-y-3">
                   <div className="w-10 h-10 rounded-xl bg-emerald-950/90 border border-emerald-500/40 flex items-center justify-center text-emerald-300">
                     <Percent className="w-5 h-5" />
@@ -338,7 +338,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
               </div>
 
               {/* Regra 3: Cartão até 5x sem juros */}
-              <div className="p-5 sm:p-6 rounded-2xl bg-[#0b101c] border border-white/[0.08] hover:border-indigo-400/40 transition-all shadow-md flex flex-col justify-between h-full">
+              <div className="glass-panel glass-card-interactive p-5 sm:p-6 rounded-2xl flex flex-col justify-between h-full">
                 <div className="space-y-3">
                   <div className="w-10 h-10 rounded-xl bg-indigo-950/90 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
                     <CreditCard className="w-5 h-5" />
@@ -356,7 +356,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
               </div>
 
               {/* Regra 4: Cartão de 6x a 12x */}
-              <div className="p-5 sm:p-6 rounded-2xl bg-[#0b101c] border border-white/[0.08] hover:border-indigo-400/40 transition-all shadow-md flex flex-col justify-between h-full">
+              <div className="glass-panel glass-card-interactive p-5 sm:p-6 rounded-2xl flex flex-col justify-between h-full">
                 <div className="space-y-3">
                   <div className="w-10 h-10 rounded-xl bg-indigo-950/90 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
                     <Calendar className="w-5 h-5" />
@@ -375,7 +375,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
             </div>
 
             {/* SIMULADOR INTERATIVO DE CONDIÇÕES */}
-            <div className="mt-8 p-6 sm:p-8 rounded-2xl bg-slate-950/80 border border-white/[0.09] shadow-2xl">
+            <div className="mt-8 p-6 sm:p-8 rounded-2xl glass-panel shadow-2xl">
               <div className="flex flex-col lg:flex-row items-center justify-between gap-6 pb-6 border-b border-white/[0.08]">
                 <div className="space-y-1 text-center lg:text-left">
                   <div className="inline-flex items-center gap-1.5 text-xs text-indigo-400 font-semibold uppercase">

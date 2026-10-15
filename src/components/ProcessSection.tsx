@@ -61,7 +61,7 @@ export const ProcessSection: React.FC = () => {
             return (
               <article
                 key={step.number}
-                className="surface-card h-full w-full rounded-2xl p-5 sm:p-6 lg:p-8 bg-[#0A0E17]/90 border border-white/[0.08] hover:border-indigo-500/35 transition-all duration-300 shadow-xl shadow-black/40 flex flex-col justify-between group"
+                className="surface-card glass-panel glass-card-interactive h-full w-full rounded-2xl p-5 sm:p-6 lg:p-8 flex flex-col justify-between group"
               >
                 <div>
                   <div className="flex items-center justify-between mb-6">
@@ -84,7 +84,7 @@ export const ProcessSection: React.FC = () => {
           })}
         </div>
 
-        <div className="mt-14 bg-slate-900/45 border border-white/[0.07] rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row items-center gap-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+        <div className="mt-14 glass-panel rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row items-center gap-6 shadow-xl">
           <div className="w-12 h-12 rounded-xl bg-indigo-950/80 border border-indigo-400/20 flex items-center justify-center text-indigo-300 shrink-0">
             <UserCheck className="w-6 h-6" aria-hidden="true" />
           </div>

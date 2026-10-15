@@ -67,7 +67,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
     >
       <div
         ref={dialogRef}
-        className="relative w-full max-w-4xl max-h-[92vh] bg-[#0A0E17] border border-white/[0.12] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-200"
+        className="relative w-full max-w-4xl max-h-[92vh] glass-panel border border-white/[0.12] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header fixo do Modal */}
