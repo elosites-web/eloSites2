@@ -46,7 +46,7 @@ export const Persistent3DBackground: React.FC = () => {
   const [shouldLoad, setShouldLoad] = useState(false);
 
   useEffect(() => {
-    if (shouldReduceMedia() || lowEndDevice() || !webglSupported()) return;
+    if (!webglSupported()) return;
 
     let cancelled = false;
     const start = () => {
@@ -55,8 +55,8 @@ export const Persistent3DBackground: React.FC = () => {
 
     const useIdle = typeof window.requestIdleCallback === 'function';
     const handle = useIdle
-      ? window.requestIdleCallback(start, { timeout: 2500 })
-      : window.setTimeout(start, 1200);
+      ? window.requestIdleCallback(start, { timeout: 1500 })
+      : window.setTimeout(start, 400);
 
     return () => {
       cancelled = true;

@@ -55,6 +55,13 @@ html {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
+}
+
+body {
+  overflow-x: clip;
+  width: 100%;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .font-display {
@@ -65,13 +72,22 @@ html {
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* Glass panel floating aesthetic */
+/* Glass panel floating aesthetic com aceleração por hardware e amortecimento de blur em telas móveis */
 .glass-panel {
   background-color: rgba(11, 16, 29, 0.88);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+  transform: translateZ(0);
+}
+
+@media (max-width: 768px) {
+  .glass-panel {
+    background-color: rgba(11, 16, 29, 0.94);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
 }
 
 /* Interactive Card Elevation with Cyan & Indigo Glow (Gated to fine pointer) */
@@ -80,6 +96,7 @@ html {
               border-color var(--dur-hover) var(--ease),
               box-shadow var(--dur-hover) var(--ease-out);
   will-change: transform;
+  transform: translateZ(0);
 }
 
 @media (hover: hover) and (pointer: fine) {

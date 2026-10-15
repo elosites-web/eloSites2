@@ -259,48 +259,48 @@ export default function App() {
 
   const currentMeta = SCREENS[currentIndex] || SCREENS[0];
 
-  // Variantes de transição refinadas com efeito slide-in lateral sofisticado e respeito estrito a prefers-reduced-motion
+  // Transição contínua e suave na diagonal em 12px solicitada pelo usuário
   const sectionTransitionVariants: Variants = {
     initial: (dir: number) => ({
       opacity: 0,
-      x: prefersReduced ? 0 : dir >= 0 ? 48 : -48,
-      scale: prefersReduced ? 1 : 0.992,
+      x: prefersReduced ? 0 : dir >= 0 ? 12 : -12,
+      y: prefersReduced ? 0 : dir >= 0 ? 12 : -12,
     }),
     animate: {
       opacity: 1,
       x: 0,
-      scale: 1,
+      y: 0,
       transition: {
         x: {
-          duration: prefersReduced ? 0 : 0.34,
+          duration: prefersReduced ? 0 : 0.22,
+          ease: [0.22, 1, 0.36, 1],
+        },
+        y: {
+          duration: prefersReduced ? 0 : 0.22,
           ease: [0.22, 1, 0.36, 1],
         },
         opacity: {
-          duration: prefersReduced ? 0.15 : 0.28,
+          duration: prefersReduced ? 0.15 : 0.2,
           ease: 'easeOut',
-        },
-        scale: {
-          duration: prefersReduced ? 0 : 0.34,
-          ease: [0.22, 1, 0.36, 1],
         },
       },
     },
     exit: (dir: number) => ({
       opacity: 0,
-      x: prefersReduced ? 0 : dir >= 0 ? -40 : 40,
-      scale: prefersReduced ? 1 : 0.992,
+      x: prefersReduced ? 0 : dir >= 0 ? -12 : 12,
+      y: prefersReduced ? 0 : dir >= 0 ? -12 : 12,
       transition: {
         x: {
-          duration: prefersReduced ? 0 : 0.24,
-          ease: [0.32, 0, 0.67, 0],
-        },
-        opacity: {
-          duration: prefersReduced ? 0.12 : 0.2,
+          duration: prefersReduced ? 0 : 0.16,
           ease: 'easeIn',
         },
-        scale: {
-          duration: prefersReduced ? 0 : 0.24,
-          ease: [0.32, 0, 0.67, 0],
+        y: {
+          duration: prefersReduced ? 0 : 0.16,
+          ease: 'easeIn',
+        },
+        opacity: {
+          duration: prefersReduced ? 0.12 : 0.15,
+          ease: 'easeIn',
         },
       },
     }),

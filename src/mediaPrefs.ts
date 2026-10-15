@@ -34,6 +34,20 @@ export function webglSupported(): boolean {
   }
 }
 
+export function isInAppBrowser(): boolean {
+  try {
+    const ua = navigator.userAgent || navigator.vendor || (window as unknown as { opera?: string }).opera || '';
+    return /FBAN|FBAV|Instagram|FB_IAB|FBSS|TikTok|musical_ly|Line\/|Snapchat/i.test(ua);
+  } catch {
+    return false;
+  }
+}
+
+export function getOptimalDpr(isMobile: boolean, inApp: boolean): number {
+  if (inApp || isMobile) return 1.0;
+  return Math.min(window.devicePixelRatio || 1, 1.35);
+}
+
 // true quando animações pesadas (scrub de frames, vídeo, 3D) NÃO devem rodar
 export function shouldReduceMedia(): boolean {
   return prefersReducedMotion() || saveDataEnabled();
