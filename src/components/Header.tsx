@@ -220,9 +220,9 @@ export const Header: React.FC<HeaderProps> = ({
                   type="button"
                   onClick={() => setIsMenuOpen(false)}
                   aria-label="Fechar menu de navegação"
-                  className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                  className="p-2 sm:p-2.5 rounded-xl text-white bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 border border-indigo-400/40 shadow-lg shadow-indigo-600/30 hover:shadow-[0_0_24px_rgba(99,102,241,0.55)] active:shadow-[0_0_32px_rgba(168,85,247,0.7)] hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 group"
                 >
-                  <X className="w-5 h-5" />
+                  <X className="w-5 h-5 text-white transition-transform duration-200 group-hover:scale-110" />
                 </button>
               </div>
             </div>

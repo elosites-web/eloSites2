@@ -97,10 +97,10 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
             return (
               <article
                 key={item.title}
-                className="surface-card glass-panel glass-card-interactive h-full w-full rounded-2xl p-5 sm:p-6 lg:p-8 flex flex-col justify-between group"
+                className="surface-card glass-panel glass-card-interactive h-full w-full rounded-2xl p-5 sm:p-6 md:p-8 flex flex-col justify-between group"
               >
                 <div>
-                  <div className="flex items-center justify-between mb-5">
+                  <div className="flex items-center justify-between gap-2.5 mb-5">
                     <div
                       className={`w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300 ${
                         item.isWhatsApp

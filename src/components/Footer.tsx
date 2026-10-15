@@ -43,26 +43,26 @@ export const Footer: React.FC<FooterProps> = ({
             <p className="text-slate-300 text-sm sm:text-base leading-relaxed max-w-sm">
               Criação de sites profissionais com SEO técnico e foco em conversão para pequenos negócios e profissionais liberais. Arquitetura moderna, código limpo e atendimento direto.
             </p>
-            <div className="flex flex-col items-start gap-2.5 pt-2">
+            <div className="flex flex-row flex-nowrap items-center gap-2 sm:gap-3 pt-2 w-full max-w-md">
               <a
                 id="footer-whatsapp-link"
                 href={footerWhatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center text-center gap-2 px-3.5 py-2 rounded-lg bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-300/40 text-white shadow-lg shadow-emerald-950/40 hover:shadow-[0_0_22px_rgba(37,211,102,0.65)] active:scale-[0.97] transition-transform duration-150 text-xs font-semibold tracking-wide cursor-pointer"
+                className="flex-1 min-w-0 inline-flex items-center justify-center text-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-2.5 rounded-lg bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-300/40 text-white shadow-lg shadow-emerald-950/40 hover:shadow-[0_0_22px_rgba(37,211,102,0.65)] active:scale-[0.97] transition-transform duration-150 text-[11px] sm:text-xs font-semibold tracking-wide cursor-pointer"
               >
-                <WhatsAppIcon className="w-4 h-4 text-white" />
-                <span className="text-white drop-shadow-sm text-center">Falar no Whatsapp</span>
+                <WhatsAppIcon className="w-4 h-4 text-white shrink-0" />
+                <span className="text-white drop-shadow-sm text-center truncate sm:whitespace-normal">Falar no WhatsApp</span>
               </a>
 
               {SITE_CONFIG.email && (
                 <a
                   id="footer-email-link"
                   href={`mailto:${SITE_CONFIG.email}`}
-                  className="inline-flex items-center justify-center text-center gap-2 px-3.5 py-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-indigo-500/50 hover:shadow-[0_0_15px_rgba(99,102,241,0.35)] transition-colors text-xs font-medium"
+                  className="flex-1 min-w-0 inline-flex items-center justify-center text-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-2.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-indigo-500/50 hover:shadow-[0_0_15px_rgba(99,102,241,0.35)] transition-colors text-[11px] sm:text-xs font-medium"
                 >
-                  <Mail className="w-4 h-4 text-indigo-400" />
-                  <span className="text-center">{SITE_CONFIG.email}</span>
+                  <Mail className="w-4 h-4 text-indigo-400 shrink-0" />
+                  <span className="text-center truncate sm:whitespace-normal">{SITE_CONFIG.email}</span>
                 </a>
               )}
             </div>
@@ -81,8 +81,7 @@ export const Footer: React.FC<FooterProps> = ({
                   if (href.includes('processo') || href.includes('como-funciona')) return 'processo';
                   if (href.includes('diferencia')) return 'diferenciais';
                   if (href.includes('briefing') || href.includes('orcamento')) return 'orcamento';
-                  if (href.includes('faq')) return 'faq';
-                  if (href.includes('contato')) return 'contato';
+                  if (href.includes('faq') || href.includes('contato')) return 'faq';
                   return 'inicio';
                 };
 

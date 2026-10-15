@@ -1,5 +1,5 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useReducedMotion, type Variants } from 'motion/react';
 import { Persistent3DBackground } from './components/Persistent3DBackground';
 import { AnimatedBackdrop } from './components/AnimatedBackdrop';
 import { SectionErrorBoundary } from './components/SectionErrorBoundary';
@@ -52,7 +52,12 @@ const ProjectBriefBookingSection = lazy(() =>
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<ScreenId>('inicio');
+  const [direction, setDirection] = useState<number>(1);
   const [legalModal, setLegalModal] = useState<'privacy' | 'terms' | null>(null);
+
+  // Hook do Framer Motion combinado com a preferência de acessibilidade
+  const systemPrefersReduced = useReducedMotion();
+  const prefersReduced = Boolean(systemPrefersReduced || shouldReduceMedia());
 
   // Modo de alto contraste para acessibilidade
   const [isHighContrast, setIsHighContrast] = useState<boolean>(() => {
@@ -73,7 +78,7 @@ export default function App() {
     });
   };
 
-  // Sincronização inicial e bidirecional com a hash da URL
+  // Sincronização inicial e bidirecional com a hash da URL (7 telas oficiais)
   useEffect(() => {
     const validIds: ScreenId[] = [
       'inicio',
@@ -83,16 +88,48 @@ export default function App() {
       'diferenciais',
       'orcamento',
       'faq',
-      'contato',
     ];
 
     const handleHashChange = () => {
       const rawHash = window.location.hash.replace('#', '');
       if (validIds.includes(rawHash as ScreenId)) {
-        const screen = rawHash as ScreenId;
-        setCurrentScreen(screen);
+        const targetScreen = rawHash as ScreenId;
+        setCurrentScreen((prev) => {
+          if (prev !== targetScreen) {
+            const prevIdx = SCREENS.findIndex((s) => s.id === prev);
+            const nextIdx = SCREENS.findIndex((s) => s.id === targetScreen);
+            if (nextIdx !== -1 && prevIdx !== -1) {
+              setDirection(nextIdx > prevIdx ? 1 : -1);
+            }
+          }
+          return targetScreen;
+        });
+      } else if (rawHash === 'contato') {
+        setCurrentScreen((prev) => {
+          if (prev !== 'faq') {
+            const prevIdx = SCREENS.findIndex((s) => s.id === prev);
+            const nextIdx = SCREENS.findIndex((s) => s.id === 'faq');
+            if (nextIdx !== -1 && prevIdx !== -1) {
+              setDirection(nextIdx > prevIdx ? 1 : -1);
+            }
+          }
+          return 'faq';
+        });
+        setTimeout(() => {
+          const el = document.getElementById('contato');
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }, 150);
       } else if (rawHash === 'testemunhos' || rawHash === 'depoimentos' || rawHash === 'social-proof') {
-        setCurrentScreen('portfolio');
+        setCurrentScreen((prev) => {
+          if (prev !== 'portfolio') {
+            const prevIdx = SCREENS.findIndex((s) => s.id === prev);
+            const nextIdx = SCREENS.findIndex((s) => s.id === 'portfolio');
+            if (nextIdx !== -1 && prevIdx !== -1) {
+              setDirection(nextIdx > prevIdx ? 1 : -1);
+            }
+          }
+          return 'portfolio';
+        });
         setTimeout(() => {
           const el = document.getElementById('testemunhos');
           if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -107,8 +144,13 @@ export default function App() {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
-  // Ao trocar de tela, atualiza o hash e rola para o topo
+  // Ao trocar de tela, atualiza o hash, a direção do slide lateral e rola para o topo
   const navigateToScreen = (screenId: ScreenId) => {
+    const prevIdx = SCREENS.findIndex((s) => s.id === currentScreen);
+    const nextIdx = SCREENS.findIndex((s) => s.id === screenId);
+    if (nextIdx !== -1 && prevIdx !== -1 && nextIdx !== prevIdx) {
+      setDirection(nextIdx > prevIdx ? 1 : -1);
+    }
     setCurrentScreen(screenId);
     window.location.hash = screenId;
     window.scrollTo({ top: 0, behavior: 'instant' });
@@ -217,6 +259,53 @@ export default function App() {
 
   const currentMeta = SCREENS[currentIndex] || SCREENS[0];
 
+  // Variantes de transição refinadas com efeito slide-in lateral sofisticado e respeito estrito a prefers-reduced-motion
+  const sectionTransitionVariants: Variants = {
+    initial: (dir: number) => ({
+      opacity: 0,
+      x: prefersReduced ? 0 : dir >= 0 ? 48 : -48,
+      scale: prefersReduced ? 1 : 0.992,
+    }),
+    animate: {
+      opacity: 1,
+      x: 0,
+      scale: 1,
+      transition: {
+        x: {
+          duration: prefersReduced ? 0 : 0.34,
+          ease: [0.22, 1, 0.36, 1],
+        },
+        opacity: {
+          duration: prefersReduced ? 0.15 : 0.28,
+          ease: 'easeOut',
+        },
+        scale: {
+          duration: prefersReduced ? 0 : 0.34,
+          ease: [0.22, 1, 0.36, 1],
+        },
+      },
+    },
+    exit: (dir: number) => ({
+      opacity: 0,
+      x: prefersReduced ? 0 : dir >= 0 ? -40 : 40,
+      scale: prefersReduced ? 1 : 0.992,
+      transition: {
+        x: {
+          duration: prefersReduced ? 0 : 0.24,
+          ease: [0.32, 0, 0.67, 0],
+        },
+        opacity: {
+          duration: prefersReduced ? 0.12 : 0.2,
+          ease: 'easeIn',
+        },
+        scale: {
+          duration: prefersReduced ? 0 : 0.24,
+          ease: [0.32, 0, 0.67, 0],
+        },
+      },
+    }),
+  };
+
   return (
     <div className={`min-h-screen bg-[#090D16] text-slate-100 flex flex-col selection:bg-indigo-500 selection:text-white relative ${isHighContrast ? 'high-contrast' : ''}`}>
       {/* Link de pular para o conteúdo (primeiro elemento focável) */}
@@ -250,14 +339,15 @@ export default function App() {
       />
 
       {/* Conteúdo Principal — Exibição Estratégica da Tela Ativa com Transição Fluida e Responsiva */}
-      <main className="flex-1 relative z-10 overflow-x-hidden px-[2px] sm:px-1" id="main-content" tabIndex={-1}>
-        <AnimatePresence mode="wait" initial={false}>
+      <main className="flex-1 relative z-10 overflow-x-hidden" id="main-content" tabIndex={-1}>
+        <AnimatePresence mode="wait" custom={direction} initial={false}>
           <motion.div
             key={currentScreen}
-            initial={{ opacity: 0, y: shouldReduceMedia() ? 0 : 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: shouldReduceMedia() ? 0 : -12 }}
-            transition={{ duration: 0.22, ease: [0.23, 1, 0.32, 1] }}
+            custom={direction}
+            variants={sectionTransitionVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
             className="w-full"
           >
             {/* TELA 01: Início & Apresentação */}
@@ -313,38 +403,38 @@ export default function App() {
               </SectionErrorBoundary>
             )}
 
-            {/* TELA 07: Perguntas Frequentes (FAQ) */}
-            {currentScreen === 'faq' && <FaqSection />}
-
-            {/* TELA 08: Contato & Atendimento Direto */}
-            {currentScreen === 'contato' && (
-              <ContactCtaSection onNavigateToOrcamento={() => navigateToScreen('orcamento')} />
+            {/* TELA 07: Perguntas Frequentes (FAQ) & Contato (Tela 8 incorporada ao final da Tela 7) */}
+            {currentScreen === 'faq' && (
+              <div className="space-y-0">
+                <FaqSection />
+                <ContactCtaSection onNavigateToOrcamento={() => navigateToScreen('orcamento')} />
+              </div>
             )}
           </motion.div>
         </AnimatePresence>
       </main>
 
-      {/* DOCK / CONTROLADOR FIXO DE NAVEGAÇÃO MULTITELAS CENTRALIZADO: < -------- > */}
+      {/* DOCK / CONTROLADOR FIXO DE NAVEGAÇÃO MULTITELAS CENTRALIZADO E DISCRETO: < -------- > */}
       <nav
         aria-label="Navegador de telas"
-        className="sticky bottom-0 z-30 bg-[#070A12]/95 backdrop-blur-md border-t border-white/[0.08] py-2 px-2 shadow-2xl"
+        className="sticky bottom-0 z-30 bg-[#070A12]/80 backdrop-blur-md border-t border-white/[0.04] py-1.5 px-2 shadow-lg"
       >
         <div className="max-w-7xl mx-auto flex items-center justify-center">
-          <div className="flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 rounded-2xl bg-slate-950/80 border border-white/[0.08] shadow-inner">
+          <div className="flex items-center gap-1 sm:gap-1.5 px-2.5 py-1 rounded-full bg-slate-950/60 border border-white/[0.06] shadow-sm">
             {/* Seta Esquerda (<) */}
             <button
               type="button"
               disabled={!previousScreen}
               onClick={handlePrevious}
-              className="flex items-center justify-center p-2 rounded-xl text-slate-300 hover:text-white bg-slate-900/90 hover:bg-slate-800 disabled:opacity-20 disabled:pointer-events-none border border-white/[0.06] transition-all hover:scale-105 active:scale-95 cursor-pointer"
+              className="flex items-center justify-center p-1.5 rounded-lg text-slate-400 hover:text-white bg-transparent hover:bg-white/[0.06] disabled:opacity-20 disabled:pointer-events-none transition-colors cursor-pointer"
               aria-label={previousScreen ? `Voltar para Tela ${previousScreen.shortTitle}` : 'Sem tela anterior'}
               title={previousScreen ? `Anterior: ${previousScreen.shortTitle}` : ''}
             >
-              <ChevronLeft className="w-4 h-4" />
+              <ChevronLeft className="w-3.5 h-3.5" />
             </button>
 
-            {/* Traços / Pontos Centrais de Navegação (--------) */}
-            <div className="flex items-center gap-1 sm:gap-1.5 px-1 sm:px-2">
+            {/* Traços / Pontos Centrais de Navegação Discretos (-------) */}
+            <div className="flex items-center gap-1 sm:gap-1.5 px-1 sm:px-1.5">
               {SCREENS.map((s) => {
                 const isSelected = s.id === currentScreen;
                 return (
@@ -355,14 +445,14 @@ export default function App() {
                     title={`Tela ${s.number}: ${s.title}`}
                     aria-label={`Ir para ${s.title}`}
                     aria-current={isSelected ? 'page' : undefined}
-                    className="group relative flex items-center justify-center py-2 px-0.5 focus:outline-none cursor-pointer"
+                    className="group relative flex items-center justify-center py-1.5 px-0.5 focus:outline-none cursor-pointer"
                   >
-                    {/* Traço / Indicador */}
+                    {/* Traço / Indicador Minimalista */}
                     <div
-                      className={`h-2 sm:h-2.5 rounded-full transition-all duration-300 ${
+                      className={`h-1.5 rounded-full transition-all duration-300 ${
                         isSelected
-                          ? 'w-7 sm:w-10 bg-gradient-to-r from-indigo-500 to-purple-500 shadow-md shadow-indigo-500/50 ring-1 ring-indigo-400'
-                          : 'w-2 sm:w-3 bg-slate-700/80 group-hover:bg-slate-500 group-hover:w-3.5 sm:group-hover:w-4'
+                          ? 'w-5 sm:w-6 bg-indigo-400/90 shadow-[0_0_8px_rgba(99,102,241,0.5)]'
+                          : 'w-1.5 sm:w-2 bg-slate-700/60 group-hover:bg-slate-500 group-hover:w-2.5'
                       }`}
                     />
                     <span className="sr-only">
@@ -378,11 +468,11 @@ export default function App() {
               type="button"
               disabled={!nextScreen}
               onClick={handleNext}
-              className="flex items-center justify-center p-2 rounded-xl text-white bg-indigo-600 hover:bg-indigo-500 disabled:opacity-20 disabled:pointer-events-none border border-indigo-500/40 shadow-md shadow-indigo-600/30 transition-all hover:scale-105 active:scale-95 cursor-pointer"
+              className="flex items-center justify-center p-1.5 rounded-lg text-slate-400 hover:text-white bg-transparent hover:bg-white/[0.06] disabled:opacity-20 disabled:pointer-events-none transition-colors cursor-pointer"
               aria-label={nextScreen ? `Avançar para Tela ${nextScreen.shortTitle}` : 'Última tela'}
               title={nextScreen ? `Próxima: ${nextScreen.shortTitle}` : ''}
             >
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>

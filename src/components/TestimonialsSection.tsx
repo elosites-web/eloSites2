@@ -42,7 +42,7 @@ export const CLIENT_TESTIMONIALS: TestimonialItem[] = [
     id: 'toledo-seguranca',
     name: 'Jonathan Toledo',
     role: 'Proprietário & Diretor Operacional',
-    companyOrProject: 'Toledo Segurança & Vigilância',
+    companyOrProject: 'Toledo Segurança',
     category: 'Site Institucional Corporativo',
     projectUrl: 'https://toledoseguranca.netlify.app/',
     quote:

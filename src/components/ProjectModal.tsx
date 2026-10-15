@@ -113,6 +113,8 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                 src={project.desktopImage}
                 alt={`Screenshot de ${project.title}`}
                 className="w-full h-full object-cover object-top"
+                loading="lazy"
+                decoding="async"
               />
             </div>
           </div>

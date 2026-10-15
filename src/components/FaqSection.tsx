@@ -89,7 +89,7 @@ export const FaqSection: React.FC = () => {
   return (
     <section
       id="faq"
-      className="pt-24 pb-20 sm:pt-28 sm:pb-24 lg:pt-32 lg:pb-28 bg-[#0B0F19]/30 backdrop-blur-[0.5px] relative border-t border-white/[0.05] overflow-x-clip"
+      className="pt-24 pb-10 sm:pt-28 sm:pb-12 lg:pt-32 lg:pb-14 bg-[#0B0F19]/30 backdrop-blur-[0.5px] relative border-t border-white/[0.05] overflow-x-clip"
     >
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-indigo-400/20 to-transparent pointer-events-none" />
       <div className="page-shell page-x">
@@ -194,7 +194,8 @@ export const FaqSection: React.FC = () => {
         </motion.div>
 
         <p className="mt-10 text-center text-sm text-slate-400">
-          Outra dúvida sobre o seu negócio?{' '}
+          Outra dúvida sobre o seu negócio?
+          <br className="md:hidden" />{' '}
           <a
             href={whatsappUrl(SITE_CONFIG.faqWhatsappMessage)}
             target="_blank"
@@ -203,7 +204,7 @@ export const FaqSection: React.FC = () => {
           >
             Fale diretamente no WhatsApp
           </a>
-         </p>
+        </p>
          </div>
        </div>
      </section>

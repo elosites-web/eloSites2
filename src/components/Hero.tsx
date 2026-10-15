@@ -132,7 +132,7 @@ export const Hero: React.FC<HeroProps> = ({
                 className="cta-primary w-full sm:w-auto inline-flex items-center justify-center text-center gap-3 px-6 py-4 rounded-xl text-base font-semibold text-white shadow-lg shadow-indigo-600/30 border border-indigo-400/30 group bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500"
               >
                 <WhatsAppIcon className="w-5 h-5 text-emerald-300 group-hover:scale-110 transition-transform" />
-                <span className="text-center">Solicitar Orçamento no WhatsApp</span>
+                <span className="text-center">Solicitar Orçamento</span>
               </a>
 
               <a
@@ -247,12 +247,12 @@ export const Hero: React.FC<HeroProps> = ({
                         <span className="block text-white font-bold text-xs sm:text-sm">Responsivo</span>
                         <span className="text-[10px] text-slate-400">Mobile First</span>
                       </div>
-                      <div className="bg-slate-900/90 rounded-lg p-2.5 border border-slate-800/60 text-center">
+                      <div className="bg-slate-900/90 rounded-lg p-1.5 sm:p-2.5 border border-slate-800/60 text-center">
                         <div className="flex justify-center mb-1 text-emerald-400">
                           <WhatsAppIcon className="w-4 h-4 text-emerald-400" />
                         </div>
-                        <span className="block text-white font-bold text-xs sm:text-sm">Conversão</span>
-                        <span className="text-[10px] text-slate-400">Foco WhatsApp</span>
+                        <span className="block text-white font-bold text-xs sm:text-sm whitespace-nowrap">Conversão</span>
+                        <span className="text-[10px] text-slate-400 whitespace-nowrap">WhatsApp</span>
                       </div>
                     </div>
                   </div>

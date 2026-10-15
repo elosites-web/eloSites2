@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { motion, useReducedMotion } from 'motion/react';
+import { shouldReduceMedia } from '../mediaPrefs';
 import {
   Target,
   Building2,
@@ -142,6 +144,10 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
   // Simulador interativo de pagamento (iniciando em R$ 650 conforme solicitado)
   const [simulatedValue, setSimulatedValue] = useState<number>(650);
 
+  // Detecção de preferências de acessibilidade e redução de movimento
+  const systemPrefersReduced = useReducedMotion();
+  const prefersReduced = Boolean(systemPrefersReduced || shouldReduceMedia());
+
   const discountValue = Math.round(simulatedValue * (1 - PAYMENT_CONDITIONS.cashDiscountPercent / 100));
   const pixSplitFirst = Math.round(simulatedValue * 0.5);
   const pixSplitSecond = simulatedValue - pixSplitFirst;
@@ -173,24 +179,40 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
             </p>
           </div>
 
-          {/* Grid dos 3 Serviços — Subgrid no desktop para alinhamento uniforme das linhas e seções */}
+          {/* Grid dos 3 Serviços com reveal ao rolar — Subgrid no desktop para alinhamento uniforme das linhas e seções */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-7 lg:gap-8 min-w-0 items-stretch lg:grid-rows-[auto_1fr_auto_1fr_auto]">
-            {SERVICES.map((service) => {
+            {SERVICES.map((service, index) => {
               const Icon = service.icon;
               const ctaUrl = whatsappUrl(service.ctaMessage);
 
               return (
-                <article
+                <motion.article
                   key={service.id}
-                  className="surface-card glass-panel glass-card-interactive relative rounded-2xl p-5 sm:p-6 lg:p-8 flex flex-col space-y-5 lg:space-y-0 lg:row-span-5 lg:grid lg:grid-rows-subgrid"
+                  initial={
+                    prefersReduced
+                      ? { opacity: 1, scale: 1, y: 0 }
+                      : { opacity: 0, scale: 0.96, y: 22 }
+                  }
+                  whileInView={
+                    prefersReduced
+                      ? { opacity: 1, scale: 1, y: 0 }
+                      : { opacity: 1, scale: 1, y: 0 }
+                  }
+                  viewport={{ once: true, amount: 0.15 }}
+                  transition={{
+                    duration: prefersReduced ? 0 : 0.45,
+                    delay: prefersReduced ? 0 : index * 0.12,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                  className="surface-card glass-panel glass-card-interactive relative rounded-2xl p-5 sm:p-6 md:p-8 flex flex-col space-y-5 lg:space-y-0 lg:row-span-5 lg:grid lg:grid-rows-subgrid"
                 >
                   {/* Linha 1: Topo do card + Título + Descrição */}
                   <div className="space-y-4 lg:pb-4">
-                    <div className="flex items-center justify-between gap-2">
-                      <div className="w-12 h-12 rounded-xl bg-indigo-950/80 border border-indigo-500/30 flex items-center justify-center text-indigo-300 shrink-0">
-                        <Icon className="w-6 h-6" aria-hidden="true" />
+                    <div className="flex items-center justify-between gap-2.5 min-w-0">
+                      <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-indigo-950/80 border border-indigo-500/30 flex items-center justify-center text-indigo-300 shrink-0">
+                        <Icon className="w-5 h-5 sm:w-6 sm:h-6" aria-hidden="true" />
                       </div>
-                      <span className="text-[10px] min-[380px]:text-xs font-mono text-indigo-300 bg-indigo-950/90 px-2.5 min-[380px]:px-3 py-1 rounded-full border border-indigo-700/60 font-medium whitespace-nowrap">
+                      <span className="text-[10px] min-[380px]:text-xs font-mono text-indigo-300 bg-indigo-950/90 px-2.5 min-[380px]:px-3 py-1 rounded-full border border-indigo-700/60 font-medium whitespace-nowrap shrink-0">
                         {service.badge}
                       </span>
                     </div>
@@ -273,7 +295,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                       <span className="text-center">{service.ctaLabel}</span>
                     </a>
                   </div>
-                </article>
+                </motion.article>
               );
             })}
           </div>
@@ -294,10 +316,28 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
               </p>
             </div>
 
-            {/* 4 Blocos de Regras Comerciais */}
+            {/* 4 Blocos de Regras Comerciais com reveal ao rolar */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
               {/* Regra 1: 50% Entrada + 50% Final */}
-              <div className="glass-panel glass-card-interactive p-5 sm:p-6 rounded-2xl flex flex-col justify-between h-full">
+              <motion.div
+                initial={
+                  prefersReduced
+                    ? { opacity: 1, scale: 1, y: 0 }
+                    : { opacity: 0, scale: 0.96, y: 16 }
+                }
+                whileInView={
+                  prefersReduced
+                    ? { opacity: 1, scale: 1, y: 0 }
+                    : { opacity: 1, scale: 1, y: 0 }
+                }
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{
+                  duration: prefersReduced ? 0 : 0.4,
+                  delay: prefersReduced ? 0 : 0.04,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                className="glass-panel glass-card-interactive p-5 sm:p-6 rounded-2xl flex flex-col justify-between h-full"
+              >
                 <div className="space-y-3">
                   <div className="w-10 h-10 rounded-xl bg-indigo-950/90 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
                     <Split className="w-5 h-5" />
@@ -312,10 +352,28 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                     Ideal para fluxo de caixa
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Regra 2: 20% de Desconto à Vista */}
-              <div className="glass-panel glass-card-interactive p-5 sm:p-6 rounded-2xl bg-gradient-to-b from-emerald-950/30 to-[#0b101c] border-emerald-500/30 flex flex-col justify-between h-full">
+              <motion.div
+                initial={
+                  prefersReduced
+                    ? { opacity: 1, scale: 1, y: 0 }
+                    : { opacity: 0, scale: 0.96, y: 16 }
+                }
+                whileInView={
+                  prefersReduced
+                    ? { opacity: 1, scale: 1, y: 0 }
+                    : { opacity: 1, scale: 1, y: 0 }
+                }
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{
+                  duration: prefersReduced ? 0 : 0.4,
+                  delay: prefersReduced ? 0 : 0.1,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                className="glass-panel glass-card-interactive p-5 sm:p-6 rounded-2xl bg-gradient-to-b from-emerald-950/30 to-[#0b101c] border-emerald-500/30 flex flex-col justify-between h-full"
+              >
                 <div className="space-y-3">
                   <div className="w-10 h-10 rounded-xl bg-emerald-950/90 border border-emerald-500/40 flex items-center justify-center text-emerald-300">
                     <Percent className="w-5 h-5" />
@@ -335,10 +393,28 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                     Economize 1/5 do investimento
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Regra 3: Cartão até 5x sem juros */}
-              <div className="glass-panel glass-card-interactive p-5 sm:p-6 rounded-2xl flex flex-col justify-between h-full">
+              <motion.div
+                initial={
+                  prefersReduced
+                    ? { opacity: 1, scale: 1, y: 0 }
+                    : { opacity: 0, scale: 0.96, y: 16 }
+                }
+                whileInView={
+                  prefersReduced
+                    ? { opacity: 1, scale: 1, y: 0 }
+                    : { opacity: 1, scale: 1, y: 0 }
+                }
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{
+                  duration: prefersReduced ? 0 : 0.4,
+                  delay: prefersReduced ? 0 : 0.16,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                className="glass-panel glass-card-interactive p-5 sm:p-6 rounded-2xl flex flex-col justify-between h-full"
+              >
                 <div className="space-y-3">
                   <div className="w-10 h-10 rounded-xl bg-indigo-950/90 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
                     <CreditCard className="w-5 h-5" />
@@ -353,10 +429,28 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                     1 Entrada + 4 Parcelas Fixas
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Regra 4: Cartão de 6x a 12x */}
-              <div className="glass-panel glass-card-interactive p-5 sm:p-6 rounded-2xl flex flex-col justify-between h-full">
+              <motion.div
+                initial={
+                  prefersReduced
+                    ? { opacity: 1, scale: 1, y: 0 }
+                    : { opacity: 0, scale: 0.96, y: 16 }
+                }
+                whileInView={
+                  prefersReduced
+                    ? { opacity: 1, scale: 1, y: 0 }
+                    : { opacity: 1, scale: 1, y: 0 }
+                }
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{
+                  duration: prefersReduced ? 0 : 0.4,
+                  delay: prefersReduced ? 0 : 0.22,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                className="glass-panel glass-card-interactive p-5 sm:p-6 rounded-2xl flex flex-col justify-between h-full"
+              >
                 <div className="space-y-3">
                   <div className="w-10 h-10 rounded-xl bg-indigo-950/90 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
                     <Calendar className="w-5 h-5" />
@@ -371,7 +465,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                     Parcelas mínimas mensais
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </div>
 
             {/* SIMULADOR INTERATIVO DE CONDIÇÕES */}

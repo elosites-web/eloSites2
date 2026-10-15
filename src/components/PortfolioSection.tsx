@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { motion, useReducedMotion } from 'motion/react';
+import { shouldReduceMedia } from '../mediaPrefs';
 import {
   ExternalLink,
   CheckCircle,
@@ -58,7 +60,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProjectData[] = [
     id: 'toledo-seguranca',
     badge: 'Site institucional corporativo',
     status: 'Publicado & Ativo',
-    title: 'Toledo Segurança & Vigilância',
+    title: 'Toledo Segurança',
     category: 'institutional',
     challenge:
       'Empresa especializada em segurança para eventos, portaria terceirizada e rondas preventivas em Jundiaí/SP. Precisava de presença institucional imponente para transmitir autoridade corporativa e receber pedidos de cotação.',
@@ -270,6 +272,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                     alt={`Versão Desktop do site ${project.title}`}
                     className="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-105"
                     loading="lazy"
+                    decoding="async"
                   />
                 </div>
               </div>
@@ -287,6 +290,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                     alt={`Versão Mobile do site ${project.title}`}
                     className="w-full h-full object-cover object-top"
                     loading="lazy"
+                    decoding="async"
                   />
                 </div>
                 {/* Badge visual */}
@@ -320,6 +324,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                   alt={`Captura Desktop completa de ${project.title}`}
                   className="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-105"
                   loading="lazy"
+                  decoding="async"
                 />
               </div>
             </div>
@@ -340,6 +345,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                     alt={`Captura Mobile completa de ${project.title}`}
                     className="w-full h-full object-cover object-top"
                     loading="lazy"
+                    decoding="async"
                   />
                 </div>
               </div>
@@ -399,6 +405,10 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
   const [filter, setFilter] = useState<'all' | 'landing' | 'institutional'>('all');
   const [zoomModal, setZoomModal] = useState<{ src: string; title: string } | null>(null);
   const [selectedProject, setSelectedProject] = useState<PortfolioProjectData | null>(null);
+
+  // Detecção de preferências de acessibilidade e redução de movimento
+  const systemPrefersReduced = useReducedMotion();
+  const prefersReduced = Boolean(systemPrefersReduced || shouldReduceMedia());
 
   const filteredProjects = PORTFOLIO_PROJECTS.filter((p) => {
     if (filter === 'all') return true;
@@ -469,14 +479,30 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
             </div>
           </div>
 
-          {/* Grade de Projetos Reais */}
+          {/* Grade de Projetos Reais com animação de reveal ao rolar */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch">
             {filteredProjects.map((project, index) => {
               const isOddLastOnTwoCols =
                 filteredProjects.length === 3 && index === 2;
               return (
-                <div
+                <motion.div
                   key={project.id}
+                  initial={
+                    prefersReduced
+                      ? { opacity: 1, scale: 1, y: 0 }
+                      : { opacity: 0, scale: 0.95, y: 22 }
+                  }
+                  whileInView={
+                    prefersReduced
+                      ? { opacity: 1, scale: 1, y: 0 }
+                      : { opacity: 1, scale: 1, y: 0 }
+                  }
+                  viewport={{ once: true, amount: 0.15 }}
+                  transition={{
+                    duration: prefersReduced ? 0 : 0.45,
+                    delay: prefersReduced ? 0 : index * 0.1,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
                   className={`h-full ${
                     isOddLastOnTwoCols
                       ? 'md:col-span-2 md:w-[calc(50%-1rem)] md:mx-auto lg:col-span-1 lg:w-full lg:mx-0'
@@ -489,7 +515,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
                     onOpenDetails={(p) => setSelectedProject(p)}
                     onNavigateToServices={onNavigateToServices}
                   />
-                </div>
+                </motion.div>
               );
             })}
           </div>
@@ -511,10 +537,10 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
               <button
                 type="button"
                 onClick={onNavigateToServices}
-                className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold text-slate-200 bg-slate-800/80 hover:bg-slate-700/80 border border-white/[0.08] transition-all"
+                className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-2 px-5 py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 border border-indigo-400/40 shadow-lg shadow-indigo-600/30 hover:shadow-[0_0_24px_rgba(99,102,241,0.55)] active:shadow-[0_0_32px_rgba(168,85,247,0.7)] hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
               >
                 <span className="text-center">Ver Formatos & Condições</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 text-white" />
               </button>
             )}
             <a
@@ -522,9 +548,9 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
               href={whatsappInquiryUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="cta-primary w-full sm:w-auto inline-flex items-center justify-center text-center gap-2.5 px-6 py-3 rounded-xl text-sm font-semibold text-white transition-all shadow-lg shadow-indigo-600/30"
+              className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-2.5 px-6 py-3 rounded-xl text-sm font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-400/30 shadow-lg shadow-emerald-950/40 hover:shadow-[0_0_22px_rgba(37,211,102,0.65)] hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
             >
-              <WhatsAppIcon className="w-4 h-4 text-emerald-300" />
+              <WhatsAppIcon className="w-4 h-4 text-white" />
               <span className="text-center">Solicitar Orçamento</span>
             </a>
           </div>
@@ -567,6 +593,8 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
                 src={zoomModal.src}
                 alt={zoomModal.title}
                 className="max-h-[78vh] w-auto object-contain rounded-lg border border-white/[0.05]"
+                loading="lazy"
+                decoding="async"
               />
             </div>
           </div>

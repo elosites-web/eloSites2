@@ -15,8 +15,7 @@ export type ScreenId =
   | 'processo'
   | 'diferenciais'
   | 'orcamento'
-  | 'faq'
-  | 'contato';
+  | 'faq';
 
 export interface ScreenMeta {
   id: ScreenId;
@@ -86,20 +85,11 @@ export const SCREENS: ScreenMeta[] = [
   {
     id: 'faq',
     number: '07',
-    title: 'Perguntas Frequentes (FAQ)',
-    shortTitle: 'FAQ',
-    badge: 'Dúvidas Claras',
-    description: 'Respostas diretas sobre prazos, domínio, hospedagem, pagamentos e suporte.',
+    title: 'Perguntas Frequentes (FAQ) & Contato',
+    shortTitle: 'FAQ & Contato',
+    badge: 'Dúvidas & Contato',
+    description: 'Respostas diretas sobre prazos, domínio, hospedagem, pagamentos e canais de atendimento.',
     iconName: 'HelpCircle',
-  },
-  {
-    id: 'contato',
-    number: '08',
-    title: 'Canais de Contato & Atendimento',
-    shortTitle: 'Contato',
-    badge: 'Fale Conosco',
-    description: 'Converse diretamente com o desenvolvedor responsável pelo seu projeto.',
-    iconName: 'PhoneCall',
   },
 ];
 
@@ -260,8 +250,7 @@ export const NAVIGATION_ITEMS: NavItem[] = [
   { label: 'Como Funciona', href: '#como-funciona', id: 'nav-processo' },
   { label: 'Diferenciais', href: '#diferenciais', id: 'nav-diferenciais' },
   { label: 'Briefing & Agendamento', href: '#briefing-agendamento', id: 'nav-orcamento' },
-  { label: 'FAQ', href: '#faq', id: 'nav-faq' },
-  { label: 'Contato', href: '#contato', id: 'nav-contato' },
+  { label: 'FAQ & Contato', href: '#faq', id: 'nav-faq' },
 ];
 
 export {

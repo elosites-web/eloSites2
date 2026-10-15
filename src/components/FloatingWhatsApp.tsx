@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { WhatsAppIcon } from './WhatsAppIcon';
 import { SITE_CONFIG, whatsappUrl } from '../types';
+import { shouldReduceMedia } from '../mediaPrefs';
 import { X } from 'lucide-react';
 
 // Função para verificar se está dentro do horário comercial (Segunda a Sexta, 09:00 - 18:00)
@@ -73,92 +74,53 @@ export const FloatingWhatsApp: React.FC = () => {
       aria-label="Atendimento rápido via WhatsApp"
       className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end pointer-events-none select-none"
     >
-      {/* Balão de Pop-up remodelado no estilo conversa com bico indicador para o botão flutuante */}
+      {/* Balão de Pop-up Minimalista com Superfície Escura Neutra */}
       <AnimatePresence>
         {showTooltip && (
           <motion.div
             key="whatsapp-popup-tooltip"
             id="whatsapp-popup-tooltip"
-            initial={{ opacity: 0, y: 8, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 8, scale: 0.95 }}
+            initial={shouldReduceMedia() ? { opacity: 0 } : { opacity: 0, y: 6 }}
+            animate={shouldReduceMedia() ? { opacity: 1 } : { opacity: 1, y: 0 }}
+            exit={shouldReduceMedia() ? { opacity: 0 } : { opacity: 0, y: 6 }}
             transition={{
-              duration: 0.18,
-              ease: [0.23, 1, 0.32, 1],
+              duration: 0.2,
+              ease: 'easeOut',
             }}
-            className="mb-3.5 w-[min(285px,calc(100vw-2rem))] bg-[#0B101D]/98 border border-indigo-500/35 text-white rounded-2xl p-4 shadow-2xl shadow-black/90 backdrop-blur-xl pointer-events-auto relative origin-bottom-right z-50 ring-1 ring-white/[0.08]"
+            className="mb-2.5 w-[min(260px,calc(100vw-2rem))] bg-[#0B101D]/95 border border-white/[0.08] text-white rounded-xl px-4 py-3 shadow-xl backdrop-blur-md pointer-events-auto relative origin-bottom-right z-50 flex items-start justify-between gap-2.5"
           >
-            {/* Ponta / Bico do balão de fala apontando para o botão flutuante */}
-            <div className="absolute -bottom-1.5 right-6 w-3 h-3 bg-[#0B101D] border-r border-b border-indigo-500/35 rotate-45 pointer-events-none" />
-
-            {/* Cabeçalho do balão com avatar, status online e botão de fechar */}
-            <div className="flex items-center justify-between pb-3 mb-3 border-b border-white/[0.08]">
-              <div className="flex items-center gap-2.5">
-                <div className="relative">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-white font-bold text-xs shadow-md border border-indigo-400/30">
-                    ēlo
-                  </div>
-                  <span className="absolute -bottom-0.5 -right-0.5 flex h-2.5 w-2.5">
-                    {isOnline ? (
-                      <>
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500 border border-[#0B101D]" />
-                      </>
-                    ) : (
-                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-400 border border-[#0B101D]" />
-                    )}
-                  </span>
-                </div>
-                <div>
-                  <div className="flex items-center gap-1.5">
-                    <span className="font-bold text-xs text-white tracking-wide">ēloSites</span>
-                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-medium leading-none">
-                      Oficial
-                    </span>
-                  </div>
-                  <p className="text-[10px] text-emerald-400 font-medium mt-0.5">
-                    {isOnline ? 'Online agora' : 'Responderemos em breve'}
-                  </p>
-                </div>
-              </div>
-
-              {/* Botão de Fechar */}
-              <button
-                type="button"
-                id="close-whatsapp-tooltip"
-                onClick={handleManualClose}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 active:bg-white/15 transition-colors cursor-pointer"
-                aria-label="Fechar mensagem de atendimento"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-
-            {/* Corpo da Mensagem Remodelado: Balão de conversa limpo e objetivo */}
             <a
               href={floatingWhatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Abrir conversa no WhatsApp: Olá! Precisa de um site? Me fale sobre o seu projeto."
-              className="block group/balloon transition-all cursor-pointer"
+              className="flex-1 min-w-0 text-left cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-indigo-400 rounded"
             >
-              <div className="p-3.5 rounded-xl bg-slate-900/90 border border-indigo-500/25 group-hover/balloon:border-indigo-400/60 group-hover/balloon:bg-slate-800/90 text-slate-100 shadow-inner transition-all">
-                <p className="font-bold text-white text-[13px] leading-snug group-hover/balloon:text-indigo-200 transition-colors">
-                  Olá! Precisa de um site?
-                </p>
-                <p className="text-slate-300 text-xs mt-1.5 leading-relaxed">
-                  Me fale sobre o seu projeto.
-                </p>
-                <div className="mt-2.5 pt-2 border-t border-white/[0.08] flex items-center justify-between text-[11px] text-indigo-300/90 font-medium">
-                  <span className="text-slate-400 group-hover/balloon:text-slate-200 transition-colors">
-                    Fale no WhatsApp
-                  </span>
-                  <span className="text-emerald-400 font-bold group-hover/balloon:translate-x-0.5 transition-transform flex items-center gap-1">
-                    responder →
-                  </span>
-                </div>
+              <div className="flex items-center gap-1.5 mb-1.5">
+                <span
+                  className={`w-2 h-2 rounded-full shrink-0 ${
+                    isOnline ? 'bg-emerald-400' : 'bg-amber-400'
+                  }`}
+                  aria-hidden="true"
+                />
+                <span className="text-[11px] font-medium text-slate-300">
+                  {isOnline ? 'Online agora' : 'Responderemos em breve'}
+                </span>
               </div>
+              <p className="text-xs text-slate-200 leading-snug">
+                Olá! Precisa de um site? Me fale sobre o seu projeto.
+              </p>
             </a>
+
+            <button
+              type="button"
+              id="close-whatsapp-tooltip"
+              onClick={handleManualClose}
+              className="p-1 rounded text-slate-400 hover:text-white transition-colors cursor-pointer shrink-0 -mr-1 -mt-0.5 focus:outline-none focus-visible:ring-1 focus-visible:ring-indigo-400"
+              aria-label="Fechar mensagem de atendimento"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
           </motion.div>
         )}
       </AnimatePresence>

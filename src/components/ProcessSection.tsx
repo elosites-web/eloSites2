@@ -61,10 +61,10 @@ export const ProcessSection: React.FC = () => {
             return (
               <article
                 key={step.number}
-                className="surface-card glass-panel glass-card-interactive h-full w-full rounded-2xl p-5 sm:p-6 lg:p-8 flex flex-col justify-between group"
+                className="surface-card glass-panel glass-card-interactive h-full w-full rounded-2xl p-5 sm:p-6 md:p-8 flex flex-col justify-between group"
               >
                 <div>
-                  <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center justify-between gap-2.5 mb-6">
                     <span className="font-mono text-xs font-bold text-indigo-300 bg-indigo-950/80 border border-indigo-400/30 px-3 py-1 rounded-lg">
                       {step.number}
                     </span>
@@ -107,10 +107,11 @@ export const ProcessSection: React.FC = () => {
             href={whatsappUrl(SITE_CONFIG.processoWhatsappMessage)}
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="Tirar dúvidas sobre o processo no WhatsApp"
             className="cta-primary inline-flex items-center justify-center text-center gap-2.5 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl text-sm sm:text-base font-bold text-white shadow-lg shadow-indigo-600/30 transition-all cursor-pointer"
           >
             <WhatsAppIcon className="w-4 h-4 text-emerald-300" />
-            <span>Tirar dúvidas sobre o processo no WhatsApp</span>
+            <span>Tirar dúvidas sobre o processo</span>
           </a>
         </div>
       </div>

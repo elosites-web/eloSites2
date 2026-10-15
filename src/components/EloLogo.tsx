@@ -10,7 +10,8 @@ export const EloLogo: React.FC<EloLogoProps> = ({ className = '', size = 'md' })
   return (
     <img
       src="/logo-elosites-final.png"
-      alt="ēloSites"
+      alt="ēloSites — Logotipo Oficial"
+      fetchPriority="high"
       className={`${heights} w-auto shrink-0 object-contain ${className}`}
     />
   );
