@@ -168,7 +168,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
     <section
       id="testemunhos"
       aria-label="Avaliações de Clientes e Prova Social"
-      className="py-16 sm:py-24 bg-[#070A12] relative border-t border-white/[0.08] overflow-hidden"
+      className="py-16 sm:py-24 bg-[#070A12]/30 backdrop-blur-[0.5px] relative border-t border-white/[0.08] overflow-hidden"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onFocus={() => setIsPaused(true)}

@@ -40,31 +40,31 @@ export const Hero: React.FC<HeroProps> = ({
   return (
     <section
       id="inicio"
-      className="relative pt-28 pb-16 sm:pt-36 sm:pb-24 lg:pt-40 lg:pb-32 overflow-hidden bg-[#070B16]/65 backdrop-blur-[2px]"
+      className="relative pt-24 pb-16 sm:pt-28 sm:pb-24 lg:pt-32 lg:pb-28 overflow-hidden bg-[#070B16]/25 backdrop-blur-[0.5px]"
     >
       {/* Background subtle tech grid & glow */}
-      <div className="absolute inset-0 tech-grid-pattern opacity-60 pointer-events-none" />
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[350px] bg-indigo-600/10 blur-[130px] rounded-full pointer-events-none" />
+      <div className="absolute inset-0 tech-grid-pattern opacity-70 pointer-events-none" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[350px] bg-indigo-600/15 blur-[130px] rounded-full pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-          {/* Coluna de Conteúdo Principal */}
+          {/* Coluna de Conteúdo Principal — Centralizado no mobile (<lg) e alinhado à esquerda no desktop (>=lg) */}
           <motion.div
             initial={{ opacity: 0, y: 22 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:col-span-7 text-left space-y-6 sm:space-y-8"
+            className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left space-y-6 sm:space-y-8"
           >
             {/* Tag de Posicionamento */}
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-indigo-950/60 border border-indigo-800/50 text-indigo-300 text-xs sm:text-sm font-medium">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-indigo-950/60 border border-indigo-800/50 text-indigo-300 text-xs sm:text-sm font-medium mx-auto lg:mx-0">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               <span>
                 Sites com <span className="text-[#a855f7] font-semibold">SEO Técnico</span> & Foco em Conversão
               </span>
             </div>
 
-            {/* Headline Principal */}
-            <h1 className="font-display text-3.5xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.15]">
+            {/* Headline Principal — Grande escala tanto no mobile quanto no desktop */}
+            <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-white leading-[1.15] text-balance">
               Criação de sites institucionais e landing pages profissionais sob medida com{' '}
               <span className="text-[#a855f7] underline decoration-[#a855f7]/50 underline-offset-8">
                 SEO técnico
@@ -73,18 +73,18 @@ export const Hero: React.FC<HeroProps> = ({
             </h1>
 
             {/* Subtítulo Direto e Comercial */}
-            <p className="text-base sm:text-lg lg:text-xl text-slate-300 font-normal leading-relaxed max-w-2xl">
+            <p className="text-sm sm:text-base lg:text-lg text-slate-300 font-normal leading-relaxed max-w-2xl mx-auto lg:mx-0">
               Desenvolvemos a presença digital completa e estratégica para o seu negócio. Sites institucionais
               e landing pages sob medida, com alta velocidade, arquitetura semântica para o Google e estrutura
               otimizada para transformar visitantes em contatos no seu WhatsApp.
             </p>
 
             {/* Segmentos Atendidos */}
-            <div className="pt-1">
-              <span className="text-xs uppercase tracking-wider text-slate-400 font-medium block mb-2.5">
+            <div className="pt-1 w-full text-center lg:text-left">
+              <span className="text-xs uppercase tracking-wider text-slate-400 font-medium block mb-2.5 text-center lg:text-left">
                 Desenvolvimento sob medida para:
               </span>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap justify-center lg:justify-start gap-2">
                 {targetAudiences.map((item) => (
                   <span
                     key={item}
@@ -97,13 +97,13 @@ export const Hero: React.FC<HeroProps> = ({
             </div>
 
             {/* Ações / CTAs */}
-            <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
+            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 w-full sm:w-auto">
               <a
                 id="hero-cta-whatsapp"
                 href={heroWhatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="cta-primary inline-flex items-center justify-center text-center gap-3 px-6 py-4 rounded-xl text-base font-semibold text-white transition-all duration-200 shadow-lg shadow-indigo-600/30 border border-indigo-400/30 active:scale-[0.98] group bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500"
+                className="cta-primary w-full sm:w-auto inline-flex items-center justify-center text-center gap-3 px-6 py-4 rounded-xl text-base font-semibold text-white transition-all duration-200 shadow-lg shadow-indigo-600/30 border border-indigo-400/30 active:scale-[0.98] group bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500"
               >
                 <WhatsAppIcon className="w-5 h-5 text-emerald-300 group-hover:scale-110 transition-transform" />
                 <span className="text-center">Solicitar Orçamento no WhatsApp</span>
@@ -113,7 +113,7 @@ export const Hero: React.FC<HeroProps> = ({
                 id="hero-cta-portfolio"
                 href="#portfolio"
                 onClick={handleScrollToPortfolio}
-                className="inline-flex items-center justify-center text-center gap-2 px-6 py-4 rounded-xl text-base font-semibold bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 text-slate-200 hover:text-white transition-colors"
+                className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-2 px-6 py-4 rounded-xl text-base font-semibold bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 text-slate-200 hover:text-white transition-colors"
               >
                 <span className="text-center">Ver Modelos no Ar</span>
                 <ArrowDown className="w-4 h-4 text-indigo-400" />
@@ -121,7 +121,7 @@ export const Hero: React.FC<HeroProps> = ({
             </div>
 
             {/* Micro-credenciais de confiabilidade */}
-            <div className="pt-2 flex flex-wrap items-center gap-4 text-xs text-slate-400">
+            <div className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs text-slate-400 text-center lg:text-left">
               <div className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                 <span>Arquitetura de alta conversão & código limpo</span>

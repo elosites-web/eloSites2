@@ -67,7 +67,7 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
   return (
     <section
       id="diferenciais"
-      className="py-20 sm:py-28 bg-[#090D16]/80 relative border-t border-white/[0.05] overflow-x-clip"
+      className="pt-24 pb-20 sm:pt-28 sm:pb-24 lg:pt-32 lg:pb-28 bg-[#090D16]/30 backdrop-blur-[0.5px] relative border-t border-white/[0.05] overflow-x-clip"
     >
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-indigo-400/20 to-transparent pointer-events-none" />
 
@@ -90,41 +90,34 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
           </p>
         </div>
 
-        {/* Grade de 6 Cards de Diferenciais com Gradiente Suave e Hover Lift Pronunciado */}
+        {/* Grade de 6 Cards de Diferenciais — Padronizado com o efeito dos outros cards do site */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 min-w-0">
           {differentials.map((item, index) => {
             const Icon = item.icon;
             return (
-              <div
+              <article
                 key={item.title}
-                className={`relative rounded-2xl p-[1px] bg-gradient-to-b transition-all duration-300 group ${
-                  item.isWhatsApp
-                    ? 'from-emerald-400/40 via-emerald-500/15 to-white/[0.04] hover:from-emerald-400/75 hover:via-emerald-400/30 hover:to-white/[0.1] hover:shadow-[0_22px_45px_-12px_rgba(37,211,102,0.3)]'
-                    : 'from-indigo-400/30 via-purple-500/15 to-white/[0.04] hover:from-indigo-400/65 hover:via-purple-400/35 hover:to-white/[0.1] hover:shadow-[0_22px_45px_-12px_rgba(99,102,241,0.28)]'
-                }`}
+                className="surface-card h-full w-full rounded-2xl p-5 sm:p-6 lg:p-8 bg-[#0A0E17]/90 border border-white/[0.08] hover:border-indigo-500/35 transition-all duration-300 shadow-xl shadow-black/40 flex flex-col justify-between group"
               >
-                <article
-                  className="h-full w-full rounded-2xl p-6 sm:p-7 bg-[#0B101D]/95 backdrop-blur-md flex flex-col justify-between transition-all duration-300 group-hover:-translate-y-3.5 group-hover:bg-[#0E1424]/98"
-                >
-                  <div>
-                    <div className="flex items-center justify-between mb-5">
-                      <div
-                        className={`w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300 ${
-                          item.isWhatsApp
-                            ? 'bg-[#25D366] text-white shadow-lg shadow-emerald-950/40 group-hover:shadow-[0_0_20px_rgba(37,211,102,0.7)] group-hover:scale-110'
-                            : 'bg-indigo-950/80 border border-indigo-500/30 text-indigo-300 shadow-md group-hover:shadow-[0_0_20px_rgba(99,102,241,0.6)] group-hover:border-indigo-400/60 group-hover:scale-110'
-                        }`}
-                      >
-                        {item.isWhatsApp ? (
-                          <WhatsAppIcon className="w-5 h-5 text-white" />
-                        ) : (
-                          <Icon className="w-5 h-5" aria-hidden="true" />
-                        )}
-                      </div>
-                      <span className="font-mono text-xs font-bold text-slate-400 group-hover:text-indigo-300 transition-colors">
-                        0{index + 1}
-                      </span>
+                <div>
+                  <div className="flex items-center justify-between mb-5">
+                    <div
+                      className={`w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300 ${
+                        item.isWhatsApp
+                          ? 'bg-[#25D366] text-white shadow-md shadow-emerald-950/40'
+                          : 'bg-indigo-950/80 border border-indigo-500/30 text-indigo-300'
+                      }`}
+                    >
+                      {item.isWhatsApp ? (
+                        <WhatsAppIcon className="w-5 h-5 text-white" />
+                      ) : (
+                        <Icon className="w-5 h-5" aria-hidden="true" />
+                      )}
                     </div>
+                    <span className="font-mono text-xs font-bold text-slate-400 group-hover:text-indigo-300 transition-colors">
+                      0{index + 1}
+                    </span>
+                  </div>
 
                     <h3 className="font-display text-lg font-bold tracking-tight text-white mb-2.5 group-hover:text-indigo-100 transition-colors">
                       {item.title}
@@ -148,7 +141,6 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
                     <span className="font-medium text-slate-300">Padrão ēloSites</span>
                   </div>
                 </article>
-              </div>
             );
           })}
         </div>

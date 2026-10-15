@@ -248,57 +248,8 @@ export default function App() {
         onNextScreen={handleNext}
       />
 
-      {/* Barra de Status e Transição da Tela Atual */}
-      <div className="pt-20 sm:pt-24 pb-2 px-4 sm:px-8 border-b border-white/[0.04] bg-[#070A12]/90 backdrop-blur-md relative z-20">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs text-slate-400">
-          {/* Breadcrumb da tela atual com layoutId contínuo */}
-          <div className="flex items-center gap-2">
-            <motion.span
-              layoutId="status-bar-active-number"
-              transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-              className="px-2 py-0.5 rounded-md bg-indigo-950/70 border border-indigo-500/30 text-indigo-300 font-mono text-[11px] font-bold"
-            >
-              {currentMeta.number}
-            </motion.span>
-            <motion.span
-              key={`title-${currentScreen}`}
-              layoutId="status-bar-active-title"
-              transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-              className="text-white font-semibold"
-            >
-              {currentMeta.title}
-            </motion.span>
-          </div>
-
-          {/* Atalhos rápidos de anterior / próximo */}
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              disabled={!previousScreen}
-              onClick={handlePrevious}
-              className="inline-flex items-center justify-center text-center gap-1 px-2.5 py-1 rounded-lg bg-slate-900/90 hover:bg-slate-800 disabled:opacity-30 disabled:pointer-events-none text-slate-300 border border-white/[0.06] transition-all"
-              title={previousScreen ? `Ir para ${previousScreen.shortTitle} (Seta Esquerda)` : ''}
-            >
-              <ChevronLeft className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Anterior: {previousScreen?.shortTitle}</span>
-            </button>
-
-            <button
-              type="button"
-              disabled={!nextScreen}
-              onClick={handleNext}
-              className="inline-flex items-center justify-center text-center gap-1 px-2.5 py-1 rounded-lg bg-indigo-600/30 hover:bg-indigo-600/40 text-indigo-200 disabled:opacity-30 disabled:pointer-events-none border border-indigo-500/30 transition-all font-medium"
-              title={nextScreen ? `Ir para ${nextScreen.shortTitle} (Seta Direita)` : ''}
-            >
-              <span className="hidden sm:inline">Próxima: {nextScreen?.shortTitle}</span>
-              <ChevronRight className="w-3.5 h-3.5" />
-            </button>
-          </div>
-        </div>
-      </div>
-
       {/* Conteúdo Principal — Exibição Estratégica da Tela Ativa com Transição Fade-in-up Fluida */}
-      <main className="flex-1 relative z-10 overflow-x-hidden" id="main-content" tabIndex={-1}>
+      <main className="flex-1 relative z-10 overflow-x-hidden px-[2px] sm:px-1" id="main-content" tabIndex={-1}>
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={currentScreen}
@@ -379,73 +330,67 @@ export default function App() {
         </AnimatePresence>
       </main>
 
-      {/* DOCK / CONTROLADOR FIXO DE NAVEGAÇÃO MULTITELAS NO RODAPÉ */}
+      {/* DOCK / CONTROLADOR FIXO DE NAVEGAÇÃO MULTITELAS CENTRALIZADO: < -------- > */}
       <nav
         aria-label="Navegador de telas"
-        className="sticky bottom-0 z-30 bg-[#070A12]/95 backdrop-blur-md border-t border-white/[0.08] py-2.5 px-4 shadow-2xl"
+        className="sticky bottom-0 z-30 bg-[#070A12]/95 backdrop-blur-md border-t border-white/[0.08] py-2 px-2 shadow-2xl"
       >
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
-          {/* Botão Anterior */}
-          <button
-            type="button"
-            disabled={!previousScreen}
-            onClick={handlePrevious}
-            className="flex items-center justify-center text-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 disabled:opacity-30 disabled:pointer-events-none text-slate-300 border border-white/[0.06] transition-all"
-            aria-label={previousScreen ? `Voltar para Tela ${previousScreen.shortTitle}` : 'Sem tela anterior'}
-          >
-            <ChevronLeft className="w-4 h-4" />
-            <span className="hidden sm:inline">Anterior</span>
-          </button>
+        <div className="max-w-7xl mx-auto flex items-center justify-center">
+          <div className="flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 rounded-2xl bg-slate-950/80 border border-white/[0.08] shadow-inner">
+            {/* Seta Esquerda (<) */}
+            <button
+              type="button"
+              disabled={!previousScreen}
+              onClick={handlePrevious}
+              className="flex items-center justify-center p-2 rounded-xl text-slate-300 hover:text-white bg-slate-900/90 hover:bg-slate-800 disabled:opacity-20 disabled:pointer-events-none border border-white/[0.06] transition-all hover:scale-105 active:scale-95 cursor-pointer"
+              aria-label={previousScreen ? `Voltar para Tela ${previousScreen.shortTitle}` : 'Sem tela anterior'}
+              title={previousScreen ? `Anterior: ${previousScreen.shortTitle}` : ''}
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
 
-          {/* Stepper / Indicador de bolinhas ou números das 8 telas */}
-          <div className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto py-1 px-2">
-            {SCREENS.map((s, idx) => {
-              const isSelected = s.id === currentScreen;
-              return (
-                <button
-                  key={s.id}
-                  type="button"
-                  onClick={() => navigateToScreen(s.id)}
-                  title={`${s.number}. ${s.title}`}
-                  aria-label={`Ir para ${s.title}`}
-                  aria-current={isSelected ? 'page' : undefined}
-                  className={`flex items-center justify-center text-center transition-all relative ${
-                    isSelected
-                      ? 'px-3 py-1.5 rounded-lg text-white font-bold text-xs'
-                      : 'w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-slate-950/80 hover:bg-slate-800 text-slate-400 hover:text-white text-[11px] font-mono border border-white/[0.05]'
-                  }`}
-                >
-                  {isSelected && (
-                    <motion.div
-                      layoutId="stepper-active-indicator"
-                      className="absolute inset-0 rounded-lg bg-indigo-600 shadow-md shadow-indigo-600/40 ring-1 ring-indigo-400 -z-0"
-                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+            {/* Traços / Pontos Centrais de Navegação (--------) */}
+            <div className="flex items-center gap-1 sm:gap-1.5 px-1 sm:px-2">
+              {SCREENS.map((s) => {
+                const isSelected = s.id === currentScreen;
+                return (
+                  <button
+                    key={s.id}
+                    type="button"
+                    onClick={() => navigateToScreen(s.id)}
+                    title={`Tela ${s.number}: ${s.title}`}
+                    aria-label={`Ir para ${s.title}`}
+                    aria-current={isSelected ? 'page' : undefined}
+                    className="group relative flex items-center justify-center py-2 px-0.5 focus:outline-none cursor-pointer"
+                  >
+                    {/* Traço / Indicador */}
+                    <div
+                      className={`h-2 sm:h-2.5 rounded-full transition-all duration-300 ${
+                        isSelected
+                          ? 'w-7 sm:w-10 bg-gradient-to-r from-indigo-500 to-purple-500 shadow-md shadow-indigo-500/50 ring-1 ring-indigo-400'
+                          : 'w-2 sm:w-3 bg-slate-700/80 group-hover:bg-slate-500 group-hover:w-3.5 sm:group-hover:w-4'
+                      }`}
                     />
-                  )}
-                  {isSelected ? (
-                    <span className="flex items-center justify-center text-center gap-1.5 relative z-10">
-                      <span>{s.number}</span>
-                      <span className="hidden md:inline font-sans font-semibold">{s.shortTitle}</span>
+                    <span className="sr-only">
+                      {s.number} - {s.shortTitle}
                     </span>
-                  ) : (
-                    <span>{s.number}</span>
-                  )}
-                </button>
-              );
-            })}
-          </div>
+                  </button>
+                );
+              })}
+            </div>
 
-          {/* Botão Próximo */}
-          <button
-            type="button"
-            disabled={!nextScreen}
-            onClick={handleNext}
-            className="flex items-center justify-center text-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 disabled:opacity-30 disabled:pointer-events-none text-white shadow-md shadow-indigo-600/25 transition-all"
-            aria-label={nextScreen ? `Avançar para Tela ${nextScreen.shortTitle}` : 'Última tela'}
-          >
-            <span className="hidden sm:inline">Próxima</span>
-            <ChevronRight className="w-4 h-4" />
-          </button>
+            {/* Seta Direita (>) */}
+            <button
+              type="button"
+              disabled={!nextScreen}
+              onClick={handleNext}
+              className="flex items-center justify-center p-2 rounded-xl text-white bg-indigo-600 hover:bg-indigo-500 disabled:opacity-20 disabled:pointer-events-none border border-indigo-500/40 shadow-md shadow-indigo-600/30 transition-all hover:scale-105 active:scale-95 cursor-pointer"
+              aria-label={nextScreen ? `Avançar para Tela ${nextScreen.shortTitle}` : 'Última tela'}
+              title={nextScreen ? `Próxima: ${nextScreen.shortTitle}` : ''}
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       </nav>
 

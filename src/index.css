@@ -54,21 +54,21 @@ html {
   }
 }
 
-/* Centralização global do texto de todos os botões do site */
-button,
-a[role="button"],
+/* Centralização de texto dos botões de ação (exceto botões com alinhamento explícito à esquerda) */
+button:not(.text-left):not([class*="text-left"]),
+a[role="button"]:not(.text-left):not([class*="text-left"]),
 .cta-primary,
 .cta-secondary,
 a.cta-primary,
 a.cta-secondary,
-button[type="button"],
+button[type="button"]:not(.text-left):not([class*="text-left"]),
 button[type="submit"],
 button[type="reset"] {
   text-align: center !important;
 }
 
-button:not(.text-left):not(.text-right):not([data-align="left"]),
-a[role="button"]:not(.text-left),
+button:not(.text-left):not(.text-right):not([data-align="left"]):not([class*="text-left"]),
+a[role="button"]:not(.text-left):not([class*="text-left"]),
 .cta-primary,
 .cta-secondary,
 a.cta-primary,
@@ -77,7 +77,7 @@ a.cta-secondary {
   align-items: center;
 }
 
-button > span,
+button:not(.text-left):not([class*="text-left"]) > span:not(.text-left):not([class*="text-left"]),
 .cta-primary > span,
 .cta-secondary > span {
   text-align: center;
@@ -202,26 +202,52 @@ a[id*="whatsapp"]:hover > svg {
   outline-offset: 2px !important;
 }
 
-/* ===== Fundo animado global (CSS puro, leve) ===== */
-/* Substitui o antigo vídeo de fundo: apenas transform/opacity são animados. */
+/* ===== Espaçamento e contenção lateral de segurança (2px mínimo das extremidades) ===== */
+.page-shell {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.page-x {
+  padding-left: clamp(2px, 2.5vw, 1.5rem);
+  padding-right: clamp(2px, 2.5vw, 1.5rem);
+  box-sizing: border-box;
+}
+
+@media (max-width: 640px) {
+  main,
+  section,
+  article,
+  .page-shell,
+  .page-x {
+    padding-left: max(2px, env(safe-area-inset-left));
+    padding-right: max(2px, env(safe-area-inset-right));
+    box-sizing: border-box;
+  }
+}
+
+/* ===== Fundo animado global (CSS puro, alta visibilidade) ===== */
 .animated-backdrop {
-  background-color: #070a12;
+  background-color: #060912;
 }
 
 .ab-base {
   background:
-    radial-gradient(120% 90% at 50% 0%, #0b1024 0%, #070a12 55%, #05070d 100%);
+    radial-gradient(120% 90% at 50% 0%, rgba(15, 23, 42, 0.45) 0%, rgba(7, 10, 18, 0.65) 55%, rgba(5, 7, 13, 0.8) 100%);
 }
 
-/* Grade sutil que deriva lentamente (deslocamento de exatamente 1 tile = loop invisível). */
+/* Grade nítida e visível que deriva lentamente */
 .ab-grid {
   inset: -60%;
   background-image:
-    linear-gradient(to right, rgba(99, 102, 241, 0.09) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(99, 102, 241, 0.09) 1px, transparent 1px);
-  background-size: 56px 56px;
-  opacity: 0.6;
-  animation: ab-grid-drift 60s linear infinite;
+    linear-gradient(to right, rgba(99, 102, 241, 0.16) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(99, 102, 241, 0.16) 1px, transparent 1px);
+  background-size: 52px 52px;
+  opacity: 0.85;
+  animation: ab-grid-drift 50s linear infinite;
   will-change: transform;
 }
 
@@ -230,15 +256,15 @@ a[id*="whatsapp"]:hover > svg {
     transform: translate3d(0, 0, 0);
   }
   to {
-    transform: translate3d(56px, 56px, 0);
+    transform: translate3d(52px, 52px, 0);
   }
 }
 
-/* Brilhos suaves (sem filtro/blur: gradiente radial grande + baixa opacidade). */
+/* Brilhos e nebulosas coloridas ampliadas para maior presença visual */
 .ab-blob {
   position: absolute;
-  width: 62vmax;
-  height: 62vmax;
+  width: 65vmax;
+  height: 65vmax;
   border-radius: 50%;
   pointer-events: none;
   animation: ab-float 36s ease-in-out infinite;
@@ -246,24 +272,24 @@ a[id*="whatsapp"]:hover > svg {
 }
 
 .ab-blob-cyan {
-  top: -22vmax;
-  left: -16vmax;
-  background: radial-gradient(circle at center, rgba(34, 211, 238, 0.16) 0%, rgba(34, 211, 238, 0) 68%);
+  top: -20vmax;
+  left: -14vmax;
+  background: radial-gradient(circle at center, rgba(34, 211, 238, 0.28) 0%, rgba(34, 211, 238, 0) 68%);
   animation-duration: 34s;
 }
 
 .ab-blob-indigo {
-  bottom: -26vmax;
-  right: -18vmax;
-  background: radial-gradient(circle at center, rgba(99, 102, 241, 0.18) 0%, rgba(99, 102, 241, 0) 68%);
+  bottom: -24vmax;
+  right: -16vmax;
+  background: radial-gradient(circle at center, rgba(99, 102, 241, 0.32) 0%, rgba(99, 102, 241, 0) 68%);
   animation-duration: 46s;
   animation-delay: -8s;
 }
 
 .ab-blob-violet {
-  top: 16%;
-  right: 6%;
-  background: radial-gradient(circle at center, rgba(147, 51, 234, 0.13) 0%, rgba(147, 51, 234, 0) 70%);
+  top: 14%;
+  right: 5%;
+  background: radial-gradient(circle at center, rgba(147, 51, 234, 0.25) 0%, rgba(147, 51, 234, 0) 70%);
   animation-duration: 40s;
   animation-delay: -16s;
 }
@@ -280,18 +306,18 @@ a[id*="whatsapp"]:hover > svg {
   }
 }
 
-/* Varredura horizontal muito lenta (banda clara atravessando a tela). */
+/* Varredura horizontal com destaque */
 .ab-scan {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    transparent 44%,
-    rgba(129, 140, 248, 0.06) 50%,
-    transparent 56%,
+    transparent 42%,
+    rgba(129, 140, 248, 0.12) 50%,
+    transparent 58%,
     transparent 100%
   );
   opacity: 0;
-  animation: ab-scan-sweep 26s linear infinite;
+  animation: ab-scan-sweep 24s linear infinite;
   will-change: transform;
 }
 
@@ -312,10 +338,10 @@ a[id*="whatsapp"]:hover > svg {
   }
 }
 
-/* Vinheta/overlay: mantém contraste AA do texto sobre o fundo animado. */
+/* Vinheta/overlay translúcida: preserva visibilidade dos elementos 3D */
 .ab-vignette {
   background:
-    radial-gradient(150% 110% at 50% 0%, rgba(7, 10, 18, 0) 0%, rgba(7, 10, 18, 0.5) 68%, rgba(5, 7, 13, 0.86) 100%);
+    radial-gradient(150% 110% at 50% 0%, rgba(7, 10, 18, 0) 0%, rgba(7, 10, 18, 0.15) 68%, rgba(5, 7, 13, 0.45) 100%);
 }
 
 /* Pausa quando a aba está oculta. */

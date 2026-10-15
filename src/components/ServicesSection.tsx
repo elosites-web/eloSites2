@@ -35,27 +35,31 @@ const SERVICES: ServiceCategory[] = [
   {
     id: 'landing-page',
     badge: 'Foco em Conversão',
-    title: 'Landing Page de Alta Conversão',
+    title: 'Landing Page',
     description:
-      'Página única estratégica e objetiva. Projetada para converter visitantes em clientes no WhatsApp, ideal para tráfego pago (Google/Meta Ads) e campanhas ativas.',
+      'Página única, estratégica e direta. Apresenta o seu serviço de forma clara e conduz o visitante até o contato no WhatsApp.',
     icon: Target,
     includes: [
-      'Estrutura estratégica de página única orientada a conversão',
-      'Hero section com proposta de valor clara e CTA imediato',
-      'Apresentação dos serviços ou produtos com diferenciais competitivos',
-      'Gatilhos diretos e botões personalizados para o WhatsApp',
-      'Depoimentos e prova social (quando fornecidos)',
-      'FAQ estruturado com dúvidas frequentes dos seus clientes',
-      'Layout 100% responsivo para smartphone, tablet e desktop',
-      'SEO técnico on-page, metadados OpenGraph e favicon personalizado',
-      'Publicação e testes completos na URL de produção',
+      'Estrutura estratégica de página única',
+      'Seção hero com chamada principal',
+      'Apresentação do negócio',
+      'Serviços ou produtos, benefícios e diferenciais',
+      'Depoimentos e prova social quando fornecidos',
+      'Imagens e galeria quando aplicável',
+      'Perguntas frequentes (FAQ) e chamadas para ação (CTA)',
+      'Integração com WhatsApp e informações de contato',
+      'Formulários quando incluídos no escopo',
+      'Links para redes sociais',
+      'Layout responsivo para celular, tablet e desktop',
+      'SEO técnico básico, metadados e favicon',
+      'Publicação e revisão final de funcionamento',
     ],
-    scopeNote:
-      'O escopo exato de seções e conteúdo é definido de forma personalizada na proposta comercial.',
+    scopeNote: 'O escopo exato é definido na proposta e no contrato.',
     excluded: [
-      'Domínio próprio (.com.br / .com) — registro à parte em nome do cliente',
-      'Criação de logotipo do zero (identidade visual)',
-      'Páginas extras além do escopo de página única acordado',
+      'Domínio próprio',
+      'Hospedagem em outro provedor',
+      'Criação de identidade visual (logo)',
+      'Novas páginas fora do escopo combinado',
     ],
     ctaLabel: 'Pedir proposta de Landing Page',
     ctaId: 'service-cta-landing-page',
@@ -64,28 +68,33 @@ const SERVICES: ServiceCategory[] = [
   {
     id: 'site-institucional',
     badge: 'Autoridade & Estrutura',
-    title: 'Site Institucional Completo',
+    title: 'Site Institucional',
     description:
-      'Presença corporativa sólida para empresas e profissionais liberais que necessitam transmitir autoridade, apresentar múltiplos serviços e atrair clientes qualificados.',
+      'Presença digital mais completa, com navegação e várias seções. Ideal para transmitir credibilidade e mostrar estrutura, serviços e prova social.',
     icon: Building2,
     includes: [
-      'Página inicial com navegação dedicada e apresentação corporativa',
-      'Seção detalhada de serviços com especificações e benefícios',
-      'Seção "Sobre" com história, valores e equipe/fundador',
-      'Portfólio de cases, projetos realizados e clientes atendidos',
-      'Prova social, depoimentos e selos de garantia/confiabilidade',
-      'Formulário estruturado de cotação integrado ao WhatsApp',
-      'Localização, mapa, dados de contato e canais de atendimento',
-      'Layout responsivo de alta precisão técnica',
-      'SEO técnico aprofundado para indexação no Google',
-      'Publicação com certificado SSL e suporte à entrega',
+      'Página inicial (Home)',
+      'Sobre',
+      'Serviços com descrição detalhada',
+      'Diferenciais',
+      'Portfólio e projetos',
+      'Depoimentos e prova social',
+      'Perguntas frequentes (FAQ)',
+      'Contato e localização/endereço quando fornecidos',
+      'WhatsApp e redes sociais',
+      'Formulários quando incluídos no escopo',
+      'Navegação entre seções e páginas',
+      'Layout responsivo para celular, tablet e desktop',
+      'SEO técnico básico, metadados e favicon',
+      'Publicação e testes de funcionamento',
     ],
     scopeNote:
-      'O número de seções, páginas ou abas é dimensionado de acordo com a necessidade da sua empresa.',
+      'O número de páginas, seções, integrações e funcionalidades depende do escopo aprovado.',
     excluded: [
-      'Domínio próprio — registro em conta e titularidade do cliente',
-      'Hospedagem em servidor de terceiros com painéis legados',
-      'Integrações com ERPs ou sistemas bancários complexos',
+      'Domínio próprio',
+      'Hospedagem em outro provedor',
+      'Identidade visual do zero',
+      'Integrações com sistemas de terceiros',
     ],
     ctaLabel: 'Pedir proposta de Site Institucional',
     ctaId: 'service-cta-institucional',
@@ -94,25 +103,30 @@ const SERVICES: ServiceCategory[] = [
   {
     id: 'projeto-personalizado',
     badge: 'Solução Sob Medida',
-    title: 'Projeto Sob Medida / Redesign',
+    title: 'Projeto Personalizado',
     description:
-      'Para negócios com requisitos específicos: arquitetura multitela, catálogos interativos, redesign completo de site antigo lento ou fluxos avançados de agendamento.',
+      'Para projetos que não se encaixam exatamente nos dois formatos anteriores. Combinamos o que faz sentido para o seu caso, com escopo definido junto com você.',
     icon: Sparkles,
     includes: [
-      'Estrutura personalizada (multitelas dedicadas, catálogo ou SPA)',
-      'Otimização radical de performance (nota 90+ no PageSpeed)',
-      'Interações customizadas, calculadoras de orçamento ou simuladores',
-      'Formulários com validação e exportação para WhatsApp ou e-mail',
-      'Redesign de interface visual para modernização completa da marca',
-      'SEO técnico estruturado com Schema.org JSON-LD',
-      'Layout com design autoral exclusivo sem modelos prontos genéricos',
-      'Suporte direto com o desenvolvedor durante todo o ciclo',
+      'Estrutura sob medida, combinando elementos de landing page e site institucional',
+      'Navegação por abas, múltiplas telas ou página única — conforme o que fizer mais sentido para o projeto',
+      'Funcionalidades específicas combinadas com você durante o orçamento',
+      'Seções, integrações e fluxos personalizados para o seu caso',
+      'Depoimentos, prova social e galeria quando fornecidos',
+      'Formulários quando incluídos no escopo',
+      'Integração com WhatsApp e informações de contato',
+      'Links para redes sociais',
+      'Layout responsivo para celular, tablet e desktop',
+      'SEO técnico básico, metadados e favicon',
+      'Publicação e revisão final de funcionamento',
     ],
     scopeNote:
-      'Orçamento específico dimensionado a partir da complexidade técnica e dos objetivos do seu projeto.',
+      'Preço, escopo e prazo são definidos conforme a complexidade e os requisitos do projeto.',
     excluded: [
-      'Domínio próprio registrado em conta de terceiros',
-      'Funcionalidades que fujam do escopo técnico aprovado',
+      'Domínio próprio',
+      'Hospedagem em outro provedor',
+      'Criação de identidade visual (logo) do zero',
+      'Funcionalidades fora do escopo combinado no orçamento',
     ],
     ctaLabel: 'Conversar sobre Projeto Sob Medida',
     ctaId: 'service-cta-personalizado',
@@ -137,7 +151,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
   return (
     <section
       id="servicos"
-      className="py-16 sm:py-24 bg-[#090D16]/75 backdrop-blur-[1px] relative min-h-screen flex flex-col justify-between"
+      className="pt-24 pb-16 sm:pt-28 sm:pb-24 lg:pt-32 lg:pb-28 bg-[#090D16]/30 backdrop-blur-[0.5px] relative min-h-screen flex flex-col justify-between"
     >
       {/* Luz ambiente de fundo */}
       <div className="absolute top-1/3 left-0 w-80 h-80 bg-indigo-500/[0.07] blur-[130px] rounded-full pointer-events-none" />
@@ -159,8 +173,8 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
             </p>
           </div>
 
-          {/* Grid dos 3 Serviços */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-7 lg:gap-8 min-w-0 items-stretch">
+          {/* Grid dos 3 Serviços — Subgrid no desktop para alinhamento uniforme das linhas e seções */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-7 lg:gap-8 min-w-0 items-stretch lg:grid-rows-[auto_1fr_auto_1fr_auto]">
             {SERVICES.map((service) => {
               const Icon = service.icon;
               const ctaUrl = whatsappUrl(service.ctaMessage);
@@ -168,66 +182,72 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
               return (
                 <article
                   key={service.id}
-                  className="surface-card relative rounded-2xl p-6 sm:p-7 lg:p-8 flex flex-col justify-between border border-white/[0.08] bg-[#0A0E17]/90 hover:border-indigo-500/35 transition-all duration-300 shadow-xl shadow-black/40"
+                  className="surface-card relative rounded-2xl p-5 sm:p-6 lg:p-8 border border-white/[0.08] bg-[#0A0E17]/90 hover:border-indigo-500/35 transition-all duration-300 shadow-xl shadow-black/40 flex flex-col space-y-5 lg:space-y-0 lg:row-span-5 lg:grid lg:grid-rows-subgrid"
                 >
-                  <div className="space-y-6">
-                    {/* Topo do card */}
-                    <div className="flex items-center justify-between">
-                      <div className="w-12 h-12 rounded-xl bg-indigo-950/80 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
+                  {/* Linha 1: Topo do card + Título + Descrição */}
+                  <div className="space-y-4 lg:pb-4">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="w-12 h-12 rounded-xl bg-indigo-950/80 border border-indigo-500/30 flex items-center justify-center text-indigo-300 shrink-0">
                         <Icon className="w-6 h-6" aria-hidden="true" />
                       </div>
-                      <span className="text-xs font-mono text-indigo-300 bg-indigo-950/90 px-3 py-1 rounded-full border border-indigo-700/60 font-medium">
+                      <span className="text-[10px] min-[380px]:text-xs font-mono text-indigo-300 bg-indigo-950/90 px-2.5 min-[380px]:px-3 py-1 rounded-full border border-indigo-700/60 font-medium whitespace-nowrap">
                         {service.badge}
                       </span>
                     </div>
 
                     <div>
-                      <h3 className="font-display text-2xl font-bold tracking-tight text-white mb-2">
+                      <h3 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-white mb-2">
                         {service.title}
                       </h3>
-                      <p className="text-sm text-slate-300 leading-relaxed">
+                      <p className="text-sm text-slate-300 leading-relaxed font-normal">
                         {service.description}
                       </p>
                     </div>
+                  </div>
 
-                    {/* Escopo de entrega */}
-                    <div className="space-y-2.5 pt-3 border-t border-white/[0.06]">
-                      <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                        O que está incluso:
-                      </span>
-                      <div className="grid grid-cols-1 gap-2 text-sm text-slate-300">
-                        {service.includes.map((item) => (
-                          <div key={item} className="flex items-start gap-2">
-                            <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" aria-hidden="true" />
-                            <span className="text-xs sm:text-sm">{item}</span>
-                          </div>
-                        ))}
-                      </div>
+                  {/* Linha 2: Bloco INCLUI */}
+                  <div className="space-y-2.5 pt-4 border-t border-white/[0.06] lg:pb-4">
+                    <span className="text-xs font-bold uppercase tracking-wider text-slate-300 block">
+                      INCLUI:
+                    </span>
+                    <div className="grid grid-cols-1 gap-2 text-sm text-slate-300">
+                      {service.includes.map((item) => (
+                        <div key={item} className="flex items-start gap-2">
+                          <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" aria-hidden="true" />
+                          <span className="text-xs sm:text-sm leading-snug">{item}</span>
+                        </div>
+                      ))}
                     </div>
+                  </div>
 
-                    <p className="text-xs text-slate-400 leading-relaxed rounded-lg border border-white/[0.06] bg-slate-950/60 p-3">
+                  {/* Linha 3: Caixa de Nota Sutil */}
+                  <div className="lg:py-3">
+                    <p className="text-xs text-slate-400 leading-relaxed rounded-lg border border-white/[0.08] bg-slate-950/70 p-3">
                       ℹ️ {service.scopeNote}
                     </p>
+                  </div>
 
+                  {/* Linha 4: Bloco NÃO INCLUSO */}
+                  <div className="space-y-2 pt-4 border-t border-white/[0.06] lg:pb-4">
                     {service.excluded && (
-                      <div className="space-y-2 pt-2 border-t border-white/[0.06]">
-                        <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                          Não incluso por padrão:
+                      <>
+                        <span className="text-xs font-bold uppercase tracking-wider text-slate-400 block">
+                          NÃO INCLUSO:
                         </span>
                         <div className="grid grid-cols-1 gap-1.5 text-xs text-slate-400">
                           {service.excluded.map((item) => (
                             <div key={item} className="flex items-start gap-2">
                               <X className="w-3.5 h-3.5 text-slate-500 shrink-0 mt-0.5" aria-hidden="true" />
-                              <span>{item}</span>
+                              <span className="leading-snug">{item}</span>
                             </div>
                           ))}
                         </div>
-                      </div>
+                      </>
                     )}
                   </div>
 
-                  {/* Orçamento Personalizado & CTA */}
-                  <div className="mt-8 pt-6 border-t border-white/[0.08] space-y-4">
+                  {/* Linha 5: Orçamento Personalizado & CTA (inicia na mesma posição vertical) */}
+                  <div className="pt-4 border-t border-white/[0.08] space-y-4 flex flex-col justify-end">
                     <div className="p-3.5 rounded-xl bg-slate-950/70 border border-white/[0.06] space-y-1">
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-semibold text-indigo-300 uppercase tracking-wide">
@@ -277,63 +297,79 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
             {/* 4 Blocos de Regras Comerciais */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
               {/* Regra 1: 50% Entrada + 50% Final */}
-              <div className="p-5 rounded-2xl bg-[#0b101c] border border-white/[0.08] space-y-3 hover:border-indigo-400/40 transition-all shadow-md">
-                <div className="w-10 h-10 rounded-xl bg-indigo-950/90 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
-                  <Split className="w-5 h-5" />
+              <div className="p-5 sm:p-6 rounded-2xl bg-[#0b101c] border border-white/[0.08] hover:border-indigo-400/40 transition-all shadow-md flex flex-col justify-between h-full">
+                <div className="space-y-3">
+                  <div className="w-10 h-10 rounded-xl bg-indigo-950/90 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
+                    <Split className="w-5 h-5" />
+                  </div>
+                  <h4 className="text-base font-bold text-white">50% Início + 50% Entrega</h4>
+                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                    50% no momento da contratação para iniciar imediatamente o desenvolvimento e 50% restante após a entrega e aprovação final (via PIX).
+                  </p>
                 </div>
-                <h4 className="text-base font-bold text-white">50% Início + 50% Entrega</h4>
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                  50% no momento da contratação para iniciar imediatamente o desenvolvimento e 50% restante após a entrega e aprovação final (via PIX).
-                </p>
-                <div className="text-[11px] font-mono text-indigo-400 bg-indigo-950/40 px-2.5 py-1 rounded border border-indigo-500/20">
-                  Ideal para fluxo de caixa
+                <div className="mt-auto pt-4">
+                  <div className="text-[11px] font-mono text-indigo-400 bg-indigo-950/40 px-2.5 py-1 rounded border border-indigo-500/20 text-center">
+                    Ideal para fluxo de caixa
+                  </div>
                 </div>
               </div>
 
               {/* Regra 2: 20% de Desconto à Vista */}
-              <div className="p-5 rounded-2xl bg-gradient-to-b from-emerald-950/30 to-[#0b101c] border border-emerald-500/30 space-y-3 hover:border-emerald-400/50 transition-all shadow-md">
-                <div className="w-10 h-10 rounded-xl bg-emerald-950/90 border border-emerald-500/40 flex items-center justify-center text-emerald-300">
-                  <Percent className="w-5 h-5" />
+              <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-b from-emerald-950/30 to-[#0b101c] border border-emerald-500/30 hover:border-emerald-400/50 transition-all shadow-md flex flex-col justify-between h-full">
+                <div className="space-y-3">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-950/90 border border-emerald-500/40 flex items-center justify-center text-emerald-300">
+                    <Percent className="w-5 h-5" />
+                  </div>
+                  <div className="flex items-center justify-between gap-1.5 flex-wrap">
+                    <h4 className="text-base font-bold text-white">20% de Desconto à Vista</h4>
+                    <span className="text-[10px] font-bold uppercase bg-emerald-500 text-black px-2 py-0.5 rounded whitespace-nowrap">
+                      Maior economia
+                    </span>
+                  </div>
+                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                    Pagamento integral à vista no momento do fechamento garante 20% de desconto direto sobre o valor total do projeto orçado.
+                  </p>
                 </div>
-                <div className="flex items-center justify-between">
-                  <h4 className="text-base font-bold text-white">20% de Desconto à Vista</h4>
-                  <span className="text-[10px] font-bold uppercase bg-emerald-500 text-black px-2 py-0.5 rounded">
-                    Maior economia
-                  </span>
-                </div>
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                  Pagamento integral à vista no momento do fechamento garante 20% de desconto direto sobre o valor total do projeto orçado.
-                </p>
-                <div className="text-[11px] font-mono text-emerald-300 bg-emerald-950/40 px-2.5 py-1 rounded border border-emerald-500/20">
-                  Economize 1/5 do investimento
+                <div className="mt-auto pt-4">
+                  <div className="text-[11px] font-mono text-emerald-300 bg-emerald-950/40 px-2.5 py-1 rounded border border-emerald-500/20 text-center">
+                    Economize 1/5 do investimento
+                  </div>
                 </div>
               </div>
 
               {/* Regra 3: Cartão até 5x sem juros */}
-              <div className="p-5 rounded-2xl bg-[#0b101c] border border-white/[0.08] space-y-3 hover:border-indigo-400/40 transition-all shadow-md">
-                <div className="w-10 h-10 rounded-xl bg-indigo-950/90 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
-                  <CreditCard className="w-5 h-5" />
+              <div className="p-5 sm:p-6 rounded-2xl bg-[#0b101c] border border-white/[0.08] hover:border-indigo-400/40 transition-all shadow-md flex flex-col justify-between h-full">
+                <div className="space-y-3">
+                  <div className="w-10 h-10 rounded-xl bg-indigo-950/90 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
+                    <CreditCard className="w-5 h-5" />
+                  </div>
+                  <h4 className="text-base font-bold text-white">Até 5x Sem Juros no Cartão</h4>
+                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                    Aceitamos cartão de crédito em até 5 vezes sem nenhum juro para você (sendo 1 entrada + 4 parcelas mensais fixas).
+                  </p>
                 </div>
-                <h4 className="text-base font-bold text-white">Até 5x Sem Juros no Cartão</h4>
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                  Aceitamos cartão de crédito em até 5 vezes sem nenhum juro para você (sendo 1 entrada + 4 parcelas mensais fixas).
-                </p>
-                <div className="text-[11px] font-mono text-indigo-400 bg-indigo-950/40 px-2.5 py-1 rounded border border-indigo-500/20">
-                  1 Entrada + 4 Parcelas Fixas
+                <div className="mt-auto pt-4">
+                  <div className="text-[11px] font-mono text-indigo-400 bg-indigo-950/40 px-2.5 py-1 rounded border border-indigo-500/20 text-center">
+                    1 Entrada + 4 Parcelas Fixas
+                  </div>
                 </div>
               </div>
 
               {/* Regra 4: Cartão de 6x a 12x */}
-              <div className="p-5 rounded-2xl bg-[#0b101c] border border-white/[0.08] space-y-3 hover:border-indigo-400/40 transition-all shadow-md">
-                <div className="w-10 h-10 rounded-xl bg-indigo-950/90 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
-                  <Calendar className="w-5 h-5" />
+              <div className="p-5 sm:p-6 rounded-2xl bg-[#0b101c] border border-white/[0.08] hover:border-indigo-400/40 transition-all shadow-md flex flex-col justify-between h-full">
+                <div className="space-y-3">
+                  <div className="w-10 h-10 rounded-xl bg-indigo-950/90 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
+                    <Calendar className="w-5 h-5" />
+                  </div>
+                  <h4 className="text-base font-bold text-white">De 6x até 12x no Cartão</h4>
+                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                    Para parcelamentos mais longos, viabilizamos de 6x até 12x no cartão de crédito, com repasse das taxas de juros da operadora para o cliente.
+                  </p>
                 </div>
-                <h4 className="text-base font-bold text-white">De 6x até 12x no Cartão</h4>
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                  Para parcelamentos mais longos, viabilizamos de 6x até 12x no cartão de crédito, com repasse das taxas de juros da operadora para o cliente.
-                </p>
-                <div className="text-[11px] font-mono text-slate-400 bg-slate-900 px-2.5 py-1 rounded border border-white/[0.05]">
-                  Parcelas mínimas mensais
+                <div className="mt-auto pt-4">
+                  <div className="text-[11px] font-mono text-slate-400 bg-slate-900 px-2.5 py-1 rounded border border-white/[0.05] text-center">
+                    Parcelas mínimas mensais
+                  </div>
                 </div>
               </div>
             </div>

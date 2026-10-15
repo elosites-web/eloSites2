@@ -33,7 +33,7 @@ export const Persistent3DScene: React.FC = () => {
 
     // Configuração de Cena, Névoa Atmosférica e Câmera
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x0b0f1a, 0.022);
+    scene.fog = new THREE.FogExp2(0x060912, 0.014);
 
     const camera = new THREE.PerspectiveCamera(
       50,
@@ -62,7 +62,7 @@ export const Persistent3DScene: React.FC = () => {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, DPR_CAP));
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.25;
+    renderer.toneMappingExposure = 1.6;
     container.appendChild(renderer.domElement);
 
     // Iluminação
@@ -127,7 +127,7 @@ export const Persistent3DScene: React.FC = () => {
     nodesGeo.setAttribute('color', new THREE.BufferAttribute(nodeColorArray, 3));
 
     const nodesMat = new THREE.PointsMaterial({
-      size: 0.65,
+      size: 0.85,
       map: nodeTexture,
       transparent: true,
       vertexColors: true,
@@ -150,7 +150,7 @@ export const Persistent3DScene: React.FC = () => {
     const lineMat = new THREE.LineBasicMaterial({
       vertexColors: true,
       transparent: true,
-      opacity: 0.65,
+      opacity: 0.82,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     });
@@ -177,7 +177,7 @@ export const Persistent3DScene: React.FC = () => {
       color: 0x6366f1,
       wireframe: true,
       transparent: true,
-      opacity: 0.28,
+      opacity: 0.42,
     });
     const groundGridMesh = new THREE.Mesh(groundGridGeo, groundGridMat);
     groundGridGroup.add(groundGridMesh);
@@ -193,7 +193,7 @@ export const Persistent3DScene: React.FC = () => {
       color: 0x818cf8,
       wireframe: true,
       transparent: true,
-      opacity: 0.18,
+      opacity: 0.32,
     });
     const ceilingGridMesh = new THREE.Mesh(ceilingGridGeo, ceilingGridMat);
     ceilingGridGroup.add(ceilingGridMesh);

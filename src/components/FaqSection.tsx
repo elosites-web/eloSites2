@@ -86,7 +86,7 @@ export const FaqSection: React.FC = () => {
   return (
     <section
       id="faq"
-      className="py-24 sm:py-32 bg-[#0B0F19]/80 relative border-t border-white/[0.05] overflow-x-clip"
+      className="pt-24 pb-20 sm:pt-28 sm:pb-24 lg:pt-32 lg:pb-28 bg-[#0B0F19]/30 backdrop-blur-[0.5px] relative border-t border-white/[0.05] overflow-x-clip"
     >
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-indigo-400/20 to-transparent pointer-events-none" />
       <div className="page-shell page-x">
@@ -133,7 +133,7 @@ export const FaqSection: React.FC = () => {
                     aria-controls={panelId}
                     className="w-full p-3.5 min-[360px]:p-5 sm:p-6 text-left flex items-center justify-between gap-3 min-[360px]:gap-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-inset min-h-12 transition-colors duration-200 pressable"
                   >
-                    <span className="font-display text-base sm:text-lg font-semibold text-white min-w-0 text-pretty">
+                    <span className="font-display text-base sm:text-lg font-semibold text-white min-w-0 text-pretty text-left">
                       {faq.question}
                     </span>
                     <span

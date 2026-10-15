@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { WhatsAppIcon } from './WhatsAppIcon';
 import { SITE_CONFIG, whatsappUrl } from '../types';
+import { ProjectModal } from './ProjectModal';
 
 export interface PortfolioProjectData {
   id: string;
@@ -104,10 +105,16 @@ type ViewMode = 'composite' | 'desktop' | 'mobile';
 interface ProjectCardProps {
   project: PortfolioProjectData;
   onOpenZoom: (imgSrc: string, title: string) => void;
+  onOpenDetails: (project: PortfolioProjectData) => void;
   onNavigateToServices?: () => void;
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ project, onOpenZoom, onNavigateToServices }) => {
+const ProjectCard: React.FC<ProjectCardProps> = ({
+  project,
+  onOpenZoom,
+  onOpenDetails,
+  onNavigateToServices,
+}) => {
   const [viewMode, setViewMode] = useState<ViewMode>('composite');
 
   return (
@@ -125,9 +132,14 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onOpenZoom, onNaviga
         </div>
 
         <div>
-          <h3 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-white group-hover:text-indigo-200 transition-colors">
+          <button
+            type="button"
+            onClick={() => onOpenDetails(project)}
+            className="text-left font-display text-xl sm:text-2xl font-bold tracking-tight text-white group-hover:text-indigo-200 hover:text-indigo-300 transition-colors cursor-pointer w-full"
+            title="Ver estudo de caso e resultados"
+          >
             {project.title}
-          </h3>
+          </button>
           <p className="mt-1 text-xs text-slate-400 font-mono flex items-center gap-1.5">
             <span className="text-indigo-400 font-bold">🌐</span>
             <span>{project.urlLabel}</span>
@@ -143,7 +155,18 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onOpenZoom, onNaviga
           </p>
         </div>
 
-        {/* Tags */}
+        {/* Ver Detalhes e Tags */}
+        <div className="pt-1 flex items-center justify-between gap-2 flex-wrap">
+          <button
+            type="button"
+            onClick={() => onOpenDetails(project)}
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-400 hover:text-indigo-300 transition-colors"
+          >
+            <span>Ver detalhes (Desafio, Solução & Resultados)</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
+
         <div className="flex flex-wrap gap-1.5 pt-1">
           {project.tags.map((tag) => (
             <span
@@ -325,16 +348,27 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onOpenZoom, onNaviga
         </div>
 
         {/* Rodapé do Card com Ações */}
-        <div className="pt-3 border-t border-white/[0.06] flex items-center justify-between gap-3">
-          <a
-            href={project.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center text-center gap-1.5 text-xs sm:text-sm font-semibold text-indigo-300 hover:text-white transition-colors"
-          >
-            <span>Visitar site publicado</span>
-            <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
-          </a>
+        <div className="pt-3 border-t border-white/[0.06] flex items-center justify-between gap-2.5">
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => onOpenDetails(project)}
+              className="inline-flex items-center justify-center text-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-indigo-300 hover:text-white hover:bg-slate-800 border border-white/[0.08] transition-colors"
+            >
+              <span>Ver Case</span>
+              <ArrowRight className="w-3 h-3" />
+            </button>
+
+            <a
+              href={project.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center text-center gap-1 text-xs font-semibold text-slate-400 hover:text-white transition-colors p-1"
+              title="Abrir site publicado em nova aba"
+            >
+              <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
+            </a>
+          </div>
 
           <a
             href={whatsappUrl(
@@ -364,6 +398,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
 }) => {
   const [filter, setFilter] = useState<'all' | 'landing' | 'institutional'>('all');
   const [zoomModal, setZoomModal] = useState<{ src: string; title: string } | null>(null);
+  const [selectedProject, setSelectedProject] = useState<PortfolioProjectData | null>(null);
 
   const filteredProjects = PORTFOLIO_PROJECTS.filter((p) => {
     if (filter === 'all') return true;
@@ -375,7 +410,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
   return (
     <section
       id="portfolio"
-      className="py-16 sm:py-24 bg-[#090D16]/75 backdrop-blur-[1px] relative min-h-screen flex flex-col justify-between"
+      className="pt-24 pb-20 sm:pt-28 sm:pb-24 lg:pt-32 lg:pb-28 bg-[#090D16]/30 backdrop-blur-[0.5px] relative min-h-screen flex flex-col justify-between"
     >
       {/* Luz ambiente de fundo */}
       <div className="absolute top-1/4 left-0 w-96 h-96 bg-indigo-500/[0.08] blur-[140px] rounded-full pointer-events-none" />
@@ -436,14 +471,27 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
 
           {/* Grade de Projetos Reais */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch">
-            {filteredProjects.map((project) => (
-              <ProjectCard
-                key={project.id}
-                project={project}
-                onOpenZoom={(src, title) => setZoomModal({ src, title })}
-                onNavigateToServices={onNavigateToServices}
-              />
-            ))}
+            {filteredProjects.map((project, index) => {
+              const isOddLastOnTwoCols =
+                filteredProjects.length === 3 && index === 2;
+              return (
+                <div
+                  key={project.id}
+                  className={`h-full ${
+                    isOddLastOnTwoCols
+                      ? 'md:col-span-2 md:w-[calc(50%-1rem)] md:mx-auto lg:col-span-1 lg:w-full lg:mx-0'
+                      : ''
+                  }`}
+                >
+                  <ProjectCard
+                    project={project}
+                    onOpenZoom={(src, title) => setZoomModal({ src, title })}
+                    onOpenDetails={(p) => setSelectedProject(p)}
+                    onNavigateToServices={onNavigateToServices}
+                  />
+                </div>
+              );
+            })}
           </div>
         </div>
 
@@ -482,6 +530,13 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Modal de Detalhes do Projeto (Challenge, Solution, Results) */}
+      <ProjectModal
+        project={selectedProject}
+        isOpen={!!selectedProject}
+        onClose={() => setSelectedProject(null)}
+      />
 
       {/* Modal de Zoom em Alta Resolução */}
       {zoomModal && (

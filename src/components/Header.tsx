@@ -111,16 +111,24 @@ export const Header: React.FC<HeaderProps> = ({
     <>
       <header
         id="header-nav"
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-200 ${
+        className={`fixed top-0 left-0 right-0 z-[60] transition-all duration-300 ${
           isScrolled || isMenuOpen
             ? 'bg-[#080C15]/95 backdrop-blur-md border-b border-white/[0.08] py-3 shadow-xl shadow-black/40'
             : 'bg-[#080C15]/80 backdrop-blur-sm border-b border-white/[0.06] py-3.5 sm:py-4'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between gap-3 sm:gap-6">
-            {/* Logo do Estúdio — Clicar leva para Tela 1 (Início) */}
-            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <div className="flex items-center justify-between gap-3 sm:gap-6 min-h-[44px]">
+            {/* Logo do Estúdio — Anima para o centro da tela quando menu está aberto e volta à esquerda ao fechar */}
+            <motion.div
+              layout
+              transition={{ type: 'spring', stiffness: 280, damping: 26 }}
+              className={`flex items-center gap-2 sm:gap-3 shrink-0 z-10 transition-all duration-300 ${
+                isMenuOpen
+                  ? 'absolute left-1/2 -translate-x-1/2'
+                  : 'relative left-0 translate-x-0'
+              }`}
+            >
               <button
                 type="button"
                 id="brand-logo-link"
@@ -134,51 +142,41 @@ export const Header: React.FC<HeaderProps> = ({
                 <EloLogo size="md" />
               </button>
 
-              {/* Indicador sutil da tela ativa atual com layoutId contínuo */}
-              <div className="hidden lg:flex items-center pl-3 border-l border-white/[0.08]">
-                <motion.div
-                  layoutId="shared-active-screen-header-pill"
-                  transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-indigo-950/60 border border-indigo-500/25"
+              {/* Indicador sutil da tela ativa atual (visível apenas com menu fechado) */}
+              {!isMenuOpen && (
+                <div className="hidden lg:flex items-center pl-3 border-l border-white/[0.08]">
+                  <motion.div
+                    layoutId="shared-active-screen-header-pill"
+                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-indigo-950/60 border border-indigo-500/25"
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="text-xs font-semibold text-slate-200">
+                      {currentMeta.shortTitle}
+                    </span>
+                  </motion.div>
+                </div>
+              )}
+            </motion.div>
+
+            {/* Ações Direitas: Botão MENU (oculto quando o menu já está aberto) */}
+            <div className="flex items-center ml-auto shrink-0 z-10">
+              {!isMenuOpen && (
+                <button
+                  id="menu-de-navegacao-btn"
+                  type="button"
+                  onClick={() => setIsMenuOpen(true)}
+                  aria-expanded={false}
+                  aria-controls="multi-screen-navigation-modal"
+                  aria-label="Abrir Menu de Navegação"
+                  className="relative group inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-lg shadow-indigo-600/30 hover:shadow-[0_0_24px_rgba(99,102,241,0.55)] active:shadow-[0_0_32px_rgba(168,85,247,0.7)] hover:-translate-y-0.5 active:translate-y-0 transition-all border border-indigo-400/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 text-center shrink-0 cursor-pointer"
                 >
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="text-xs font-semibold text-slate-200">
-                    {currentMeta.shortTitle}
+                  <Menu className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white shrink-0 transition-transform duration-200 group-hover:scale-110" aria-hidden="true" />
+                  <span className="tracking-wider uppercase font-bold text-xs sm:text-xs text-center drop-shadow-sm">
+                    MENU
                   </span>
-                </motion.div>
-              </div>
-            </div>
-
-            {/* Ações Centrais e Direitas: Botão "MENU" + WhatsApp */}
-            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-              {/* BOTÃO COMPACTO SOLICITADO: "MENU" (sem SVG e dimensionado para não comprimir o logotipo) */}
-              <button
-                id="menu-de-navegacao-btn"
-                type="button"
-                onClick={() => setIsMenuOpen(true)}
-                aria-expanded={isMenuOpen}
-                aria-controls="multi-screen-navigation-modal"
-                aria-label="Abrir Menu de Navegação"
-                className="relative group inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-lg shadow-indigo-600/30 hover:shadow-[0_0_24px_rgba(99,102,241,0.55)] active:shadow-[0_0_32px_rgba(168,85,247,0.7)] hover:-translate-y-0.5 active:translate-y-0 transition-all border border-indigo-400/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 text-center shrink-0 cursor-pointer"
-              >
-                <Menu className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white shrink-0 transition-transform duration-200 group-hover:scale-110" aria-hidden="true" />
-                <span className="tracking-wider uppercase font-bold text-xs sm:text-xs text-center drop-shadow-sm">
-                  MENU
-                </span>
-              </button>
-
-              {/* Botão de WhatsApp Direto */}
-              <a
-                id="header-cta-whatsapp"
-                href={headerWhatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Falar no WhatsApp oficial da ēloSites"
-                className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-[#25D366] hover:bg-[#20bd5a] text-white border border-emerald-400/40 shadow-md shadow-emerald-950/40 hover:shadow-[0_0_20px_rgba(37,211,102,0.6)] active:shadow-[0_0_28px_rgba(37,211,102,0.8)] hover:-translate-y-0.5 active:translate-y-0 transition-all shrink-0 cursor-pointer"
-              >
-                <WhatsAppIcon className="w-4 h-4 text-white shrink-0" />
-                <span className="hidden sm:inline text-white drop-shadow-sm">WhatsApp</span>
-              </a>
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -191,7 +189,7 @@ export const Header: React.FC<HeaderProps> = ({
           role="dialog"
           aria-modal="true"
           aria-label="Menu de Navegação das Telas ēloSites"
-          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 animate-in fade-in duration-200 overflow-y-auto"
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 pt-20 sm:pt-24 bg-black/85 animate-in fade-in duration-200 overflow-y-auto"
           onClick={() => setIsMenuOpen(false)}
         >
           <div

@@ -38,7 +38,7 @@ export const ProcessSection: React.FC = () => {
   return (
     <section
       id="como-funciona"
-      className="py-24 sm:py-32 bg-[#090D16]/70 backdrop-blur-[1px] relative border-t border-white/[0.05] overflow-x-clip"
+      className="pt-24 pb-20 sm:pt-28 sm:pb-24 lg:pt-32 lg:pb-28 bg-[#090D16]/30 backdrop-blur-[0.5px] relative border-t border-white/[0.05] overflow-x-clip"
     >
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-indigo-400/25 to-transparent pointer-events-none" />
       <div className="page-shell page-x relative z-10">
@@ -59,31 +59,27 @@ export const ProcessSection: React.FC = () => {
           {steps.map((step) => {
             const Icon = step.icon;
             return (
-              <div
+              <article
                 key={step.number}
-                className="relative rounded-2xl p-[1px] bg-gradient-to-b from-indigo-400/30 via-white/[0.08] to-transparent hover:from-indigo-400/70 hover:shadow-[0_0_25px_rgba(99,102,241,0.2)] transition-all duration-300 group"
+                className="surface-card h-full w-full rounded-2xl p-5 sm:p-6 lg:p-8 bg-[#0A0E17]/90 border border-white/[0.08] hover:border-indigo-500/35 transition-all duration-300 shadow-xl shadow-black/40 flex flex-col justify-between group"
               >
-                <article
-                  className="h-full w-full rounded-2xl p-6 sm:p-7 bg-[#0B101D]/95 backdrop-blur-md flex flex-col justify-between transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-2xl group-hover:shadow-indigo-500/15"
-                >
-                  <div>
-                    <div className="flex items-center justify-between mb-6">
-                      <span className="font-mono text-xs font-bold text-indigo-300 bg-indigo-950/80 border border-indigo-400/30 px-3 py-1 rounded-lg group-hover:shadow-[0_0_12px_rgba(99,102,241,0.4)] group-hover:border-indigo-400/60 transition-all">
-                        {step.number}
-                      </span>
-                      <div className="w-11 h-11 rounded-xl bg-indigo-950/70 border border-indigo-500/30 flex items-center justify-center text-indigo-300 group-hover:text-white group-hover:bg-indigo-600 group-hover:shadow-[0_0_18px_rgba(99,102,241,0.6)] group-hover:scale-105 transition-all duration-300">
-                        <Icon className="w-5 h-5" aria-hidden="true" />
-                      </div>
+                <div>
+                  <div className="flex items-center justify-between mb-6">
+                    <span className="font-mono text-xs font-bold text-indigo-300 bg-indigo-950/80 border border-indigo-400/30 px-3 py-1 rounded-lg">
+                      {step.number}
+                    </span>
+                    <div className="w-11 h-11 rounded-xl bg-indigo-950/70 border border-indigo-500/30 flex items-center justify-center text-indigo-300 transition-all duration-300">
+                      <Icon className="w-5 h-5" aria-hidden="true" />
                     </div>
-                    <h3 className="font-display text-xl font-bold tracking-tight text-white mb-3 group-hover:text-indigo-100 transition-colors">
-                      {step.title}
-                    </h3>
-                    <p className="text-sm text-slate-300 leading-relaxed font-normal">
-                      {step.description}
-                    </p>
                   </div>
-                </article>
-              </div>
+                  <h3 className="font-display text-xl font-bold tracking-tight text-white mb-3 group-hover:text-indigo-100 transition-colors">
+                    {step.title}
+                  </h3>
+                  <p className="text-sm text-slate-300 leading-relaxed font-normal">
+                    {step.description}
+                  </p>
+                </div>
+              </article>
             );
           })}
         </div>

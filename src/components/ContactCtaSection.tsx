@@ -13,7 +13,7 @@ export const ContactCtaSection: React.FC<ContactCtaSectionProps> = ({ onNavigate
   return (
     <section
       id="contato"
-      className="py-20 sm:py-28 bg-[#090D16]/80 relative border-t border-white/[0.05] overflow-x-clip"
+      className="pt-24 pb-20 sm:pt-28 sm:pb-24 lg:pt-32 lg:pb-28 bg-[#090D16]/30 backdrop-blur-[0.5px] relative border-t border-white/[0.05] overflow-x-clip"
     >
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-indigo-400/25 to-transparent pointer-events-none" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(640px,100%)] h-[360px] bg-indigo-600/[0.12] blur-[140px] rounded-full pointer-events-none" />
