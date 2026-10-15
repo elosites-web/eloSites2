@@ -9,8 +9,6 @@ import {
   ExternalLink,
   ArrowRight,
   Sparkles,
-  LayoutGrid,
-  Layers,
 } from 'lucide-react';
 import { WhatsAppIcon } from './WhatsAppIcon';
 import { SITE_CONFIG, whatsappUrl } from '../types';
@@ -64,6 +62,121 @@ export const CLIENT_TESTIMONIALS: TestimonialItem[] = [
   },
 ];
 
+const getInitials = (fullName: string) => {
+  return fullName
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w[0].toUpperCase())
+    .join('');
+};
+
+interface TestimonialCardContentProps {
+  item: TestimonialItem;
+  currentIndex: number;
+  totalCount: number;
+  direction: number;
+  prefersReduced: boolean;
+}
+
+const TestimonialCardContent: React.FC<TestimonialCardContentProps> = React.memo(
+  ({ item, currentIndex, totalCount, direction, prefersReduced }) => {
+    return (
+      <AnimatePresence mode="wait" custom={direction}>
+        <motion.div
+          key={item.id}
+          custom={direction}
+          initial={{ opacity: 0, x: prefersReduced ? 0 : direction > 0 ? 14 : -14 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: prefersReduced ? 0 : direction > 0 ? -14 : 14 }}
+          transition={{ duration: prefersReduced ? 0 : 0.22, ease: [0.23, 1, 0.32, 1] }}
+          className="space-y-4 sm:space-y-5"
+        >
+          {/* Top Bar do Card: Categoria, Estrelas e Contador */}
+          <div className="flex flex-wrap items-center justify-between gap-2.5 pb-3.5 border-b border-white/[0.08]">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-indigo-950/70 border border-indigo-400/30 text-indigo-300 text-[11px] font-semibold">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" aria-hidden="true" />
+              <span>{item.category}</span>
+            </div>
+
+            <div className="flex items-center gap-2.5">
+              {/* Classificação com 5 estrelas */}
+              <div className="flex items-center gap-0.5 text-amber-400" title={`Classificação ${item.rating} de 5 estrelas`}>
+                {[...Array(item.rating)].map((_, i) => (
+                  <Star key={i} className="w-3.5 h-3.5 fill-amber-400" aria-hidden="true" />
+                ))}
+              </div>
+
+              {/* Contador de slides */}
+              <div className="font-mono text-[11px] text-slate-400 px-2 py-0.5 rounded-md bg-slate-900/90 border border-white/[0.06]">
+                0{currentIndex + 1} / 0{totalCount}
+              </div>
+            </div>
+          </div>
+
+          {/* Citação do Cliente com Formatação Otimizada */}
+          <div className="relative pt-0.5">
+            <Quote className="w-6 h-6 text-indigo-400/25 mb-1.5" aria-hidden="true" />
+            <blockquote className="text-sm sm:text-base text-slate-200 leading-relaxed italic">
+              "{item.quote}"
+            </blockquote>
+          </div>
+
+          {/* Rodapé do Card com Dados do Cliente e Links Rápidos */}
+          <div className="pt-3.5 border-t border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600/30 to-purple-600/30 border border-indigo-400/40 flex items-center justify-center text-indigo-200 font-bold font-mono text-sm shadow-inner shrink-0">
+                {getInitials(item.name)}
+              </div>
+              <div className="min-w-0">
+                <h3 className="font-display text-sm sm:text-base font-bold text-white tracking-tight truncate">
+                  {item.name}
+                </h3>
+                <p className="text-xs text-indigo-300 font-medium truncate">
+                  {item.role}
+                </p>
+                <p className="text-[11px] text-slate-400 truncate mt-0.5">
+                  <span className="text-slate-300">{item.companyOrProject}</span>
+                </p>
+              </div>
+            </div>
+
+            {/* Ações do Card: Link direto para o projeto e WhatsApp */}
+            <div className="flex items-center gap-2 pt-1 sm:pt-0 shrink-0">
+              {item.projectUrl && (
+                <a
+                  href={item.projectUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center text-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900/90 hover:bg-slate-800 text-slate-200 hover:text-white border border-white/[0.1] hover:border-indigo-400/40 transition-all font-semibold text-xs shadow-sm cursor-pointer group/link"
+                  title={`Ver projeto real de ${item.name} no ar`}
+                >
+                  <span className="text-center">Acessar projeto</span>
+                  <ExternalLink className="w-3 h-3 text-indigo-400 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
+                </a>
+              )}
+
+              <a
+                href={whatsappUrl(
+                  `Olá! Vi o depoimento de *${item.name}* (${item.companyOrProject}) no site da *ēloSites* e gostaria de solicitar um orçamento para o meu negócio!`
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center text-center gap-1 px-2.5 py-1.5 rounded-lg bg-emerald-950/40 hover:bg-emerald-900/40 border border-emerald-500/30 text-[11px] font-semibold text-emerald-300 hover:text-emerald-200 transition-colors"
+                title="Falar sobre projeto similar"
+              >
+                <WhatsAppIcon className="w-3 h-3 text-emerald-400" />
+                <span className="text-center">Quero similar</span>
+              </a>
+            </div>
+          </div>
+        </motion.div>
+      </AnimatePresence>
+    );
+  }
+);
+TestimonialCardContent.displayName = 'TestimonialCardContent';
+
 interface TestimonialsSectionProps {
   onNavigateToServices?: () => void;
 }
@@ -71,7 +184,6 @@ interface TestimonialsSectionProps {
 export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
   onNavigateToServices,
 }) => {
-  const [viewMode, setViewMode] = useState<'grid' | 'carousel'>('grid');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [isPaused, setIsPaused] = useState(false);
@@ -100,7 +212,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
     setCurrentIndex(index);
   };
 
-  // Suporte a teclado acessível apenas quando o foco está dentro do carrossel.
+  // Suporte a teclado acessível quando o foco está dentro do carrossel
   useEffect(() => {
     const carousel = carouselRef.current;
     if (!carousel) return;
@@ -129,9 +241,9 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
     return () => carousel.removeEventListener('keydown', handleKeyDown);
   }, [currentIndex]);
 
-  // Rotação suave do carrossel quando em modo carousel
+  // Rotação automática suave do carrossel com pausa em interação
   useEffect(() => {
-    if (viewMode !== 'carousel' || isPaused) return;
+    if (isPaused) return;
 
     const timer = setInterval(() => {
       setDirection(1);
@@ -139,7 +251,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
     }, 7000);
 
     return () => clearInterval(timer);
-  }, [viewMode, isPaused, testimonials.length]);
+  }, [isPaused, testimonials.length]);
 
   // Suporte a gestos touch (swipe) em dispositivos móveis
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -161,20 +273,11 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
     touchStartXRef.current = null;
   };
 
-  const getInitials = (fullName: string) => {
-    return fullName
-      .split(' ')
-      .filter(Boolean)
-      .slice(0, 2)
-      .map((w) => w[0].toUpperCase())
-      .join('');
-  };
-
   return (
     <section
       id="testemunhos"
       aria-label="Avaliações de Clientes e Prova Social"
-      className="py-16 sm:py-24 bg-[#070A12]/30 backdrop-blur-[0.5px] relative border-t border-white/[0.08] overflow-hidden"
+      className="py-12 sm:py-20 bg-[#070A12]/30 backdrop-blur-[0.5px] relative border-t border-white/[0.08] overflow-hidden"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onFocus={() => setIsPaused(true)}
@@ -202,23 +305,23 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
             duration: prefersReduced ? 0 : 0.45,
             ease: [0.22, 1, 0.36, 1],
           }}
-          className="max-w-3xl mx-auto text-center space-y-4 mb-10 sm:mb-14"
+          className="max-w-3xl mx-auto text-center space-y-3.5 mb-8 sm:mb-10"
         >
-          <div className="section-kicker inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-white/[0.08] text-indigo-300 text-xs sm:text-sm font-semibold uppercase">
+          <div className="section-kicker inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/90 border border-white/[0.08] text-indigo-300 text-xs font-semibold uppercase">
             <Sparkles className="w-3.5 h-3.5 text-indigo-400" aria-hidden="true" />
             <span>Social Proof & Avaliações Reais</span>
           </div>
 
-          <h2 className="font-display text-3xl sm:text-4xl lg:text-4xl font-bold tracking-tight text-white leading-tight">
+          <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white leading-tight">
             O que dizem os clientes que colocaram o site no ar
           </h2>
 
-          <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed">
             Depoimentos autênticos de quem confiou na ēloSites para construir sua presença digital profissional com código sob medida e foco em conversão.
           </p>
 
           {/* Destaque de métricas de confiabilidade */}
-          <div className="pt-2 flex flex-wrap items-center justify-center gap-4 sm:gap-8 text-xs sm:text-sm text-slate-300">
+          <div className="pt-1 flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs text-slate-300">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/60 border border-white/[0.06]">
               <div className="flex text-amber-400">
                 {[...Array(5)].map((_, i) => (
@@ -230,310 +333,16 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
             </div>
 
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900/60 border border-white/[0.06]">
-              <ShieldCheck className="w-4 h-4 text-emerald-400" aria-hidden="true" />
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" aria-hidden="true" />
               <span className="text-slate-300">Projetos reais entregues no Netlify</span>
             </div>
           </div>
-
-          {/* Alternador de Visualização: Grade Completa (com fade-in sequencial) ou Carrossel de Destaque */}
-          <div className="pt-3 flex items-center justify-center gap-2">
-            <button
-              type="button"
-              onClick={() => setViewMode('grid')}
-              aria-label="Ver todas as avaliações em grade"
-              className={`inline-flex items-center justify-center text-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
-                viewMode === 'grid'
-                  ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
-                  : 'bg-slate-900/80 text-slate-400 hover:text-white border border-white/[0.06]'
-              }`}
-            >
-              <LayoutGrid className="w-3.5 h-3.5" />
-              <span className="text-center">Todas as Avaliações ({testimonials.length})</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setViewMode('carousel')}
-              aria-label="Ver avaliações em carrossel"
-              className={`inline-flex items-center justify-center text-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
-                viewMode === 'carousel'
-                  ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
-                  : 'bg-slate-900/80 text-slate-400 hover:text-white border border-white/[0.06]'
-              }`}
-            >
-              <Layers className="w-3.5 h-3.5" />
-              <span className="text-center">Carrossel Interativo</span>
-            </button>
-          </div>
         </motion.div>
 
-        {/* MODO 1: GRADE COM ANIMAÇÃO DE FADE-IN SEQUENCIAL (STAGGER) AO ROLAR A PÁGINA */}
-        {viewMode === 'grid' && (
-          <div
-            data-testimonials-grid
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch max-w-6xl mx-auto"
-          >
-            {testimonials.map((item, index) => {
-              const isOddLastOnTwoCols =
-                testimonials.length === 3 && index === 2;
-              return (
-                <motion.article
-                  key={item.id}
-                  initial={
-                    prefersReduced
-                      ? { opacity: 1, scale: 1, y: 0 }
-                      : { opacity: 0, scale: 0.95, y: 24 }
-                  }
-                  whileInView={
-                    prefersReduced
-                      ? { opacity: 1, scale: 1, y: 0 }
-                      : { opacity: 1, scale: 1, y: 0 }
-                  }
-                  viewport={{ once: true, amount: 0.15 }}
-                  transition={{
-                    duration: prefersReduced ? 0 : 0.45,
-                    delay: prefersReduced ? 0 : index * 0.15,
-                    ease: [0.22, 1, 0.36, 1],
-                  }}
-                  className={`surface-card glass-panel glass-card-interactive flex flex-col justify-between h-full rounded-2xl p-6 sm:p-7 border border-white/[0.08] relative group ${
-                    isOddLastOnTwoCols
-                      ? 'md:col-span-2 md:w-[calc(50%-1rem)] md:mx-auto lg:col-span-1 lg:w-full lg:mx-0'
-                      : ''
-                  }`}
-                >
-                  <div className="space-y-4">
-                    {/* Top Bar do Card de Depoimento */}
-                    <div className="flex flex-wrap items-center justify-between gap-2 pb-3.5 border-b border-white/[0.06]">
-                      <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-indigo-300 bg-indigo-950/70 border border-indigo-400/30 px-2.5 py-1 rounded-full">
-                        <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" aria-hidden="true" />
-                        <span>{item.category}</span>
-                      </span>
-
-                      {/* 5 Estrelas */}
-                      <div className="flex items-center gap-0.5 text-amber-400" title="Classificação 5 de 5">
-                        {[...Array(item.rating)].map((_, i) => (
-                          <Star key={i} className="w-3.5 h-3.5 fill-amber-400" aria-hidden="true" />
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Citação do Cliente com Ícone de Aspas */}
-                    <div className="relative pt-1">
-                      <Quote className="w-8 h-8 text-indigo-400/25 mb-2" aria-hidden="true" />
-                      <blockquote className="text-sm sm:text-base text-slate-200 leading-relaxed italic">
-                        "{item.quote}"
-                      </blockquote>
-                    </div>
-                  </div>
-
-                  {/* Rodapé do Card com Dados do Cliente e Link para o Site */}
-                  <div className="pt-5 mt-6 border-t border-white/[0.06] flex flex-col gap-3.5">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600/30 to-purple-600/30 border border-indigo-400/40 flex items-center justify-center text-indigo-200 font-bold font-mono text-sm shadow-inner shrink-0">
-                        {getInitials(item.name)}
-                      </div>
-                      <div className="min-w-0">
-                        <h3 className="font-display text-base font-bold text-white tracking-tight truncate">
-                          {item.name}
-                        </h3>
-                        <p className="text-xs text-indigo-300 font-medium truncate">
-                          {item.role}
-                        </p>
-                        <p className="text-[11px] text-slate-400 truncate mt-0.5">
-                          {item.companyOrProject}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Ações do Card */}
-                    <div className="flex items-center justify-between gap-2 pt-1">
-                      {item.projectUrl && (
-                        <a
-                          href={item.projectUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center text-center gap-1.5 text-xs font-semibold text-slate-300 hover:text-white transition-colors py-1 group/link"
-                          title={`Ver projeto real de ${item.name} no ar`}
-                        >
-                          <span className="text-center">Acessar projeto</span>
-                          <ExternalLink className="w-3 h-3 text-indigo-400 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
-                        </a>
-                      )}
-
-                      <a
-                        href={whatsappUrl(
-                          `Olá! Vi o depoimento de *${item.name}* (${item.companyOrProject}) no site da *ēloSites* e gostaria de solicitar um orçamento para o meu negócio!`
-                        )}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center text-center gap-1 text-[11px] font-semibold text-emerald-400 hover:text-emerald-300 transition-colors py-1"
-                        title="Falar sobre projeto similar"
-                      >
-                        <WhatsAppIcon className="w-3 h-3 text-emerald-400" />
-                        <span className="text-center">Quero similar</span>
-                      </a>
-                    </div>
-                  </div>
-                </motion.article>
-              );
-            })}
-          </div>
-        )}
-
-        {/* MODO 2: CARROSSEL DE TESTEMUNHOS COM ANIMAÇÃO AO ROLAR */}
-        {viewMode === 'carousel' && (
-          <motion.div
-            ref={carouselRef}
-            data-testimonials-carousel
-            initial={
-              prefersReduced
-                ? { opacity: 1, y: 0 }
-                : { opacity: 0, y: 24 }
-            }
-            whileInView={
-              prefersReduced
-                ? { opacity: 1, y: 0 }
-                : { opacity: 1, y: 0 }
-            }
-            viewport={{ once: true, amount: 0.15 }}
-            transition={{
-              duration: prefersReduced ? 0 : 0.45,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="relative max-w-4xl mx-auto"
-            role="region"
-            aria-roledescription="carousel"
-            aria-label="Carrossel de Depoimentos"
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
-          >
-            {/* Card Principal */}
-            <div className="relative rounded-3xl p-[1px] bg-gradient-to-b from-indigo-500/35 via-purple-500/20 to-white/[0.06] shadow-2xl shadow-indigo-950/40">
-              <div className="rounded-3xl p-6 sm:p-10 lg:p-12 bg-[#0B101D]/95 backdrop-blur-xl">
-                <AnimatePresence mode="wait" custom={direction}>
-                  <motion.div
-                    key={current.id}
-                    custom={direction}
-                    initial={{ opacity: 0, x: prefersReduced ? 0 : (direction > 0 ? 16 : -16) }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: prefersReduced ? 0 : (direction > 0 ? -16 : 16) }}
-                    transition={{ duration: prefersReduced ? 0 : 0.24, ease: [0.23, 1, 0.32, 1] }}
-                    className="space-y-6 sm:space-y-8"
-                  >
-                    {/* Top Bar do Card */}
-                    <div className="flex flex-wrap items-center justify-between gap-3 pb-5 border-b border-white/[0.08]">
-                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-950/70 border border-indigo-400/30 text-indigo-300 text-xs font-semibold">
-                        <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" aria-hidden="true" />
-                        <span>{current.category}</span>
-                      </div>
-
-                      <div className="flex items-center gap-3">
-                        {/* Classificação com 5 estrelas */}
-                        <div className="flex items-center gap-0.5 text-amber-400">
-                          {[...Array(current.rating)].map((_, i) => (
-                            <Star key={i} className="w-4 h-4 fill-amber-400" aria-hidden="true" />
-                          ))}
-                        </div>
-
-                        {/* Contador de slides */}
-                        <div className="font-mono text-xs text-slate-400 px-2.5 py-1 rounded-lg bg-slate-900 border border-white/[0.06]">
-                          0{currentIndex + 1} / 0{testimonials.length}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Citação do Cliente */}
-                    <div className="relative">
-                      <Quote className="w-10 h-10 text-indigo-400/30 mb-3" aria-hidden="true" />
-                      <blockquote className="text-base sm:text-lg lg:text-xl text-slate-100 font-normal leading-relaxed italic">
-                        "{current.quote}"
-                      </blockquote>
-                    </div>
-
-                    {/* Rodapé do Card com Dados do Cliente e Link para o Site */}
-                    <div className="pt-6 border-t border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-5">
-                      <div className="flex items-center gap-3.5">
-                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-600/30 to-purple-600/30 border border-indigo-400/40 flex items-center justify-center text-indigo-200 font-bold font-mono text-base shadow-inner shrink-0">
-                          {getInitials(current.name)}
-                        </div>
-                        <div>
-                          <h3 className="font-display text-lg sm:text-xl font-bold text-white tracking-tight">
-                            {current.name}
-                          </h3>
-                          <p className="text-xs sm:text-sm text-indigo-300 font-medium">
-                            {current.role}
-                          </p>
-                          <p className="text-[11px] text-slate-400 mt-0.5">
-                            Empresa / Projeto: <span className="text-slate-300">{current.companyOrProject}</span>
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Botão para visitar o projeto real no ar */}
-                      {current.projectUrl && (
-                        <a
-                          href={current.projectUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center text-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-slate-200 hover:text-white border border-white/[0.1] hover:border-indigo-400/40 transition-all font-semibold text-xs sm:text-sm shrink-0 shadow-md group cursor-pointer"
-                        >
-                          <span className="text-center">Acessar projeto no ar</span>
-                          <ExternalLink className="w-3.5 h-3.5 text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                        </a>
-                      )}
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-            </div>
-
-            {/* Controles de Navegação do Carrossel */}
-            <div className="mt-8 flex items-center justify-between gap-4">
-              {/* Botão Anterior */}
-              <button
-                type="button"
-                onClick={handlePrev}
-                aria-label="Depoimento anterior"
-                className="inline-flex items-center justify-center text-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-900/90 hover:bg-slate-800 text-white border border-white/[0.08] shadow-lg hover:shadow-[0_0_18px_rgba(99,102,241,0.4)] transition-all cursor-pointer"
-              >
-                <ChevronLeft className="w-4 h-4 text-indigo-400" />
-                <span className="hidden sm:inline text-center">Anterior</span>
-              </button>
-
-              {/* Indicadores de Paginação / Pontos */}
-              <div className="flex items-center gap-2.5" role="tablist" aria-label="Slides do carrossel">
-                {testimonials.map((t, idx) => (
-                  <button
-                    key={t.id}
-                    type="button"
-                    role="tab"
-                    aria-selected={currentIndex === idx}
-                    aria-label={`Ir para avaliação de ${t.name}`}
-                    onClick={() => goToIndex(idx)}
-                    className={`transition-all duration-300 rounded-full cursor-pointer ${
-                      currentIndex === idx
-                        ? 'w-8 h-2.5 bg-indigo-500 shadow-[0_0_12px_rgba(99,102,241,0.8)]'
-                        : 'w-2.5 h-2.5 bg-slate-700 hover:bg-slate-500'
-                    }`}
-                  />
-                ))}
-              </div>
-
-              {/* Botão Próximo */}
-              <button
-                type="button"
-                onClick={handleNext}
-                aria-label="Próximo depoimento"
-                className="inline-flex items-center justify-center text-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-900/90 hover:bg-slate-800 text-white border border-white/[0.08] shadow-lg hover:shadow-[0_0_18px_rgba(99,102,241,0.4)] transition-all cursor-pointer"
-              >
-                <span className="hidden sm:inline text-center">Próximo</span>
-                <ChevronRight className="w-4 h-4 text-indigo-400" />
-              </button>
-            </div>
-          </motion.div>
-        )}
-
-        {/* Bloco de Ação Rápida no Rodapé dos Testemunhos com Animação Suave */}
+        {/* CARROSSEL INTERATIVO DE TESTEMUNHOS (OTIMIZADO E COMPACTO) */}
         <motion.div
+          ref={carouselRef}
+          data-testimonials-carousel
           initial={
             prefersReduced
               ? { opacity: 1, y: 0 }
@@ -544,16 +353,99 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
               ? { opacity: 1, y: 0 }
               : { opacity: 1, y: 0 }
           }
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{
+            duration: prefersReduced ? 0 : 0.45,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+          className="relative max-w-2xl sm:max-w-3xl mx-auto"
+          role="region"
+          aria-roledescription="carousel"
+          aria-label="Carrossel de Depoimentos"
+          tabIndex={0}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          {/* Card Principal Compacto & Otimizado */}
+          <div className="relative rounded-2xl p-[1px] bg-gradient-to-b from-indigo-500/35 via-purple-500/20 to-white/[0.06] shadow-xl shadow-indigo-950/30">
+            <div className="rounded-2xl p-5 sm:p-7 md:p-8 bg-[#0B101D]/95 backdrop-blur-xl">
+              <TestimonialCardContent
+                item={current}
+                currentIndex={currentIndex}
+                totalCount={testimonials.length}
+                direction={direction}
+                prefersReduced={prefersReduced}
+              />
+            </div>
+          </div>
+
+          {/* Controles de Navegação do Carrossel */}
+          <div className="mt-5 flex items-center justify-between gap-4">
+            {/* Botão Anterior */}
+            <button
+              type="button"
+              onClick={handlePrev}
+              aria-label="Depoimento anterior"
+              className="inline-flex items-center justify-center text-center gap-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-900/90 hover:bg-slate-800 text-white border border-white/[0.08] shadow-md hover:shadow-[0_0_15px_rgba(99,102,241,0.35)] transition-all cursor-pointer"
+            >
+              <ChevronLeft className="w-4 h-4 text-indigo-400" />
+              <span className="hidden sm:inline text-center">Anterior</span>
+            </button>
+
+            {/* Indicadores de Paginação / Pontos */}
+            <div className="flex items-center gap-2" role="tablist" aria-label="Slides do carrossel">
+              {testimonials.map((t, idx) => (
+                <button
+                  key={t.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={currentIndex === idx}
+                  aria-label={`Ir para avaliação de ${t.name}`}
+                  onClick={() => goToIndex(idx)}
+                  className={`transition-all duration-300 rounded-full cursor-pointer ${
+                    currentIndex === idx
+                      ? 'w-7 h-2 bg-indigo-500 shadow-[0_0_10px_rgba(99,102,241,0.8)]'
+                      : 'w-2 h-2 bg-slate-700 hover:bg-slate-500'
+                  }`}
+                />
+              ))}
+            </div>
+
+            {/* Botão Próximo */}
+            <button
+              type="button"
+              onClick={handleNext}
+              aria-label="Próximo depoimento"
+              className="inline-flex items-center justify-center text-center gap-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-900/90 hover:bg-slate-800 text-white border border-white/[0.08] shadow-md hover:shadow-[0_0_15px_rgba(99,102,241,0.35)] transition-all cursor-pointer"
+            >
+              <span className="hidden sm:inline text-center">Próximo</span>
+              <ChevronRight className="w-4 h-4 text-indigo-400" />
+            </button>
+          </div>
+        </motion.div>
+
+        {/* Bloco de Ação Rápida no Rodapé dos Testemunhos */}
+        <motion.div
+          initial={
+            prefersReduced
+              ? { opacity: 1, y: 0 }
+              : { opacity: 0, y: 18 }
+          }
+          whileInView={
+            prefersReduced
+              ? { opacity: 1, y: 0 }
+              : { opacity: 1, y: 0 }
+          }
           viewport={{ once: true, amount: 0.2 }}
           transition={{
             duration: prefersReduced ? 0 : 0.45,
-            delay: prefersReduced ? 0 : 0.25,
+            delay: prefersReduced ? 0 : 0.2,
             ease: [0.22, 1, 0.36, 1],
           }}
-          className="mt-12 p-6 rounded-2xl bg-gradient-to-r from-indigo-950/40 via-slate-900/60 to-purple-950/40 border border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-6"
+          className="mt-10 p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-indigo-950/40 via-slate-900/60 to-purple-950/40 border border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-5 max-w-4xl mx-auto"
         >
           <div className="space-y-1 text-center sm:text-left">
-            <h4 className="font-display text-base sm:text-lg font-bold text-white">
+            <h4 className="font-display text-sm sm:text-base font-bold text-white">
               Quer um site com essa mesma qualidade para o seu negócio?
             </h4>
             <p className="text-xs sm:text-sm text-slate-300">
@@ -561,12 +453,12 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto shrink-0">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full sm:w-auto shrink-0">
             {onNavigateToServices && (
               <button
                 type="button"
                 onClick={onNavigateToServices}
-                className="inline-flex items-center justify-center text-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-200 bg-slate-800/80 hover:bg-slate-700/80 border border-white/[0.08] transition-all cursor-pointer"
+                className="inline-flex items-center justify-center text-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-200 bg-slate-800/80 hover:bg-slate-700/80 border border-white/[0.08] transition-all cursor-pointer"
               >
                 <span className="text-center">Ver Serviços & Condições</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -576,7 +468,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
               href={whatsappUrl(SITE_CONFIG.portfolioWhatsappMessage)}
               target="_blank"
               rel="noopener noreferrer"
-              className="cta-primary inline-flex items-center justify-center text-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-white transition-all shadow-lg shadow-indigo-600/30 cursor-pointer"
+              className="cta-primary inline-flex items-center justify-center text-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-white transition-all shadow-lg shadow-indigo-600/30 cursor-pointer"
             >
               <WhatsAppIcon className="w-4 h-4 text-emerald-300" />
               <span className="text-center">Conversar no WhatsApp</span>

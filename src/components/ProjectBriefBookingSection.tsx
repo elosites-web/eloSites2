@@ -682,7 +682,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                         className="cta-primary inline-flex items-center justify-center text-center gap-2.5 px-6 py-4 rounded-xl text-sm sm:text-base font-semibold text-white pressable min-h-12 flex-1"
                       >
                         <WhatsAppIcon className="w-5 h-5 shrink-0" />
-                        <span className="text-center">Confirmar Agendamento no WhatsApp</span>
+                        <span className="text-center">Confirmar Agendamento</span>
                       </button>
 
                       <button

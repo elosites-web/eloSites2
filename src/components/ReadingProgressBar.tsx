@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, useReducedMotion } from 'motion/react';
 import { shouldReduceMedia } from '../mediaPrefs';
 
@@ -26,6 +26,7 @@ export const ReadingProgressBar: React.FC<ReadingProgressBarProps> = ({ currentS
   });
 
   const [percent, setPercent] = useState(0);
+  const lastPercentRef = useRef(0);
 
   // Mapeia o progresso para largura percentual com um valor mínimo sutil (0.4%)
   // para que a pontinha brilhante fique elegantemente visível desde o início
@@ -47,7 +48,12 @@ export const ReadingProgressBar: React.FC<ReadingProgressBarProps> = ({ currentS
     }
 
     progressMotion.set(ratio);
-    setPercent(Math.round(ratio * 100));
+
+    const intPercent = Math.round(ratio * 100);
+    if (intPercent !== lastPercentRef.current) {
+      lastPercentRef.current = intPercent;
+      setPercent(intPercent);
+    }
   }, [progressMotion]);
 
   useEffect(() => {

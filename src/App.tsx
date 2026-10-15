@@ -348,64 +348,79 @@ export default function App() {
             initial="initial"
             animate="animate"
             exit="exit"
-            className="w-full"
+            style={{ willChange: 'transform', contain: 'layout style' }}
+            className="w-full will-change-transform [contain:layout_style]"
           >
             {/* TELA 01: Início & Apresentação */}
             {currentScreen === 'inicio' && (
-              <Hero
-                onNavigateToPortfolio={() => navigateToScreen('portfolio')}
-                onNavigateToServices={() => navigateToScreen('servicos')}
-              />
+              <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style]">
+                <Hero
+                  onNavigateToPortfolio={() => navigateToScreen('portfolio')}
+                  onNavigateToServices={() => navigateToScreen('servicos')}
+                />
+              </div>
             )}
 
             {/* TELA 02: Portfólio de Projetos Reais & Depoimentos (Social Proof) */}
             {currentScreen === 'portfolio' && (
-              <SectionErrorBoundary>
-                <Suspense fallback={<PortfolioSkeleton />}>
-                  <PortfolioSection
-                    onNavigateToServices={() => navigateToScreen('servicos')}
-                    onNavigateToOrcamento={() => navigateToScreen('orcamento')}
-                  />
-                  <TestimonialsSection
-                    onNavigateToServices={() => navigateToScreen('servicos')}
-                  />
-                </Suspense>
-              </SectionErrorBoundary>
+              <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style]">
+                <SectionErrorBoundary>
+                  <Suspense fallback={<PortfolioSkeleton />}>
+                    <PortfolioSection
+                      onNavigateToServices={() => navigateToScreen('servicos')}
+                      onNavigateToOrcamento={() => navigateToScreen('orcamento')}
+                    />
+                    <TestimonialsSection
+                      onNavigateToServices={() => navigateToScreen('servicos')}
+                    />
+                  </Suspense>
+                </SectionErrorBoundary>
+              </div>
             )}
 
             {/* TELA 03: Serviços & Condições Comerciais */}
             {currentScreen === 'servicos' && (
-              <SectionErrorBoundary>
-                <Suspense fallback={<ServicesSkeleton />}>
-                  <ServicesSection onNavigateToOrcamento={() => navigateToScreen('orcamento')} />
-                </Suspense>
-              </SectionErrorBoundary>
+              <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style]">
+                <SectionErrorBoundary>
+                  <Suspense fallback={<ServicesSkeleton />}>
+                    <ServicesSection onNavigateToOrcamento={() => navigateToScreen('orcamento')} />
+                  </Suspense>
+                </SectionErrorBoundary>
+              </div>
             )}
 
             {/* TELA 04: Processo em 4 Etapas */}
-            {currentScreen === 'processo' && <ProcessSection />}
+            {currentScreen === 'processo' && (
+              <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style]">
+                <ProcessSection />
+              </div>
+            )}
 
             {/* TELA 05: Diferenciais */}
             {currentScreen === 'diferenciais' && (
-              <SectionErrorBoundary>
-                <Suspense fallback={<DifferentialsSkeleton />}>
-                  <DifferentialsSection onNavigateToPortfolio={() => navigateToScreen('portfolio')} />
-                </Suspense>
-              </SectionErrorBoundary>
+              <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style]">
+                <SectionErrorBoundary>
+                  <Suspense fallback={<DifferentialsSkeleton />}>
+                    <DifferentialsSection onNavigateToPortfolio={() => navigateToScreen('portfolio')} />
+                  </Suspense>
+                </SectionErrorBoundary>
+              </div>
             )}
 
             {/* TELA 06: Briefing & Agendamento */}
             {currentScreen === 'orcamento' && (
-              <SectionErrorBoundary>
-                <Suspense fallback={<BookingSkeleton />}>
-                  <ProjectBriefBookingSection onOpenPrivacy={() => setLegalModal('privacy')} />
-                </Suspense>
-              </SectionErrorBoundary>
+              <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style]">
+                <SectionErrorBoundary>
+                  <Suspense fallback={<BookingSkeleton />}>
+                    <ProjectBriefBookingSection onOpenPrivacy={() => setLegalModal('privacy')} />
+                  </Suspense>
+                </SectionErrorBoundary>
+              </div>
             )}
 
             {/* TELA 07: Perguntas Frequentes (FAQ) & Contato (Tela 8 incorporada ao final da Tela 7) */}
             {currentScreen === 'faq' && (
-              <div className="space-y-0">
+              <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style] space-y-0">
                 <FaqSection />
                 <ContactCtaSection onNavigateToOrcamento={() => navigateToScreen('orcamento')} />
               </div>

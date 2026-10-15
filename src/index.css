@@ -22,13 +22,13 @@
   --dur-modal: 280ms;
 }
 
-/* Configuração Global de Fontes: font-display swap para eliminar Layout Shift (CLS) */
+/* Configuração Global de Fontes: font-display swap para renderização imediata sem texto invisível (FOIT) */
 @font-face {
   font-family: 'Plus Jakarta Sans';
   font-style: normal;
   font-weight: 300 800;
   font-display: swap;
-  src: local('Plus Jakarta Sans');
+  src: local('Plus Jakarta Sans'), local('PlusJakartaSans');
 }
 
 @font-face {
@@ -36,7 +36,7 @@
   font-style: normal;
   font-weight: 500 700;
   font-display: swap;
-  src: local('Space Grotesk');
+  src: local('Space Grotesk'), local('SpaceGrotesk');
 }
 
 @font-face {
@@ -44,7 +44,7 @@
   font-style: normal;
   font-weight: 400 500;
   font-display: swap;
-  src: local('JetBrains Mono');
+  src: local('JetBrains Mono'), local('JetBrainsMono');
 }
 
 html {

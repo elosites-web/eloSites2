@@ -23,7 +23,11 @@ function createNodeGlowTexture(): THREE.CanvasTexture {
   return new THREE.CanvasTexture(canvas);
 }
 
-export const Persistent3DScene: React.FC = () => {
+interface Persistent3DSceneProps {
+  onMounted?: () => void;
+}
+
+export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -46,14 +50,14 @@ export const Persistent3DScene: React.FC = () => {
     );
     camera.position.set(0, 0, 12);
 
-    // Renderer WebGL autônomo com buffer alpha e ACESFilmicToneMapping
+    // Renderer WebGL com configurações otimizadas para WebViews (Facebook/Instagram)
     let renderer: THREE.WebGLRenderer;
     try {
       renderer = new THREE.WebGLRenderer({
         alpha: true,
         antialias: !isMobile && !inApp,
         powerPreference: 'high-performance',
-        precision: isMobile || inApp ? 'mediump' : 'highp',
+        precision: inApp ? 'mediump' : isMobile ? 'mediump' : 'highp',
       });
     } catch (err) {
       console.warn('WebGL indisponível; mantendo fundo CSS.', err);
@@ -63,8 +67,11 @@ export const Persistent3DScene: React.FC = () => {
     const optimalDpr = getOptimalDpr(isMobile, inApp);
     renderer.setPixelRatio(optimalDpr);
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.5;
+    // Em WebViews (Instagram/FB), desativa tone mapping pesado para poupar shaders na GPU
+    renderer.toneMapping = inApp ? THREE.NoToneMapping : THREE.ACESFilmicToneMapping;
+    if (!inApp) {
+      renderer.toneMappingExposure = 1.5;
+    }
     container.appendChild(renderer.domElement);
 
     // Iluminação
@@ -81,8 +88,8 @@ export const Persistent3DScene: React.FC = () => {
     const nodesGroup = new THREE.Group();
     scene.add(nodesGroup);
 
-    // Redução drástica de nós para máxima fluidez em mobile e WebViews (Instagram/FB)
-    const NODE_COUNT = isMobile || inApp ? 24 : 42;
+    // Redução drástica de nós para máxima fluidez em mobile e modo equilibrado em WebViews (Instagram/FB)
+    const NODE_COUNT = inApp ? 18 : isMobile ? 24 : 42;
     const nodeTexture = createNodeGlowTexture();
     const nodePositions: THREE.Vector3[] = [];
     const nodeVelocities: THREE.Vector3[] = [];
@@ -124,7 +131,7 @@ export const Persistent3DScene: React.FC = () => {
     nodesGeo.setAttribute('color', new THREE.BufferAttribute(nodeColorArray, 3));
 
     const nodesMat = new THREE.PointsMaterial({
-      size: isMobile || inApp ? 0.75 : 0.85,
+      size: inApp ? 0.7 : isMobile ? 0.75 : 0.85,
       map: nodeTexture,
       transparent: true,
       vertexColors: true,
@@ -137,7 +144,7 @@ export const Persistent3DScene: React.FC = () => {
 
     // Conexões pré-indexadas estaticamente: elimina loop O(N^2) a 60fps na CPU!
     const connectionPairs: [number, number][] = [];
-    const MAX_CONNECTIONS = isMobile || inApp ? 28 : 52;
+    const MAX_CONNECTIONS = inApp ? 18 : isMobile ? 28 : 52;
 
     for (let i = 0; i < NODE_COUNT && connectionPairs.length < MAX_CONNECTIONS; i++) {
       let closestIdx = -1;
@@ -180,7 +187,7 @@ export const Persistent3DScene: React.FC = () => {
     const lineMat = new THREE.LineBasicMaterial({
       vertexColors: true,
       transparent: true,
-      opacity: 0.7,
+      opacity: inApp ? 0.55 : 0.7,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     });
@@ -192,8 +199,8 @@ export const Persistent3DScene: React.FC = () => {
     // 2. GRID EM PERSPECTIVA COM GEOMETRIA REDUZIDA (CHÃO E TETO)
     // =========================================================================
     const gridStep = 2.2;
-    const gridRows = isMobile || inApp ? 10 : 16;
-    const gridCols = isMobile || inApp ? 8 : 14;
+    const gridRows = inApp ? 8 : isMobile ? 10 : 16;
+    const gridCols = inApp ? 6 : isMobile ? 8 : 14;
     const gridWidth = gridCols * gridStep;
     const gridLength = gridRows * gridStep;
 
@@ -207,26 +214,32 @@ export const Persistent3DScene: React.FC = () => {
       color: 0x6366f1,
       wireframe: true,
       transparent: true,
-      opacity: 0.35,
+      opacity: inApp ? 0.28 : 0.35,
     });
     const groundGridMesh = new THREE.Mesh(groundGridGeo, groundGridMat);
     groundGridGroup.add(groundGridMesh);
 
-    // Grid do teto
-    const ceilingGridGroup = new THREE.Group();
-    scene.add(ceilingGridGroup);
-    ceilingGridGroup.position.set(0, 6.2, -16);
-    ceilingGridGroup.rotation.x = Math.PI / 2 - 0.14;
+    // Em WebViews (Instagram/FB), suprime o grid de teto para poupar metade dos vértices
+    let ceilingGridGeo: THREE.PlaneGeometry | null = null;
+    let ceilingGridMat: THREE.MeshBasicMaterial | null = null;
+    let ceilingGridGroup: THREE.Group | null = null;
 
-    const ceilingGridGeo = new THREE.PlaneGeometry(gridWidth, gridLength, gridCols, gridRows);
-    const ceilingGridMat = new THREE.MeshBasicMaterial({
-      color: 0x818cf8,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.25,
-    });
-    const ceilingGridMesh = new THREE.Mesh(ceilingGridGeo, ceilingGridMat);
-    ceilingGridGroup.add(ceilingGridMesh);
+    if (!inApp) {
+      ceilingGridGroup = new THREE.Group();
+      scene.add(ceilingGridGroup);
+      ceilingGridGroup.position.set(0, 6.2, -16);
+      ceilingGridGroup.rotation.x = Math.PI / 2 - 0.14;
+
+      ceilingGridGeo = new THREE.PlaneGeometry(gridWidth, gridLength, gridCols, gridRows);
+      ceilingGridMat = new THREE.MeshBasicMaterial({
+        color: 0x818cf8,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.25,
+      });
+      const ceilingGridMesh = new THREE.Mesh(ceilingGridGeo, ceilingGridMat);
+      ceilingGridGroup.add(ceilingGridMesh);
+    }
 
     // =========================================================================
     // 3. CIRCUITOS DIGITAIS E FLUXO LEVE DE DADOS
@@ -407,7 +420,9 @@ export const Persistent3DScene: React.FC = () => {
       const gridOffset = (time * baseGridSpeed + currentScroll * 10.0) % gridStep;
 
       groundGridGroup.position.z = -16 + gridOffset;
-      ceilingGridGroup.position.z = -16 + gridOffset;
+      if (ceilingGridGroup) {
+        ceilingGridGroup.position.z = -16 + gridOffset;
+      }
 
       // D. PULSOS NOS CIRCUITOS
       for (let t = 0; t < circuitTracks.length; t++) {
@@ -478,6 +493,11 @@ export const Persistent3DScene: React.FC = () => {
 
     start();
 
+    // Notifica que o 3D foi montado e o primeiro quadro iniciado, permitindo o fade-out elegante do skeleton
+    requestAnimationFrame(() => {
+      onMounted?.();
+    });
+
     // =========================================================================
     // LIMPEZA E DESALOCAÇÃO COMPLETA DE MEMÓRIA
     // =========================================================================
@@ -500,8 +520,8 @@ export const Persistent3DScene: React.FC = () => {
 
       groundGridGeo.dispose();
       groundGridMat.dispose();
-      ceilingGridGeo.dispose();
-      ceilingGridMat.dispose();
+      ceilingGridGeo?.dispose();
+      ceilingGridMat?.dispose();
 
       sphereSharedGeo.dispose();
       sphereMats.forEach((m) => m.dispose());

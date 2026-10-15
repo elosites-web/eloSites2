@@ -20,7 +20,8 @@ export const Hero: React.FC<HeroProps> = ({
   // Monitora scroll para esmaecer o indicador quando o usuário já estiver explorando a página
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolledPast(window.scrollY > 40);
+      const scrolled = window.scrollY > 40;
+      setIsScrolledPast((prev) => (prev !== scrolled ? scrolled : prev));
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();

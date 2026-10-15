@@ -130,7 +130,7 @@ const SERVICES: ServiceCategory[] = [
       'Criação de identidade visual (logo) do zero',
       'Funcionalidades fora do escopo combinado no orçamento',
     ],
-    ctaLabel: 'Conversar sobre Projeto Personalizado',
+    ctaLabel: 'Pedir proposta de Projeto Personalizado',
     ctaId: 'service-cta-personalizado',
     ctaMessage: SITE_CONFIG.personalizadoWhatsappMessage,
   },
@@ -297,10 +297,10 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                       href={ctaUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="cta-primary w-full inline-flex items-center justify-center text-center gap-2 py-3.5 px-4 rounded-xl text-sm font-semibold text-white transition-all shadow-lg shadow-indigo-600/25 min-h-12"
+                      className="cta-primary w-full inline-flex items-center justify-center text-center gap-1.5 sm:gap-2 py-3.5 px-2.5 sm:px-3 rounded-xl text-xs sm:text-[13px] md:text-sm font-semibold text-white transition-all shadow-lg shadow-indigo-600/25 min-h-12 whitespace-nowrap"
                     >
-                      <WhatsAppIcon className="w-4 h-4 text-emerald-300" />
-                      <span className="text-center">{service.ctaLabel}</span>
+                      <WhatsAppIcon className="w-4 h-4 text-emerald-300 shrink-0" />
+                      <span className="text-center whitespace-nowrap">{service.ctaLabel}</span>
                     </a>
                   </div>
                 </motion.article>

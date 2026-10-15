@@ -1,10 +1,35 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react';
-import { lowEndDevice, shouldReduceMedia, webglSupported } from '../mediaPrefs';
+import { webglSupported } from '../mediaPrefs';
 
 // O chunk do Three.js só é baixado quando <Persistent3DScene /> é realmente renderizado.
 const Persistent3DScene = lazy(() =>
   import('./Persistent3DScene').then((mod) => ({ default: mod.Persistent3DScene }))
 );
+
+/**
+ * Skeleton loading global do fundo 3D:
+ * Exibe um gradiente suave com padrão de grade sutil em tela cheia enquanto a cena 3D inicializa,
+ * eliminando qualquer flash ou travamento visual na carga inicial da página.
+ */
+export const Persistent3DSkeleton: React.FC<{ isLoaded?: boolean }> = ({ isLoaded = false }) => {
+  return (
+    <div
+      aria-hidden="true"
+      className={`fixed inset-0 pointer-events-none z-0 overflow-hidden select-none transition-opacity duration-1000 ease-out ${
+        isLoaded ? 'opacity-0 pointer-events-none' : 'opacity-100'
+      }`}
+    >
+      {/* Base escura e gradiente suave central */}
+      <div className="absolute inset-0 bg-[#070B16]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(99,102,241,0.12),transparent_70%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_80%,rgba(168,85,247,0.08),transparent_60%)]" />
+      {/* Padrão de grade sutil para continuidade estética */}
+      <div className="absolute inset-0 tech-grid-pattern opacity-60" />
+      {/* Horizonte suave em perspectiva */}
+      <div className="absolute top-[65%] inset-x-0 h-px bg-gradient-to-r from-transparent via-indigo-500/20 to-transparent" />
+    </div>
+  );
+};
 
 // Um erro na cena 3D nunca pode derrubar a página: o fundo é só decorativo.
 interface BoundaryProps {
@@ -37,13 +62,11 @@ class Scene3DErrorBoundary extends React.Component<BoundaryProps, BoundaryState>
 }
 
 /**
- * Fundo 3D opcional:
- * - não carrega (nem baixa o Three.js) com movimento reduzido, saveData,
- *   aparelho fraco (hardwareConcurrency <= 4) ou sem WebGL;
- * - carrega só depois da primeira renderização, em tempo ocioso.
+ * Fundo 3D com Skeleton Global e carregamento assíncrono em tempo ocioso
  */
 export const Persistent3DBackground: React.FC = () => {
   const [shouldLoad, setShouldLoad] = useState(false);
+  const [isSceneMounted, setIsSceneMounted] = useState(false);
 
   useEffect(() => {
     if (!webglSupported()) return;
@@ -65,13 +88,19 @@ export const Persistent3DBackground: React.FC = () => {
     };
   }, []);
 
-  if (!shouldLoad) return null;
-
   return (
-    <Scene3DErrorBoundary>
-      <Suspense fallback={null}>
-        <Persistent3DScene />
-      </Suspense>
-    </Scene3DErrorBoundary>
+    <>
+      {/* Skeleton loading global exibido instantaneamente na carga */}
+      <Persistent3DSkeleton isLoaded={isSceneMounted} />
+
+      {/* Cena 3D interativa montada após resolução em tempo ocioso */}
+      {shouldLoad && (
+        <Scene3DErrorBoundary>
+          <Suspense fallback={null}>
+            <Persistent3DScene onMounted={() => setIsSceneMounted(true)} />
+          </Suspense>
+        </Scene3DErrorBoundary>
+      )}
+    </>
   );
 };
