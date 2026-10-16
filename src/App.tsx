@@ -1,6 +1,7 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
 import { motion, AnimatePresence, useReducedMotion, type Variants } from 'motion/react';
 import { Persistent3DBackground } from './components/Persistent3DBackground';
+import { PointerSpotlight } from './components/PointerSpotlight';
 import { AnimatedBackdrop } from './components/AnimatedBackdrop';
 import { SectionErrorBoundary } from './components/SectionErrorBoundary';
 import { Header } from './components/Header';
@@ -19,7 +20,8 @@ import {
   BookingSkeleton,
 } from './components/SectionSkeletons';
 import { ScreenId, SCREENS } from './types';
-import { shouldReduceMedia } from './mediaPrefs';
+import { shouldReduceMedia, getMotionTier } from './mediaPrefs';
+import { withViewTransition, supportsViewTransitions } from './viewTransition';
 import {
   ChevronLeft,
   ChevronRight,
@@ -58,6 +60,10 @@ export default function App() {
   // Hook do Framer Motion combinado com a preferência de acessibilidade
   const systemPrefersReduced = useReducedMotion();
   const prefersReduced = Boolean(systemPrefersReduced || shouldReduceMedia());
+
+  // View Transitions (crossfade) quando suportado e o tier de movimento permite.
+  // Caso contrário mantemos a transição suave atual (fallback).
+  const useViewTransitions = supportsViewTransitions() && getMotionTier() !== 'none';
 
   // Modo de alto contraste para acessibilidade
   const [isHighContrast, setIsHighContrast] = useState<boolean>(() => {
@@ -148,10 +154,11 @@ export default function App() {
   const navigateToScreen = (screenId: ScreenId) => {
     const prevIdx = SCREENS.findIndex((s) => s.id === currentScreen);
     const nextIdx = SCREENS.findIndex((s) => s.id === screenId);
-    if (nextIdx !== -1 && prevIdx !== -1 && nextIdx !== prevIdx) {
-      setDirection(nextIdx > prevIdx ? 1 : -1);
-    }
-    setCurrentScreen(screenId);
+    const nextDirection = nextIdx !== -1 && prevIdx !== -1 && nextIdx !== prevIdx ? (nextIdx > prevIdx ? 1 : -1) : direction;
+    withViewTransition(() => {
+      setDirection(nextDirection);
+      setCurrentScreen(screenId);
+    });
     window.location.hash = screenId;
     window.scrollTo({ top: 0, behavior: 'instant' });
   };
@@ -292,19 +299,100 @@ export default function App() {
       transition: {
         x: {
           duration: prefersReduced ? 0 : 0.16,
-          ease: 'easeIn',
+          ease: [0.32, 0.72, 0, 1],
         },
         y: {
           duration: prefersReduced ? 0 : 0.16,
-          ease: 'easeIn',
+          ease: [0.32, 0.72, 0, 1],
         },
         opacity: {
           duration: prefersReduced ? 0.12 : 0.15,
-          ease: 'easeIn',
+          ease: [0.32, 0.72, 0, 1],
         },
       },
     }),
   };
+
+  // Conteúdo da tela ativa, reutilizado pelos dois caminhos de transição:
+  // View Transitions (crossfade) ou AnimatePresence (fallback suave atual).
+  const renderActiveScreen = () => (
+    <>
+      {/* TELA 01: Início & Apresentação */}
+      {currentScreen === 'inicio' && (
+        <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style]">
+          <Hero
+            onNavigateToPortfolio={() => navigateToScreen('portfolio')}
+            onNavigateToServices={() => navigateToScreen('servicos')}
+          />
+        </div>
+      )}
+
+      {/* TELA 02: Portfólio de Projetos Reais & Depoimentos (Social Proof) */}
+      {currentScreen === 'portfolio' && (
+        <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style]">
+          <SectionErrorBoundary>
+            <Suspense fallback={<PortfolioSkeleton />}>
+              <PortfolioSection
+                onNavigateToServices={() => navigateToScreen('servicos')}
+                onNavigateToOrcamento={() => navigateToScreen('orcamento')}
+              />
+              <TestimonialsSection
+                onNavigateToServices={() => navigateToScreen('servicos')}
+              />
+            </Suspense>
+          </SectionErrorBoundary>
+        </div>
+      )}
+
+      {/* TELA 03: Serviços & Condições Comerciais */}
+      {currentScreen === 'servicos' && (
+        <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style]">
+          <SectionErrorBoundary>
+            <Suspense fallback={<ServicesSkeleton />}>
+              <ServicesSection onNavigateToOrcamento={() => navigateToScreen('orcamento')} />
+            </Suspense>
+          </SectionErrorBoundary>
+        </div>
+      )}
+
+      {/* TELA 04: Processo em 4 Etapas */}
+      {currentScreen === 'processo' && (
+        <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style]">
+          <ProcessSection />
+        </div>
+      )}
+
+      {/* TELA 05: Diferenciais */}
+      {currentScreen === 'diferenciais' && (
+        <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style]">
+          <SectionErrorBoundary>
+            <Suspense fallback={<DifferentialsSkeleton />}>
+              <DifferentialsSection onNavigateToPortfolio={() => navigateToScreen('portfolio')} />
+            </Suspense>
+          </SectionErrorBoundary>
+        </div>
+      )}
+
+      {/* TELA 06: Briefing & Agendamento */}
+      {currentScreen === 'orcamento' && (
+        <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style]">
+          <SectionErrorBoundary>
+            <Suspense fallback={<BookingSkeleton />}>
+              <ProjectBriefBookingSection onOpenPrivacy={() => setLegalModal('privacy')} />
+            </Suspense>
+          </SectionErrorBoundary>
+        </div>
+      )}
+
+      {/* TELA 07: Perguntas Frequentes (FAQ) & Contato (Tela 8 incorporada ao final da Tela 7) */}
+      {currentScreen === 'faq' && (
+        <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style] space-y-0">
+          <FaqSection />
+          <ContactCtaSection onNavigateToOrcamento={() => navigateToScreen('orcamento')} />
+        </div>
+      )}
+    </>
+  );
 
   return (
     <div className={`min-h-screen bg-[#090D16] text-slate-100 flex flex-col selection:bg-indigo-500 selection:text-white relative ${isHighContrast ? 'high-contrast' : ''}`}>
@@ -330,6 +418,9 @@ export default function App() {
       {/* Cena 3D Persistente procedural no fundo */}
       <Persistent3DBackground />
 
+      {/* Efeitos exclusivos do tier 'full' (holofote, pausas) */}
+      <PointerSpotlight />
+
       {/* Header Fixo com Botão Único "MENU DE NAVEGAÇÃO" */}
       <Header
         currentScreen={currentScreen}
@@ -340,93 +431,30 @@ export default function App() {
 
       {/* Conteúdo Principal — Exibição Estratégica da Tela Ativa com Transição Fluida e Responsiva */}
       <main className="flex-1 relative z-10 overflow-x-hidden" id="main-content" tabIndex={-1}>
-        <AnimatePresence mode="wait" custom={direction} initial={false}>
-          <motion.div
+        {useViewTransitions ? (
+          <div
             key={currentScreen}
-            custom={direction}
-            variants={sectionTransitionVariants}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            style={{ willChange: 'transform', contain: 'layout style' }}
-            className="w-full will-change-transform [contain:layout_style]"
+            style={{ contain: 'layout style' }}
+            className="w-full [contain:layout_style]"
           >
-            {/* TELA 01: Início & Apresentação */}
-            {currentScreen === 'inicio' && (
-              <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style]">
-                <Hero
-                  onNavigateToPortfolio={() => navigateToScreen('portfolio')}
-                  onNavigateToServices={() => navigateToScreen('servicos')}
-                />
-              </div>
-            )}
-
-            {/* TELA 02: Portfólio de Projetos Reais & Depoimentos (Social Proof) */}
-            {currentScreen === 'portfolio' && (
-              <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style]">
-                <SectionErrorBoundary>
-                  <Suspense fallback={<PortfolioSkeleton />}>
-                    <PortfolioSection
-                      onNavigateToServices={() => navigateToScreen('servicos')}
-                      onNavigateToOrcamento={() => navigateToScreen('orcamento')}
-                    />
-                    <TestimonialsSection
-                      onNavigateToServices={() => navigateToScreen('servicos')}
-                    />
-                  </Suspense>
-                </SectionErrorBoundary>
-              </div>
-            )}
-
-            {/* TELA 03: Serviços & Condições Comerciais */}
-            {currentScreen === 'servicos' && (
-              <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style]">
-                <SectionErrorBoundary>
-                  <Suspense fallback={<ServicesSkeleton />}>
-                    <ServicesSection onNavigateToOrcamento={() => navigateToScreen('orcamento')} />
-                  </Suspense>
-                </SectionErrorBoundary>
-              </div>
-            )}
-
-            {/* TELA 04: Processo em 4 Etapas */}
-            {currentScreen === 'processo' && (
-              <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style]">
-                <ProcessSection />
-              </div>
-            )}
-
-            {/* TELA 05: Diferenciais */}
-            {currentScreen === 'diferenciais' && (
-              <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style]">
-                <SectionErrorBoundary>
-                  <Suspense fallback={<DifferentialsSkeleton />}>
-                    <DifferentialsSection onNavigateToPortfolio={() => navigateToScreen('portfolio')} />
-                  </Suspense>
-                </SectionErrorBoundary>
-              </div>
-            )}
-
-            {/* TELA 06: Briefing & Agendamento */}
-            {currentScreen === 'orcamento' && (
-              <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style]">
-                <SectionErrorBoundary>
-                  <Suspense fallback={<BookingSkeleton />}>
-                    <ProjectBriefBookingSection onOpenPrivacy={() => setLegalModal('privacy')} />
-                  </Suspense>
-                </SectionErrorBoundary>
-              </div>
-            )}
-
-            {/* TELA 07: Perguntas Frequentes (FAQ) & Contato (Tela 8 incorporada ao final da Tela 7) */}
-            {currentScreen === 'faq' && (
-              <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style] space-y-0">
-                <FaqSection />
-                <ContactCtaSection onNavigateToOrcamento={() => navigateToScreen('orcamento')} />
-              </div>
-            )}
-          </motion.div>
-        </AnimatePresence>
+            {renderActiveScreen()}
+          </div>
+        ) : (
+          <AnimatePresence mode="wait" custom={direction} initial={false}>
+            <motion.div
+              key={currentScreen}
+              custom={direction}
+              variants={sectionTransitionVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              style={{ willChange: 'transform', contain: 'layout style' }}
+              className="w-full will-change-transform [contain:layout_style]"
+            >
+              {renderActiveScreen()}
+            </motion.div>
+          </AnimatePresence>
+        )}
       </main>
 
       {/* DOCK / CONTROLADOR FIXO DE NAVEGAÇÃO MULTITELAS CENTRALIZADO E DISCRETO: < -------- > */}

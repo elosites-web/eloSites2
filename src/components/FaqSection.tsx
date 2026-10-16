@@ -3,6 +3,7 @@ import { motion, AnimatePresence, type Variants } from 'motion/react';
 import { ChevronDown, HelpCircle } from 'lucide-react';
 import { FaqItem, SITE_CONFIG, whatsappUrl } from '../types';
 import { shouldReduceMedia } from '../mediaPrefs';
+import { SplitLines } from './SplitLines';
 
 export const FaqSection: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
@@ -99,9 +100,11 @@ export const FaqSection: React.FC = () => {
             <HelpCircle className="w-3.5 h-3.5" aria-hidden="true" />
             <span>Perguntas frequentes</span>
           </div>
-          <h2 className="font-display text-3xl sm:text-4xl lg:text-[2.75rem] font-bold tracking-[-0.03em] text-white text-balance">
-            Tire as dúvidas antes de começar
-          </h2>
+          <SplitLines
+            as="h2"
+            text="Tire as dúvidas antes de começar"
+            className="font-display text-3xl sm:text-4xl lg:text-[2.75rem] font-bold tracking-[-0.03em] text-white text-balance"
+          />
           <p className="text-base sm:text-lg text-slate-300/95 leading-relaxed max-w-2xl mx-auto">
             Respostas diretas sobre pagamento, publicação, domínio, manutenção e controle do site.
           </p>
@@ -121,10 +124,10 @@ export const FaqSection: React.FC = () => {
               <motion.div
                 key={faq.id}
                 variants={itemVariants}
-                className={`rounded-xl overflow-hidden transition-colors duration-200 ${
+                className={`card-solid rounded-2xl overflow-hidden transition-colors duration-300 border ${
                   isOpen
-                    ? 'border border-indigo-400/35 bg-slate-900/85 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]'
-                    : 'border border-white/[0.07] bg-slate-900/55 hover:border-indigo-400/25'
+                    ? 'border-indigo-400/45'
+                    : 'border-white/[0.08] hover:border-indigo-400/30'
                 }`}
               >
                 <h3>
@@ -134,7 +137,7 @@ export const FaqSection: React.FC = () => {
                     onClick={() => toggleFaq(index)}
                     aria-expanded={isOpen}
                     aria-controls={panelId}
-                    className="w-full p-3.5 min-[360px]:p-5 sm:p-6 text-left flex items-center justify-between gap-3 min-[360px]:gap-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-inset min-h-12 transition-colors duration-200 pressable cursor-pointer"
+                    className="w-full p-3.5 min-[360px]:p-5 sm:p-6 lg:p-8 text-left flex items-center justify-between gap-3 min-[360px]:gap-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-inset min-h-12 transition-colors duration-200 pressable cursor-pointer"
                   >
                     <span className="font-display text-base sm:text-lg font-semibold text-white min-w-0 text-pretty text-left">
                       {faq.question}
@@ -181,7 +184,7 @@ export const FaqSection: React.FC = () => {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: isReduced ? 0 : -4 }}
                         transition={{ duration: 0.2, ease: 'easeOut' }}
-                        className="px-5 pb-5 sm:px-6 sm:pb-6 text-sm sm:text-base text-slate-300/95 leading-relaxed border-t border-white/[0.06] pt-4"
+                        className="px-5 pb-5 sm:px-6 sm:pb-6 lg:px-8 lg:pb-8 text-sm sm:text-base text-slate-300/95 leading-relaxed border-t border-white/[0.06] pt-4"
                       >
                         {faq.answer}
                       </motion.div>

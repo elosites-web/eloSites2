@@ -15,6 +15,8 @@ import {
 import { WhatsAppIcon } from './WhatsAppIcon';
 import { SITE_CONFIG, whatsappUrl } from '../types';
 import { ProjectModal } from './ProjectModal';
+import { SplitLines } from './SplitLines';
+import { Reveal } from './Reveal';
 
 export interface PortfolioProjectData {
   id: string;
@@ -120,9 +122,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   const [viewMode, setViewMode] = useState<ViewMode>('composite');
 
   return (
-    <article className="surface-card glass-panel glass-card-interactive flex flex-col h-full rounded-2xl overflow-hidden group">
+    <article className="surface-card glass-panel glass-card-interactive flex flex-col h-full rounded-2xl overflow-hidden group lg:row-span-8 lg:grid lg:grid-rows-subgrid">
       {/* Top Header / Informações */}
-      <div className="p-6 sm:p-7 border-b border-white/[0.06] bg-slate-950/60 space-y-4">
+      <div className="p-6 sm:p-7 border-b border-white/[0.06] bg-slate-950/60 space-y-4 lg:row-span-5 lg:grid lg:grid-rows-subgrid">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <span className="text-[11px] font-mono uppercase bg-indigo-950/80 text-indigo-300 border border-indigo-500/30 px-3 py-1 rounded-full font-semibold">
             {project.badge}
@@ -183,9 +185,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       </div>
 
       {/* Visual Mockup Area com Seletor */}
-      <div className="p-4 sm:p-5 bg-[#060911] flex-1 flex flex-col justify-between space-y-4">
+      <div className="p-4 sm:p-5 bg-[#060911] flex-1 flex flex-col justify-between space-y-4 lg:flex-none lg:row-span-3 lg:grid lg:grid-rows-subgrid">
         {/* Controles de visualização: Composto, Desktop, Mobile */}
-        <div className="flex items-center justify-between gap-2 border-b border-white/[0.06] pb-3">
+        <div className="flex items-center justify-between gap-2 border-b border-white/[0.06] pb-3 lg:justify-center lg:gap-3">
           <div className="flex items-center gap-1 bg-slate-900/90 p-1 rounded-xl border border-white/[0.06] text-xs font-medium">
             <button
               type="button"
@@ -244,8 +246,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           </button>
         </div>
 
-        {/* Display do Mockup conforme Modo */}
-        <div className="relative min-h-[300px] sm:min-h-[330px] w-full flex items-center justify-center overflow-hidden rounded-xl bg-slate-950/70 border border-white/[0.05] p-2 sm:p-3">
+        {/* Display do Mockup conforme Modo (revelado em máscara, uma vez) */}
+        <Reveal
+          variant="mask"
+          className="relative min-h-[300px] sm:min-h-[330px] w-full flex items-center justify-center overflow-hidden rounded-xl bg-slate-950/70 border border-white/[0.05] p-2 sm:p-3"
+        >
           {/* MODO 1: COMPOSTO (Desktop com largura total + Celular sobreposto à direita e abaixo) */}
           {viewMode === 'composite' && (
             <div className="relative w-full h-full flex items-center justify-center py-2">
@@ -279,7 +284,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
               {/* Mobile Phone Mockup Sobreposto (com largura ampliada para exibir a captura com clareza) */}
               <div
-                className="absolute right-1 sm:right-2 -bottom-1 sm:bottom-0 w-[36%] sm:w-[33%] max-w-[155px] sm:max-w-[170px] rounded-[20px] p-1.5 sm:p-2 bg-[#090d16] border-2 border-indigo-400/50 shadow-[0_20px_50px_rgba(0,0,0,0.95)] shadow-indigo-950/60 transform translate-y-0 hover:-translate-y-1 transition-all duration-300 cursor-zoom-in z-10"
+                className="absolute right-1 sm:right-2 -bottom-1 sm:bottom-0 w-[36%] sm:w-[33%] max-w-[155px] sm:max-w-[170px] rounded-[20px] p-1.5 sm:p-2 bg-[#090d16] border-2 border-indigo-400/50 shadow-[0_20px_50px_rgba(0,0,0,0.95)] shadow-indigo-950/60 transform translate-y-0 hover:-translate-y-1 transition-transform duration-300 cursor-zoom-in z-10"
                 onClick={() => onOpenZoom(project.mobileImage, `${project.title} - Mobile`)}
                 title="Clique para ampliar versão mobile"
               >
@@ -351,7 +356,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               </div>
             </div>
           )}
-        </div>
+        </Reveal>
 
         {/* Rodapé do Card com Ações */}
         <div className="pt-3 border-t border-white/[0.06] flex items-center justify-between gap-2.5">
@@ -434,9 +439,11 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
               <Sparkles className="w-3.5 h-3.5" aria-hidden="true" />
               <span>Portfólio de Projetos Reais</span>
             </div>
-            <h2 className="font-display text-3xl sm:text-4xl lg:text-[2.75rem] font-bold tracking-[-0.03em] text-white text-balance leading-tight">
-              Sites reais no ar, prontos para converter
-            </h2>
+            <SplitLines
+              as="h2"
+              text="Sites reais no ar, prontos para converter"
+              className="font-display text-3xl sm:text-4xl lg:text-[2.75rem] font-bold tracking-[-0.03em] text-white text-balance leading-tight"
+            />
             <p className="text-base sm:text-lg text-slate-300/95 leading-relaxed">
               Explore nossos trabalhos recentes com alternador de tela Desktop e Mobile ou visualize o mockup composto sobreposto. Todos os projetos contam com código limpo, SEO técnico e carregamento instantâneo.
             </p>
@@ -480,7 +487,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
           </div>
 
           {/* Grade de Projetos Reais com animação de reveal ao rolar */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch lg:grid-rows-[repeat(8,auto)]">
             {filteredProjects.map((project, index) => {
               const isOddLastOnTwoCols =
                 filteredProjects.length === 3 && index === 2;
@@ -503,7 +510,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
                     delay: prefersReduced ? 0 : index * 0.1,
                     ease: [0.22, 1, 0.36, 1],
                   }}
-                  className={`h-full ${
+                  className={`h-full lg:row-span-8 lg:grid lg:grid-rows-subgrid ${
                     isOddLastOnTwoCols
                       ? 'md:col-span-2 md:w-[calc(50%-1rem)] md:mx-auto lg:col-span-1 lg:w-full lg:mx-0'
                       : ''

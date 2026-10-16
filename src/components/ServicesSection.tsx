@@ -17,6 +17,7 @@ import {
   LucideIcon,
 } from 'lucide-react';
 import { WhatsAppIcon } from './WhatsAppIcon';
+import { SplitLines } from './SplitLines';
 import { SITE_CONFIG, PAYMENT_CONDITIONS, whatsappUrl } from '../types';
 
 interface ServiceCategory {
@@ -171,16 +172,18 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
               <Sparkles className="w-3.5 h-3.5" aria-hidden="true" />
               <span>Formatos de Serviços & Condições Comerciais</span>
             </div>
-            <h2 className="font-display text-3xl sm:text-4xl lg:text-[2.75rem] font-bold tracking-[-0.03em] text-white text-balance leading-tight">
-              Formatos sob medida com pagamento flexível
-            </h2>
+            <SplitLines
+              as="h2"
+              text="Formatos sob medida com pagamento flexível"
+              className="font-display text-3xl sm:text-4xl lg:text-[2.75rem] font-bold tracking-[-0.03em] text-white text-balance leading-tight"
+            />
             <p className="text-base sm:text-lg text-slate-300/95 leading-relaxed">
               Cada projeto recebe um <strong>orçamento personalizado</strong> considerando escopo, seções e conteúdo necessário. Sem mensalidades surpresa e com opções de parcelamento no cartão ou desconto à vista no PIX.
             </p>
           </div>
 
           {/* Grid dos 3 Serviços com reveal ao rolar — Subgrid no desktop para alinhamento uniforme das linhas e seções */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-7 lg:gap-8 min-w-0 items-stretch lg:grid-rows-[auto_1fr_auto_1fr_auto]">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-7 lg:gap-8 min-w-0 items-stretch lg:grid-rows-[repeat(5,auto)]">
             {SERVICES.map((service, index) => {
               const Icon = service.icon;
               const ctaUrl = whatsappUrl(service.ctaMessage);
@@ -212,7 +215,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                     delay: prefersReduced ? 0 : index * 0.12,
                     ease: [0.22, 1, 0.36, 1],
                   }}
-                  className="surface-card glass-panel glass-card-interactive relative rounded-2xl p-5 sm:p-6 md:p-8 flex flex-col space-y-5 lg:space-y-0 lg:row-span-5 lg:grid lg:grid-rows-subgrid"
+                  className="surface-card glass-panel glass-card-interactive spotlight relative rounded-2xl p-5 sm:p-6 md:p-8 flex flex-col space-y-5 lg:space-y-0 lg:row-span-5 lg:grid lg:grid-rows-subgrid"
                 >
                   {/* Linha 1: Topo do card + Título + Descrição */}
                   <div className="space-y-4 lg:pb-4">
@@ -396,7 +399,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                   delay: prefersReduced ? 0 : 0.1,
                   ease: [0.22, 1, 0.36, 1],
                 }}
-                className="glass-panel glass-card-interactive p-5 sm:p-6 rounded-2xl bg-gradient-to-b from-emerald-950/30 to-[#0b101c] border-emerald-500/30 flex flex-col justify-between h-full"
+                className="featured-border glass-panel glass-card-interactive p-5 sm:p-6 rounded-2xl bg-gradient-to-b from-emerald-950/30 to-[#0b101c] border-emerald-500/30 flex flex-col justify-between h-full"
               >
                 <div className="space-y-3">
                   <div className="w-10 h-10 rounded-xl bg-emerald-950/90 border border-emerald-500/40 flex items-center justify-center text-emerald-300">

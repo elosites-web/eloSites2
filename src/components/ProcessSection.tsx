@@ -1,6 +1,7 @@
 import React from 'react';
 import { MessageSquare, Layers, Code2, Globe2, UserCheck, ShieldCheck } from 'lucide-react';
 import { WhatsAppIcon } from './WhatsAppIcon';
+import { SplitLines } from './SplitLines';
 import { SITE_CONFIG, whatsappUrl } from '../types';
 
 export const ProcessSection: React.FC = () => {
@@ -46,9 +47,11 @@ export const ProcessSection: React.FC = () => {
           <div className="section-kicker inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/80 border border-white/[0.07] text-indigo-300 text-xs font-semibold uppercase">
             <span>Como funciona</span>
           </div>
-          <h2 className="font-display text-3xl sm:text-4xl lg:text-[2.75rem] font-bold tracking-[-0.03em] text-white text-balance">
-            Quatro etapas. Cada detalhe com revisão humana.
-          </h2>
+          <SplitLines
+            as="h2"
+            text="Quatro etapas. Cada detalhe com revisão humana."
+            className="font-display text-3xl sm:text-4xl lg:text-[2.75rem] font-bold tracking-[-0.03em] text-white text-balance"
+          />
           <p className="text-base sm:text-lg text-slate-300/95 leading-relaxed">
             O processo é direto e acompanhado de perto. Usamos inteligência artificial
             para ganhar velocidade — mas o site nunca é entregue de forma totalmente automática.
@@ -84,7 +87,7 @@ export const ProcessSection: React.FC = () => {
           })}
         </div>
 
-        <div className="mt-14 glass-panel rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row items-center gap-6 shadow-xl">
+        <div className="mt-14 glass-panel bracket-panel rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row items-center gap-6 shadow-xl">
           <div className="w-12 h-12 rounded-xl bg-indigo-950/80 border border-indigo-400/20 flex items-center justify-center text-indigo-300 shrink-0">
             <UserCheck className="w-6 h-6" aria-hidden="true" />
           </div>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { WhatsAppIcon } from './WhatsAppIcon';
+import { SplitLines } from './SplitLines';
 import { useToast } from './Toast';
 import {
   ProjectBriefData,
@@ -208,9 +209,11 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
               <span>Planejamento Estratégico & Agendamento</span>
             </div>
 
-            <h2 className="font-display text-3xl sm:text-4xl lg:text-[2.85rem] font-bold tracking-[-0.03em] text-white text-balance leading-[1.15]">
-              Dê o próximo passo para o seu site
-            </h2>
+            <SplitLines
+              as="h2"
+              text="Dê o próximo passo para o seu site"
+              className="font-display text-3xl sm:text-4xl lg:text-[2.85rem] font-bold tracking-[-0.03em] text-white text-balance leading-[1.15]"
+            />
 
             <p className="text-base sm:text-lg text-slate-300/95 leading-relaxed max-w-2xl mx-auto">
               Preencha um briefing rápido para receber uma proposta personalizada ou escolha um horário para alinharmos tudo em uma chamada online de 30 minutos sem compromisso.

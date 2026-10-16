@@ -52,3 +52,66 @@ export function getOptimalDpr(isMobile: boolean, inApp: boolean): number {
 export function shouldReduceMedia(): boolean {
   return prefersReducedMotion() || saveDataEnabled();
 }
+
+/**
+ * Nível único de movimento usado por TODOS os efeitos visuais do site.
+ * Não faça checagens próprias de pointer/reduced/saveData em componentes:
+ * leia sempre getMotionTier().
+ *
+ *  - full: ponteiro fino + hover, sem redução de movimento, sem saveData e
+ *          hardware capaz (hardwareConcurrency >= 6 ou deviceMemory >= 6).
+ *  - lite: demais celulares/tablets modernos (reveals de linha/fade, transições
+ *          de tela, feedback de pressão, glass estático, fundo atual).
+ *  - none: prefers-reduced-motion, saveData ou aparelho fraco — apenas
+ *          transições de opacidade/cor.
+ */
+export type MotionTier = 'full' | 'lite' | 'none';
+
+function matchMediaSafe(query: string): boolean {
+  try {
+    return window.matchMedia(query).matches;
+  } catch {
+    return false;
+  }
+}
+
+export function hasFinePointer(): boolean {
+  return matchMediaSafe('(hover: hover) and (pointer: fine)');
+}
+
+function deviceMemoryGB(): number | null {
+  try {
+    const mem = (navigator as Navigator & { deviceMemory?: number }).deviceMemory;
+    return typeof mem === 'number' ? mem : null;
+  } catch {
+    return null;
+  }
+}
+
+function cpuConcurrency(): number | null {
+  try {
+    return typeof navigator.hardwareConcurrency === 'number' ? navigator.hardwareConcurrency : null;
+  } catch {
+    return null;
+  }
+}
+
+// Aparelho fraco demais para qualquer animação (só opacidade/cor).
+function weakDevice(): boolean {
+  const cores = cpuConcurrency();
+  const mem = deviceMemoryGB();
+  if (cores !== null && cores <= 2) return true;
+  if (mem !== null && mem <= 2) return true;
+  return false;
+}
+
+export function getMotionTier(): MotionTier {
+  if (shouldReduceMedia() || weakDevice()) return 'none';
+
+  const cores = cpuConcurrency();
+  const mem = deviceMemoryGB();
+  const capable = (cores !== null && cores >= 6) || (mem !== null && mem >= 6);
+  if (hasFinePointer() && capable) return 'full';
+
+  return 'lite';
+}

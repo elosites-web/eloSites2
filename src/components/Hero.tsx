@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, useReducedMotion, type Variants } from 'motion/react';
 import { WhatsAppIcon } from './WhatsAppIcon';
 import { SITE_CONFIG, whatsappUrl } from '../types';
-import { shouldReduceMedia } from '../mediaPrefs';
+import { shouldReduceMedia, getMotionTier } from '../mediaPrefs';
 import { ArrowDown, CheckCircle2, Code2, Smartphone, ChevronDown } from 'lucide-react';
 import { Interactive3DCard } from './Interactive3DCard';
 
@@ -56,25 +56,40 @@ export const Hero: React.FC<HeroProps> = ({
 
   const systemPrefersReduced = useReducedMotion();
   const isReduced = Boolean(systemPrefersReduced || shouldReduceMedia());
+  // Faixa deslizante dos segmentos: só no tier 'full' (marquee decorativo).
+  const [marquee] = useState(() => getMotionTier() === 'full');
+
+  // Sequência de entrada do hero: roda apenas na primeira montagem da sessão
+  // (efeito raro = delight). Nas demais navegações o conteúdo já aparece pronto.
+  const [playSequence] = useState(() => {
+    if (isReduced) return false;
+    try {
+      if (sessionStorage.getItem('elosites_hero_played') === '1') return false;
+      sessionStorage.setItem('elosites_hero_played', '1');
+    } catch {
+      return true;
+    }
+    return true;
+  });
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: isReduced ? 0 : 0.05,
-        delayChildren: isReduced ? 0 : 0.02,
+        staggerChildren: playSequence ? 0.08 : 0,
+        delayChildren: playSequence ? 0.04 : 0,
       },
     },
   };
 
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: isReduced ? 0 : 12 },
+    hidden: { opacity: 0, y: playSequence ? 12 : 0 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: isReduced ? 0.2 : 0.4,
+        duration: playSequence ? 0.48 : 0,
         ease: [0.23, 1, 0.32, 1] as const,
       },
     },
@@ -83,7 +98,7 @@ export const Hero: React.FC<HeroProps> = ({
   return (
     <section
       id="inicio"
-      className="relative pt-24 pb-16 sm:pt-28 sm:pb-24 lg:pt-32 lg:pb-28 overflow-hidden bg-[#070B16]/25 backdrop-blur-[0.5px]"
+      className="relative pt-24 pb-16 sm:pt-28 sm:pb-24 lg:pt-32 lg:pb-28 overflow-hidden bg-[#070B16]/25 backdrop-blur-[0.5px] lg:min-h-screen lg:flex lg:flex-col lg:justify-between"
     >
       {/* Background subtle tech grid & glow */}
       <div className="absolute inset-0 tech-grid-pattern opacity-70 pointer-events-none" />
@@ -94,7 +109,7 @@ export const Hero: React.FC<HeroProps> = ({
           {/* Coluna de Conteúdo Principal — Centralizado no mobile (<lg) e alinhado à esquerda no desktop (>=lg) */}
           <motion.div
             variants={containerVariants}
-            initial="hidden"
+            initial={playSequence ? 'hidden' : false}
             animate="visible"
             className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left space-y-6 sm:space-y-8"
           >
@@ -127,16 +142,39 @@ export const Hero: React.FC<HeroProps> = ({
               <span className="text-xs uppercase tracking-wider text-slate-400 font-medium block mb-2.5 text-center lg:text-left">
                 Desenvolvimento sob medida para:
               </span>
-              <div className="flex flex-wrap justify-center lg:justify-start gap-2">
-                {targetAudiences.map((item) => (
-                  <span
-                    key={item}
-                    className="inline-flex items-center px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-xs text-slate-300 font-medium"
-                  >
-                    {item}
-                  </span>
-                ))}
-              </div>
+              {marquee ? (
+                <div className="relative overflow-hidden w-full [mask-image:linear-gradient(to_right,transparent,#000_8%,#000_92%,transparent)]">
+                  <div className="audience-marquee">
+                    {[0, 1].map((group) => (
+                      <div
+                        key={group}
+                        className="flex gap-2 pr-2 shrink-0"
+                        aria-hidden={group === 1}
+                      >
+                        {targetAudiences.map((item) => (
+                          <span
+                            key={item}
+                            className="inline-flex items-center px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-xs text-slate-300 font-medium whitespace-nowrap"
+                          >
+                            {item}
+                          </span>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="flex flex-wrap justify-center lg:justify-start gap-2">
+                  {targetAudiences.map((item) => (
+                    <span
+                      key={item}
+                      className="inline-flex items-center px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-xs text-slate-300 font-medium"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              )}
             </motion.div>
 
             {/* Ações / CTAs */}
@@ -184,13 +222,13 @@ export const Hero: React.FC<HeroProps> = ({
 
           {/* Coluna Visual: Painel Estrutural do Processo com Interação 3D */}
           <motion.div
-            initial={{ opacity: 0, y: isReduced ? 0 : 16 }}
+            initial={playSequence ? { opacity: 0, y: 16 } : false}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: isReduced ? 0.2 : 0.45, delay: isReduced ? 0 : 0.08, ease: [0.23, 1, 0.32, 1] }}
+            transition={{ duration: playSequence ? 0.5 : 0, delay: playSequence ? 0.08 : 0, ease: [0.23, 1, 0.32, 1] }}
             className="lg:col-span-5"
           >
             <Interactive3DCard maxTilt={5}>
-              <div className="relative rounded-2xl bg-[#0B101D] border border-slate-800 p-1 shadow-2xl shadow-black/60">
+              <div className="relative rounded-2xl bg-[#0B101D] border border-slate-800 p-1 shadow-2xl shadow-black/60 bracket-panel">
                 {/* Barra de título do terminal */}
                 <div className="flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 border-b border-slate-800/80 bg-slate-950/60 rounded-t-xl gap-2">
                   <div className="flex items-center gap-1.5 sm:gap-2">

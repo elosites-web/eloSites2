@@ -11,6 +11,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { WhatsAppIcon } from './WhatsAppIcon';
+import { SplitLines } from './SplitLines';
 import { SITE_CONFIG, whatsappUrl } from '../types';
 import { shouldReduceMedia } from '../mediaPrefs';
 
@@ -312,9 +313,11 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
             <span>Social Proof & Avaliações Reais</span>
           </div>
 
-          <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white leading-tight">
-            O que dizem os clientes que colocaram o site no ar
-          </h2>
+          <SplitLines
+            as="h2"
+            text="O que dizem os clientes que colocaram o site no ar"
+            className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white leading-tight"
+          />
 
           <p className="text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed">
             Depoimentos autênticos de quem confiou na ēloSites para construir sua presença digital profissional com código sob medida e foco em conversão.

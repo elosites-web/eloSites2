@@ -20,6 +20,13 @@
   --dur-screen: 220ms;
   --dur-accordion: 260ms;
   --dur-modal: 280ms;
+  --dur-reveal: 560ms;
+  --dur-hero: 520ms;
+
+  /* Ritmo de revelações (usado por Reveal e SplitLines) */
+  --reveal-y: 14px;
+  --reveal-delay: 0ms;
+  --stagger: 70ms;
 }
 
 /* Configuração Global de Fontes: font-display swap para renderização imediata sem texto invisível (FOIT) */
@@ -78,8 +85,97 @@ body {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+  box-shadow:
+    0 10px 30px -10px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
   transform: translateZ(0);
+}
+
+/* Superfície de vidro mais "premium": realce interno no topo e brilho sutil
+   de borda. Não usa blur extra para não pesar em celulares modestos. */
+.surface-card {
+  position: relative;
+}
+
+.surface-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 22%);
+  opacity: 0.9;
+}
+
+/* Superfície sólida (sem vidro/blur), mesma identidade escura dos cartões de
+   Serviços porém sem transparência. Reutilizada pelos cartões do FAQ. */
+.card-solid {
+  background-color: #0b101d;
+  box-shadow:
+    0 10px 30px -10px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* Micro-etiqueta monoespaçada (usa apenas o texto já existente). */
+.section-kicker {
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.14em;
+}
+
+/* Fio técnico de 1px. */
+.hairline {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(129, 140, 248, 0.35) 50%,
+    transparent 100%
+  );
+  border: 0;
+}
+
+/* Cantos técnicos (colchetes) em painéis destacados — puro CSS, sem palavras. */
+.bracket-panel {
+  position: relative;
+}
+
+.bracket-panel::before,
+.bracket-panel::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+  border-style: solid;
+  border-width: 0;
+  border-color: rgba(165, 180, 252, 0.4);
+}
+
+.bracket-panel::before {
+  top: 8px;
+  left: 8px;
+  border-top-width: 1px;
+  border-left-width: 1px;
+  border-top-left-radius: 6px;
+}
+
+.bracket-panel::after {
+  bottom: 8px;
+  right: 8px;
+  border-bottom-width: 1px;
+  border-right-width: 1px;
+  border-bottom-right-radius: 6px;
+}
+
+/* Escala tipográfica em progressão geométrica (1.25 mobile). */
+:root {
+  --step--1: 0.8rem;
+  --step-0: 1rem;
+  --step-1: 1.25rem;
+  --step-2: 1.5625rem;
+  --step-3: 1.9531rem;
+  --step-4: 2.4414rem;
 }
 
 @media (max-width: 768px) {
@@ -513,6 +609,255 @@ a[id*="whatsapp"]:hover > svg {
       padding-left: max(2rem, env(safe-area-inset-left));
       padding-right: max(2rem, env(safe-area-inset-right));
     }
+  }
+}
+
+/* ===== Revelações compartilhadas (Reveal / SplitLines) ===== */
+/* Entrada de blocos: apenas opacity + translateY (sem layout). */
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, var(--reveal-y), 0);
+  transition:
+    opacity var(--dur-reveal) var(--ease-out) var(--reveal-delay),
+    transform var(--dur-reveal) var(--ease-out) var(--reveal-delay);
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Títulos com revelação linha a linha: cada palavra sobe de dentro da máscara. */
+.split-lines {
+  --stagger: 70ms;
+}
+
+.sl-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  /* Evita cortar descidas (g, j, p) mantendo o alinhamento da linha. */
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+.sl-inner {
+  display: inline-block;
+  transform: translate3d(0, 110%, 0);
+  opacity: 0;
+  transition:
+    transform var(--dur-reveal) var(--ease-out),
+    opacity var(--dur-reveal) var(--ease-out);
+  transition-delay: calc(var(--d, 0) * var(--stagger));
+  will-change: transform, opacity;
+}
+
+.split-lines.is-visible .sl-inner {
+  transform: translate3d(0, 0, 0);
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .sl-inner {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* Revelação em máscara (clip-path + opacity), uma vez por elemento. */
+.mask-reveal {
+  clip-path: inset(8% 8% 8% 8%);
+  opacity: 0;
+  transition:
+    clip-path var(--dur-reveal) var(--ease-out),
+    opacity var(--dur-reveal) var(--ease-out);
+  will-change: clip-path, opacity;
+}
+
+.mask-reveal.is-visible {
+  clip-path: inset(0% 0% 0% 0%);
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mask-reveal {
+    clip-path: none !important;
+    opacity: 1 !important;
+    transition: none !important;
+  }
+}
+
+/* ===== P3: interações de cartões e botões ===== */
+
+/* Feedback de pressão (usado por Faq, ProjectBriefBooking, ContactCta).
+   Só transform, então não há layout/paint caro. */
+.pressable {
+  transition: transform var(--dur-press) var(--ease-out);
+}
+
+.pressable:active {
+  transform: scale(0.97);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pressable:active {
+    transform: none;
+  }
+}
+
+/* Holofote que segue o ponteiro (classe aplicada pelo PointerSpotlight, tier full).
+   As variáveis --mx/--my são atualizadas via rAF; aqui só ligamos a opacidade. */
+.spotlight {
+  position: relative;
+}
+
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    240px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(129, 140, 248, 0.16),
+    rgba(129, 140, 248, 0) 65%
+  );
+  transition: opacity var(--dur-hover) var(--ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html.motion-full .spotlight:hover::before {
+    opacity: 1;
+  }
+}
+
+/* Borda em gradiente girando lentamente — só um cartão em destaque, tier full.
+   Usa máscara para manter apenas o anel de 1px (não cobre o conteúdo). */
+.featured-border {
+  position: relative;
+}
+
+.featured-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  opacity: 0;
+  background: conic-gradient(
+    from var(--fb-angle, 0deg),
+    rgba(52, 211, 153, 0) 0deg,
+    rgba(52, 211, 153, 0.85) 90deg,
+    rgba(99, 102, 241, 0.7) 180deg,
+    rgba(52, 211, 153, 0) 310deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html.motion-full .featured-border::before {
+    opacity: 1;
+  }
+}
+
+@property --fb-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html.motion-full .featured-border::before {
+    animation: featured-spin 10s linear infinite;
+  }
+}
+
+.featured-border.is-paused::before {
+  animation-play-state: paused;
+}
+
+@keyframes featured-spin {
+  to {
+    --fb-angle: 360deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .featured-border::before {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+}
+
+/* Faixa de segmentos com deslocamento lento (marquee), tier full.
+   O conjunto é duplicado com aria-hidden; desloca -50% para loop contínuo. */
+.audience-marquee {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+
+html.motion-full .audience-marquee {
+  animation: audience-scroll 30s linear infinite;
+}
+
+.audience-marquee:hover,
+.audience-marquee:focus-within,
+.audience-marquee.is-paused,
+html.motion-hidden .audience-marquee,
+html.motion-hidden .featured-border::before {
+  animation-play-state: paused;
+}
+
+@keyframes audience-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.motion-full .audience-marquee {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* View Transitions API: crossfade entre telas (fallback = transição suave atual). */
+::view-transition-old(root) {
+  animation: vt-fade-out var(--dur-screen) var(--ease) both;
+}
+
+::view-transition-new(root) {
+  animation: vt-fade-in var(--dur-screen) var(--ease) both;
+}
+
+@keyframes vt-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes vt-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
   }
 }
 

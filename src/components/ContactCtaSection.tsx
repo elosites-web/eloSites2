@@ -2,6 +2,7 @@ import React from 'react';
 import { WhatsAppIcon } from './WhatsAppIcon';
 import { SITE_CONFIG, whatsappUrl } from '../types';
 import { Mail } from 'lucide-react';
+import { SplitLines } from './SplitLines';
 
 interface ContactCtaSectionProps {
   onNavigateToOrcamento?: () => void;
@@ -24,9 +25,11 @@ export const ContactCtaSection: React.FC<ContactCtaSectionProps> = ({ onNavigate
             <span>Próximo passo</span>
           </div>
 
-          <h2 className="font-display text-3xl sm:text-5xl lg:text-[3.25rem] font-bold tracking-[-0.035em] text-white leading-[1.12] text-balance">
-            Vamos criar o site do seu negócio?
-          </h2>
+          <SplitLines
+            as="h2"
+            text="Vamos criar o site do seu negócio?"
+            className="font-display text-3xl sm:text-5xl lg:text-[3.25rem] font-bold tracking-[-0.035em] text-white leading-[1.12] text-balance"
+          />
 
           <p className="text-base sm:text-lg text-slate-300/95 leading-relaxed max-w-2xl mx-auto">
             Conte sobre o seu trabalho pelo WhatsApp. Conversamos sobre o formato, o conteúdo e te enviamos um orçamento específico para o seu projeto.

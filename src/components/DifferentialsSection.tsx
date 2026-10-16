@@ -9,6 +9,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { WhatsAppIcon } from './WhatsAppIcon';
+import { SplitLines } from './SplitLines';
 import { SITE_CONFIG, whatsappUrl } from '../types';
 
 interface DifferentialsSectionProps {
@@ -82,9 +83,11 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
             <Sparkles className="w-3.5 h-3.5" aria-hidden="true" />
             <span>Diferenciais Estratégicos</span>
           </div>
-          <h2 className="font-display text-3xl sm:text-4xl lg:text-[2.75rem] font-bold tracking-[-0.03em] text-white text-balance leading-tight">
-            O que muda quando o site é feito para o seu negócio
-          </h2>
+          <SplitLines
+            as="h2"
+            text="O que muda quando o site é feito para o seu negócio"
+            className="font-display text-3xl sm:text-4xl lg:text-[2.75rem] font-bold tracking-[-0.03em] text-white text-balance leading-tight"
+          />
           <p className="text-base sm:text-lg text-slate-300/95 leading-relaxed">
             Menos agência genérica. Mais presença profissional, conversa direta e resultado.
           </p>
