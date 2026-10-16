@@ -3,6 +3,7 @@ import { MessageSquare, Layers, Code2, Globe2, UserCheck, ShieldCheck } from 'lu
 import { WhatsAppIcon } from './WhatsAppIcon';
 import { SplitLines } from './SplitLines';
 import { SITE_CONFIG, whatsappUrl } from '../types';
+import { Interactive3DCard } from './Interactive3DCard';
 
 export const ProcessSection: React.FC = () => {
   const steps = [
@@ -39,7 +40,7 @@ export const ProcessSection: React.FC = () => {
   return (
     <section
       id="como-funciona"
-      className="pt-24 pb-20 sm:pt-28 sm:pb-24 lg:pt-32 lg:pb-28 bg-[#090D16]/30 backdrop-blur-[0.5px] relative border-t border-white/[0.05] overflow-x-clip"
+      className="pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32 lg:pb-20 bg-[#090D16]/30 backdrop-blur-[0.5px] relative border-t border-white/[0.05] overflow-x-clip"
     >
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-indigo-400/25 to-transparent pointer-events-none" />
       <div className="page-shell page-x relative z-10">
@@ -62,46 +63,49 @@ export const ProcessSection: React.FC = () => {
           {steps.map((step) => {
             const Icon = step.icon;
             return (
-              <article
-                key={step.number}
-                className="surface-card glass-panel glass-card-interactive h-full w-full rounded-2xl p-5 sm:p-6 md:p-8 flex flex-col justify-between group"
-              >
-                <div>
-                  <div className="flex items-center justify-between gap-2.5 mb-6">
-                    <span className="font-mono text-xs font-bold text-indigo-300 bg-indigo-950/80 border border-indigo-400/30 px-3 py-1 rounded-lg">
-                      {step.number}
-                    </span>
-                    <div className="w-11 h-11 rounded-xl bg-indigo-950/70 border border-indigo-500/30 flex items-center justify-center text-indigo-300 transition-all duration-300">
-                      <Icon className="w-5 h-5" aria-hidden="true" />
+              <Interactive3DCard key={step.number} maxTilt={5} className="h-full">
+                <article
+                  className="relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 h-full w-full p-5 sm:p-6 md:p-8 flex flex-col justify-between group shadow-2xl shadow-black/60 bracket-panel transition-colors"
+                >
+                  <div>
+                    <div className="flex items-center justify-between gap-2.5 mb-6">
+                      <span className="font-mono text-xs font-bold text-indigo-300 bg-indigo-950/80 border border-indigo-400/30 px-3 py-1 rounded-lg">
+                        {step.number}
+                      </span>
+                      <div className="w-11 h-11 rounded-xl bg-indigo-950/70 border border-indigo-500/30 flex items-center justify-center text-indigo-300 transition-all duration-300">
+                        <Icon className="w-5 h-5" aria-hidden="true" />
+                      </div>
                     </div>
+                    <h3 className="font-display text-xl font-bold tracking-tight text-white mb-3 group-hover:text-indigo-100 transition-colors">
+                      {step.title}
+                    </h3>
+                    <p className="text-sm text-slate-300 leading-relaxed font-normal">
+                      {step.description}
+                    </p>
                   </div>
-                  <h3 className="font-display text-xl font-bold tracking-tight text-white mb-3 group-hover:text-indigo-100 transition-colors">
-                    {step.title}
-                  </h3>
-                  <p className="text-sm text-slate-300 leading-relaxed font-normal">
-                    {step.description}
-                  </p>
-                </div>
-              </article>
+                </article>
+              </Interactive3DCard>
             );
           })}
         </div>
 
-        <div className="mt-14 glass-panel bracket-panel rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row items-center gap-6 shadow-xl">
-          <div className="w-12 h-12 rounded-xl bg-indigo-950/80 border border-indigo-400/20 flex items-center justify-center text-indigo-300 shrink-0">
-            <UserCheck className="w-6 h-6" aria-hidden="true" />
+        <Interactive3DCard maxTilt={3} className="mt-14 w-full">
+          <div className="relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/40 p-6 sm:p-8 flex flex-col md:flex-row items-center gap-6 shadow-2xl shadow-black/60 bracket-panel transition-colors">
+            <div className="w-12 h-12 rounded-xl bg-indigo-950/80 border border-indigo-400/20 flex items-center justify-center text-indigo-300 shrink-0">
+              <UserCheck className="w-6 h-6" aria-hidden="true" />
+            </div>
+            <div className="space-y-1 text-center md:text-left flex-1">
+              <h3 className="text-base sm:text-lg font-bold text-white flex items-center justify-center md:justify-start gap-2 flex-wrap">
+                <span>Revisão humana em cada detalhe</span>
+                <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" aria-hidden="true" />
+              </h3>
+              <p className="text-sm text-slate-300 leading-relaxed">
+                A IA acelera o desenvolvimento. Quem decide o tom, a estrutura, o texto e
+                o acabamento é uma pessoa — do primeiro rascunho até o site no ar.
+              </p>
+            </div>
           </div>
-          <div className="space-y-1 text-center md:text-left flex-1">
-            <h3 className="text-base sm:text-lg font-bold text-white flex items-center justify-center md:justify-start gap-2 flex-wrap">
-              <span>Revisão humana em cada detalhe</span>
-              <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" aria-hidden="true" />
-            </h3>
-            <p className="text-sm text-slate-300 leading-relaxed">
-              A IA acelera o desenvolvimento. Quem decide o tom, a estrutura, o texto e
-              o acabamento é uma pessoa — do primeiro rascunho até o site no ar.
-            </p>
-          </div>
-        </div>
+        </Interactive3DCard>
 
         {/* CTA Contextual do Processo */}
         <div className="mt-12 flex items-center justify-center">

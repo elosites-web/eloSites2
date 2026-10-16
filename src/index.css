@@ -186,7 +186,7 @@ body {
   }
 }
 
-/* Interactive Card Elevation with Cyan & Indigo Glow (Gated to fine pointer) */
+/* Interactive Card Elevation with Cyan & Indigo Glow (matching Hero 3D Card) */
 .glass-card-interactive {
   transition: transform var(--dur-hover) var(--ease-out),
               border-color var(--dur-hover) var(--ease),
@@ -197,11 +197,12 @@ body {
 
 @media (hover: hover) and (pointer: fine) {
   .glass-card-interactive:hover {
-    transform: translateY(-4px) scale(1.02);
-    border-color: rgba(99, 102, 241, 0.38);
-    box-shadow: 0 16px 36px -10px rgba(99, 102, 241, 0.22),
-                0 0 20px -2px rgba(6, 182, 212, 0.16),
-                0 0 1px 1px rgba(165, 180, 252, 0.2);
+    transform: translateY(-4px) scale(1.015);
+    border-color: rgba(129, 140, 248, 0.55);
+    box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.75),
+                0 0 24px -2px rgba(99, 102, 241, 0.35),
+                0 0 14px -2px rgba(34, 211, 238, 0.22),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08);
   }
 }
 

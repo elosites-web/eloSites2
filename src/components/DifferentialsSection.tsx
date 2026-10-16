@@ -11,6 +11,7 @@ import {
 import { WhatsAppIcon } from './WhatsAppIcon';
 import { SplitLines } from './SplitLines';
 import { SITE_CONFIG, whatsappUrl } from '../types';
+import { Interactive3DCard } from './Interactive3DCard';
 
 interface DifferentialsSectionProps {
   onNavigateToPortfolio?: () => void;
@@ -68,7 +69,7 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
   return (
     <section
       id="diferenciais"
-      className="pt-24 pb-20 sm:pt-28 sm:pb-24 lg:pt-32 lg:pb-28 bg-[#090D16]/30 backdrop-blur-[0.5px] relative border-t border-white/[0.05] overflow-x-clip"
+      className="pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32 lg:pb-20 bg-[#090D16]/30 backdrop-blur-[0.5px] relative border-t border-white/[0.05] overflow-x-clip"
     >
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-indigo-400/20 to-transparent pointer-events-none" />
 
@@ -93,34 +94,34 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
           </p>
         </div>
 
-        {/* Grade de 6 Cards de Diferenciais — Padronizado com o efeito dos outros cards do site */}
+        {/* Grade de 6 Cards de Diferenciais — Padronizado com o efeito 3D interativo */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 min-w-0">
           {differentials.map((item, index) => {
             const Icon = item.icon;
             return (
-              <article
-                key={item.title}
-                className="surface-card glass-panel glass-card-interactive h-full w-full rounded-2xl p-5 sm:p-6 md:p-8 flex flex-col justify-between group"
-              >
-                <div>
-                  <div className="flex items-center justify-between gap-2.5 mb-5">
-                    <div
-                      className={`w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300 ${
-                        item.isWhatsApp
-                          ? 'bg-[#25D366] text-white shadow-md shadow-emerald-950/40'
-                          : 'bg-indigo-950/80 border border-indigo-500/30 text-indigo-300'
-                      }`}
-                    >
-                      {item.isWhatsApp ? (
-                        <WhatsAppIcon className="w-5 h-5 text-white" />
-                      ) : (
-                        <Icon className="w-5 h-5" aria-hidden="true" />
-                      )}
+              <Interactive3DCard key={item.title} maxTilt={5} className="h-full">
+                <article
+                  className="relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 h-full w-full p-5 sm:p-6 md:p-8 flex flex-col justify-between group shadow-2xl shadow-black/60 bracket-panel transition-colors"
+                >
+                  <div>
+                    <div className="flex items-center justify-between gap-2.5 mb-5">
+                      <div
+                        className={`w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300 ${
+                          item.isWhatsApp
+                            ? 'bg-[#25D366] text-white shadow-md shadow-emerald-950/40'
+                            : 'bg-indigo-950/80 border border-indigo-500/30 text-indigo-300'
+                        }`}
+                      >
+                        {item.isWhatsApp ? (
+                          <WhatsAppIcon className="w-5 h-5 text-white" />
+                        ) : (
+                          <Icon className="w-5 h-5" aria-hidden="true" />
+                        )}
+                      </div>
+                      <span className="font-mono text-xs font-bold text-slate-400 group-hover:text-indigo-300 transition-colors">
+                        0{index + 1}
+                      </span>
                     </div>
-                    <span className="font-mono text-xs font-bold text-slate-400 group-hover:text-indigo-300 transition-colors">
-                      0{index + 1}
-                    </span>
-                  </div>
 
                     <h3 className="font-display text-lg font-bold tracking-tight text-white mb-2.5 group-hover:text-indigo-100 transition-colors">
                       {item.title}
@@ -144,6 +145,7 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
                     <span className="font-medium text-slate-300">Padrão ēloSites</span>
                   </div>
                 </article>
+              </Interactive3DCard>
             );
           })}
         </div>
@@ -155,10 +157,10 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
             href={whatsappUrl(SITE_CONFIG.diferenciaisWhatsappMessage)}
             target="_blank"
             rel="noopener noreferrer"
-            className="cta-primary inline-flex items-center justify-center text-center gap-2.5 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl text-sm sm:text-base font-bold text-white shadow-lg shadow-indigo-600/30 transition-all cursor-pointer"
+            className="cta-primary inline-flex items-center justify-center text-center gap-2.5 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl text-sm sm:text-base font-bold text-white shadow-lg shadow-indigo-600/30 transition-all cursor-pointer whitespace-nowrap"
           >
-            <WhatsAppIcon className="w-4 h-4 text-emerald-300" />
-            <span>Falar sobre um site para meu negócio</span>
+            <WhatsAppIcon className="w-4 h-4 text-emerald-300 shrink-0" />
+            <span className="whitespace-nowrap">Falar sobre um site para meu negócio</span>
           </a>
         </div>
       </div>

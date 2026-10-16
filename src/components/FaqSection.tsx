@@ -4,6 +4,7 @@ import { ChevronDown, HelpCircle } from 'lucide-react';
 import { FaqItem, SITE_CONFIG, whatsappUrl } from '../types';
 import { shouldReduceMedia } from '../mediaPrefs';
 import { SplitLines } from './SplitLines';
+import { WebCraftAnimatedArt } from './WebCraftAnimatedArt';
 
 export const FaqSection: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
@@ -208,8 +209,11 @@ export const FaqSection: React.FC = () => {
             Fale diretamente no WhatsApp
           </a>
         </p>
-         </div>
-       </div>
-     </section>
+
+        {/* Arte Animada Centralizada Relacionada à Criação de Sites */}
+        <WebCraftAnimatedArt compact={false} />
+      </div>
+    </div>
+  </section>
   );
 };

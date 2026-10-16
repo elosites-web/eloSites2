@@ -17,6 +17,7 @@ import { SITE_CONFIG, whatsappUrl } from '../types';
 import { ProjectModal } from './ProjectModal';
 import { SplitLines } from './SplitLines';
 import { Reveal } from './Reveal';
+import { Interactive3DCard } from './Interactive3DCard';
 
 export interface PortfolioProjectData {
   id: string;
@@ -122,7 +123,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   const [viewMode, setViewMode] = useState<ViewMode>('composite');
 
   return (
-    <article className="surface-card glass-panel glass-card-interactive flex flex-col h-full rounded-2xl overflow-hidden group lg:row-span-8 lg:grid lg:grid-rows-subgrid">
+    <article className="relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 flex flex-col h-full overflow-hidden group lg:row-span-8 lg:grid lg:grid-rows-subgrid shadow-2xl shadow-black/60 bracket-panel transition-colors">
       {/* Top Header / Informações */}
       <div className="p-6 sm:p-7 border-b border-white/[0.06] bg-slate-950/60 space-y-4 lg:row-span-5 lg:grid lg:grid-rows-subgrid">
         <div className="flex flex-wrap items-center justify-between gap-2">
@@ -425,13 +426,13 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
   return (
     <section
       id="portfolio"
-      className="pt-24 pb-20 sm:pt-28 sm:pb-24 lg:pt-32 lg:pb-28 bg-[#090D16]/30 backdrop-blur-[0.5px] relative min-h-screen flex flex-col justify-between"
+      className="pt-24 pb-12 sm:pt-28 sm:pb-14 lg:pt-32 lg:pb-16 bg-[#090D16]/30 backdrop-blur-[0.5px] relative"
     >
       {/* Luz ambiente de fundo */}
       <div className="absolute top-1/4 left-0 w-96 h-96 bg-indigo-500/[0.08] blur-[140px] rounded-full pointer-events-none" />
       <div className="absolute bottom-10 right-0 w-96 h-96 bg-violet-600/[0.08] blur-[140px] rounded-full pointer-events-none" />
 
-      <div className="page-shell page-x relative w-full flex-1 flex flex-col justify-between">
+      <div className="page-shell page-x relative w-full">
         {/* Cabeçalho da Seção / Tela */}
         <div>
           <div className="max-w-3xl mx-auto text-center space-y-4 mb-10 sm:mb-12">
@@ -516,28 +517,31 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
                       : ''
                   }`}
                 >
-                  <ProjectCard
-                    project={project}
-                    onOpenZoom={(src, title) => setZoomModal({ src, title })}
-                    onOpenDetails={(p) => setSelectedProject(p)}
-                    onNavigateToServices={onNavigateToServices}
-                  />
+                  <Interactive3DCard maxTilt={5} className="h-full w-full">
+                    <ProjectCard
+                      project={project}
+                      onOpenZoom={(src, title) => setZoomModal({ src, title })}
+                      onOpenDetails={(p) => setSelectedProject(p)}
+                      onNavigateToServices={onNavigateToServices}
+                    />
+                  </Interactive3DCard>
                 </motion.div>
               );
             })}
           </div>
         </div>
 
-        {/* Banner Inferior com Conversão Direta */}
-        <div className="mt-12 sm:mt-16 p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-indigo-950/40 via-slate-900/60 to-purple-950/30 border border-indigo-400/25 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl">
-          <div className="space-y-1 text-center sm:text-left">
-            <h3 className="text-xl sm:text-2xl font-bold text-white font-display">
-              Gostou do nível dos projetos da ēloSites?
-            </h3>
-            <p className="text-sm text-slate-300 max-w-xl">
-              Cada projeto recebe um orçamento específico baseado no escopo. 50% de entrada no início + 50% na aprovação final (PIX), 20% de desconto à vista, até 5x sem juros ou de 6x a 12x no cartão.
-            </p>
-          </div>
+        {/* Banner Inferior com Conversão Direta e 3D Tilt */}
+        <Interactive3DCard maxTilt={3} className="mt-12 sm:mt-16 w-full">
+          <div className="p-6 sm:p-8 rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl shadow-black/60 bracket-panel transition-colors">
+            <div className="space-y-1 text-center sm:text-left">
+              <h3 className="text-xl sm:text-2xl font-bold text-white font-display">
+                Gostou do nível dos projetos da ēloSites?
+              </h3>
+              <p className="text-sm text-slate-300 max-w-xl">
+                Cada projeto recebe um orçamento específico baseado no escopo. 50% de entrada no início + 50% na aprovação final (PIX), 20% de desconto à vista, até 5x sem juros ou de 6x a 12x no cartão.
+              </p>
+            </div>
 
           <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto shrink-0">
             {onNavigateToServices && (
@@ -562,7 +566,8 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
             </a>
           </div>
         </div>
-      </div>
+      </Interactive3DCard>
+    </div>
 
       {/* Modal de Detalhes do Projeto (Challenge, Solution, Results) */}
       <ProjectModal

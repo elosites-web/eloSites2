@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, useReducedMotion, type Variants } from 'motion/react';
 import { WhatsAppIcon } from './WhatsAppIcon';
 import { SITE_CONFIG, whatsappUrl } from '../types';
 import { shouldReduceMedia, getMotionTier } from '../mediaPrefs';
-import { ArrowDown, CheckCircle2, Code2, Smartphone, ChevronDown } from 'lucide-react';
+import { ArrowDown, CheckCircle2, Code2, Smartphone } from 'lucide-react';
 import { Interactive3DCard } from './Interactive3DCard';
 
 interface HeroProps {
@@ -15,23 +15,6 @@ export const Hero: React.FC<HeroProps> = ({
   onNavigateToPortfolio,
   onNavigateToServices,
 }) => {
-  const [isScrolledPast, setIsScrolledPast] = useState(false);
-
-  // Monitora scroll para esmaecer o indicador quando o usuário já estiver explorando a página
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrolled = window.scrollY > 40;
-      setIsScrolledPast((prev) => (prev !== scrolled ? scrolled : prev));
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const handleScrollDown = () => {
-    window.scrollBy({ top: Math.min(window.innerHeight * 0.75, 550), behavior: 'smooth' });
-  };
-
   const heroWhatsappUrl = whatsappUrl(SITE_CONFIG.heroWhatsappMessage);
 
   const handleScrollToPortfolio = (e: React.MouseEvent) => {
@@ -98,7 +81,7 @@ export const Hero: React.FC<HeroProps> = ({
   return (
     <section
       id="inicio"
-      className="relative pt-24 pb-16 sm:pt-28 sm:pb-24 lg:pt-32 lg:pb-28 overflow-hidden bg-[#070B16]/25 backdrop-blur-[0.5px] lg:min-h-screen lg:flex lg:flex-col lg:justify-between"
+      className="relative pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32 lg:pb-20 overflow-hidden bg-[#070B16]/25 backdrop-blur-[0.5px]"
     >
       {/* Background subtle tech grid & glow */}
       <div className="absolute inset-0 tech-grid-pattern opacity-70 pointer-events-none" />
@@ -315,42 +298,6 @@ export const Hero: React.FC<HeroProps> = ({
             </Interactive3DCard>
           </motion.div>
         </div>
-
-        {/* Indicador visual sutil de 'scroll' na parte inferior da tela 'Início' */}
-        <motion.div
-          variants={itemVariants}
-          className="mt-12 sm:mt-16 lg:mt-20 flex justify-center"
-        >
-          <button
-            type="button"
-            onClick={handleScrollDown}
-            aria-label="Rolar para explorar o conteúdo abaixo da dobra"
-            className={`group inline-flex flex-col items-center gap-2 text-slate-400 hover:text-indigo-300 transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 rounded-xl p-2 cursor-pointer ${
-              isScrolledPast ? 'opacity-0 pointer-events-none' : 'opacity-100'
-            }`}
-          >
-            <span className="text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.2em] text-slate-400 group-hover:text-indigo-300 transition-colors">
-              Role para explorar
-            </span>
-            <div className="w-5 h-8 rounded-full border border-white/20 group-hover:border-indigo-400/60 flex items-start justify-center p-1 transition-colors bg-slate-950/40 backdrop-blur-xs">
-              <motion.div
-                animate={isReduced ? { y: 0 } : { y: [0, 8, 0] }}
-                transition={
-                  isReduced
-                    ? { duration: 0 }
-                    : { repeat: Infinity, duration: 1.8, ease: 'easeInOut' }
-                }
-                className="w-1 h-2 rounded-full bg-indigo-400"
-              />
-            </div>
-            <ChevronDown
-              className={`w-3.5 h-3.5 text-slate-400 group-hover:text-indigo-300 -mt-1 transition-all ${
-                isReduced ? '' : 'animate-bounce'
-              }`}
-              aria-hidden="true"
-            />
-          </button>
-        </motion.div>
       </div>
     </section>
   );

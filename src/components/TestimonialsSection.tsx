@@ -14,6 +14,7 @@ import { WhatsAppIcon } from './WhatsAppIcon';
 import { SplitLines } from './SplitLines';
 import { SITE_CONFIG, whatsappUrl } from '../types';
 import { shouldReduceMedia } from '../mediaPrefs';
+import { Interactive3DCard } from './Interactive3DCard';
 
 export interface TestimonialItem {
   id: string;
@@ -278,7 +279,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
     <section
       id="testemunhos"
       aria-label="Avaliações de Clientes e Prova Social"
-      className="py-12 sm:py-20 bg-[#070A12]/30 backdrop-blur-[0.5px] relative border-t border-white/[0.08] overflow-hidden"
+      className="pt-12 pb-16 sm:pt-16 sm:pb-20 lg:pt-16 lg:pb-20 bg-[#070A12]/30 backdrop-blur-[0.5px] relative border-t border-white/[0.08] overflow-hidden"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onFocus={() => setIsPaused(true)}
@@ -369,18 +370,20 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-          {/* Card Principal Compacto & Otimizado */}
-          <div className="relative rounded-2xl p-[1px] bg-gradient-to-b from-indigo-500/35 via-purple-500/20 to-white/[0.06] shadow-xl shadow-indigo-950/30">
-            <div className="rounded-2xl p-5 sm:p-7 md:p-8 bg-[#0B101D]/95 backdrop-blur-xl">
-              <TestimonialCardContent
-                item={current}
-                currentIndex={currentIndex}
-                totalCount={testimonials.length}
-                direction={direction}
-                prefersReduced={prefersReduced}
-              />
+          {/* Card Principal Compacto & Otimizado com Efeito 3D Interativo */}
+          <Interactive3DCard maxTilt={5} className="w-full">
+            <div className="relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-1 shadow-2xl shadow-black/60 bracket-panel transition-colors">
+              <div className="rounded-xl p-5 sm:p-7 md:p-8 bg-[#0B101D]">
+                <TestimonialCardContent
+                  item={current}
+                  currentIndex={currentIndex}
+                  totalCount={testimonials.length}
+                  direction={direction}
+                  prefersReduced={prefersReduced}
+                />
+              </div>
             </div>
-          </div>
+          </Interactive3DCard>
 
           {/* Controles de Navegação do Carrossel */}
           <div className="mt-5 flex items-center justify-between gap-4">

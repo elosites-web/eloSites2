@@ -19,6 +19,7 @@ import {
 import { WhatsAppIcon } from './WhatsAppIcon';
 import { SplitLines } from './SplitLines';
 import { SITE_CONFIG, PAYMENT_CONDITIONS, whatsappUrl } from '../types';
+import { Interactive3DCard } from './Interactive3DCard';
 
 interface ServiceCategory {
   id: string;
@@ -158,13 +159,13 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
   return (
     <section
       id="servicos"
-      className="pt-24 pb-16 sm:pt-28 sm:pb-24 lg:pt-32 lg:pb-28 bg-[#090D16]/30 backdrop-blur-[0.5px] relative min-h-screen flex flex-col justify-between"
+      className="pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32 lg:pb-20 bg-[#090D16]/30 backdrop-blur-[0.5px] relative"
     >
       {/* Luz ambiente de fundo */}
       <div className="absolute top-1/3 left-0 w-80 h-80 bg-indigo-500/[0.07] blur-[130px] rounded-full pointer-events-none" />
       <div className="absolute bottom-1/4 right-0 w-80 h-80 bg-purple-500/[0.07] blur-[130px] rounded-full pointer-events-none" />
 
-      <div className="page-shell page-x relative w-full flex-1 flex flex-col justify-between">
+      <div className="page-shell page-x relative w-full">
         {/* Cabeçalho da Seção */}
         <div>
           <div className="max-w-3xl mx-auto text-center space-y-4 mb-12 sm:mb-16">
@@ -189,7 +190,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
               const ctaUrl = whatsappUrl(service.ctaMessage);
 
               return (
-                <motion.article
+                <motion.div
                   key={service.id}
                   initial={
                     prefersReduced
@@ -201,112 +202,110 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                       ? { opacity: 1, scale: 1, y: 0 }
                       : { opacity: 1, scale: 1, y: 0 }
                   }
-                  whileHover={
-                    prefersReduced
-                      ? undefined
-                      : {
-                          scale: 1.02,
-                          transition: { duration: 0.22, ease: [0.22, 1, 0.36, 1] },
-                        }
-                  }
                   viewport={{ once: true, amount: 0.15 }}
                   transition={{
                     duration: prefersReduced ? 0 : 0.45,
                     delay: prefersReduced ? 0 : index * 0.12,
                     ease: [0.22, 1, 0.36, 1],
                   }}
-                  className="surface-card glass-panel glass-card-interactive spotlight relative rounded-2xl p-5 sm:p-6 md:p-8 flex flex-col space-y-5 lg:space-y-0 lg:row-span-5 lg:grid lg:grid-rows-subgrid"
+                  className="h-full w-full lg:row-span-5 lg:grid lg:grid-rows-subgrid"
                 >
-                  {/* Linha 1: Topo do card + Título + Descrição */}
-                  <div className="space-y-4 lg:pb-4">
-                    <div className="flex items-center justify-between gap-2.5 min-w-0">
-                      <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-indigo-950/80 border border-indigo-500/30 flex items-center justify-center text-indigo-300 shrink-0">
-                        <Icon className="w-5 h-5 sm:w-6 sm:h-6" aria-hidden="true" />
-                      </div>
-                      <span className="text-[10px] min-[380px]:text-xs font-mono text-indigo-300 bg-indigo-950/90 px-2.5 min-[380px]:px-3 py-1 rounded-full border border-indigo-700/60 font-medium whitespace-nowrap shrink-0">
-                        {service.badge}
-                      </span>
-                    </div>
-
-                    <div>
-                      <h3 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-white mb-2">
-                        {service.title}
-                      </h3>
-                      <p className="text-sm text-slate-300 leading-relaxed font-normal">
-                        {service.description}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Linha 2: Bloco INCLUI */}
-                  <div className="space-y-2.5 pt-4 border-t border-white/[0.06] lg:pb-4">
-                    <span className="text-xs font-bold uppercase tracking-wider text-slate-300 block">
-                      INCLUI:
-                    </span>
-                    <div className="grid grid-cols-1 gap-2 text-sm text-slate-300">
-                      {service.includes.map((item) => (
-                        <div key={item} className="flex items-start gap-2">
-                          <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" aria-hidden="true" />
-                          <span className="text-xs sm:text-sm leading-snug">{item}</span>
+                  <Interactive3DCard maxTilt={5} className="h-full w-full lg:row-span-5 lg:grid lg:grid-rows-subgrid">
+                    <article
+                      className="relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 md:p-8 flex flex-col space-y-5 lg:space-y-0 lg:row-span-5 lg:grid lg:grid-rows-subgrid shadow-2xl shadow-black/60 bracket-panel transition-colors h-full w-full"
+                    >
+                      {/* Linha 1: Topo do card + Título + Descrição */}
+                      <div className="space-y-4 lg:pb-4">
+                        <div className="flex items-center justify-between gap-2.5 min-w-0">
+                          <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-indigo-950/80 border border-indigo-500/30 flex items-center justify-center text-indigo-300 shrink-0">
+                            <Icon className="w-5 h-5 sm:w-6 sm:h-6" aria-hidden="true" />
+                          </div>
+                          <span className="text-[10px] min-[380px]:text-xs font-mono text-indigo-300 bg-indigo-950/90 px-2.5 min-[380px]:px-3 py-1 rounded-full border border-indigo-700/60 font-medium whitespace-nowrap shrink-0">
+                            {service.badge}
+                          </span>
                         </div>
-                      ))}
-                    </div>
-                  </div>
 
-                  {/* Linha 3: Caixa de Nota Sutil */}
-                  <div className="lg:py-3">
-                    <p className="text-xs text-slate-400 leading-relaxed rounded-lg border border-white/[0.08] bg-slate-950/70 p-3">
-                      ℹ️ {service.scopeNote}
-                    </p>
-                  </div>
+                        <div>
+                          <h3 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-white mb-2">
+                            {service.title}
+                          </h3>
+                          <p className="text-sm text-slate-300 leading-relaxed font-normal">
+                            {service.description}
+                          </p>
+                        </div>
+                      </div>
 
-                  {/* Linha 4: Bloco NÃO INCLUSO */}
-                  <div className="space-y-2 pt-4 border-t border-white/[0.06] lg:pb-4">
-                    {service.excluded && (
-                      <>
-                        <span className="text-xs font-bold uppercase tracking-wider text-slate-400 block">
-                          NÃO INCLUSO:
+                      {/* Linha 2: Bloco INCLUI */}
+                      <div className="space-y-2.5 pt-4 border-t border-white/[0.06] lg:pb-4">
+                        <span className="text-xs font-bold uppercase tracking-wider text-slate-300 block">
+                          INCLUI:
                         </span>
-                        <div className="grid grid-cols-1 gap-1.5 text-xs text-slate-400">
-                          {service.excluded.map((item) => (
+                        <div className="grid grid-cols-1 gap-2 text-sm text-slate-300">
+                          {service.includes.map((item) => (
                             <div key={item} className="flex items-start gap-2">
-                              <X className="w-3.5 h-3.5 text-slate-500 shrink-0 mt-0.5" aria-hidden="true" />
-                              <span className="leading-snug">{item}</span>
+                              <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" aria-hidden="true" />
+                              <span className="text-xs sm:text-sm leading-snug">{item}</span>
                             </div>
                           ))}
                         </div>
-                      </>
-                    )}
-                  </div>
-
-                  {/* Linha 5: Orçamento Personalizado & CTA (inicia na mesma posição vertical) */}
-                  <div className="pt-4 border-t border-white/[0.08] space-y-4 flex flex-col justify-end">
-                    <div className="p-3.5 rounded-xl bg-slate-950/70 border border-white/[0.06] space-y-1">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-semibold text-indigo-300 uppercase tracking-wide">
-                          Proposta Comercial
-                        </span>
-                        <span className="text-[11px] text-emerald-400 font-mono font-medium">
-                          Orçamento Específico
-                        </span>
                       </div>
-                      <p className="text-xs text-slate-300 leading-relaxed">
-                        Definido por escopo, páginas e urgência. Pagamento facilitado em até 5x sem juros ou desconto no PIX.
-                      </p>
-                    </div>
 
-                    <a
-                      id={service.ctaId}
-                      href={ctaUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="cta-primary w-full inline-flex items-center justify-center text-center gap-1.5 sm:gap-2 py-3.5 px-2.5 sm:px-3 rounded-xl text-xs sm:text-[13px] md:text-sm font-semibold text-white transition-all shadow-lg shadow-indigo-600/25 min-h-12 whitespace-nowrap"
-                    >
-                      <WhatsAppIcon className="w-4 h-4 text-emerald-300 shrink-0" />
-                      <span className="text-center whitespace-nowrap">{service.ctaLabel}</span>
-                    </a>
-                  </div>
-                </motion.article>
+                      {/* Linha 3: Caixa de Nota Sutil */}
+                      <div className="lg:py-3">
+                        <p className="text-xs text-slate-400 leading-relaxed rounded-lg border border-white/[0.08] bg-slate-950/70 p-3">
+                          ℹ️ {service.scopeNote}
+                        </p>
+                      </div>
+
+                      {/* Linha 4: Bloco NÃO INCLUSO */}
+                      <div className="space-y-2 pt-4 border-t border-white/[0.06] lg:pb-4">
+                        {service.excluded && (
+                          <>
+                            <span className="text-xs font-bold uppercase tracking-wider text-slate-400 block">
+                              NÃO INCLUSO:
+                            </span>
+                            <div className="grid grid-cols-1 gap-1.5 text-xs text-slate-400">
+                              {service.excluded.map((item) => (
+                                <div key={item} className="flex items-start gap-2">
+                                  <X className="w-3.5 h-3.5 text-slate-500 shrink-0 mt-0.5" aria-hidden="true" />
+                                  <span className="leading-snug">{item}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </>
+                        )}
+                      </div>
+
+                      {/* Linha 5: Orçamento Personalizado & CTA (inicia na mesma posição vertical) */}
+                      <div className="pt-4 border-t border-white/[0.08] space-y-4 flex flex-col justify-end">
+                        <div className="p-3.5 rounded-xl bg-slate-950/70 border border-white/[0.06] space-y-1">
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-semibold text-indigo-300 uppercase tracking-wide">
+                              Proposta Comercial
+                            </span>
+                            <span className="text-[11px] text-emerald-400 font-mono font-medium">
+                              Orçamento Específico
+                            </span>
+                          </div>
+                          <p className="text-xs text-slate-300 leading-relaxed">
+                            Definido por escopo, páginas e urgência. Pagamento facilitado em até 5x sem juros ou desconto no PIX.
+                          </p>
+                        </div>
+
+                        <a
+                          id={service.ctaId}
+                          href={ctaUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="cta-primary w-full inline-flex items-center justify-center text-center gap-1.5 sm:gap-2 py-3.5 px-2.5 sm:px-3 rounded-xl text-xs sm:text-[13px] md:text-sm font-semibold text-white transition-all shadow-lg shadow-indigo-600/25 min-h-12 whitespace-nowrap"
+                        >
+                          <WhatsAppIcon className="w-4 h-4 text-emerald-300 shrink-0" />
+                          <span className="text-center whitespace-nowrap">{service.ctaLabel}</span>
+                        </a>
+                      </div>
+                    </article>
+                  </Interactive3DCard>
+                </motion.div>
               );
             })}
           </div>
@@ -341,36 +340,32 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                     ? { opacity: 1, scale: 1, y: 0 }
                     : { opacity: 1, scale: 1, y: 0 }
                 }
-                whileHover={
-                  prefersReduced
-                    ? undefined
-                    : {
-                        scale: 1.02,
-                        transition: { duration: 0.22, ease: [0.22, 1, 0.36, 1] },
-                      }
-                }
                 viewport={{ once: true, amount: 0.15 }}
                 transition={{
                   duration: prefersReduced ? 0 : 0.4,
                   delay: prefersReduced ? 0 : 0.04,
                   ease: [0.22, 1, 0.36, 1],
                 }}
-                className="glass-panel glass-card-interactive p-5 sm:p-6 rounded-2xl flex flex-col justify-between h-full"
+                className="h-full"
               >
-                <div className="space-y-3">
-                  <div className="w-10 h-10 rounded-xl bg-indigo-950/90 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
-                    <Split className="w-5 h-5" />
+                <Interactive3DCard maxTilt={5} className="h-full">
+                  <div className="relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors">
+                    <div className="space-y-3">
+                      <div className="w-10 h-10 rounded-xl bg-indigo-950/90 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
+                        <Split className="w-5 h-5" />
+                      </div>
+                      <h4 className="text-base font-bold text-white">50% Início + 50% Entrega</h4>
+                      <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                        50% no momento da contratação para iniciar imediatamente o desenvolvimento e 50% restante após a entrega e aprovação final (via PIX).
+                      </p>
+                    </div>
+                    <div className="mt-auto pt-4">
+                      <div className="text-[11px] font-mono text-indigo-400 bg-indigo-950/40 px-2.5 py-1 rounded border border-indigo-500/20 text-center">
+                        Ideal para fluxo de caixa
+                      </div>
+                    </div>
                   </div>
-                  <h4 className="text-base font-bold text-white">50% Início + 50% Entrega</h4>
-                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                    50% no momento da contratação para iniciar imediatamente o desenvolvimento e 50% restante após a entrega e aprovação final (via PIX).
-                  </p>
-                </div>
-                <div className="mt-auto pt-4">
-                  <div className="text-[11px] font-mono text-indigo-400 bg-indigo-950/40 px-2.5 py-1 rounded border border-indigo-500/20 text-center">
-                    Ideal para fluxo de caixa
-                  </div>
-                </div>
+                </Interactive3DCard>
               </motion.div>
 
               {/* Regra 2: 20% de Desconto à Vista */}
@@ -385,41 +380,37 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                     ? { opacity: 1, scale: 1, y: 0 }
                     : { opacity: 1, scale: 1, y: 0 }
                 }
-                whileHover={
-                  prefersReduced
-                    ? undefined
-                    : {
-                        scale: 1.02,
-                        transition: { duration: 0.22, ease: [0.22, 1, 0.36, 1] },
-                      }
-                }
                 viewport={{ once: true, amount: 0.15 }}
                 transition={{
                   duration: prefersReduced ? 0 : 0.4,
                   delay: prefersReduced ? 0 : 0.1,
                   ease: [0.22, 1, 0.36, 1],
                 }}
-                className="featured-border glass-panel glass-card-interactive p-5 sm:p-6 rounded-2xl bg-gradient-to-b from-emerald-950/30 to-[#0b101c] border-emerald-500/30 flex flex-col justify-between h-full"
+                className="h-full"
               >
-                <div className="space-y-3">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-950/90 border border-emerald-500/40 flex items-center justify-center text-emerald-300">
-                    <Percent className="w-5 h-5" />
+                <Interactive3DCard maxTilt={5} className="h-full">
+                  <div className="relative rounded-2xl bg-[#0B101D] border border-emerald-500/40 hover:border-emerald-400/70 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors bg-gradient-to-b from-emerald-950/20 to-[#0B101D]">
+                    <div className="space-y-3">
+                      <div className="w-10 h-10 rounded-xl bg-emerald-950/90 border border-emerald-500/40 flex items-center justify-center text-emerald-300">
+                        <Percent className="w-5 h-5" />
+                      </div>
+                      <div className="flex items-center justify-between gap-1.5 flex-wrap">
+                        <h4 className="text-base font-bold text-white">20% de Desconto à Vista</h4>
+                        <span className="text-[10px] font-bold uppercase bg-emerald-500 text-black px-2 py-0.5 rounded whitespace-nowrap">
+                          Maior economia
+                        </span>
+                      </div>
+                      <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                        Pagamento integral à vista no momento do fechamento garante 20% de desconto direto sobre o valor total do projeto orçado.
+                      </p>
+                    </div>
+                    <div className="mt-auto pt-4">
+                      <div className="text-[11px] font-mono text-emerald-300 bg-emerald-950/40 px-2.5 py-1 rounded border border-emerald-500/20 text-center">
+                        Economize 1/5 do investimento
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between gap-1.5 flex-wrap">
-                    <h4 className="text-base font-bold text-white">20% de Desconto à Vista</h4>
-                    <span className="text-[10px] font-bold uppercase bg-emerald-500 text-black px-2 py-0.5 rounded whitespace-nowrap">
-                      Maior economia
-                    </span>
-                  </div>
-                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                    Pagamento integral à vista no momento do fechamento garante 20% de desconto direto sobre o valor total do projeto orçado.
-                  </p>
-                </div>
-                <div className="mt-auto pt-4">
-                  <div className="text-[11px] font-mono text-emerald-300 bg-emerald-950/40 px-2.5 py-1 rounded border border-emerald-500/20 text-center">
-                    Economize 1/5 do investimento
-                  </div>
-                </div>
+                </Interactive3DCard>
               </motion.div>
 
               {/* Regra 3: Cartão até 5x sem juros */}
@@ -434,36 +425,32 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                     ? { opacity: 1, scale: 1, y: 0 }
                     : { opacity: 1, scale: 1, y: 0 }
                 }
-                whileHover={
-                  prefersReduced
-                    ? undefined
-                    : {
-                        scale: 1.02,
-                        transition: { duration: 0.22, ease: [0.22, 1, 0.36, 1] },
-                      }
-                }
                 viewport={{ once: true, amount: 0.15 }}
                 transition={{
                   duration: prefersReduced ? 0 : 0.4,
                   delay: prefersReduced ? 0 : 0.16,
                   ease: [0.22, 1, 0.36, 1],
                 }}
-                className="glass-panel glass-card-interactive p-5 sm:p-6 rounded-2xl flex flex-col justify-between h-full"
+                className="h-full"
               >
-                <div className="space-y-3">
-                  <div className="w-10 h-10 rounded-xl bg-indigo-950/90 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
-                    <CreditCard className="w-5 h-5" />
+                <Interactive3DCard maxTilt={5} className="h-full">
+                  <div className="relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors">
+                    <div className="space-y-3">
+                      <div className="w-10 h-10 rounded-xl bg-indigo-950/90 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
+                        <CreditCard className="w-5 h-5" />
+                      </div>
+                      <h4 className="text-base font-bold text-white">Até 5x Sem Juros no Cartão</h4>
+                      <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                        Aceitamos cartão de crédito em até 5 vezes sem nenhum juro para você (sendo 1 entrada + 4 parcelas mensais fixas).
+                      </p>
+                    </div>
+                    <div className="mt-auto pt-4">
+                      <div className="text-[11px] font-mono text-indigo-400 bg-indigo-950/40 px-2.5 py-1 rounded border border-indigo-500/20 text-center">
+                        1 Entrada + 4 Parcelas Fixas
+                      </div>
+                    </div>
                   </div>
-                  <h4 className="text-base font-bold text-white">Até 5x Sem Juros no Cartão</h4>
-                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                    Aceitamos cartão de crédito em até 5 vezes sem nenhum juro para você (sendo 1 entrada + 4 parcelas mensais fixas).
-                  </p>
-                </div>
-                <div className="mt-auto pt-4">
-                  <div className="text-[11px] font-mono text-indigo-400 bg-indigo-950/40 px-2.5 py-1 rounded border border-indigo-500/20 text-center">
-                    1 Entrada + 4 Parcelas Fixas
-                  </div>
-                </div>
+                </Interactive3DCard>
               </motion.div>
 
               {/* Regra 4: Cartão de 6x a 12x */}
@@ -478,41 +465,38 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                     ? { opacity: 1, scale: 1, y: 0 }
                     : { opacity: 1, scale: 1, y: 0 }
                 }
-                whileHover={
-                  prefersReduced
-                    ? undefined
-                    : {
-                        scale: 1.02,
-                        transition: { duration: 0.22, ease: [0.22, 1, 0.36, 1] },
-                      }
-                }
                 viewport={{ once: true, amount: 0.15 }}
                 transition={{
                   duration: prefersReduced ? 0 : 0.4,
                   delay: prefersReduced ? 0 : 0.22,
                   ease: [0.22, 1, 0.36, 1],
                 }}
-                className="glass-panel glass-card-interactive p-5 sm:p-6 rounded-2xl flex flex-col justify-between h-full"
+                className="h-full"
               >
-                <div className="space-y-3">
-                  <div className="w-10 h-10 rounded-xl bg-indigo-950/90 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
-                    <Calendar className="w-5 h-5" />
+                <Interactive3DCard maxTilt={5} className="h-full">
+                  <div className="relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors">
+                    <div className="space-y-3">
+                      <div className="w-10 h-10 rounded-xl bg-indigo-950/90 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
+                        <Calendar className="w-5 h-5" />
+                      </div>
+                      <h4 className="text-base font-bold text-white">De 6x até 12x no Cartão</h4>
+                      <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                        Para parcelamentos mais longos, viabilizamos de 6x até 12x no cartão de crédito, com repasse das taxas de juros da operadora para o cliente.
+                      </p>
+                    </div>
+                    <div className="mt-auto pt-4">
+                      <div className="text-[11px] font-mono text-slate-400 bg-slate-900 px-2.5 py-1 rounded border border-white/[0.05] text-center">
+                        Parcelas mínimas mensais
+                      </div>
+                    </div>
                   </div>
-                  <h4 className="text-base font-bold text-white">De 6x até 12x no Cartão</h4>
-                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                    Para parcelamentos mais longos, viabilizamos de 6x até 12x no cartão de crédito, com repasse das taxas de juros da operadora para o cliente.
-                  </p>
-                </div>
-                <div className="mt-auto pt-4">
-                  <div className="text-[11px] font-mono text-slate-400 bg-slate-900 px-2.5 py-1 rounded border border-white/[0.05] text-center">
-                    Parcelas mínimas mensais
-                  </div>
-                </div>
+                </Interactive3DCard>
               </motion.div>
             </div>
 
             {/* SIMULADOR INTERATIVO DE CONDIÇÕES */}
-            <div className="mt-8 p-6 sm:p-8 rounded-2xl glass-panel shadow-2xl">
+            <Interactive3DCard maxTilt={3} className="mt-8 w-full">
+              <div className="relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/40 p-6 sm:p-8 shadow-2xl shadow-black/60 bracket-panel transition-colors">
               <div className="flex flex-col lg:flex-row items-center justify-between gap-6 pb-6 border-b border-white/[0.08]">
                 <div className="space-y-1 text-center lg:text-left">
                   <div className="inline-flex items-center gap-1.5 text-xs text-indigo-400 font-semibold uppercase">
@@ -643,7 +627,8 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                 </div>
               </div>
             </div>
-          </div>
+          </Interactive3DCard>
+        </div>
         </div>
 
         {/* Rodapé institucional com aviso de hospedagem e domínio */}

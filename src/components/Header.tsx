@@ -3,6 +3,8 @@ import { motion } from 'motion/react';
 import { EloLogo } from './EloLogo';
 import { WhatsAppIcon } from './WhatsAppIcon';
 import { ScreenId, SCREENS, SITE_CONFIG, whatsappUrl } from '../types';
+import { WebCraftAnimatedArt } from './WebCraftAnimatedArt';
+import { Interactive3DCard } from './Interactive3DCard';
 import {
   Menu,
   X,
@@ -200,15 +202,15 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Topbar do Modal */}
             <div className="flex items-center justify-between pb-5 border-b border-white/[0.08]">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-indigo-950/80 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
-                  <Compass className="w-5 h-5" />
+                <div className="w-10 h-10 rounded-xl bg-indigo-950/80 border border-indigo-500/30 flex items-center justify-center text-indigo-300 shrink-0 aspect-square">
+                  <Compass className="w-5 h-5 shrink-0" />
                 </div>
                 <div>
                   <h2 className="text-lg sm:text-xl font-bold font-display text-white">
                     Menu de Navegação
                   </h2>
                   <p className="text-xs text-slate-400">
-                    Selecione estrategicamente a tela que deseja visualizar
+                    Selecione a tela que deseja visualizar
                   </p>
                 </div>
               </div>
@@ -235,83 +237,92 @@ export const Header: React.FC<HeaderProps> = ({
                 const Icon = getScreenIcon(screen.iconName);
 
                 return (
-                  <button
-                    key={screen.id}
-                    type="button"
-                    onClick={() => {
-                      onSelectScreen(screen.id);
-                      setIsMenuOpen(false);
-                    }}
-                    className={`text-left p-4 sm:p-5 rounded-2xl border transition-all duration-300 group flex flex-col justify-between min-h-[148px] relative hover:-translate-y-1 ${
-                      isActive
-                        ? 'bg-gradient-to-b from-indigo-950/90 to-slate-950 border-indigo-400/80 shadow-[0_0_24px_rgba(99,102,241,0.35)] ring-1 ring-indigo-400/70'
-                        : 'bg-slate-950/70 border-white/[0.08] hover:border-indigo-400/50 hover:bg-slate-900/90 hover:shadow-[0_0_20px_rgba(99,102,241,0.2)]'
-                    }`}
-                  >
-                    {isActive && (
-                      <motion.div
-                        layoutId="modal-active-card-glow"
-                        className="absolute inset-0 rounded-2xl border-2 border-indigo-400/90 shadow-[0_0_24px_rgba(99,102,241,0.45)] pointer-events-none z-10"
-                        transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                      />
-                    )}
-                    {/* Topo do card */}
-                    <div className="flex items-center justify-between w-full">
-                      <div className="flex items-center gap-2">
-                        <span
-                          className={`text-xs font-mono font-bold px-2 py-0.5 rounded ${
+                  <Interactive3DCard key={screen.id} maxTilt={5} className="h-full">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        onSelectScreen(screen.id);
+                        setIsMenuOpen(false);
+                      }}
+                      className={`text-left p-4 sm:p-5 rounded-2xl border transition-all duration-300 group flex flex-col justify-between min-h-[148px] h-full w-full relative ${
+                        isActive
+                          ? 'bg-gradient-to-b from-indigo-950/90 to-slate-950 border-indigo-400/80 shadow-[0_0_24px_rgba(99,102,241,0.35)] ring-1 ring-indigo-400/70'
+                          : 'bg-slate-950/70 border-white/[0.08] hover:border-indigo-400/50 hover:bg-slate-900/90 hover:shadow-[0_0_20px_rgba(99,102,241,0.2)]'
+                      }`}
+                    >
+                      {isActive && (
+                        <motion.div
+                          layoutId="modal-active-card-glow"
+                          className="absolute inset-0 rounded-2xl border-2 border-indigo-400/90 shadow-[0_0_24px_rgba(99,102,241,0.45)] pointer-events-none z-10"
+                          transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                        />
+                      )}
+                      {/* Topo do card */}
+                      <div className="flex items-center justify-between w-full">
+                        <div className="flex items-center gap-2">
+                          <span
+                            className={`text-xs font-mono font-bold px-2 py-0.5 rounded ${
+                              isActive
+                                ? 'bg-indigo-600 text-white'
+                                : 'bg-slate-900 text-slate-400 group-hover:text-indigo-300 border border-white/[0.05]'
+                            }`}
+                          >
+                            {screen.number}
+                          </span>
+                          <span className="text-[10px] uppercase font-mono text-slate-400">
+                            {screen.badge}
+                          </span>
+                        </div>
+
+                        <Icon
+                          className={`w-4.5 h-4.5 ${
                             isActive
-                              ? 'bg-indigo-600 text-white'
-                              : 'bg-slate-900 text-slate-400 group-hover:text-indigo-300 border border-white/[0.05]'
+                              ? 'text-indigo-300'
+                              : 'text-slate-500 group-hover:text-indigo-400 transition-colors'
+                          }`}
+                        />
+                      </div>
+
+                      {/* Título e Descrição */}
+                      <div className="mt-3 space-y-1">
+                        <h3
+                          className={`text-sm sm:text-base font-bold font-display ${
+                            isActive
+                              ? 'text-white'
+                              : 'text-slate-200 group-hover:text-white transition-colors'
                           }`}
                         >
-                          {screen.number}
-                        </span>
-                        <span className="text-[10px] uppercase font-mono text-slate-400">
-                          {screen.badge}
-                        </span>
+                          {screen.shortTitle}
+                        </h3>
+                        <p className="text-xs text-slate-400 leading-relaxed line-clamp-none lg:line-clamp-2">
+                          {screen.description}
+                        </p>
                       </div>
 
-                      <Icon
-                        className={`w-4.5 h-4.5 ${
-                          isActive
-                            ? 'text-indigo-300'
-                            : 'text-slate-500 group-hover:text-indigo-400 transition-colors'
-                        }`}
-                      />
-                    </div>
-
-                    {/* Título e Descrição */}
-                    <div className="mt-3 space-y-1">
-                      <h3
-                        className={`text-sm sm:text-base font-bold font-display ${
-                          isActive
-                            ? 'text-white'
-                            : 'text-slate-200 group-hover:text-white transition-colors'
-                        }`}
-                      >
-                        {screen.shortTitle}
-                      </h3>
-                      <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed">
-                        {screen.description}
-                      </p>
-                    </div>
-
-                    {/* Status de ativo */}
-                    {isActive ? (
-                      <div className="mt-3 flex items-center gap-1.5 text-[11px] font-semibold text-emerald-400">
-                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                        <span>Em exibição agora</span>
-                      </div>
-                    ) : (
-                      <div className="mt-3 flex items-center gap-1 text-[11px] text-slate-500 group-hover:text-indigo-300 transition-colors">
-                        <span>Acessar tela</span>
-                        <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-                      </div>
-                    )}
-                  </button>
+                      {/* Status de ativo */}
+                      {isActive ? (
+                        <div className="mt-3 flex items-center gap-1.5 text-[11px] font-semibold text-emerald-400">
+                          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                          <span>Em exibição agora</span>
+                        </div>
+                      ) : (
+                        <div className="mt-3 flex items-center gap-1 text-[11px] text-slate-500 group-hover:text-indigo-300 transition-colors">
+                          <span>Acessar tela</span>
+                          <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                        </div>
+                      )}
+                    </button>
+                  </Interactive3DCard>
                 );
               })}
+
+              {/* Slot 08: Arte Animada Centralizada de Criação de Sites (ēloSites Craft) */}
+              <Interactive3DCard maxTilt={5} className="h-full">
+                <WebCraftAnimatedArt
+                  compact={true}
+                  onActionClick={() => setIsMenuOpen(false)}
+                />
+              </Interactive3DCard>
             </div>
 
             {/* Rodapé do Modal com navegação sequencial rápida */}
