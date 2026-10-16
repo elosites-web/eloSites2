@@ -145,13 +145,13 @@ export const Hero: React.FC<HeroProps> = ({
                 }}
                 className="relative flex flex-col items-center justify-center pointer-events-auto"
               >
-                {/* Brilho decorativo suave em degradê azul-esverdeado */}
-                <div className="absolute -inset-10 sm:-inset-16 bg-gradient-to-r from-teal-500/20 via-cyan-500/25 to-indigo-500/20 blur-3xl rounded-full pointer-events-none" />
+                {/* Brilho decorativo suave e discreto */}
+                <div className="absolute -inset-4 sm:-inset-6 bg-gradient-to-r from-teal-500/10 via-cyan-500/15 to-indigo-500/10 blur-xl rounded-full pointer-events-none" />
 
                 <img
                   src="/logo-elosites-final.png"
                   alt="ēloSites"
-                  className="h-20 sm:h-28 md:h-36 lg:h-40 w-auto object-contain drop-shadow-[0_0_45px_rgba(34,211,238,0.45)] relative z-10"
+                  className="h-9 sm:h-11 md:h-13 lg:h-15 max-w-[65vw] sm:max-w-[280px] md:max-w-[320px] w-auto object-contain drop-shadow-[0_0_18px_rgba(34,211,238,0.28)] relative z-10"
                 />
               </motion.div>
             )}
@@ -214,51 +214,33 @@ export const Hero: React.FC<HeroProps> = ({
                 </span>
               </div>
 
-              {marquee ? (
-                <div className="relative overflow-hidden w-full py-1 [mask-image:linear-gradient(to_right,transparent,#000_5%,#000_95%,transparent)] [-webkit-mask-image:linear-gradient(to_right,transparent,#000_5%,#000_95%,transparent)]">
-                  <div className="audience-marquee">
-                    {[0, 1].map((group) => (
-                      <div
-                        key={group}
-                        className="flex gap-2.5 pr-2.5 shrink-0"
-                        aria-hidden={group === 1}
-                      >
-                        {targetAudiences.map((item) => (
-                          <span
-                            key={item.name}
-                            className="audience-pill group/pill"
-                          >
-                            <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${item.dot}`} aria-hidden="true" />
-                            <span className="text-xs sm:text-[13px] font-semibold text-slate-100 group-hover/pill:text-white transition-colors tracking-tight whitespace-nowrap">
-                              {item.name}
-                            </span>
-                            <span className="text-[10px] font-mono font-medium px-1.5 py-0.5 rounded-full bg-white/[0.07] border border-white/[0.1] text-indigo-300 group-hover/pill:text-indigo-200 group-hover/pill:border-indigo-400/40 transition-colors uppercase tracking-wider">
-                              {item.tag}
-                            </span>
-                          </span>
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ) : (
-                <div className="flex flex-wrap justify-center lg:justify-start gap-2.5">
-                  {targetAudiences.map((item) => (
-                    <span
-                      key={item.name}
-                      className="audience-pill"
+              {/* Marquee Contínuo de Nichos — Rotação 85s linear infinite da direita para a esquerda */}
+              <div className="relative overflow-hidden w-full py-1 [mask-image:linear-gradient(to_right,transparent,#000_5%,#000_95%,transparent)] [-webkit-mask-image:linear-gradient(to_right,transparent,#000_5%,#000_95%,transparent)]">
+                <div className="niche-marquee">
+                  {[0, 1].map((group) => (
+                    <div
+                      key={group}
+                      className="flex gap-2.5 pr-2.5 shrink-0 flex-nowrap"
+                      aria-hidden={group === 1}
                     >
-                      <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${item.dot}`} aria-hidden="true" />
-                      <span className="text-xs sm:text-[13px] font-semibold text-slate-100 tracking-tight">
-                        {item.name}
-                      </span>
-                      <span className="text-[10px] font-mono font-medium px-1.5 py-0.5 rounded-full bg-white/[0.07] border border-white/[0.1] text-indigo-300 uppercase tracking-wider">
-                        {item.tag}
-                      </span>
-                    </span>
+                      {targetAudiences.map((item) => (
+                        <span
+                          key={`${group}-${item.name}`}
+                          className="audience-pill group/pill shrink-0"
+                        >
+                          <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${item.dot}`} aria-hidden="true" />
+                          <span className="text-xs sm:text-[13px] font-semibold text-slate-100 group-hover/pill:text-white transition-colors tracking-tight whitespace-nowrap">
+                            {item.name}
+                          </span>
+                          <span className="text-[10px] font-mono font-medium px-1.5 py-0.5 rounded-full bg-white/[0.07] border border-white/[0.1] text-indigo-300 group-hover/pill:text-indigo-200 group-hover/pill:border-indigo-400/40 transition-colors uppercase tracking-wider whitespace-nowrap">
+                            {item.tag}
+                          </span>
+                        </span>
+                      ))}
+                    </div>
                   ))}
                 </div>
-              )}
+              </div>
             </motion.div>
 
             {/* Ações / CTAs */}

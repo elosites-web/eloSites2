@@ -517,8 +517,13 @@ export default function App() {
         />
       )}
 
-      {/* Botão Flutuante Oficial do WhatsApp */}
-      {!isMenuOpen && <FloatingWhatsApp onBubbleStateChange={setIsWhatsAppBubbleOpen} />}
+      {/* Botão Flutuante Oficial do WhatsApp — Oculto na tela Home e com menu aberto */}
+      {!isMenuOpen && currentScreen !== 'home' && (
+        <FloatingWhatsApp
+          currentScreen={currentScreen}
+          onBubbleStateChange={setIsWhatsAppBubbleOpen}
+        />
+      )}
 
       {/* Modais Legais (Política de Privacidade e Termos de Uso) */}
       <LegalModals

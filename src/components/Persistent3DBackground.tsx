@@ -82,8 +82,8 @@ export const Persistent3DBackground: React.FC<Persistent3DBackgroundProps> = ({ 
 
     const useIdle = typeof window.requestIdleCallback === 'function';
     const handle = useIdle
-      ? window.requestIdleCallback(start, { timeout: 1500 })
-      : window.setTimeout(start, 400);
+      ? window.requestIdleCallback(start, { timeout: 300 })
+      : window.setTimeout(start, 50);
 
     return () => {
       cancelled = true;

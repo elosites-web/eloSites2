@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { WhatsAppIcon } from './WhatsAppIcon';
-import { SITE_CONFIG, whatsappUrl } from '../types';
+import { SITE_CONFIG, whatsappUrl, ScreenId } from '../types';
 import { shouldReduceMedia } from '../mediaPrefs';
 import { X, ArrowRight } from 'lucide-react';
 
@@ -72,9 +72,11 @@ export const SkeletonFloatingWhatsApp: React.FC<{ className?: string }> = ({ cla
 
 interface FloatingWhatsAppProps {
   onBubbleStateChange?: (isVisible: boolean) => void;
+  currentScreen?: ScreenId;
 }
 
-export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ onBubbleStateChange }) => {
+export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ onBubbleStateChange, currentScreen }) => {
+  const isHomeScreen = currentScreen === 'home';
   const [isButtonVisible, setIsButtonVisible] = useState(false);
   const [isSkeletonLoading, setIsSkeletonLoading] = useState(false);
   const [isPulsing, setIsPulsing] = useState(false);
@@ -280,6 +282,10 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ onBubbleStat
   }, [clearAllTimers]);
 
   const floatingWhatsappUrl = whatsappUrl(SITE_CONFIG.floatingWhatsappMessage);
+
+  if (isHomeScreen) {
+    return null;
+  }
 
   return (
     <aside

@@ -776,6 +776,29 @@ a[id*="whatsapp"]:hover > svg {
   }
 }
 
+/* Tipografia responsiva dos itens do Menu de Navegação:
+   - Mobile: clamp(14px, 4vw, 16px) com line-height: 1.25 para legibilidade nítida
+   - Tablet (sm >= 640px): 15px
+   - Desktop (md >= 768px): 18px (redução de 50% preservada para telas maiores) */
+.nav-menu-link-text {
+  font-size: clamp(14px, 4vw, 16px);
+  line-height: 1.25;
+}
+
+@media (min-width: 640px) {
+  .nav-menu-link-text {
+    font-size: 15px;
+    line-height: 1.4;
+  }
+}
+
+@media (min-width: 768px) {
+  .nav-menu-link-text {
+    font-size: 18px;
+    line-height: 1.5;
+  }
+}
+
 /* ===== P3: interações de cartões e botões ===== */
 
 /* Feedback de pressão (usado por Faq, ProjectBriefBooking, ContactCta).
@@ -883,18 +906,56 @@ a[id*="whatsapp"]:hover > svg {
   }
 }
 
-/* Faixa de segmentos com deslocamento contínuo (marquee) suave e constante - exatamente 90s */
+/* Faixa de nichos com deslocamento contínuo horizontal da direita para a esquerda - exatamente 85s linear infinite */
+@keyframes niche-marquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+    -webkit-transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@-webkit-keyframes niche-marquee {
+  0% {
+    -webkit-transform: translate3d(0, 0, 0);
+  }
+  100% {
+    -webkit-transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.niche-marquee {
+  display: flex;
+  width: max-content;
+  flex-wrap: nowrap;
+  will-change: transform;
+  contain: content;
+  animation-name: niche-marquee;
+  animation-duration: 85s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  -webkit-animation-name: niche-marquee;
+  -webkit-animation-duration: 85s;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+}
+
+/* Suporte de compatibilidade para a classe audience-marquee */
 .audience-marquee {
   display: flex;
   width: max-content;
+  flex-wrap: nowrap;
   will-change: transform;
   contain: content;
-  animation-name: audience-scroll;
-  animation-duration: 90s;
+  animation-name: niche-marquee;
+  animation-duration: 85s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
-  -webkit-animation-name: audience-scroll;
-  -webkit-animation-duration: 90s;
+  -webkit-animation-name: niche-marquee;
+  -webkit-animation-duration: 85s;
   -webkit-animation-timing-function: linear;
   -webkit-animation-iteration-count: infinite;
 }
@@ -914,6 +975,7 @@ a[id*="whatsapp"]:hover > svg {
   -webkit-backdrop-filter: blur(10px);
   transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
+  flex-shrink: 0;
   contain: content;
 }
 
@@ -926,40 +988,14 @@ a[id*="whatsapp"]:hover > svg {
               inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
-.audience-marquee:hover,
-.audience-marquee:focus-within,
-.audience-marquee.is-paused,
-html.motion-hidden .audience-marquee {
-  animation-play-state: paused;
-  -webkit-animation-play-state: paused;
-}
-
-@keyframes audience-scroll {
-  from {
-    transform: translate3d(0, 0, 0);
-    -webkit-transform: translate3d(0, 0, 0);
-  }
-  to {
-    transform: translate3d(-50%, 0, 0);
-    -webkit-transform: translate3d(-50%, 0, 0);
-  }
-}
-
-@-webkit-keyframes audience-scroll {
-  from {
-    -webkit-transform: translate3d(0, 0, 0);
-  }
-  to {
-    -webkit-transform: translate3d(-50%, 0, 0);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
+  .niche-marquee,
   .audience-marquee {
     animation: none !important;
     -webkit-animation: none !important;
     transform: none !important;
     -webkit-transform: none !important;
+    overflow-x: auto;
   }
 }
 

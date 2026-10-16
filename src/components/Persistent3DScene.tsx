@@ -574,12 +574,13 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted,
     pulseGeo.setAttribute('position', new THREE.BufferAttribute(pulsePositions, 3));
 
     const pulseMat = new THREE.PointsMaterial({
-      size: inApp ? 0.8 : 1.1,
+      size: inApp ? 0.65 : isMobile ? 0.75 : 0.9,
       map: pulseTexture,
       transparent: true,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
       color: 0x38bdf8,
+      opacity: inApp ? 0.7 : 0.85,
     });
 
     const pulseMesh = new THREE.Points(pulseGeo, pulseMat);
@@ -588,25 +589,25 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted,
     // =========================================================================
     // 4. CHUVA DIGITAL LEVE NO HORIZONTE (MATRIX/CYBER STREAM EM BAIXA DENSIDADE)
     // =========================================================================
-    const STREAM_COUNT = inApp ? 20 : isMobile ? 32 : 55;
+    const STREAM_COUNT = inApp ? 16 : isMobile ? 24 : 38;
     const streamGeo = new THREE.BufferGeometry();
     const streamPositions = new Float32Array(STREAM_COUNT * 3);
     const streamVelocities: number[] = [];
 
     for (let i = 0; i < STREAM_COUNT; i++) {
-      streamPositions[i * 3] = (Math.random() - 0.5) * 24;
+      streamPositions[i * 3] = (Math.random() - 0.5) * 22;
       streamPositions[i * 3 + 1] = -4 + Math.random() * 12;
       streamPositions[i * 3 + 2] = -12 - Math.random() * 14;
-      streamVelocities.push(0.02 + Math.random() * 0.04);
+      streamVelocities.push(0.016 + Math.random() * 0.028);
     }
 
     streamGeo.setAttribute('position', new THREE.BufferAttribute(streamPositions, 3));
 
     const streamMat = new THREE.PointsMaterial({
-      size: 0.35,
+      size: 0.26,
       map: pulseTexture,
       transparent: true,
-      opacity: inApp ? 0.25 : 0.35,
+      opacity: inApp ? 0.2 : 0.28,
       blending: THREE.AdditiveBlending,
       color: 0x06b6d4,
       depthWrite: false,
@@ -735,6 +736,7 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted,
       frameCounter++;
 
       const delta = Math.min(clock.getDelta(), 0.05);
+      const elapsedTime = clock.getElapsedTime();
 
       // =======================================================================
       // MONITOR DE PERFORMANCE EM TEMPO REAL (FPS MONITOR)
@@ -787,10 +789,15 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted,
       currentPointerX += (targetPointerX - currentPointerX) * 0.05;
       currentPointerY += (targetPointerY - currentPointerY) * 0.05;
 
-      // Movimentação elegante e sutil da câmera com paralaxe
-      camera.position.x = currentPointerX * 0.45;
-      camera.position.y = 1.2 + currentPointerY * 0.35 - currentScroll * 1.5;
+      // Movimentação elegante e sutil da câmera com paralaxe e movimento autônomo contínuo
+      const autoCamX = Math.sin(elapsedTime * 0.22) * 0.16;
+      const autoCamY = Math.cos(elapsedTime * 0.18) * 0.1;
+      camera.position.x = currentPointerX * 0.45 + autoCamX;
+      camera.position.y = 1.2 + currentPointerY * 0.35 - currentScroll * 1.5 + autoCamY;
       camera.lookAt(0, -0.4 - currentScroll * 0.8, -8);
+
+      // Deslocamento contínuo da grade de perspectiva infinita no solo (gliding perspective)
+      groundGridMesh.position.z = (elapsedTime * 0.8) % gridSpacing;
 
       // Inclinação holográfica 3D interativa da grade e circuitos na direção do cursor/toque
       gridInteractiveGroup.rotation.z = -currentPointerX * 0.045;
@@ -800,7 +807,6 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted,
       // =======================================================================
       // ILUMINAÇÃO GLOBAL E RESPOSTA EMISSIVA HOLOGRÁFICA CIANO-VIOLETA
       // =======================================================================
-      const elapsedTime = clock.getElapsedTime();
       const breathCyan = 0.35 + Math.sin(elapsedTime * 1.5) * 0.08;
       const breathViolet = 0.38 + Math.cos(elapsedTime * 1.3) * 0.08;
 
