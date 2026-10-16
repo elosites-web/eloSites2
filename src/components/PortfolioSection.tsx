@@ -426,7 +426,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
   return (
     <section
       id="portfolio"
-      className="pt-24 pb-12 sm:pt-28 sm:pb-14 lg:pt-32 lg:pb-16 bg-[#090D16]/30 backdrop-blur-[0.5px] relative"
+      className="section-auto-contain pt-24 pb-12 sm:pt-28 sm:pb-14 lg:pt-32 lg:pb-16 bg-[#090D16]/30 backdrop-blur-[0.5px] relative"
     >
       {/* Luz ambiente de fundo */}
       <div className="absolute top-1/4 left-0 w-96 h-96 bg-indigo-500/[0.08] blur-[140px] rounded-full pointer-events-none" />

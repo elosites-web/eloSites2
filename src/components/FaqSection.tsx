@@ -91,7 +91,7 @@ export const FaqSection: React.FC = () => {
   return (
     <section
       id="faq"
-      className="pt-24 pb-10 sm:pt-28 sm:pb-12 lg:pt-32 lg:pb-14 bg-[#0B0F19]/30 backdrop-blur-[0.5px] relative border-t border-white/[0.05] overflow-x-clip"
+      className="section-auto-contain pt-24 pb-10 sm:pt-28 sm:pb-12 lg:pt-32 lg:pb-14 bg-[#0B0F19]/30 backdrop-blur-[0.5px] relative border-t border-white/[0.05] overflow-x-clip"
     >
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-indigo-400/20 to-transparent pointer-events-none" />
       <div className="page-shell page-x">

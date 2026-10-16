@@ -156,10 +156,39 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
   const installment5x = (simulatedValue / 5).toFixed(2);
   const installment12xEst = ((simulatedValue * 1.15) / 12).toFixed(2);
 
+  // Variantes para efeito staggered fade-in com Framer Motion (Serviços)
+  const serviceContainerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: prefersReduced ? 0 : 0.12,
+        delayChildren: prefersReduced ? 0 : 0.04,
+      },
+    },
+  };
+
+  const serviceCardVariants = {
+    hidden: {
+      opacity: 0,
+      scale: prefersReduced ? 1 : 0.96,
+      y: prefersReduced ? 0 : 22,
+    },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      transition: {
+        duration: prefersReduced ? 0 : 0.45,
+        ease: [0.22, 1, 0.36, 1],
+      },
+    },
+  };
+
   return (
     <section
       id="servicos"
-      className="pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32 lg:pb-20 bg-[#090D16]/30 backdrop-blur-[0.5px] relative"
+      className="section-auto-contain pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32 lg:pb-20 bg-[#090D16]/30 backdrop-blur-[0.5px] relative"
     >
       {/* Luz ambiente de fundo */}
       <div className="absolute top-1/3 left-0 w-80 h-80 bg-indigo-500/[0.07] blur-[130px] rounded-full pointer-events-none" />
@@ -183,36 +212,27 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
             </p>
           </div>
 
-          {/* Grid dos 3 Serviços com reveal ao rolar — Subgrid no desktop para alinhamento uniforme das linhas e seções */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-7 lg:gap-8 min-w-0 items-stretch lg:grid-rows-[repeat(5,auto)]">
-            {SERVICES.map((service, index) => {
+          {/* Grid dos 3 Serviços com staggered fade-in ao rolar — Subgrid no desktop para alinhamento uniforme das linhas e seções */}
+          <motion.div
+            variants={serviceContainerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.12 }}
+            className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-7 lg:gap-8 min-w-0 items-stretch lg:grid-rows-[repeat(5,auto)]"
+          >
+            {SERVICES.map((service) => {
               const Icon = service.icon;
               const ctaUrl = whatsappUrl(service.ctaMessage);
 
               return (
                 <motion.div
                   key={service.id}
-                  initial={
-                    prefersReduced
-                      ? { opacity: 1, scale: 1, y: 0 }
-                      : { opacity: 0, scale: 0.96, y: 22 }
-                  }
-                  whileInView={
-                    prefersReduced
-                      ? { opacity: 1, scale: 1, y: 0 }
-                      : { opacity: 1, scale: 1, y: 0 }
-                  }
-                  viewport={{ once: true, amount: 0.15 }}
-                  transition={{
-                    duration: prefersReduced ? 0 : 0.45,
-                    delay: prefersReduced ? 0 : index * 0.12,
-                    ease: [0.22, 1, 0.36, 1],
-                  }}
+                  variants={serviceCardVariants}
                   className="h-full w-full lg:row-span-5 lg:grid lg:grid-rows-subgrid"
                 >
                   <Interactive3DCard maxTilt={5} className="h-full w-full lg:row-span-5 lg:grid lg:grid-rows-subgrid">
                     <article
-                      className="glass-card-interactive surface-card relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 md:p-8 flex flex-col space-y-5 lg:space-y-0 lg:row-span-5 lg:grid lg:grid-rows-subgrid shadow-2xl shadow-black/60 bracket-panel transition-colors h-full w-full"
+                      className="glass-card-interactive surface-card accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 md:p-8 flex flex-col space-y-5 lg:space-y-0 lg:row-span-5 lg:grid lg:grid-rows-subgrid shadow-2xl shadow-black/60 bracket-panel transition-colors h-full w-full"
                     >
                       {/* Linha 1: Topo do card + Título + Descrição */}
                       <div className="space-y-4 lg:pb-4">
@@ -308,7 +328,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                 </motion.div>
               );
             })}
-          </div>
+          </motion.div>
 
           {/* SEÇÃO DESTACADA: CONDIÇÕES DE PAGAMENTO ATUALIZADAS */}
           <div className="mt-14 sm:mt-20">
@@ -326,30 +346,38 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
               </p>
             </div>
 
-            {/* 4 Blocos de Regras Comerciais com reveal ao rolar */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+            {/* 4 Blocos de Regras Comerciais com staggered fade-in ao rolar */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.12 }}
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: {
+                    staggerChildren: prefersReduced ? 0 : 0.08,
+                    delayChildren: prefersReduced ? 0 : 0.04,
+                  },
+                },
+              }}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5"
+            >
               {/* Regra 1: 50% Entrada + 50% Final */}
               <motion.div
-                initial={
-                  prefersReduced
-                    ? { opacity: 1, scale: 1, y: 0 }
-                    : { opacity: 0, scale: 0.96, y: 16 }
-                }
-                whileInView={
-                  prefersReduced
-                    ? { opacity: 1, scale: 1, y: 0 }
-                    : { opacity: 1, scale: 1, y: 0 }
-                }
-                viewport={{ once: true, amount: 0.15 }}
-                transition={{
-                  duration: prefersReduced ? 0 : 0.4,
-                  delay: prefersReduced ? 0 : 0.04,
-                  ease: [0.22, 1, 0.36, 1],
+                variants={{
+                  hidden: { opacity: 0, scale: prefersReduced ? 1 : 0.96, y: prefersReduced ? 0 : 16 },
+                  visible: {
+                    opacity: 1,
+                    scale: 1,
+                    y: 0,
+                    transition: { duration: prefersReduced ? 0 : 0.4, ease: [0.22, 1, 0.36, 1] },
+                  },
                 }}
                 className="h-full"
               >
                 <Interactive3DCard maxTilt={5} className="h-full">
-                  <div className="glass-card-interactive surface-card relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors">
+                  <div className="glass-card-interactive surface-card accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors">
                     <div className="space-y-3">
                       <div className="w-10 h-10 rounded-xl bg-indigo-950/90 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
                         <Split className="w-5 h-5" />
@@ -370,26 +398,19 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
 
               {/* Regra 2: 20% de Desconto à Vista */}
               <motion.div
-                initial={
-                  prefersReduced
-                    ? { opacity: 1, scale: 1, y: 0 }
-                    : { opacity: 0, scale: 0.96, y: 16 }
-                }
-                whileInView={
-                  prefersReduced
-                    ? { opacity: 1, scale: 1, y: 0 }
-                    : { opacity: 1, scale: 1, y: 0 }
-                }
-                viewport={{ once: true, amount: 0.15 }}
-                transition={{
-                  duration: prefersReduced ? 0 : 0.4,
-                  delay: prefersReduced ? 0 : 0.1,
-                  ease: [0.22, 1, 0.36, 1],
+                variants={{
+                  hidden: { opacity: 0, scale: prefersReduced ? 1 : 0.96, y: prefersReduced ? 0 : 16 },
+                  visible: {
+                    opacity: 1,
+                    scale: 1,
+                    y: 0,
+                    transition: { duration: prefersReduced ? 0 : 0.4, ease: [0.22, 1, 0.36, 1] },
+                  },
                 }}
                 className="h-full"
               >
                 <Interactive3DCard maxTilt={5} className="h-full">
-                  <div className="glass-card-interactive surface-card relative rounded-2xl bg-[#0B101D] border border-emerald-500/40 hover:border-emerald-400/70 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors bg-gradient-to-b from-emerald-950/20 to-[#0B101D]">
+                  <div className="glass-card-interactive surface-card accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-emerald-500/40 hover:border-emerald-400/70 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors bg-gradient-to-b from-emerald-950/20 to-[#0B101D]">
                     <div className="space-y-3">
                       <div className="w-10 h-10 rounded-xl bg-emerald-950/90 border border-emerald-500/40 flex items-center justify-center text-emerald-300">
                         <Percent className="w-5 h-5" />
@@ -415,26 +436,19 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
 
               {/* Regra 3: Cartão até 5x sem juros */}
               <motion.div
-                initial={
-                  prefersReduced
-                    ? { opacity: 1, scale: 1, y: 0 }
-                    : { opacity: 0, scale: 0.96, y: 16 }
-                }
-                whileInView={
-                  prefersReduced
-                    ? { opacity: 1, scale: 1, y: 0 }
-                    : { opacity: 1, scale: 1, y: 0 }
-                }
-                viewport={{ once: true, amount: 0.15 }}
-                transition={{
-                  duration: prefersReduced ? 0 : 0.4,
-                  delay: prefersReduced ? 0 : 0.16,
-                  ease: [0.22, 1, 0.36, 1],
+                variants={{
+                  hidden: { opacity: 0, scale: prefersReduced ? 1 : 0.96, y: prefersReduced ? 0 : 16 },
+                  visible: {
+                    opacity: 1,
+                    scale: 1,
+                    y: 0,
+                    transition: { duration: prefersReduced ? 0 : 0.4, ease: [0.22, 1, 0.36, 1] },
+                  },
                 }}
                 className="h-full"
               >
                 <Interactive3DCard maxTilt={5} className="h-full">
-                  <div className="glass-card-interactive surface-card relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors">
+                  <div className="glass-card-interactive surface-card accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors">
                     <div className="space-y-3">
                       <div className="w-10 h-10 rounded-xl bg-indigo-950/90 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
                         <CreditCard className="w-5 h-5" />
@@ -455,26 +469,19 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
 
               {/* Regra 4: Cartão de 6x a 12x */}
               <motion.div
-                initial={
-                  prefersReduced
-                    ? { opacity: 1, scale: 1, y: 0 }
-                    : { opacity: 0, scale: 0.96, y: 16 }
-                }
-                whileInView={
-                  prefersReduced
-                    ? { opacity: 1, scale: 1, y: 0 }
-                    : { opacity: 1, scale: 1, y: 0 }
-                }
-                viewport={{ once: true, amount: 0.15 }}
-                transition={{
-                  duration: prefersReduced ? 0 : 0.4,
-                  delay: prefersReduced ? 0 : 0.22,
-                  ease: [0.22, 1, 0.36, 1],
+                variants={{
+                  hidden: { opacity: 0, scale: prefersReduced ? 1 : 0.96, y: prefersReduced ? 0 : 16 },
+                  visible: {
+                    opacity: 1,
+                    scale: 1,
+                    y: 0,
+                    transition: { duration: prefersReduced ? 0 : 0.4, ease: [0.22, 1, 0.36, 1] },
+                  },
                 }}
                 className="h-full"
               >
                 <Interactive3DCard maxTilt={5} className="h-full">
-                  <div className="glass-card-interactive surface-card relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors">
+                  <div className="glass-card-interactive surface-card accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors">
                     <div className="space-y-3">
                       <div className="w-10 h-10 rounded-xl bg-indigo-950/90 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
                         <Calendar className="w-5 h-5" />
@@ -492,7 +499,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                   </div>
                 </Interactive3DCard>
               </motion.div>
-            </div>
+            </motion.div>
 
             {/* SIMULADOR INTERATIVO DE CONDIÇÕES */}
             <Interactive3DCard maxTilt={3} className="mt-8 w-full">

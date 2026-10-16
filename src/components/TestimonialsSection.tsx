@@ -179,19 +179,56 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
     [emblaApi]
   );
 
-  // Alternar play/pause do autoplay
+  const isFocusPausedRef = useRef(false);
+  const isManuallyPausedRef = useRef(false);
+
+  // Alternar play/pause manual do autoplay
   const toggleAutoplay = useCallback(() => {
     const autoplay = emblaApi?.plugins()?.autoplay;
     if (!autoplay) return;
 
     if (autoplay.isPlaying()) {
       autoplay.stop();
+      isManuallyPausedRef.current = true;
+      isFocusPausedRef.current = false;
       setIsPlaying(false);
     } else {
       autoplay.play();
+      isManuallyPausedRef.current = false;
+      isFocusPausedRef.current = false;
       setIsPlaying(true);
     }
   }, [emblaApi]);
+
+  // Pausa automática da rotação quando o usuário navega com a tecla Tab para dentro do carrossel
+  const handleFocusCapture = useCallback(() => {
+    const autoplay = emblaApi?.plugins()?.autoplay;
+    if (!autoplay || isManuallyPausedRef.current) return;
+
+    if (autoplay.isPlaying()) {
+      autoplay.stop();
+      isFocusPausedRef.current = true;
+      setIsPlaying(false);
+    }
+  }, [emblaApi]);
+
+  // Retomada automática da rotação quando o foco sai completamente do carrossel
+  const handleBlurCapture = useCallback(
+    (e: React.FocusEvent) => {
+      const nextTarget = e.relatedTarget as Node | null;
+      const isStillInside = carouselContainerRef.current?.contains(nextTarget);
+
+      if (!isStillInside && isFocusPausedRef.current && !isManuallyPausedRef.current) {
+        const autoplay = emblaApi?.plugins()?.autoplay;
+        if (autoplay && !autoplay.isPlaying()) {
+          autoplay.play();
+          isFocusPausedRef.current = false;
+          setIsPlaying(true);
+        }
+      }
+    },
+    [emblaApi]
+  );
 
   // Suporte a teclado acessível (setas direcionais esquerda e direita)
   const handleKeyDown = useCallback(
@@ -229,7 +266,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
     <section
       id="testemunhos"
       aria-label="Avaliações de Clientes e Prova Social"
-      className="pt-12 pb-16 sm:pt-16 sm:pb-20 lg:pt-20 lg:pb-24 bg-[#070A12]/40 backdrop-blur-[0.5px] relative border-t border-white/[0.08] overflow-hidden"
+      className="section-auto-contain pt-12 pb-16 sm:pt-16 sm:pb-20 lg:pt-20 lg:pb-24 bg-[#070A12]/40 backdrop-blur-[0.5px] relative border-t border-white/[0.08] overflow-hidden"
     >
       {/* Luzes ambiente de fundo ciano e violeta */}
       <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-96 h-96 bg-cyan-600/[0.05] blur-[150px] rounded-full pointer-events-none" />
@@ -300,6 +337,8 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
           aria-label="Carrossel Giratório de Depoimentos"
           tabIndex={0}
           onKeyDown={handleKeyDown}
+          onFocusCapture={handleFocusCapture}
+          onBlurCapture={handleBlurCapture}
           className="relative max-w-5xl mx-auto focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/50 rounded-2xl"
         >
           {/* Viewport do Embla Carousel com suporte nativo a toque/swipe */}
@@ -361,6 +400,11 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
                     className="flex-[0_0_92%] sm:flex-[0_0_82%] md:flex-[0_0_72%] lg:flex-[0_0_68%] min-w-0 pl-4 sm:pl-6"
                     style={{
                       transformStyle: prefersReduced ? 'flat' : 'preserve-3d',
+                    }}
+                    onFocus={() => {
+                      if (selectedIndex !== idx) {
+                        scrollTo(idx);
+                      }
                     }}
                   >
                     {/* Card com aceleração direta na GPU: will-change e backface-visibility */}
@@ -549,8 +593,12 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
                 </button>
               )}
 
-              {/* Indicadores dos slides */}
-              <div className="flex items-center gap-2" role="tablist" aria-label="Slides do carrossel">
+              {/* Indicadores dos slides com círculos minimalistas de preenchimento sólido ciano */}
+              <div
+                className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-full bg-slate-900/60 border border-white/[0.05]"
+                role="tablist"
+                aria-label="Indicadores dos slides de depoimentos"
+              >
                 {testimonials.map((t, idx) => {
                   const isCurrent = selectedIndex === idx;
                   return (
@@ -559,12 +607,13 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
                       type="button"
                       role="tab"
                       aria-selected={isCurrent}
-                      aria-label={`Girar para o depoimento de ${t.name}`}
+                      aria-label={`Depoimento ${idx + 1} de ${total}: ${t.name}`}
+                      title={`Depoimento ${idx + 1} de ${total}: ${t.name}`}
                       onClick={() => scrollTo(idx)}
-                      className={`transition-all duration-300 rounded-full cursor-pointer ${
+                      className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full transition-all duration-300 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 ${
                         isCurrent
-                          ? 'w-8 h-2 bg-gradient-to-r from-cyan-400 to-indigo-500 shadow-[0_0_12px_rgba(6,182,212,0.7)]'
-                          : 'w-2 h-2 bg-slate-700 hover:bg-slate-500'
+                          ? 'bg-cyan-400 border border-cyan-300 shadow-[0_0_10px_rgba(34,211,238,0.85)] scale-110'
+                          : 'bg-slate-700/80 hover:bg-slate-500 border border-white/10 hover:border-cyan-400/40'
                       }`}
                     />
                   );

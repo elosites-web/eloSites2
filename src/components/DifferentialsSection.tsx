@@ -72,10 +72,39 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
     },
   ];
 
+  // Variantes para efeito staggered fade-in com Framer Motion
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: prefersReduced ? 0 : 0.09,
+        delayChildren: prefersReduced ? 0 : 0.05,
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: {
+      opacity: 0,
+      y: prefersReduced ? 0 : 24,
+      scale: prefersReduced ? 1 : 0.97,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: prefersReduced ? 0 : 0.45,
+        ease: [0.22, 1, 0.36, 1],
+      },
+    },
+  };
+
   return (
     <section
       id="diferenciais"
-      className="pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32 lg:pb-20 bg-[#090D16]/30 backdrop-blur-[0.5px] relative border-t border-white/[0.05] overflow-x-clip"
+      className="section-auto-contain pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32 lg:pb-20 bg-[#090D16]/30 backdrop-blur-[0.5px] relative border-t border-white/[0.05] overflow-x-clip"
     >
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-indigo-400/20 to-transparent pointer-events-none" />
 
@@ -100,34 +129,25 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
           </p>
         </div>
 
-        {/* Grade de 6 Cards de Diferenciais — Revelação suave ao scroll e padronizado com elevação e brilho */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 min-w-0">
+        {/* Grade de 6 Cards de Diferenciais — Staggered fade-in ao rolar */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.12 }}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 min-w-0"
+        >
           {differentials.map((item, index) => {
             const Icon = item.icon;
             return (
               <motion.div
                 key={item.title}
-                initial={
-                  prefersReduced
-                    ? { opacity: 1, y: 0 }
-                    : { opacity: 0, y: 24 }
-                }
-                whileInView={
-                  prefersReduced
-                    ? { opacity: 1, y: 0 }
-                    : { opacity: 1, y: 0 }
-                }
-                viewport={{ once: true, amount: 0.15 }}
-                transition={{
-                  duration: prefersReduced ? 0 : 0.45,
-                  delay: prefersReduced ? 0 : index * 0.08,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
+                variants={cardVariants}
                 className="h-full"
               >
                 <Interactive3DCard maxTilt={5} className="h-full">
                   <article
-                    className="glass-card-interactive surface-card relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 h-full w-full p-5 sm:p-6 md:p-8 flex flex-col justify-between group shadow-2xl shadow-black/60 bracket-panel transition-colors"
+                    className="glass-card-interactive surface-card accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 h-full w-full p-5 sm:p-6 md:p-8 flex flex-col justify-between group shadow-2xl shadow-black/60 bracket-panel transition-colors"
                   >
                     <div>
                       <div className="flex items-center justify-between gap-2.5 mb-5">
@@ -175,7 +195,7 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
               </motion.div>
             );
           })}
-        </div>
+        </motion.div>
 
         {/* CTA Contextual de Diferenciais */}
         <div className="mt-14 flex items-center justify-center">
