@@ -541,6 +541,13 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted 
     const pulseTexture = createPulseGlowTexture();
     const pulseGeo = new THREE.BufferGeometry();
     const pulsePositions = new Float32Array(TRACE_COUNT * 3);
+    for (let t = 0; t < TRACE_COUNT; t++) {
+      const trace = traces[t];
+      const startPt = trace.points[0] || new THREE.Vector3(0, -3.76, -20);
+      pulsePositions[t * 3] = startPt.x;
+      pulsePositions[t * 3 + 1] = startPt.y;
+      pulsePositions[t * 3 + 2] = startPt.z;
+    }
     pulseGeo.setAttribute('position', new THREE.BufferAttribute(pulsePositions, 3));
 
     const pulseMat = new THREE.PointsMaterial({
@@ -807,61 +814,61 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted 
           card2.rotation.y = -0.26 + currentPointerX * 0.08;
           card2.rotation.x = -0.04 - currentPointerY * 0.06;
         }
+      }
 
-        // Se estiver em modo de baixa performance, reduz pulsos ativos e atualiza a cada 2 quadros
-        const activeTraces = isLowPerf ? Math.min(3, TRACE_COUNT) : TRACE_COUNT;
-        const shouldUpdatePulse = !isLowPerf || frameCounter % 2 === 0;
+      // Movimentos procedurais de luzes andando no circuito 3D imersivo
+      const activeTraces = isLowPerf ? Math.min(3, TRACE_COUNT) : TRACE_COUNT;
+      const shouldUpdatePulse = !isLowPerf || frameCounter % 2 === 0;
 
-        if (shouldUpdatePulse) {
-          const pulseArr = pulseGeo.attributes.position.array as Float32Array;
-          for (let t = 0; t < TRACE_COUNT; t++) {
-            if (t >= activeTraces) {
-              pulseArr[t * 3 + 1] = -999; // Retira pulso inativo do campo de visão
-              continue;
-            }
-
-            const trace = traces[t];
-            const speedMultiplier = isLowPerf ? 0.6 : 1.0;
-            trace.progress = (trace.progress + delta * trace.speed * speedMultiplier) % 1;
-
-            // Interpola a posição do pulso ao longo dos pontos ortogonais do caminho
-            const targetDist = trace.progress * trace.totalLen;
-            let accum = 0;
-            let pX = trace.points[0].x;
-            let pY = trace.points[0].y;
-            let pZ = trace.points[0].z;
-
-            for (let p = 0; p < trace.points.length - 1; p++) {
-              const segLen = trace.points[p].distanceTo(trace.points[p + 1]);
-              if (accum + segLen >= targetDist) {
-                const segRatio = (targetDist - accum) / segLen;
-                pX = trace.points[p].x + (trace.points[p + 1].x - trace.points[p].x) * segRatio;
-                pY = trace.points[p].y + (trace.points[p + 1].y - trace.points[p].y) * segRatio;
-                pZ = trace.points[p].z + (trace.points[p + 1].z - trace.points[p].z) * segRatio;
-                break;
-              }
-              accum += segLen;
-            }
-
-            pulseArr[t * 3] = pX;
-            pulseArr[t * 3 + 1] = pY;
-            pulseArr[t * 3 + 2] = pZ;
+      if (shouldUpdatePulse) {
+        const pulseArr = pulseGeo.attributes.position.array as Float32Array;
+        for (let t = 0; t < TRACE_COUNT; t++) {
+          if (t >= activeTraces) {
+            pulseArr[t * 3 + 1] = -999; // Retira pulso inativo do campo de visão
+            continue;
           }
-          pulseGeo.attributes.position.needsUpdate = true;
-        }
 
-        // Atualização da chuva digital suave no fundo (desativada no modo de economia)
-        if (!isLowPerf) {
-          const streamArr = streamGeo.attributes.position.array as Float32Array;
-          for (let s = 0; s < STREAM_COUNT; s++) {
-            streamArr[s * 3 + 1] -= streamVelocities[s];
-            if (streamArr[s * 3 + 1] < -4) {
-              streamArr[s * 3 + 1] = 8;
-              streamArr[s * 3] = (Math.random() - 0.5) * 24;
+          const trace = traces[t];
+          const speedMultiplier = isLowPerf ? 0.6 : 1.0;
+          trace.progress = (trace.progress + delta * trace.speed * speedMultiplier) % 1;
+
+          // Interpola a posição do pulso ao longo dos pontos ortogonais do caminho
+          const targetDist = trace.progress * trace.totalLen;
+          let accum = 0;
+          let pX = trace.points[0].x;
+          let pY = trace.points[0].y;
+          let pZ = trace.points[0].z;
+
+          for (let p = 0; p < trace.points.length - 1; p++) {
+            const segLen = trace.points[p].distanceTo(trace.points[p + 1]);
+            if (accum + segLen >= targetDist) {
+              const segRatio = (targetDist - accum) / segLen;
+              pX = trace.points[p].x + (trace.points[p + 1].x - trace.points[p].x) * segRatio;
+              pY = trace.points[p].y + (trace.points[p + 1].y - trace.points[p].y) * segRatio;
+              pZ = trace.points[p].z + (trace.points[p + 1].z - trace.points[p].z) * segRatio;
+              break;
             }
+            accum += segLen;
           }
-          streamGeo.attributes.position.needsUpdate = true;
+
+          pulseArr[t * 3] = pX;
+          pulseArr[t * 3 + 1] = pY;
+          pulseArr[t * 3 + 2] = pZ;
         }
+        pulseGeo.attributes.position.needsUpdate = true;
+      }
+
+      // Atualização da chuva digital suave no fundo
+      if (!isLowPerf) {
+        const streamArr = streamGeo.attributes.position.array as Float32Array;
+        for (let s = 0; s < STREAM_COUNT; s++) {
+          streamArr[s * 3 + 1] -= streamVelocities[s];
+          if (streamArr[s * 3 + 1] < -4) {
+            streamArr[s * 3 + 1] = 8;
+            streamArr[s * 3] = (Math.random() - 0.5) * 24;
+          }
+        }
+        streamGeo.attributes.position.needsUpdate = true;
       }
 
       renderer.render(scene, camera);

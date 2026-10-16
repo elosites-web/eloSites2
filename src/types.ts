@@ -9,6 +9,7 @@ export interface NavItem {
 }
 
 export type ScreenId =
+  | 'home'
   | 'inicio'
   | 'portfolio'
   | 'servicos'
@@ -28,8 +29,17 @@ export interface ScreenMeta {
 
 export const SCREENS: ScreenMeta[] = [
   {
-    id: 'inicio',
+    id: 'home',
     number: '01',
+    title: 'Home',
+    shortTitle: 'Home',
+    badge: 'Home',
+    description: 'Experiência imersiva com background 3D interativo e engenharia ēloSites.',
+    iconName: 'Sparkles',
+  },
+  {
+    id: 'inicio',
+    number: '02',
     title: 'Início',
     shortTitle: 'Início',
     badge: 'Início',
@@ -38,7 +48,7 @@ export const SCREENS: ScreenMeta[] = [
   },
   {
     id: 'portfolio',
-    number: '02',
+    number: '03',
     title: 'Portfólio de Projetos Reais',
     shortTitle: 'Portfólio',
     badge: 'Projetos no Ar',
@@ -47,7 +57,7 @@ export const SCREENS: ScreenMeta[] = [
   },
   {
     id: 'servicos',
-    number: '03',
+    number: '04',
     title: 'Serviços & Condições Comerciais',
     shortTitle: 'Serviços',
     badge: 'Formatos & Pagamento',
@@ -56,16 +66,16 @@ export const SCREENS: ScreenMeta[] = [
   },
   {
     id: 'processo',
-    number: '04',
+    number: '05',
     title: 'Como Funciona o Processo & Diferenciais',
-    shortTitle: 'Como Funciona',
+    shortTitle: 'Como funciona',
     badge: 'Processo & Diferenciais',
     description: 'Da ideia ao site no ar em 4 etapas ágeis e os diferenciais estratégicos da ēloSites.',
     iconName: 'Workflow',
   },
   {
     id: 'orcamento',
-    number: '05',
+    number: '06',
     title: 'Briefing & Agendamento',
     shortTitle: 'Orçamento',
     badge: 'Simulação Rápida',
@@ -74,7 +84,7 @@ export const SCREENS: ScreenMeta[] = [
   },
   {
     id: 'faq',
-    number: '06',
+    number: '07',
     title: 'Perguntas Frequentes (FAQ) & Contato',
     shortTitle: 'FAQ & Contato',
     badge: 'Dúvidas & Contato',
@@ -234,11 +244,12 @@ export const SITE_CONFIG = {
 };
 
 export const NAVIGATION_ITEMS: NavItem[] = [
+  { label: 'Home', href: '#home', id: 'nav-home' },
   { label: 'Início', href: '#inicio', id: 'nav-inicio' },
   { label: 'Portfólio', href: '#portfolio', id: 'nav-portfolio' },
-  { label: 'Serviços & Condições', href: '#servicos', id: 'nav-servicos' },
-  { label: 'Como Funciona', href: '#processo', id: 'nav-processo' },
-  { label: 'Briefing & Agendamento', href: '#briefing-agendamento', id: 'nav-orcamento' },
+  { label: 'Serviços', href: '#servicos', id: 'nav-servicos' },
+  { label: 'Como funciona', href: '#processo', id: 'nav-processo' },
+  { label: 'Orçamento', href: '#orcamento', id: 'nav-orcamento' },
   { label: 'FAQ & Contato', href: '#faq', id: 'nav-faq' },
 ];
 

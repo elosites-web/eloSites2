@@ -883,14 +883,20 @@ a[id*="whatsapp"]:hover > svg {
   }
 }
 
-/* Faixa de segmentos com deslocamento contínuo (marquee) para todos os dispositivos e navegadores */
+/* Faixa de segmentos com deslocamento contínuo (marquee) suave e constante - exatamente 90s */
 .audience-marquee {
   display: flex;
   width: max-content;
   will-change: transform;
   contain: content;
-  animation: audience-scroll 32s linear infinite;
-  -webkit-animation: audience-scroll 32s linear infinite;
+  animation-name: audience-scroll;
+  animation-duration: 90s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  -webkit-animation-name: audience-scroll;
+  -webkit-animation-duration: 90s;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
 }
 
 /* Badge estilizado, chamativo e atraente visualmente do banner de nichos */

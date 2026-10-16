@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, useReducedMotion, type Variants } from 'motion/react';
+import { motion, AnimatePresence, useReducedMotion, type Variants } from 'motion/react';
 import { WhatsAppIcon } from './WhatsAppIcon';
 import { SITE_CONFIG, whatsappUrl } from '../types';
 import { shouldReduceMedia, getMotionTier } from '../mediaPrefs';
@@ -7,13 +7,17 @@ import { ArrowDown, CheckCircle2, Code2, Smartphone } from 'lucide-react';
 import { Interactive3DCard } from './Interactive3DCard';
 
 interface HeroProps {
+  mode?: 'home' | 'inicio' | 'all';
   onNavigateToPortfolio?: () => void;
   onNavigateToServices?: () => void;
+  isMenuOpen?: boolean;
 }
 
 export const Hero: React.FC<HeroProps> = ({
+  mode = 'all',
   onNavigateToPortfolio,
   onNavigateToServices,
+  isMenuOpen = false,
 }) => {
   const heroWhatsappUrl = whatsappUrl(SITE_CONFIG.heroWhatsappMessage);
 
@@ -89,60 +93,59 @@ export const Hero: React.FC<HeroProps> = ({
 
   return (
     <div className="w-full">
-      {/* PÁGINA INICIAL: Apenas o background 3D em movimento com a logo da ēloSites e o menu */}
-      <section
-        id="inicio"
-        className="h-screen min-h-[580px] w-full flex flex-col items-center justify-center relative select-none pt-14 px-4 overflow-hidden"
-      >
-        {/* Logo imersivo centralizado sobre o fundo 3D */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9, y: 15 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-          className="relative flex flex-col items-center justify-center"
+      {/* 1. TELA HOME: Apenas o background 3D em movimento com a logo flutuante da ēloSites e o menu no topo */}
+      {(mode === 'home' || mode === 'all') && (
+        <section
+          id="home"
+          className="h-screen min-h-[580px] w-full flex flex-col items-center justify-center relative select-none pt-14 px-4 overflow-hidden pointer-events-none"
         >
-          {/* Brilho decorativo suave em degradê azul-esverdeado */}
-          <div className="absolute -inset-10 sm:-inset-16 bg-gradient-to-r from-teal-500/20 via-cyan-500/25 to-indigo-500/20 blur-3xl rounded-full pointer-events-none" />
+          {/* Logo grande centralizado sobre o fundo 3D flutuando suavemente em sentido independente */}
+          <AnimatePresence>
+            {!isMenuOpen && (
+              <motion.div
+                key="hero-main-floating-logo"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={
+                  isReduced
+                    ? { opacity: 1, scale: 1 }
+                    : {
+                        opacity: 1,
+                        scale: 1,
+                        y: [-8, 8, -8],
+                        x: [4, -4, 4],
+                        rotate: [-0.5, 0.5, -0.5],
+                      }
+                }
+                exit={{ opacity: 0, scale: 0.85, transition: { duration: 0.25 } }}
+                transition={{
+                  opacity: { duration: 0.45 },
+                  scale: { duration: 0.45 },
+                  y: { duration: 7, repeat: Infinity, ease: 'easeInOut' },
+                  x: { duration: 8, repeat: Infinity, ease: 'easeInOut' },
+                  rotate: { duration: 9, repeat: Infinity, ease: 'easeInOut' },
+                }}
+                className="relative flex flex-col items-center justify-center pointer-events-auto"
+              >
+                {/* Brilho decorativo suave em degradê azul-esverdeado */}
+                <div className="absolute -inset-10 sm:-inset-16 bg-gradient-to-r from-teal-500/20 via-cyan-500/25 to-indigo-500/20 blur-3xl rounded-full pointer-events-none" />
 
-          <img
-            src="/logo-elosites-final.png"
-            alt="ēloSites"
-            className="h-20 sm:h-28 md:h-36 lg:h-40 w-auto object-contain drop-shadow-[0_0_45px_rgba(34,211,238,0.45)] relative z-10"
-          />
-        </motion.div>
+                <img
+                  src="/logo-elosites-final.png"
+                  alt="ēloSites"
+                  className="h-20 sm:h-28 md:h-36 lg:h-40 w-auto object-contain drop-shadow-[0_0_45px_rgba(34,211,238,0.45)] relative z-10"
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </section>
+      )}
 
-        {/* Âncora com nome Início que ancora para a atual tela 1 de agora */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.35, ease: 'easeOut' }}
-          className="absolute bottom-8 sm:bottom-12 inset-x-0 flex flex-col items-center justify-center pointer-events-auto z-20"
+      {/* 2. TELA INÍCIO: Apresentação Estratégica Completa com Headline, Marquee 90s e CTAs */}
+      {(mode === 'inicio' || mode === 'all') && (
+        <section
+          id="inicio"
+          className="relative pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32 lg:pb-20 overflow-hidden bg-[#070B16]/25 backdrop-blur-[0.5px]"
         >
-          <a
-            href="#apresentacao"
-            onClick={(e) => {
-              e.preventDefault();
-              const el = document.getElementById('apresentacao');
-              if (el) el.scrollIntoView({ behavior: 'smooth' });
-            }}
-            className="group flex flex-col items-center gap-2.5 text-xs font-mono text-cyan-300 hover:text-white transition-colors cursor-pointer"
-            aria-label="Ir para a apresentação e conteúdo do início"
-          >
-            <span className="text-[11px] sm:text-xs font-semibold tracking-widest uppercase text-slate-300 group-hover:text-cyan-300 transition-colors">
-              Início
-            </span>
-            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full border border-cyan-500/40 bg-slate-950/70 backdrop-blur-md flex items-center justify-center group-hover:border-cyan-300 group-hover:shadow-[0_0_24px_rgba(34,211,238,0.6)] group-hover:scale-105 transition-all">
-              <ArrowDown className="w-4 h-4 text-cyan-400 group-hover:text-cyan-200 animate-bounce" />
-            </div>
-          </a>
-        </motion.div>
-      </section>
-
-      {/* Conteúdo da Atual Tela 1 de Agora (Apresentação Estratégica Completa) */}
-      <section
-        id="apresentacao"
-        className="relative pt-16 pb-16 sm:pt-20 sm:pb-20 lg:pt-24 lg:pb-20 overflow-hidden bg-[#070B16]/25 backdrop-blur-[0.5px]"
-      >
         {/* Background subtle tech grid & glow */}
         <div className="absolute inset-0 tech-grid-pattern opacity-70 pointer-events-none" />
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[350px] bg-indigo-600/15 blur-[130px] rounded-full pointer-events-none" />
@@ -379,6 +382,7 @@ export const Hero: React.FC<HeroProps> = ({
         </div>
       </div>
     </section>
+      )}
   </div>
 );
 };

@@ -46,11 +46,12 @@ const ProjectBriefBookingSection = lazy(() =>
 // Cena 3D persistente carregada de forma assíncrona
 
 export default function App() {
-  const [currentScreen, setCurrentScreen] = useState<ScreenId>('inicio');
+  const [currentScreen, setCurrentScreen] = useState<ScreenId>('home');
   const [direction, setDirection] = useState<number>(1);
   const [legalModal, setLegalModal] = useState<'privacy' | 'terms' | null>(null);
   const [isSitemapOpen, setIsSitemapOpen] = useState<boolean>(false);
   const [isWhatsAppBubbleOpen, setIsWhatsAppBubbleOpen] = useState<boolean>(false);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
   // Hook do Framer Motion combinado com a preferência de acessibilidade
   const systemPrefersReduced = useReducedMotion();
@@ -79,9 +80,10 @@ export default function App() {
     });
   };
 
-  // Sincronização inicial e bidirecional com a hash da URL (6 telas oficiais)
+  // Sincronização inicial e bidirecional com a hash da URL (7 telas oficiais)
   useEffect(() => {
     const validIds: ScreenId[] = [
+      'home',
       'inicio',
       'portfolio',
       'servicos',
@@ -169,6 +171,7 @@ export default function App() {
 
   // Ao trocar de tela, atualiza o hash, a direção do slide lateral e rola para o topo
   const navigateToScreen = (screenId: ScreenId) => {
+    setIsMenuOpen(false);
     const prevIdx = SCREENS.findIndex((s) => s.id === currentScreen);
     const nextIdx = SCREENS.findIndex((s) => s.id === screenId);
     const nextDirection = nextIdx !== -1 && prevIdx !== -1 && nextIdx !== prevIdx ? (nextIdx > prevIdx ? 1 : -1) : direction;
@@ -230,7 +233,7 @@ export default function App() {
   // Sincronização dinâmica de meta tags OpenGraph, Twitter Cards, Canonical e Title para cada seção/tela
   useEffect(() => {
     const meta = SCREENS.find((s) => s.id === currentScreen) || SCREENS[0];
-    const isHome = currentScreen === 'inicio';
+    const isHome = currentScreen === 'home' || currentScreen === 'inicio';
 
     const pageTitle = isHome
       ? 'ēloSites — Criação de Sites Profissionais com SEO Técnico e Conversão'
@@ -240,7 +243,7 @@ export default function App() {
       ? 'Criação de sites profissionais e landing pages com SEO técnico e foco em conversão para pequenos negócios e profissionais liberais. Alta performance e código limpo.'
       : `${meta.description} Desenvolvimento de sites institucionais e landing pages de alta conversão pela ēloSites.`;
 
-    const canonicalUrl = isHome
+    const canonicalUrl = currentScreen === 'home'
       ? 'https://elosites.ia.br/'
       : `https://elosites.ia.br/#${currentScreen}`;
 
@@ -347,10 +350,21 @@ export default function App() {
   // View Transitions (crossfade) ou AnimatePresence (fallback suave atual).
   const renderActiveScreen = () => (
     <>
-      {/* TELA 01: Início & Apresentação */}
+      {/* TELA 01: Home (Background-only Hero com Menu Centralizado e Logo Flutuante) */}
+      {currentScreen === 'home' && (
+        <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style]">
+          <Hero
+            mode="home"
+            isMenuOpen={isMenuOpen}
+          />
+        </div>
+      )}
+
+      {/* TELA 02: Início (Apresentação Completa, Marquee 90s, CTAs e Terminal 3D) */}
       {currentScreen === 'inicio' && (
         <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style]">
           <Hero
+            mode="inicio"
             onNavigateToPortfolio={() => navigateToScreen('portfolio')}
             onNavigateToServices={() => navigateToScreen('servicos')}
           />
@@ -451,6 +465,8 @@ export default function App() {
         onSelectScreen={navigateToScreen}
         onPreviousScreen={handlePrevious}
         onNextScreen={handleNext}
+        isMenuOpen={isMenuOpen}
+        setIsMenuOpen={setIsMenuOpen}
       />
 
       {/* Conteúdo Principal — Exibição Estratégica da Tela Ativa com Transição Fluida e Responsiva */}
