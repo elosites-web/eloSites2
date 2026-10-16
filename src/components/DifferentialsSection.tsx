@@ -1,4 +1,6 @@
 import React from 'react';
+import { motion, useReducedMotion } from 'motion/react';
+import { shouldReduceMedia } from '../mediaPrefs';
 import {
   Zap,
   User,
@@ -18,6 +20,10 @@ interface DifferentialsSectionProps {
 }
 
 export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
+  // Preferência de redução de movimento e media prefs
+  const systemPrefersReduced = useReducedMotion();
+  const prefersReduced = Boolean(systemPrefersReduced || shouldReduceMedia());
+
   const differentials: {
     title: string;
     description: string;
@@ -94,58 +100,79 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
           </p>
         </div>
 
-        {/* Grade de 6 Cards de Diferenciais — Padronizado com o efeito 3D interativo */}
+        {/* Grade de 6 Cards de Diferenciais — Revelação suave ao scroll e padronizado com elevação e brilho */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 min-w-0">
           {differentials.map((item, index) => {
             const Icon = item.icon;
             return (
-              <Interactive3DCard key={item.title} maxTilt={5} className="h-full">
-                <article
-                  className="relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 h-full w-full p-5 sm:p-6 md:p-8 flex flex-col justify-between group shadow-2xl shadow-black/60 bracket-panel transition-colors"
-                >
-                  <div>
-                    <div className="flex items-center justify-between gap-2.5 mb-5">
-                      <div
-                        className={`w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300 ${
-                          item.isWhatsApp
-                            ? 'bg-[#25D366] text-white shadow-md shadow-emerald-950/40'
-                            : 'bg-indigo-950/80 border border-indigo-500/30 text-indigo-300'
-                        }`}
-                      >
-                        {item.isWhatsApp ? (
-                          <WhatsAppIcon className="w-5 h-5 text-white" />
-                        ) : (
-                          <Icon className="w-5 h-5" aria-hidden="true" />
-                        )}
+              <motion.div
+                key={item.title}
+                initial={
+                  prefersReduced
+                    ? { opacity: 1, y: 0 }
+                    : { opacity: 0, y: 24 }
+                }
+                whileInView={
+                  prefersReduced
+                    ? { opacity: 1, y: 0 }
+                    : { opacity: 1, y: 0 }
+                }
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{
+                  duration: prefersReduced ? 0 : 0.45,
+                  delay: prefersReduced ? 0 : index * 0.08,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                className="h-full"
+              >
+                <Interactive3DCard maxTilt={5} className="h-full">
+                  <article
+                    className="glass-card-interactive surface-card relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 h-full w-full p-5 sm:p-6 md:p-8 flex flex-col justify-between group shadow-2xl shadow-black/60 bracket-panel transition-colors"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between gap-2.5 mb-5">
+                        <div
+                          className={`w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300 ${
+                            item.isWhatsApp
+                              ? 'bg-[#25D366] text-white shadow-md shadow-emerald-950/40'
+                              : 'bg-indigo-950/80 border border-indigo-500/30 text-indigo-300'
+                          }`}
+                        >
+                          {item.isWhatsApp ? (
+                            <WhatsAppIcon className="w-5 h-5 text-white" />
+                          ) : (
+                            <Icon className="w-5 h-5" aria-hidden="true" />
+                          )}
+                        </div>
+                        <span className="font-mono text-xs font-bold text-slate-400 group-hover:text-indigo-300 transition-colors">
+                          0{index + 1}
+                        </span>
                       </div>
-                      <span className="font-mono text-xs font-bold text-slate-400 group-hover:text-indigo-300 transition-colors">
-                        0{index + 1}
-                      </span>
+
+                      <h3 className="font-display text-lg font-bold tracking-tight text-white mb-2.5 group-hover:text-indigo-100 transition-colors">
+                        {item.title}
+                      </h3>
+                      <p className="text-sm text-slate-300 leading-relaxed font-normal">
+                        {item.description}
+                      </p>
+                      {item.promise && (
+                        <p className="mt-3.5 flex items-start gap-2 text-sm text-indigo-200/95 leading-relaxed bg-indigo-950/40 border border-indigo-500/20 rounded-xl p-2.5">
+                          <CheckCircle2
+                            className="w-4 h-4 text-indigo-400 shrink-0 mt-0.5"
+                            aria-hidden="true"
+                          />
+                          <span>{item.promise}</span>
+                        </p>
+                      )}
                     </div>
 
-                    <h3 className="font-display text-lg font-bold tracking-tight text-white mb-2.5 group-hover:text-indigo-100 transition-colors">
-                      {item.title}
-                    </h3>
-                    <p className="text-sm text-slate-300 leading-relaxed font-normal">
-                      {item.description}
-                    </p>
-                    {item.promise && (
-                      <p className="mt-3.5 flex items-start gap-2 text-sm text-indigo-200/95 leading-relaxed bg-indigo-950/40 border border-indigo-500/20 rounded-xl p-2.5">
-                        <CheckCircle2
-                          className="w-4 h-4 text-indigo-400 shrink-0 mt-0.5"
-                          aria-hidden="true"
-                        />
-                        <span>{item.promise}</span>
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="mt-6 pt-3.5 border-t border-white/[0.08] flex items-center gap-1.5 text-xs text-slate-400">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-indigo-400" aria-hidden="true" />
-                    <span className="font-medium text-slate-300">Padrão ēloSites</span>
-                  </div>
-                </article>
-              </Interactive3DCard>
+                    <div className="mt-6 pt-3.5 border-t border-white/[0.08] flex items-center gap-1.5 text-xs text-slate-400">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-indigo-400" aria-hidden="true" />
+                      <span className="font-medium text-slate-300">Padrão ēloSites</span>
+                    </div>
+                  </article>
+                </Interactive3DCard>
+              </motion.div>
             );
           })}
         </div>

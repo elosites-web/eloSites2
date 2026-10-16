@@ -212,7 +212,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                 >
                   <Interactive3DCard maxTilt={5} className="h-full w-full lg:row-span-5 lg:grid lg:grid-rows-subgrid">
                     <article
-                      className="relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 md:p-8 flex flex-col space-y-5 lg:space-y-0 lg:row-span-5 lg:grid lg:grid-rows-subgrid shadow-2xl shadow-black/60 bracket-panel transition-colors h-full w-full"
+                      className="glass-card-interactive surface-card relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 md:p-8 flex flex-col space-y-5 lg:space-y-0 lg:row-span-5 lg:grid lg:grid-rows-subgrid shadow-2xl shadow-black/60 bracket-panel transition-colors h-full w-full"
                     >
                       {/* Linha 1: Topo do card + Título + Descrição */}
                       <div className="space-y-4 lg:pb-4">
@@ -349,7 +349,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                 className="h-full"
               >
                 <Interactive3DCard maxTilt={5} className="h-full">
-                  <div className="relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors">
+                  <div className="glass-card-interactive surface-card relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors">
                     <div className="space-y-3">
                       <div className="w-10 h-10 rounded-xl bg-indigo-950/90 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
                         <Split className="w-5 h-5" />
@@ -389,7 +389,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                 className="h-full"
               >
                 <Interactive3DCard maxTilt={5} className="h-full">
-                  <div className="relative rounded-2xl bg-[#0B101D] border border-emerald-500/40 hover:border-emerald-400/70 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors bg-gradient-to-b from-emerald-950/20 to-[#0B101D]">
+                  <div className="glass-card-interactive surface-card relative rounded-2xl bg-[#0B101D] border border-emerald-500/40 hover:border-emerald-400/70 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors bg-gradient-to-b from-emerald-950/20 to-[#0B101D]">
                     <div className="space-y-3">
                       <div className="w-10 h-10 rounded-xl bg-emerald-950/90 border border-emerald-500/40 flex items-center justify-center text-emerald-300">
                         <Percent className="w-5 h-5" />
@@ -434,7 +434,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                 className="h-full"
               >
                 <Interactive3DCard maxTilt={5} className="h-full">
-                  <div className="relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors">
+                  <div className="glass-card-interactive surface-card relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors">
                     <div className="space-y-3">
                       <div className="w-10 h-10 rounded-xl bg-indigo-950/90 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
                         <CreditCard className="w-5 h-5" />
@@ -474,7 +474,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                 className="h-full"
               >
                 <Interactive3DCard maxTilt={5} className="h-full">
-                  <div className="relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors">
+                  <div className="glass-card-interactive surface-card relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors">
                     <div className="space-y-3">
                       <div className="w-10 h-10 rounded-xl bg-indigo-950/90 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
                         <Calendar className="w-5 h-5" />
@@ -496,7 +496,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
 
             {/* SIMULADOR INTERATIVO DE CONDIÇÕES */}
             <Interactive3DCard maxTilt={3} className="mt-8 w-full">
-              <div className="relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/40 p-6 sm:p-8 shadow-2xl shadow-black/60 bracket-panel transition-colors">
+              <div className="glass-card-interactive surface-card relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/40 p-6 sm:p-8 shadow-2xl shadow-black/60 bracket-panel transition-colors">
               <div className="flex flex-col lg:flex-row items-center justify-between gap-6 pb-6 border-b border-white/[0.08]">
                 <div className="space-y-1 text-center lg:text-left">
                   <div className="inline-flex items-center gap-1.5 text-xs text-indigo-400 font-semibold uppercase">

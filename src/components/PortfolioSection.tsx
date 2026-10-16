@@ -123,7 +123,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   const [viewMode, setViewMode] = useState<ViewMode>('composite');
 
   return (
-    <article className="relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 flex flex-col h-full overflow-hidden group lg:row-span-8 lg:grid lg:grid-rows-subgrid shadow-2xl shadow-black/60 bracket-panel transition-colors">
+    <article className="glass-card-interactive surface-card relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 flex flex-col h-full overflow-hidden group lg:row-span-8 lg:grid lg:grid-rows-subgrid shadow-2xl shadow-black/60 bracket-panel transition-colors">
       {/* Top Header / Informações */}
       <div className="p-6 sm:p-7 border-b border-white/[0.06] bg-slate-950/60 space-y-4 lg:row-span-5 lg:grid lg:grid-rows-subgrid">
         <div className="flex flex-wrap items-center justify-between gap-2">
@@ -533,40 +533,40 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
 
         {/* Banner Inferior com Conversão Direta e 3D Tilt */}
         <Interactive3DCard maxTilt={3} className="mt-12 sm:mt-16 w-full">
-          <div className="p-6 sm:p-8 rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl shadow-black/60 bracket-panel transition-colors">
-            <div className="space-y-1 text-center sm:text-left">
+          <div className="glass-card-interactive surface-card p-6 sm:p-7 md:p-8 rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 shadow-2xl shadow-black/60 bracket-panel transition-colors">
+            <div className="space-y-2 text-left w-full lg:max-w-xl">
               <h3 className="text-xl sm:text-2xl font-bold text-white font-display">
                 Gostou do nível dos projetos da ēloSites?
               </h3>
-              <p className="text-sm text-slate-300 max-w-xl">
+              <p className="text-sm text-slate-300 leading-relaxed">
                 Cada projeto recebe um orçamento específico baseado no escopo. 50% de entrada no início + 50% na aprovação final (PIX), 20% de desconto à vista, até 5x sem juros ou de 6x a 12x no cartão.
               </p>
             </div>
 
-          <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto shrink-0">
-            {onNavigateToServices && (
-              <button
-                type="button"
-                onClick={onNavigateToServices}
-                className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-2 px-5 py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 border border-indigo-400/40 shadow-lg shadow-indigo-600/30 hover:shadow-[0_0_24px_rgba(99,102,241,0.55)] active:shadow-[0_0_32px_rgba(168,85,247,0.7)] hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+            <div className="card-action-cluster flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto shrink-0 pt-2 lg:pt-0">
+              {onNavigateToServices && (
+                <button
+                  type="button"
+                  onClick={onNavigateToServices}
+                  className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-2 px-5 py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 border border-indigo-400/40 shadow-lg shadow-indigo-600/30 hover:shadow-[0_0_24px_rgba(99,102,241,0.55)] active:shadow-[0_0_32px_rgba(168,85,247,0.7)] hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+                >
+                  <span className="text-center">Ver Formatos & Condições</span>
+                  <ArrowRight className="w-4 h-4 text-white" />
+                </button>
+              )}
+              <a
+                id="portfolio-cta-whatsapp"
+                href={whatsappInquiryUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-2.5 px-6 py-3 rounded-xl text-sm font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-400/30 shadow-lg shadow-emerald-950/40 hover:shadow-[0_0_22px_rgba(37,211,102,0.65)] hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
               >
-                <span className="text-center">Ver Formatos & Condições</span>
-                <ArrowRight className="w-4 h-4 text-white" />
-              </button>
-            )}
-            <a
-              id="portfolio-cta-whatsapp"
-              href={whatsappInquiryUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-2.5 px-6 py-3 rounded-xl text-sm font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-400/30 shadow-lg shadow-emerald-950/40 hover:shadow-[0_0_22px_rgba(37,211,102,0.65)] hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
-            >
-              <WhatsAppIcon className="w-4 h-4 text-white" />
-              <span className="text-center">Solicitar Orçamento</span>
-            </a>
+                <WhatsAppIcon className="w-4 h-4 text-white" />
+                <span className="text-center">Solicitar Orçamento</span>
+              </a>
+            </div>
           </div>
-        </div>
-      </Interactive3DCard>
+        </Interactive3DCard>
     </div>
 
       {/* Modal de Detalhes do Projeto (Challenge, Solution, Results) */}

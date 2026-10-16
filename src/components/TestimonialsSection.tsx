@@ -372,7 +372,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
         >
           {/* Card Principal Compacto & Otimizado com Efeito 3D Interativo */}
           <Interactive3DCard maxTilt={5} className="w-full">
-            <div className="relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-1 shadow-2xl shadow-black/60 bracket-panel transition-colors">
+            <div className="glass-card-interactive surface-card relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-1 shadow-2xl shadow-black/60 bracket-panel transition-colors">
               <div className="rounded-xl p-5 sm:p-7 md:p-8 bg-[#0B101D]">
                 <TestimonialCardContent
                   item={current}
@@ -448,23 +448,23 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
             delay: prefersReduced ? 0 : 0.2,
             ease: [0.22, 1, 0.36, 1],
           }}
-          className="mt-10 p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-indigo-950/40 via-slate-900/60 to-purple-950/40 border border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-5 max-w-4xl mx-auto"
+          className="glass-card-interactive surface-card mt-10 p-6 sm:p-7 md:p-8 rounded-2xl bg-gradient-to-r from-indigo-950/40 via-slate-900/60 to-purple-950/40 border border-white/[0.08] flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 max-w-4xl mx-auto shadow-2xl shadow-black/60 bracket-panel"
         >
-          <div className="space-y-1 text-center sm:text-left">
-            <h4 className="font-display text-sm sm:text-base font-bold text-white">
+          <div className="space-y-2 text-left w-full lg:max-w-xl">
+            <h4 className="font-display text-base sm:text-lg font-bold text-white">
               Quer um site com essa mesma qualidade para o seu negócio?
             </h4>
-            <p className="text-xs sm:text-sm text-slate-300">
+            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
               Fale diretamente com quem vai desenvolver seu site, com prazos claros e condições transparentes.
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full sm:w-auto shrink-0">
+          <div className="card-action-cluster flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto shrink-0 pt-2 lg:pt-0">
             {onNavigateToServices && (
               <button
                 type="button"
                 onClick={onNavigateToServices}
-                className="inline-flex items-center justify-center text-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-200 bg-slate-800/80 hover:bg-slate-700/80 border border-white/[0.08] transition-all cursor-pointer"
+                className="inline-flex items-center justify-center text-center gap-2 px-5 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-200 bg-slate-800/80 hover:bg-slate-700/80 border border-white/[0.08] transition-all cursor-pointer"
               >
                 <span className="text-center">Ver Serviços & Condições</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -474,7 +474,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
               href={whatsappUrl(SITE_CONFIG.portfolioWhatsappMessage)}
               target="_blank"
               rel="noopener noreferrer"
-              className="cta-primary inline-flex items-center justify-center text-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-white transition-all shadow-lg shadow-indigo-600/30 cursor-pointer"
+              className="cta-primary inline-flex items-center justify-center text-center gap-2 px-5 py-3 rounded-xl text-xs sm:text-sm font-semibold text-white transition-all shadow-lg shadow-indigo-600/30 cursor-pointer"
             >
               <WhatsAppIcon className="w-4 h-4 text-emerald-300" />
               <span className="text-center">Conversar no WhatsApp</span>

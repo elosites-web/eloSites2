@@ -11,3 +11,21 @@ createRoot(document.getElementById('root')!).render(
     </ToastProvider>
   </StrictMode>,
 );
+
+// Registro do Service Worker para suporte offline e aceleração por cache
+if ('serviceWorker' in navigator && process.env.NODE_ENV !== 'test') {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('/sw.js')
+      .then((registration) => {
+        // Registrado com sucesso
+        if (registration.installing) {
+          console.debug('[ēloSites SW] Instalando service worker...');
+        }
+      })
+      .catch((err) => {
+        console.debug('[ēloSites SW] Erro ao registrar service worker:', err);
+      });
+  });
+}
+
