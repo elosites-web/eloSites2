@@ -61,10 +61,14 @@ class Scene3DErrorBoundary extends React.Component<BoundaryProps, BoundaryState>
   }
 }
 
+interface Persistent3DBackgroundProps {
+  isMenuOpen?: boolean;
+}
+
 /**
  * Fundo 3D com Skeleton Global e carregamento assíncrono em tempo ocioso
  */
-export const Persistent3DBackground: React.FC = () => {
+export const Persistent3DBackground: React.FC<Persistent3DBackgroundProps> = ({ isMenuOpen = false }) => {
   const [shouldLoad, setShouldLoad] = useState(false);
   const [isSceneMounted, setIsSceneMounted] = useState(false);
 
@@ -97,7 +101,7 @@ export const Persistent3DBackground: React.FC = () => {
       {shouldLoad && (
         <Scene3DErrorBoundary>
           <Suspense fallback={null}>
-            <Persistent3DScene onMounted={() => setIsSceneMounted(true)} />
+            <Persistent3DScene onMounted={() => setIsSceneMounted(true)} isMenuOpen={isMenuOpen} />
           </Suspense>
         </Scene3DErrorBoundary>
       )}

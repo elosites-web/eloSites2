@@ -448,13 +448,13 @@ export default function App() {
       </div>
 
       {/* Barra de Progresso de Leitura no Topo */}
-      <ReadingProgressBar key={currentScreen} currentScreen={currentScreen} />
+      {!isMenuOpen && <ReadingProgressBar key={currentScreen} currentScreen={currentScreen} />}
 
       {/* Fundo animado leve em CSS puro (substitui o vídeo global) */}
       <AnimatedBackdrop />
 
-      {/* Cena 3D Persistente procedural no fundo */}
-      <Persistent3DBackground />
+      {/* Cena 3D Persistente procedural no fundo (com circuito contínuo, pulsos luminosos e chuva digital) */}
+      <Persistent3DBackground isMenuOpen={isMenuOpen} />
 
       {/* Efeitos exclusivos do tier 'full' (holofote, pausas) */}
       <PointerSpotlight />
@@ -469,8 +469,14 @@ export default function App() {
         setIsMenuOpen={setIsMenuOpen}
       />
 
-      {/* Conteúdo Principal — Exibição Estratégica da Tela Ativa com Transição Fluida e Responsiva */}
-      <main className="flex-1 relative z-10 overflow-x-hidden" id="main-content" tabIndex={-1}>
+      {/* Conteúdo Principal — Exibição Estratégica da Tela Ativa; quando o menu abre, o fundo 3D da Home se torna o cenário limpo */}
+      <main
+        className={`flex-1 relative z-10 overflow-x-hidden transition-opacity duration-300 ${
+          isMenuOpen ? 'opacity-0 pointer-events-none invisible' : 'opacity-100'
+        }`}
+        id="main-content"
+        tabIndex={-1}
+      >
         {useViewTransitions ? (
           <div
             key={currentScreen}
@@ -498,19 +504,21 @@ export default function App() {
       </main>
 
       {/* Rodapé Institucional com Links de Telas e Termos Legais */}
-      <Footer
-        onOpenPrivacy={() => setLegalModal('privacy')}
-        onOpenTerms={() => setLegalModal('terms')}
-        onOpenSitemap={() => setIsSitemapOpen(true)}
-        onSelectScreen={navigateToScreen}
-        currentScreen={currentScreen}
-        isHighContrast={isHighContrast}
-        onToggleHighContrast={toggleHighContrast}
-        isWhatsAppBubbleOpen={isWhatsAppBubbleOpen}
-      />
+      {!isMenuOpen && (
+        <Footer
+          onOpenPrivacy={() => setLegalModal('privacy')}
+          onOpenTerms={() => setLegalModal('terms')}
+          onOpenSitemap={() => setIsSitemapOpen(true)}
+          onSelectScreen={navigateToScreen}
+          currentScreen={currentScreen}
+          isHighContrast={isHighContrast}
+          onToggleHighContrast={toggleHighContrast}
+          isWhatsAppBubbleOpen={isWhatsAppBubbleOpen}
+        />
+      )}
 
       {/* Botão Flutuante Oficial do WhatsApp */}
-      <FloatingWhatsApp onBubbleStateChange={setIsWhatsAppBubbleOpen} />
+      {!isMenuOpen && <FloatingWhatsApp onBubbleStateChange={setIsWhatsAppBubbleOpen} />}
 
       {/* Modais Legais (Política de Privacidade e Termos de Uso) */}
       <LegalModals

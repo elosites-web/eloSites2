@@ -251,10 +251,16 @@ function createEmissiveHaloTexture(colorType: 'cyan' | 'violet'): THREE.CanvasTe
 
 interface Persistent3DSceneProps {
   onMounted?: () => void;
+  isMenuOpen?: boolean;
 }
 
-export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted }) => {
+export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted, isMenuOpen = false }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const isMenuOpenRef = useRef(isMenuOpen);
+
+  useEffect(() => {
+    isMenuOpenRef.current = isMenuOpen;
+  }, [isMenuOpen]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -517,7 +523,7 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted 
       traces.push({
         points: tracePoints,
         totalLen,
-        progress: Math.random(),
+        progress: (t / TRACE_COUNT) + (Math.random() * 0.1),
         speed: (0.12 + Math.random() * 0.1) * (prefersReduced ? 0.3 : 1.0),
       });
     }
@@ -537,16 +543,33 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted 
     const circuitLinesMesh = new THREE.LineSegments(circuitGeo, circuitMat);
     circuitsGroup.add(circuitLinesMesh);
 
-    // Partículas de pulso que viajam sobre as trilhas ortogonais
+    // Partículas de pulso que viajam sobre as trilhas ortogonais (já distribuídas desde o frame 0)
     const pulseTexture = createPulseGlowTexture();
     const pulseGeo = new THREE.BufferGeometry();
     const pulsePositions = new Float32Array(TRACE_COUNT * 3);
     for (let t = 0; t < TRACE_COUNT; t++) {
       const trace = traces[t];
-      const startPt = trace.points[0] || new THREE.Vector3(0, -3.76, -20);
-      pulsePositions[t * 3] = startPt.x;
-      pulsePositions[t * 3 + 1] = startPt.y;
-      pulsePositions[t * 3 + 2] = startPt.z;
+      const targetDist = (trace.progress % 1) * trace.totalLen;
+      let accum = 0;
+      let pX = trace.points[0].x;
+      let pY = trace.points[0].y;
+      let pZ = trace.points[0].z;
+
+      for (let p = 0; p < trace.points.length - 1; p++) {
+        const segLen = trace.points[p].distanceTo(trace.points[p + 1]);
+        if (accum + segLen >= targetDist) {
+          const segRatio = segLen > 0 ? (targetDist - accum) / segLen : 0;
+          pX = trace.points[p].x + (trace.points[p + 1].x - trace.points[p].x) * segRatio;
+          pY = trace.points[p].y + (trace.points[p + 1].y - trace.points[p].y) * segRatio;
+          pZ = trace.points[p].z + (trace.points[p + 1].z - trace.points[p].z) * segRatio;
+          break;
+        }
+        accum += segLen;
+      }
+
+      pulsePositions[t * 3] = pX;
+      pulsePositions[t * 3 + 1] = pY;
+      pulsePositions[t * 3 + 2] = pZ;
     }
     pulseGeo.setAttribute('position', new THREE.BufferAttribute(pulsePositions, 3));
 
@@ -746,10 +769,7 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted 
                 }
                 card1HaloMat.opacity = 0.15;
 
-                // 3. Oculta a chuva digital de fundo para poupar vértices
-                streamMesh.visible = false;
-
-                // 4. Reduz diâmetro de partículas para menor fill-rate da GPU
+                // 3. Reduz diâmetro de partículas para menor fill-rate da GPU
                 pulseMat.size = 0.75;
                 pulseMat.needsUpdate = true;
               }
@@ -761,7 +781,9 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted 
       }
 
       // Amortecimento suave de scroll e inclinação holográfica (lerp)
-      currentScroll += (targetScroll - currentScroll) * 0.08;
+      // Se o menu de navegação estiver aberto, o background 3D alinha-se suavemente à visão centralizada da Home (targetScroll = 0)
+      const effectiveTargetScroll = isMenuOpenRef.current ? 0 : targetScroll;
+      currentScroll += (effectiveTargetScroll - currentScroll) * 0.08;
       currentPointerX += (targetPointerX - currentPointerX) * 0.05;
       currentPointerY += (targetPointerY - currentPointerY) * 0.05;
 
@@ -816,66 +838,54 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted 
         }
       }
 
-      // Movimentos procedurais de luzes andando no circuito 3D imersivo
-      const activeTraces = isLowPerf ? Math.min(3, TRACE_COUNT) : TRACE_COUNT;
-      const shouldUpdatePulse = !isLowPerf || frameCounter % 2 === 0;
+      // Movimentos procedurais de luzes andando no circuito 3D imersivo (contínuos e suaves)
+      const pulseArr = pulseGeo.attributes.position.array as Float32Array;
+      for (let t = 0; t < TRACE_COUNT; t++) {
+        const trace = traces[t];
+        trace.progress = (trace.progress + delta * trace.speed) % 1;
 
-      if (shouldUpdatePulse) {
-        const pulseArr = pulseGeo.attributes.position.array as Float32Array;
-        for (let t = 0; t < TRACE_COUNT; t++) {
-          if (t >= activeTraces) {
-            pulseArr[t * 3 + 1] = -999; // Retira pulso inativo do campo de visão
-            continue;
+        // Interpola a posição do pulso ao longo dos pontos ortogonais do caminho
+        const targetDist = trace.progress * trace.totalLen;
+        let accum = 0;
+        let pX = trace.points[0].x;
+        let pY = trace.points[0].y;
+        let pZ = trace.points[0].z;
+
+        for (let p = 0; p < trace.points.length - 1; p++) {
+          const segLen = trace.points[p].distanceTo(trace.points[p + 1]);
+          if (accum + segLen >= targetDist) {
+            const segRatio = segLen > 0 ? (targetDist - accum) / segLen : 0;
+            pX = trace.points[p].x + (trace.points[p + 1].x - trace.points[p].x) * segRatio;
+            pY = trace.points[p].y + (trace.points[p + 1].y - trace.points[p].y) * segRatio;
+            pZ = trace.points[p].z + (trace.points[p + 1].z - trace.points[p].z) * segRatio;
+            break;
           }
-
-          const trace = traces[t];
-          const speedMultiplier = isLowPerf ? 0.6 : 1.0;
-          trace.progress = (trace.progress + delta * trace.speed * speedMultiplier) % 1;
-
-          // Interpola a posição do pulso ao longo dos pontos ortogonais do caminho
-          const targetDist = trace.progress * trace.totalLen;
-          let accum = 0;
-          let pX = trace.points[0].x;
-          let pY = trace.points[0].y;
-          let pZ = trace.points[0].z;
-
-          for (let p = 0; p < trace.points.length - 1; p++) {
-            const segLen = trace.points[p].distanceTo(trace.points[p + 1]);
-            if (accum + segLen >= targetDist) {
-              const segRatio = (targetDist - accum) / segLen;
-              pX = trace.points[p].x + (trace.points[p + 1].x - trace.points[p].x) * segRatio;
-              pY = trace.points[p].y + (trace.points[p + 1].y - trace.points[p].y) * segRatio;
-              pZ = trace.points[p].z + (trace.points[p + 1].z - trace.points[p].z) * segRatio;
-              break;
-            }
-            accum += segLen;
-          }
-
-          pulseArr[t * 3] = pX;
-          pulseArr[t * 3 + 1] = pY;
-          pulseArr[t * 3 + 2] = pZ;
+          accum += segLen;
         }
-        pulseGeo.attributes.position.needsUpdate = true;
-      }
 
-      // Atualização da chuva digital suave no fundo
-      if (!isLowPerf) {
-        const streamArr = streamGeo.attributes.position.array as Float32Array;
-        for (let s = 0; s < STREAM_COUNT; s++) {
-          streamArr[s * 3 + 1] -= streamVelocities[s];
-          if (streamArr[s * 3 + 1] < -4) {
-            streamArr[s * 3 + 1] = 8;
-            streamArr[s * 3] = (Math.random() - 0.5) * 24;
-          }
-        }
-        streamGeo.attributes.position.needsUpdate = true;
+        pulseArr[t * 3] = pX;
+        pulseArr[t * 3 + 1] = pY;
+        pulseArr[t * 3 + 2] = pZ;
       }
+      pulseGeo.attributes.position.needsUpdate = true;
+
+      // Atualização contínua e suave da chuva digital no horizonte
+      const streamArr = streamGeo.attributes.position.array as Float32Array;
+      const rainDelta = delta > 0 ? delta / 0.016 : 1;
+      for (let s = 0; s < STREAM_COUNT; s++) {
+        streamArr[s * 3 + 1] -= streamVelocities[s] * rainDelta;
+        if (streamArr[s * 3 + 1] < -4) {
+          streamArr[s * 3 + 1] = 8;
+          streamArr[s * 3] = (Math.random() - 0.5) * 24;
+        }
+      }
+      streamGeo.attributes.position.needsUpdate = true;
 
       renderer.render(scene, camera);
     };
 
     const start = () => {
-      if (!running && onScreen) {
+      if (!running) {
         running = true;
         clock.start();
         animate(performance.now());
@@ -891,23 +901,12 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted 
       }
     };
 
-    // Pausa inteligente se a aba estiver oculta
+    // Pausa inteligente apenas se a aba estiver oculta
     const handleVisibility = () => {
       if (document.hidden) stop();
-      else if (onScreen) start();
+      else start();
     };
     document.addEventListener('visibilitychange', handleVisibility);
-
-    // Pausa se o canvas sair do viewport
-    let observer: IntersectionObserver | null = null;
-    if (typeof IntersectionObserver !== 'undefined') {
-      observer = new IntersectionObserver((entries) => {
-        onScreen = Boolean(entries[0]?.isIntersecting);
-        if (onScreen) start();
-        else stop();
-      });
-      observer.observe(container);
-    }
 
     start();
 
@@ -920,7 +919,6 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted 
     return () => {
       stop();
       if (returnToCenterTimeout) clearTimeout(returnToCenterTimeout);
-      observer?.disconnect();
       document.removeEventListener('visibilitychange', handleVisibility);
       document.removeEventListener('mouseleave', handlePointerLeave);
       window.removeEventListener('scroll', handleScroll);

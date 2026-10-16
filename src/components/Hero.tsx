@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useReducedMotion, type Variants } from 'motion/react';
 import { WhatsAppIcon } from './WhatsAppIcon';
 import { SITE_CONFIG, whatsappUrl } from '../types';
@@ -68,6 +68,25 @@ export const Hero: React.FC<HeroProps> = ({
     return true;
   });
 
+  // Efeito de flutuação sutil em sentido contrário ao background 3D
+  const [counterDrift, setCounterDrift] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    if (isReduced) return;
+    const handleMouseMove = (e: MouseEvent) => {
+      const { innerWidth, innerHeight } = window;
+      const normX = (e.clientX / innerWidth - 0.5) * 2;
+      const normY = (e.clientY / innerHeight - 0.5) * 2;
+      // Inversão no sentido oposto ao movimento do fundo 3D
+      setCounterDrift({
+        x: -normX * 10,
+        y: -normY * 8,
+      });
+    };
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [isReduced]);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -97,9 +116,9 @@ export const Hero: React.FC<HeroProps> = ({
       {(mode === 'home' || mode === 'all') && (
         <section
           id="home"
-          className="h-screen min-h-[580px] w-full flex flex-col items-center justify-center relative select-none pt-14 px-4 overflow-hidden pointer-events-none"
+          className="h-screen min-h-[580px] w-full flex flex-col items-center justify-center relative select-none px-4 overflow-hidden pointer-events-none"
         >
-          {/* Logo grande centralizado sobre o fundo 3D flutuando suavemente em sentido independente */}
+          {/* Logo grande centralizado sobre o fundo 3D flutuando suavemente em sentido contrário do background */}
           <AnimatePresence>
             {!isMenuOpen && (
               <motion.div
@@ -111,8 +130,8 @@ export const Hero: React.FC<HeroProps> = ({
                     : {
                         opacity: 1,
                         scale: 1,
-                        y: [-8, 8, -8],
-                        x: [4, -4, 4],
+                        y: [-8 + counterDrift.y, 8 + counterDrift.y, -8 + counterDrift.y],
+                        x: [4 + counterDrift.x, -4 + counterDrift.x, 4 + counterDrift.x],
                         rotate: [-0.5, 0.5, -0.5],
                       }
                 }

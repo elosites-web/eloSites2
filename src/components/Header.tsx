@@ -185,7 +185,7 @@ export const Header: React.FC<HeaderProps> = ({
             onClick={(e) => e.stopPropagation()}
           >
             <ul className="flex flex-col items-center justify-center gap-3.5 sm:gap-5 md:gap-6 py-2 w-full">
-              {SCREENS.map((screen, index) => {
+              {SCREENS.filter((screen) => screen.id !== 'home').map((screen, index) => {
                 const isActive = screen.id === currentScreen;
 
                 return (
