@@ -13,7 +13,6 @@ export type ScreenId =
   | 'portfolio'
   | 'servicos'
   | 'processo'
-  | 'diferenciais'
   | 'orcamento'
   | 'faq';
 
@@ -31,9 +30,9 @@ export const SCREENS: ScreenMeta[] = [
   {
     id: 'inicio',
     number: '01',
-    title: 'Início & Apresentação',
+    title: 'Início',
     shortTitle: 'Início',
-    badge: 'Visão Geral',
+    badge: 'Início',
     description: 'Proposta de valor, demonstração interativa e o padrão de engenharia da ēloSites.',
     iconName: 'Sparkles',
   },
@@ -58,24 +57,15 @@ export const SCREENS: ScreenMeta[] = [
   {
     id: 'processo',
     number: '04',
-    title: 'Como Funciona o Processo',
-    shortTitle: 'Processo',
-    badge: '4 Etapas Ágeis',
-    description: 'Da ideia ao site no ar em dias, com comunicação direta e curadoria humana.',
+    title: 'Como Funciona o Processo & Diferenciais',
+    shortTitle: 'Como Funciona',
+    badge: 'Processo & Diferenciais',
+    description: 'Da ideia ao site no ar em 4 etapas ágeis e os diferenciais estratégicos da ēloSites.',
     iconName: 'Workflow',
   },
   {
-    id: 'diferenciais',
-    number: '05',
-    title: 'Diferenciais ēloSites',
-    shortTitle: 'Diferenciais',
-    badge: 'Vantagens Reais',
-    description: 'Foco total em conversão no WhatsApp, sem intermediários e com velocidade máxima.',
-    iconName: 'Zap',
-  },
-  {
     id: 'orcamento',
-    number: '06',
+    number: '05',
     title: 'Briefing & Agendamento',
     shortTitle: 'Orçamento',
     badge: 'Simulação Rápida',
@@ -84,7 +74,7 @@ export const SCREENS: ScreenMeta[] = [
   },
   {
     id: 'faq',
-    number: '07',
+    number: '06',
     title: 'Perguntas Frequentes (FAQ) & Contato',
     shortTitle: 'FAQ & Contato',
     badge: 'Dúvidas & Contato',
@@ -247,8 +237,7 @@ export const NAVIGATION_ITEMS: NavItem[] = [
   { label: 'Início', href: '#inicio', id: 'nav-inicio' },
   { label: 'Portfólio', href: '#portfolio', id: 'nav-portfolio' },
   { label: 'Serviços & Condições', href: '#servicos', id: 'nav-servicos' },
-  { label: 'Como Funciona', href: '#como-funciona', id: 'nav-processo' },
-  { label: 'Diferenciais', href: '#diferenciais', id: 'nav-diferenciais' },
+  { label: 'Como Funciona', href: '#processo', id: 'nav-processo' },
   { label: 'Briefing & Agendamento', href: '#briefing-agendamento', id: 'nav-orcamento' },
   { label: 'FAQ & Contato', href: '#faq', id: 'nav-faq' },
 ];

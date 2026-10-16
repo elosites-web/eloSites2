@@ -30,17 +30,26 @@ export const Hero: React.FC<HeroProps> = ({
   };
 
   const targetAudiences = [
-    'Personal Trainers',
-    'Advogados',
-    'Barbearias & Salões',
-    'Esteticistas & Clínicas',
-    'Autônomos & Negócios Locais',
+    { name: 'Personal Trainers & Academias', tag: 'Fitness', dot: 'bg-emerald-400 shadow-[0_0_8px_#34d399]' },
+    { name: 'Advogados & Escritórios', tag: 'Jurídico', dot: 'bg-indigo-400 shadow-[0_0_8px_#818cf8]' },
+    { name: 'Barbearias & Salões de Beleza', tag: 'Beleza', dot: 'bg-amber-400 shadow-[0_0_8px_#fbbf24]' },
+    { name: 'Esteticistas & Clínicas', tag: 'Estética', dot: 'bg-rose-400 shadow-[0_0_8px_#fb7185]' },
+    { name: 'Dentistas & Consultórios', tag: 'Saúde', dot: 'bg-cyan-400 shadow-[0_0_8px_#22d3ee]' },
+    { name: 'Psicólogos & Terapeutas', tag: 'Terapia', dot: 'bg-purple-400 shadow-[0_0_8px_#c084fc]' },
+    { name: 'Médicos & Nutricionistas', tag: 'Clínica', dot: 'bg-teal-400 shadow-[0_0_8px_#2dd4bf]' },
+    { name: 'Corretores & Imobiliárias', tag: 'Imóveis', dot: 'bg-blue-400 shadow-[0_0_8px_#60a5fa]' },
+    { name: 'Arquitetos & Engenheiros', tag: 'Projetos', dot: 'bg-violet-400 shadow-[0_0_8px_#a78bfa]' },
+    { name: 'Contadores & Consultorias', tag: 'B2B', dot: 'bg-emerald-400 shadow-[0_0_8px_#34d399]' },
+    { name: 'Veterinários & Pet Shops', tag: 'Pet Care', dot: 'bg-pink-400 shadow-[0_0_8px_#f472b6]' },
+    { name: 'Fotógrafos & Estúdios', tag: 'Criativo', dot: 'bg-sky-400 shadow-[0_0_8px_#38bdf8]' },
+    { name: 'Restaurantes & Gastronomia', tag: 'Food', dot: 'bg-orange-400 shadow-[0_0_8px_#fb923c]' },
+    { name: 'Autônomos & Negócios Locais', tag: 'Geral', dot: 'bg-indigo-400 shadow-[0_0_8px_#818cf8]' },
   ];
 
   const systemPrefersReduced = useReducedMotion();
   const isReduced = Boolean(systemPrefersReduced || shouldReduceMedia());
-  // Faixa deslizante dos segmentos: só no tier 'full' (marquee decorativo).
-  const [marquee] = useState(() => getMotionTier() === 'full');
+  // Faixa deslizante dos segmentos ativa em todos os dispositivos e celulares
+  const marquee = !isReduced;
 
   // Sequência de entrada do hero: roda apenas na primeira montagem da sessão
   // (efeito raro = delight). Nas demais navegações o conteúdo já aparece pronto.
@@ -79,16 +88,67 @@ export const Hero: React.FC<HeroProps> = ({
   };
 
   return (
-    <section
-      id="inicio"
-      className="relative pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32 lg:pb-20 overflow-hidden bg-[#070B16]/25 backdrop-blur-[0.5px]"
-    >
-      {/* Background subtle tech grid & glow */}
-      <div className="absolute inset-0 tech-grid-pattern opacity-70 pointer-events-none" />
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[350px] bg-indigo-600/15 blur-[130px] rounded-full pointer-events-none" />
+    <div className="w-full">
+      {/* PÁGINA INICIAL: Apenas o background 3D em movimento com a logo da ēloSites e o menu */}
+      <section
+        id="inicio"
+        className="h-screen min-h-[580px] w-full flex flex-col items-center justify-center relative select-none pt-14 px-4 overflow-hidden"
+      >
+        {/* Logo imersivo centralizado sobre o fundo 3D */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9, y: 15 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          className="relative flex flex-col items-center justify-center"
+        >
+          {/* Brilho decorativo suave em degradê azul-esverdeado */}
+          <div className="absolute -inset-10 sm:-inset-16 bg-gradient-to-r from-teal-500/20 via-cyan-500/25 to-indigo-500/20 blur-3xl rounded-full pointer-events-none" />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          <img
+            src="/logo-elosites-final.png"
+            alt="ēloSites"
+            className="h-20 sm:h-28 md:h-36 lg:h-40 w-auto object-contain drop-shadow-[0_0_45px_rgba(34,211,238,0.45)] relative z-10"
+          />
+        </motion.div>
+
+        {/* Âncora com nome Início que ancora para a atual tela 1 de agora */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.35, ease: 'easeOut' }}
+          className="absolute bottom-8 sm:bottom-12 inset-x-0 flex flex-col items-center justify-center pointer-events-auto z-20"
+        >
+          <a
+            href="#apresentacao"
+            onClick={(e) => {
+              e.preventDefault();
+              const el = document.getElementById('apresentacao');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="group flex flex-col items-center gap-2.5 text-xs font-mono text-cyan-300 hover:text-white transition-colors cursor-pointer"
+            aria-label="Ir para a apresentação e conteúdo do início"
+          >
+            <span className="text-[11px] sm:text-xs font-semibold tracking-widest uppercase text-slate-300 group-hover:text-cyan-300 transition-colors">
+              Início
+            </span>
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full border border-cyan-500/40 bg-slate-950/70 backdrop-blur-md flex items-center justify-center group-hover:border-cyan-300 group-hover:shadow-[0_0_24px_rgba(34,211,238,0.6)] group-hover:scale-105 transition-all">
+              <ArrowDown className="w-4 h-4 text-cyan-400 group-hover:text-cyan-200 animate-bounce" />
+            </div>
+          </a>
+        </motion.div>
+      </section>
+
+      {/* Conteúdo da Atual Tela 1 de Agora (Apresentação Estratégica Completa) */}
+      <section
+        id="apresentacao"
+        className="relative pt-16 pb-16 sm:pt-20 sm:pb-20 lg:pt-24 lg:pb-20 overflow-hidden bg-[#070B16]/25 backdrop-blur-[0.5px]"
+      >
+        {/* Background subtle tech grid & glow */}
+        <div className="absolute inset-0 tech-grid-pattern opacity-70 pointer-events-none" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[350px] bg-indigo-600/15 blur-[130px] rounded-full pointer-events-none" />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           {/* Coluna de Conteúdo Principal — Centralizado no mobile (<lg) e alinhado à esquerda no desktop (>=lg) */}
           <motion.div
             variants={containerVariants}
@@ -121,25 +181,38 @@ export const Hero: React.FC<HeroProps> = ({
             </motion.p>
 
             {/* Segmentos Atendidos */}
-            <motion.div variants={itemVariants} className="pt-1 w-full text-center lg:text-left">
-              <span className="text-xs uppercase tracking-wider text-slate-400 font-medium block mb-2.5 text-center lg:text-left">
-                Desenvolvimento sob medida para:
-              </span>
+            <motion.div variants={itemVariants} className="pt-2 w-full text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 mb-3 px-3 py-1 rounded-full bg-slate-900/90 border border-indigo-500/25 shadow-sm">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+                </span>
+                <span className="text-[11px] sm:text-xs font-mono font-semibold uppercase tracking-wider bg-gradient-to-r from-indigo-200 via-white to-cyan-200 bg-clip-text text-transparent">
+                  Desenvolvimento sob medida para:
+                </span>
+              </div>
+
               {marquee ? (
-                <div className="relative overflow-hidden w-full [mask-image:linear-gradient(to_right,transparent,#000_8%,#000_92%,transparent)]">
+                <div className="relative overflow-hidden w-full py-1 [mask-image:linear-gradient(to_right,transparent,#000_5%,#000_95%,transparent)] [-webkit-mask-image:linear-gradient(to_right,transparent,#000_5%,#000_95%,transparent)]">
                   <div className="audience-marquee">
                     {[0, 1].map((group) => (
                       <div
                         key={group}
-                        className="flex gap-2 pr-2 shrink-0"
+                        className="flex gap-2.5 pr-2.5 shrink-0"
                         aria-hidden={group === 1}
                       >
                         {targetAudiences.map((item) => (
                           <span
-                            key={item}
-                            className="inline-flex items-center px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-xs text-slate-300 font-medium whitespace-nowrap"
+                            key={item.name}
+                            className="audience-pill group/pill"
                           >
-                            {item}
+                            <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${item.dot}`} aria-hidden="true" />
+                            <span className="text-xs sm:text-[13px] font-semibold text-slate-100 group-hover/pill:text-white transition-colors tracking-tight whitespace-nowrap">
+                              {item.name}
+                            </span>
+                            <span className="text-[10px] font-mono font-medium px-1.5 py-0.5 rounded-full bg-white/[0.07] border border-white/[0.1] text-indigo-300 group-hover/pill:text-indigo-200 group-hover/pill:border-indigo-400/40 transition-colors uppercase tracking-wider">
+                              {item.tag}
+                            </span>
                           </span>
                         ))}
                       </div>
@@ -147,13 +220,19 @@ export const Hero: React.FC<HeroProps> = ({
                   </div>
                 </div>
               ) : (
-                <div className="flex flex-wrap justify-center lg:justify-start gap-2">
+                <div className="flex flex-wrap justify-center lg:justify-start gap-2.5">
                   {targetAudiences.map((item) => (
                     <span
-                      key={item}
-                      className="inline-flex items-center px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-xs text-slate-300 font-medium"
+                      key={item.name}
+                      className="audience-pill"
                     >
-                      {item}
+                      <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${item.dot}`} aria-hidden="true" />
+                      <span className="text-xs sm:text-[13px] font-semibold text-slate-100 tracking-tight">
+                        {item.name}
+                      </span>
+                      <span className="text-[10px] font-mono font-medium px-1.5 py-0.5 rounded-full bg-white/[0.07] border border-white/[0.1] text-indigo-300 uppercase tracking-wider">
+                        {item.tag}
+                      </span>
                     </span>
                   ))}
                 </div>
@@ -210,17 +289,17 @@ export const Hero: React.FC<HeroProps> = ({
             transition={{ duration: playSequence ? 0.5 : 0, delay: playSequence ? 0.08 : 0, ease: [0.23, 1, 0.32, 1] }}
             className="lg:col-span-5"
           >
-            <Interactive3DCard maxTilt={5}>
-              <div className="relative rounded-2xl bg-[#0B101D] border border-slate-800 p-1 shadow-2xl shadow-black/60 bracket-panel">
+            <Interactive3DCard maxTilt={2.5}>
+              <div className="relative rounded-2xl glass-panel bg-[#0B101D]/75 backdrop-blur-xl border border-white/10 p-1 shadow-2xl shadow-black/60 bracket-panel">
                 {/* Barra de título do terminal */}
-                <div className="flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 border-b border-slate-800/80 bg-slate-950/60 rounded-t-xl gap-2">
+                <div className="flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 border-b border-white/10 bg-slate-950/40 backdrop-blur-md rounded-t-xl gap-2">
                   <div className="flex items-center gap-1.5 sm:gap-2">
-                    <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-rose-500/80 inline-block" />
-                    <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-amber-500/80 inline-block" />
-                    <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-emerald-500/80 inline-block" />
+                    <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-rose-500/80 inline-block shadow-sm shadow-rose-500/50" />
+                    <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-amber-500/80 inline-block shadow-sm shadow-amber-500/50" />
+                    <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-emerald-500/80 inline-block shadow-sm shadow-emerald-500/50" />
                   </div>
 
-                  <span className="text-[10px] text-emerald-400 font-mono bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-800/40 inline-block">
+                  <span className="text-[10px] text-emerald-400 font-mono bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-500/40 inline-block">
                     ONLINE
                   </span>
                 </div>
@@ -260,9 +339,9 @@ export const Hero: React.FC<HeroProps> = ({
                         <span className="text-indigo-400 font-semibold">$</span>
                         <span className="text-slate-200">elosites deploy --status=ready</span>
                       </div>
-                      <div className="mt-2 p-3 rounded-lg bg-indigo-950/40 border border-indigo-800/40 text-indigo-200 flex items-center justify-between">
+                      <div className="mt-2 p-3 rounded-lg bg-indigo-950/40 border border-indigo-500/30 text-indigo-200 flex items-center justify-between backdrop-blur-sm">
                         <div className="flex items-center gap-2">
-                          <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                          <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]" />
                           <span className="font-semibold text-white">✓ Pronto para publicar</span>
                         </div>
                         <span className="text-[11px] text-indigo-300">Produção</span>
@@ -270,22 +349,22 @@ export const Hero: React.FC<HeroProps> = ({
                     </div>
 
                     {/* Destaques estruturais */}
-                    <div className="grid grid-cols-3 gap-2 pt-2 border-t border-slate-800/80">
-                      <div className="bg-slate-900/90 rounded-lg p-2.5 border border-slate-800/60 text-center">
+                    <div className="grid grid-cols-3 gap-2 pt-2 border-t border-white/10">
+                      <div className="bg-slate-900/60 backdrop-blur-md rounded-lg p-2.5 border border-white/[0.08] text-center">
                         <div className="flex justify-center mb-1 text-emerald-400">
                           <Code2 className="w-4 h-4" />
                         </div>
                         <span className="block text-white font-bold text-xs sm:text-sm">Moderna</span>
                         <span className="text-[10px] text-slate-400">Tecnologia</span>
                       </div>
-                      <div className="bg-slate-900/90 rounded-lg p-2.5 border border-slate-800/60 text-center">
+                      <div className="bg-slate-900/60 backdrop-blur-md rounded-lg p-2.5 border border-white/[0.08] text-center">
                         <div className="flex justify-center mb-1 text-indigo-400">
                           <Smartphone className="w-4 h-4" />
                         </div>
                         <span className="block text-white font-bold text-xs sm:text-sm">Responsivo</span>
                         <span className="text-[10px] text-slate-400">Mobile First</span>
                       </div>
-                      <div className="bg-slate-900/90 rounded-lg p-1.5 sm:p-2.5 border border-slate-800/60 text-center">
+                      <div className="bg-slate-900/60 backdrop-blur-md rounded-lg p-1.5 sm:p-2.5 border border-white/[0.08] text-center">
                         <div className="flex justify-center mb-1 text-emerald-400">
                           <WhatsAppIcon className="w-4 h-4 text-emerald-400" />
                         </div>
@@ -300,5 +379,6 @@ export const Hero: React.FC<HeroProps> = ({
         </div>
       </div>
     </section>
-  );
+  </div>
+);
 };

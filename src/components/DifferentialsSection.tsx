@@ -29,7 +29,6 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
     description: string;
     icon: React.ComponentType<{ className?: string; 'aria-hidden'?: boolean | 'true' | 'false' }>;
     isWhatsApp?: boolean;
-    promise?: string;
   }[] = [
     {
       title: 'Código limpo & alta performance',
@@ -60,8 +59,6 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
       description:
         'O site apresenta seus serviços, explica seus diferenciais e reúne as informações que o cliente precisa para conhecer melhor seu negócio antes de entrar em contato. Com o WhatsApp integrado, fica mais fácil dar o próximo passo.',
       icon: Flame,
-      promise:
-        'O site apoia sua divulgação. Você continua responsável por atrair pessoas, atender os contatos e conduzir as vendas.',
     },
     {
       title: 'WhatsApp em primeiro lugar',
@@ -96,7 +93,7 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
       scale: 1,
       transition: {
         duration: prefersReduced ? 0 : 0.45,
-        ease: [0.22, 1, 0.36, 1],
+        ease: [0.22, 1, 0.36, 1] as const,
       },
     },
   };
@@ -175,15 +172,6 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
                       <p className="text-sm text-slate-300 leading-relaxed font-normal">
                         {item.description}
                       </p>
-                      {item.promise && (
-                        <p className="mt-3.5 flex items-start gap-2 text-sm text-indigo-200/95 leading-relaxed bg-indigo-950/40 border border-indigo-500/20 rounded-xl p-2.5">
-                          <CheckCircle2
-                            className="w-4 h-4 text-indigo-400 shrink-0 mt-0.5"
-                            aria-hidden="true"
-                          />
-                          <span>{item.promise}</span>
-                        </p>
-                      )}
                     </div>
 
                     <div className="mt-6 pt-3.5 border-t border-white/[0.08] flex items-center gap-1.5 text-xs text-slate-400">
@@ -197,8 +185,21 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
           })}
         </motion.div>
 
-        {/* CTA Contextual de Diferenciais */}
-        <div className="mt-14 flex items-center justify-center">
+        {/* Aviso de responsabilidade e alinhamento estratégico posicionado abaixo do último card */}
+        <div className="mt-10 sm:mt-12 max-w-2xl mx-auto text-center px-4">
+          <p className="inline-flex items-center justify-center gap-2.5 text-xs sm:text-sm text-indigo-200/90 leading-relaxed bg-indigo-950/40 border border-indigo-500/20 rounded-xl px-4 sm:px-5 py-3 shadow-md">
+            <CheckCircle2
+              className="w-4 h-4 text-indigo-400 shrink-0"
+              aria-hidden="true"
+            />
+            <span>
+              O site apoia sua divulgação. Você continua responsável por atrair pessoas, atender os contatos e conduzir as vendas.
+            </span>
+          </p>
+        </div>
+
+        {/* CTA Contextual de Diferenciais com espaçamento proporcional */}
+        <div className="mt-8 sm:mt-10 flex items-center justify-center">
           <a
             id="diferenciais-cta-whatsapp"
             href={whatsappUrl(SITE_CONFIG.diferenciaisWhatsappMessage)}

@@ -33,7 +33,7 @@ export type WhatsAppLocation =
   | 'footer';
 
 export interface WhatsAppContextParams {
-  screenId?: ScreenId | 'contato';
+  screenId?: ScreenId | 'contato' | 'diferenciais';
   location?: WhatsAppLocation;
   projectName?: string;
   simulatedValue?: number;

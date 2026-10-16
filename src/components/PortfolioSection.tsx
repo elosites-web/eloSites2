@@ -123,7 +123,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   const [viewMode, setViewMode] = useState<ViewMode>('composite');
 
   return (
-    <article className="glass-card-interactive surface-card relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 flex flex-col h-full overflow-hidden group lg:row-span-8 lg:grid lg:grid-rows-subgrid shadow-2xl shadow-black/60 bracket-panel transition-colors">
+    <article className="glass-card-interactive surface-card portfolio-card scroll-perf-card relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 flex flex-col h-full overflow-hidden group lg:row-span-8 lg:grid lg:grid-rows-subgrid shadow-2xl shadow-black/60 bracket-panel transition-colors">
       {/* Top Header / Informações */}
       <div className="p-6 sm:p-7 border-b border-white/[0.06] bg-slate-950/60 space-y-4 lg:row-span-5 lg:grid lg:grid-rows-subgrid">
         <div className="flex flex-wrap items-center justify-between gap-2">
@@ -172,7 +172,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           </button>
         </div>
 
-        <div className="flex flex-wrap gap-1.5 pt-1">
+        <div className="flex flex-wrap gap-1.5 pt-1 portfolio-list scroll-perf-list">
           {project.tags.map((tag) => (
             <span
               key={tag}
@@ -488,7 +488,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
           </div>
 
           {/* Grade de Projetos Reais com animação de reveal ao rolar */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch lg:grid-rows-[repeat(8,auto)]">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch lg:grid-rows-[repeat(8,auto)] portfolio-list scroll-perf-list">
             {filteredProjects.map((project, index) => {
               const isOddLastOnTwoCols =
                 filteredProjects.length === 3 && index === 2;
@@ -533,7 +533,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
 
         {/* Banner Inferior com Conversão Direta e 3D Tilt */}
         <Interactive3DCard maxTilt={3} className="mt-12 sm:mt-16 w-full">
-          <div className="glass-card-interactive surface-card p-6 sm:p-7 md:p-8 rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 shadow-2xl shadow-black/60 bracket-panel transition-colors">
+          <div className="glass-card-interactive surface-card portfolio-card scroll-perf-card p-6 sm:p-7 md:p-8 rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 shadow-2xl shadow-black/60 bracket-panel transition-colors">
             <div className="space-y-2 text-left w-full lg:max-w-xl">
               <h3 className="text-xl sm:text-2xl font-bold text-white font-display">
                 Gostou do nível dos projetos da ēloSites?

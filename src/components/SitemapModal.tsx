@@ -50,25 +50,19 @@ export const generateSitemapXml = (baseUrl: string): string => {
       loc: `${cleanBase}/#processo`,
       priority: '0.8',
       changefreq: 'monthly',
-      comment: 'Tela 04: Processo em 4 Etapas',
-    },
-    {
-      loc: `${cleanBase}/#diferenciais`,
-      priority: '0.8',
-      changefreq: 'monthly',
-      comment: 'Tela 05: Nossos Diferenciais Técnicos',
+      comment: 'Tela 04: Processo Ágil & Diferenciais',
     },
     {
       loc: `${cleanBase}/#orcamento`,
       priority: '0.9',
       changefreq: 'weekly',
-      comment: 'Tela 06: Orçamento & Agendamento de Reunião',
+      comment: 'Tela 05: Orçamento & Agendamento de Reunião',
     },
     {
       loc: `${cleanBase}/#faq`,
       priority: '0.8',
       changefreq: 'monthly',
-      comment: 'Tela 07: Perguntas Frequentes & Contato',
+      comment: 'Tela 06: Perguntas Frequentes & Contato',
     },
   ];
 

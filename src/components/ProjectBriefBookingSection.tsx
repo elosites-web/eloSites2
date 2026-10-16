@@ -260,7 +260,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
           </div>
 
           {/* Tab Content */}
-          <div className="surface-card glass-panel rounded-3xl p-6 sm:p-10 relative overflow-hidden">
+          <div className="surface-card glass-panel rounded-3xl p-6 sm:p-10 relative overflow-hidden bracket-panel">
             <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-500/[0.04] blur-3xl pointer-events-none rounded-full" />
 
             <AnimatePresence mode="wait">

@@ -1,26 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { EloLogo } from './EloLogo';
-import { WhatsAppIcon } from './WhatsAppIcon';
-import { ScreenId, SCREENS, SITE_CONFIG, whatsappUrl } from '../types';
-import { WebCraftAnimatedArt } from './WebCraftAnimatedArt';
-import { Interactive3DCard } from './Interactive3DCard';
-import {
-  Menu,
-  X,
-  Compass,
-  ArrowRight,
-  ArrowLeft,
-  Sparkles,
-  LayoutGrid,
-  Briefcase,
-  Workflow,
-  Zap,
-  CalendarCheck,
-  HelpCircle,
-  PhoneCall,
-  CheckCircle2,
-} from 'lucide-react';
+import { ScreenId, SCREENS } from '../types';
+import { X } from 'lucide-react';
 
 interface HeaderProps {
   currentScreen: ScreenId;
@@ -32,8 +14,6 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({
   currentScreen,
   onSelectScreen,
-  onPreviousScreen,
-  onNextScreen,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -51,7 +31,6 @@ export const Header: React.FC<HeaderProps> = ({
   // Tecla de atalho: Escape para fechar o menu, 'm' ou 'M' para abrir/fechar o menu
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Ignorar se o foco estiver em um input ou textarea
       const targetTag = (e.target as HTMLElement)?.tagName?.toLowerCase();
       if (targetTag === 'input' || targetTag === 'textarea' || targetTag === 'select') {
         return;
@@ -68,7 +47,7 @@ export const Header: React.FC<HeaderProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isMenuOpen]);
 
-  // Travar o scroll da página enquanto o modal de navegação estiver aberto
+  // Travar o scroll da página enquanto o menu de navegação estiver aberto
   useEffect(() => {
     if (isMenuOpen) {
       document.body.style.overflow = 'hidden';
@@ -81,57 +60,22 @@ export const Header: React.FC<HeaderProps> = ({
   }, [isMenuOpen]);
 
   const currentMeta = SCREENS.find((s) => s.id === currentScreen) || SCREENS[0];
-  const currentIndex = SCREENS.findIndex((s) => s.id === currentScreen);
-  const totalScreens = SCREENS.length;
-
-  const headerWhatsappUrl = whatsappUrl(SITE_CONFIG.headerWhatsappMessage);
-
-  // Mapa de ícones para cada tela
-  const getScreenIcon = (iconName: string) => {
-    switch (iconName) {
-      case 'Sparkles':
-        return Sparkles;
-      case 'LayoutGrid':
-        return LayoutGrid;
-      case 'Briefcase':
-        return Briefcase;
-      case 'Workflow':
-        return Workflow;
-      case 'Zap':
-        return Zap;
-      case 'CalendarCheck':
-        return CalendarCheck;
-      case 'HelpCircle':
-        return HelpCircle;
-      case 'PhoneCall':
-        return PhoneCall;
-      default:
-        return LayoutGrid;
-    }
-  };
 
   return (
     <>
+      {/* Faixa do cabeçalho de vidro azul esverdeado e transparente em degradê */}
       <header
         id="header-nav"
         className={`fixed top-0 left-0 right-0 z-[60] transition-all duration-300 ${
           isScrolled || isMenuOpen
-            ? 'bg-[#080C15]/95 backdrop-blur-md border-b border-white/[0.08] py-3 shadow-xl shadow-black/40'
-            : 'bg-[#080C15]/80 backdrop-blur-sm border-b border-white/[0.06] py-3.5 sm:py-4'
+            ? 'bg-gradient-to-r from-[#031d24]/90 via-[#062c36]/85 to-[#071c2b]/90 backdrop-blur-md border-b border-cyan-500/25 py-3 shadow-xl shadow-teal-950/40'
+            : 'bg-gradient-to-r from-[#031d24]/75 via-[#062c36]/70 to-[#071c2b]/75 backdrop-blur-sm border-b border-cyan-500/20 py-3.5 sm:py-4'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="flex items-center justify-between gap-3 sm:gap-6 min-h-[44px]">
-            {/* Logo do Estúdio — Anima para o centro da tela quando menu está aberto e volta à esquerda ao fechar */}
-            <motion.div
-              layout
-              transition={{ type: 'spring', stiffness: 280, damping: 26 }}
-              className={`flex items-center gap-2 sm:gap-3 shrink-0 z-10 transition-all duration-300 ${
-                isMenuOpen
-                  ? 'absolute left-1/2 -translate-x-1/2'
-                  : 'relative left-0 translate-x-0'
-              }`}
-            >
+            {/* Logo do Estúdio à esquerda */}
+            <div className="flex items-center gap-2 sm:gap-3 shrink-0 z-10">
               <button
                 type="button"
                 id="brand-logo-link"
@@ -139,7 +83,7 @@ export const Header: React.FC<HeaderProps> = ({
                   onSelectScreen('inicio');
                   setIsMenuOpen(false);
                 }}
-                className="group focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-lg p-1 -ml-1 transition-opacity hover:opacity-90 text-left flex items-center gap-2.5 shrink-0"
+                className="group focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 rounded-lg p-1 -ml-1 transition-opacity hover:opacity-90 text-left flex items-center gap-2.5 shrink-0 cursor-pointer"
                 aria-label="ēloSites — Ir para a Tela de Início"
               >
                 <EloLogo size="md" />
@@ -151,20 +95,20 @@ export const Header: React.FC<HeaderProps> = ({
                   <motion.div
                     layoutId="shared-active-screen-header-pill"
                     transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-indigo-950/60 border border-indigo-500/25"
+                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-cyan-950/60 border border-cyan-500/25"
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />
                     <span className="text-xs font-semibold text-slate-200">
                       {currentMeta.shortTitle}
                     </span>
                   </motion.div>
                 </div>
               )}
-            </motion.div>
+            </div>
 
-            {/* Ações Direitas: Botão MENU (oculto quando o menu já está aberto) */}
+            {/* Ações Direitas: Botão Futurista Ícone-only do Menu */}
             <div className="flex items-center ml-auto shrink-0 z-10">
-              {!isMenuOpen && (
+              {!isMenuOpen ? (
                 <button
                   id="menu-de-navegacao-btn"
                   type="button"
@@ -172,12 +116,27 @@ export const Header: React.FC<HeaderProps> = ({
                   aria-expanded={false}
                   aria-controls="multi-screen-navigation-modal"
                   aria-label="Abrir Menu de Navegação"
-                  className="relative group inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-lg shadow-indigo-600/30 hover:shadow-[0_0_24px_rgba(99,102,241,0.55)] active:shadow-[0_0_32px_rgba(168,85,247,0.7)] hover:-translate-y-0.5 active:translate-y-0 transition-all border border-indigo-400/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 text-center shrink-0 cursor-pointer"
+                  className="relative group w-10 h-10 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl flex items-center justify-center bg-slate-900/90 hover:bg-slate-800/90 border border-cyan-500/40 hover:border-cyan-400/80 shadow-lg shadow-teal-950/60 hover:shadow-[0_0_24px_rgba(34,211,238,0.45)] active:scale-95 transition-all duration-200 cursor-pointer overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
                 >
-                  <Menu className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white shrink-0 transition-transform duration-200 group-hover:scale-110" aria-hidden="true" />
-                  <span className="tracking-wider uppercase font-bold text-xs sm:text-xs text-center drop-shadow-sm">
-                    MENU
-                  </span>
+                  {/* Fundo com gradiente cibernético e brilho */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-600/20 via-transparent to-indigo-500/20 group-hover:opacity-100 transition-opacity" />
+                  <div className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-cyan-400/70 blur-[2px] group-hover:scale-125 transition-transform" />
+
+                  {/* Ícone futurista e estilizado: 3 barras dinâmicas em gradiente neon */}
+                  <div className="relative flex flex-col justify-center items-center gap-[4.5px] w-5 h-5 pointer-events-none">
+                    <span className="w-5 h-[2px] rounded-full bg-gradient-to-r from-cyan-400 to-indigo-300 group-hover:from-cyan-300 group-hover:to-indigo-200 transition-all duration-200 shadow-[0_0_8px_rgba(34,211,238,0.7)]" />
+                    <span className="w-3.5 h-[2px] rounded-full bg-gradient-to-r from-white to-cyan-200 group-hover:w-5 transition-all duration-200 self-start group-hover:self-center" />
+                    <span className="w-4.5 h-[2px] rounded-full bg-gradient-to-r from-teal-400 to-indigo-400 group-hover:from-cyan-300 group-hover:to-indigo-300 transition-all duration-200 shadow-[0_0_8px_rgba(34,211,238,0.7)]" />
+                  </div>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setIsMenuOpen(false)}
+                  aria-label="Fechar menu de navegação"
+                  className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-cyan-400/40 hover:border-cyan-300 shadow-md flex items-center justify-center transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 group"
+                >
+                  <X className="w-5 h-5 text-slate-300 group-hover:text-cyan-300 transition-colors" />
                 </button>
               )}
             </div>
@@ -185,191 +144,73 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
       </header>
 
-      {/* MODAL / PAINEL IMERSIVO DE NAVEGAÇÃO MULTITELAS */}
+      {/* MODAL / PAINEL: Apenas os nomes das seções uma abaixo da outra com background ao fundo dos nomes */}
       {isMenuOpen && (
         <div
           id="multi-screen-navigation-modal"
           role="dialog"
           aria-modal="true"
-          aria-label="Menu de Navegação das Telas ēloSites"
-          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 pt-20 sm:pt-24 bg-black/85 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto"
+          aria-label="Menu de Navegação das Seções ēloSites"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 pt-24 pb-8 bg-black/85 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto"
           onClick={() => setIsMenuOpen(false)}
         >
+          {/* Card com o background ao fundo dos nomes das seções */}
           <div
-            className="relative w-full max-w-5xl glass-panel border border-white/[0.12] rounded-3xl p-5 sm:p-8 shadow-2xl shadow-black my-auto max-h-[92vh] flex flex-col justify-between overflow-y-auto"
+            className="relative w-full max-w-lg glass-panel bg-gradient-to-b from-[#081820]/95 via-[#06121b]/95 to-[#070e17]/95 border border-cyan-500/30 rounded-3xl p-6 sm:p-10 shadow-2xl shadow-cyan-950/60 flex flex-col items-center justify-center text-center my-auto overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Topbar do Modal */}
-            <div className="flex items-center justify-between pb-5 border-b border-white/[0.08]">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-indigo-950/80 border border-indigo-500/30 flex items-center justify-center text-indigo-300 shrink-0 aspect-square">
-                  <Compass className="w-5 h-5 shrink-0" />
-                </div>
-                <div>
-                  <h2 className="text-lg sm:text-xl font-bold font-display text-white">
-                    Menu de Navegação
-                  </h2>
-                  <p className="text-xs text-slate-400">
-                    Selecione a tela que deseja visualizar
-                  </p>
-                </div>
-              </div>
+            {/* Brilhos decorativos no background ao fundo dos nomes */}
+            <div className="absolute -top-20 -left-20 w-56 h-56 bg-cyan-500/15 blur-3xl rounded-full pointer-events-none" />
+            <div className="absolute -bottom-20 -right-20 w-56 h-56 bg-indigo-600/15 blur-3xl rounded-full pointer-events-none" />
 
-              <div className="flex items-center gap-2">
-                <span className="hidden sm:inline text-[11px] font-mono text-slate-500">
-                  ESC para fechar
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setIsMenuOpen(false)}
-                  aria-label="Fechar menu de navegação"
-                  className="p-2 sm:p-2.5 rounded-xl text-white bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 border border-indigo-400/40 shadow-lg shadow-indigo-600/30 hover:shadow-[0_0_24px_rgba(99,102,241,0.55)] active:shadow-[0_0_32px_rgba(168,85,247,0.7)] hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 group"
-                >
-                  <X className="w-5 h-5 text-white transition-transform duration-200 group-hover:scale-110" />
-                </button>
-              </div>
+            {/* Botão fechar no canto superior direito do card */}
+            <div className="absolute top-4 right-4 sm:top-5 sm:right-5 z-20">
+              <button
+                type="button"
+                onClick={() => setIsMenuOpen(false)}
+                aria-label="Fechar menu de navegação"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-white/10 hover:border-cyan-400/50 shadow-md flex items-center justify-center transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 group"
+              >
+                <X className="w-4 h-4 sm:w-5 sm:h-5 text-slate-300 group-hover:text-cyan-300 transition-colors" />
+              </button>
             </div>
 
-            {/* Grid com TODAS as seções/telas */}
-            <div className="py-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
-              {SCREENS.map((screen, idx) => {
+            {/* Apenas os nomes das seções, uma abaixo da outra, na identidade visual do site */}
+            <ul className="flex flex-col items-center justify-center gap-2.5 sm:gap-4 py-3 w-full">
+              {SCREENS.map((screen) => {
                 const isActive = screen.id === currentScreen;
-                const Icon = getScreenIcon(screen.iconName);
 
                 return (
-                  <Interactive3DCard key={screen.id} maxTilt={5} className="h-full">
+                  <li key={screen.id} className="w-full flex justify-center">
                     <button
                       type="button"
                       onClick={() => {
                         onSelectScreen(screen.id);
                         setIsMenuOpen(false);
                       }}
-                      className={`text-left p-4 sm:p-5 rounded-2xl border transition-all duration-300 group flex flex-col justify-between min-h-[148px] h-full w-full relative ${
+                      className={`group relative w-full py-2.5 sm:py-3 px-6 rounded-2xl transition-all duration-300 flex items-center justify-center cursor-pointer ${
                         isActive
-                          ? 'bg-gradient-to-b from-indigo-950/90 to-slate-950 border-indigo-400/80 shadow-[0_0_24px_rgba(99,102,241,0.35)] ring-1 ring-indigo-400/70'
-                          : 'bg-slate-950/70 border-white/[0.08] hover:border-indigo-400/50 hover:bg-slate-900/90 hover:shadow-[0_0_20px_rgba(99,102,241,0.2)]'
+                          ? 'text-cyan-300 font-bold drop-shadow-[0_0_16px_rgba(34,211,238,0.7)]'
+                          : 'text-slate-300 hover:text-white font-semibold hover:drop-shadow-[0_0_14px_rgba(129,140,248,0.6)]'
                       }`}
                     >
-                      {isActive && (
-                        <motion.div
-                          layoutId="modal-active-card-glow"
-                          className="absolute inset-0 rounded-2xl border-2 border-indigo-400/90 shadow-[0_0_24px_rgba(99,102,241,0.45)] pointer-events-none z-10"
-                          transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                        />
-                      )}
-                      {/* Topo do card */}
-                      <div className="flex items-center justify-between w-full">
-                        <div className="flex items-center gap-2">
-                          <span
-                            className={`text-xs font-mono font-bold px-2 py-0.5 rounded ${
-                              isActive
-                                ? 'bg-indigo-600 text-white'
-                                : 'bg-slate-900 text-slate-400 group-hover:text-indigo-300 border border-white/[0.05]'
-                            }`}
-                          >
-                            {screen.number}
-                          </span>
-                          <span className="text-[10px] uppercase font-mono text-slate-400">
-                            {screen.badge}
-                          </span>
-                        </div>
+                      {/* Efeito ao passar o cursor / estado ativo */}
+                      <div
+                        className={`absolute inset-0 rounded-2xl transition-all duration-300 pointer-events-none ${
+                          isActive
+                            ? 'bg-gradient-to-r from-cyan-950/60 via-indigo-950/40 to-cyan-950/60 border border-cyan-400/40 shadow-[0_0_20px_rgba(34,211,238,0.25)]'
+                            : 'opacity-0 group-hover:opacity-100 bg-white/[0.04] border border-white/[0.08] group-hover:scale-[1.02]'
+                        }`}
+                      />
 
-                        <Icon
-                          className={`w-4.5 h-4.5 ${
-                            isActive
-                              ? 'text-indigo-300'
-                              : 'text-slate-500 group-hover:text-indigo-400 transition-colors'
-                          }`}
-                        />
-                      </div>
-
-                      {/* Título e Descrição */}
-                      <div className="mt-3 space-y-1">
-                        <h3
-                          className={`text-sm sm:text-base font-bold font-display ${
-                            isActive
-                              ? 'text-white'
-                              : 'text-slate-200 group-hover:text-white transition-colors'
-                          }`}
-                        >
-                          {screen.shortTitle}
-                        </h3>
-                        <p className="text-xs text-slate-400 leading-relaxed line-clamp-none lg:line-clamp-2">
-                          {screen.description}
-                        </p>
-                      </div>
-
-                      {/* Status de ativo */}
-                      {isActive ? (
-                        <div className="mt-3 flex items-center gap-1.5 text-[11px] font-semibold text-emerald-400">
-                          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                          <span>Em exibição agora</span>
-                        </div>
-                      ) : (
-                        <div className="mt-3 flex items-center gap-1 text-[11px] text-slate-500 group-hover:text-indigo-300 transition-colors">
-                          <span>Acessar tela</span>
-                          <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-                        </div>
-                      )}
+                      <span className="relative z-10 font-display text-xl sm:text-2xl md:text-[1.75rem] tracking-tight transition-transform duration-200 group-hover:-translate-y-0.5">
+                        {screen.shortTitle}
+                      </span>
                     </button>
-                  </Interactive3DCard>
+                  </li>
                 );
               })}
-
-              {/* Slot 08: Arte Animada Centralizada de Criação de Sites (ēloSites Craft) */}
-              <Interactive3DCard maxTilt={5} className="h-full">
-                <WebCraftAnimatedArt
-                  compact={true}
-                  onActionClick={() => setIsMenuOpen(false)}
-                />
-              </Interactive3DCard>
-            </div>
-
-            {/* Rodapé do Modal com navegação sequencial rápida */}
-            <div className="pt-5 border-t border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  disabled={currentIndex === 0}
-                  onClick={() => {
-                    onPreviousScreen();
-                    setIsMenuOpen(false);
-                  }}
-                  className="inline-flex items-center justify-center text-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 disabled:opacity-40 disabled:pointer-events-none text-slate-300 border border-white/[0.07] transition-all"
-                >
-                  <ArrowLeft className="w-3.5 h-3.5" />
-                  <span>Tela Anterior</span>
-                </button>
-
-                <button
-                  type="button"
-                  disabled={currentIndex === totalScreens - 1}
-                  onClick={() => {
-                    onNextScreen();
-                    setIsMenuOpen(false);
-                  }}
-                  className="inline-flex items-center justify-center text-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 disabled:opacity-40 disabled:pointer-events-none text-slate-300 border border-white/[0.07] transition-all"
-                >
-                  <span>Próxima Tela</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <span className="text-xs text-slate-400 hidden md:inline">
-                  Dúvidas sobre o projeto?
-                </span>
-                <a
-                  href={whatsappUrl(SITE_CONFIG.mobileMenuWhatsappMessage)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center text-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white transition-all shadow"
-                >
-                  <WhatsAppIcon className="w-3.5 h-3.5 text-white" />
-                  <span>Conversar no WhatsApp</span>
-                </a>
-              </div>
-            </div>
+            </ul>
           </div>
         </div>
       )}

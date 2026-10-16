@@ -70,13 +70,29 @@ export const SkeletonFloatingWhatsApp: React.FC<{ className?: string }> = ({ cla
   );
 };
 
-export const FloatingWhatsApp: React.FC = () => {
+interface FloatingWhatsAppProps {
+  onBubbleStateChange?: (isVisible: boolean) => void;
+}
+
+export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ onBubbleStateChange }) => {
   const [isButtonVisible, setIsButtonVisible] = useState(false);
   const [isSkeletonLoading, setIsSkeletonLoading] = useState(false);
   const [isPulsing, setIsPulsing] = useState(false);
   const [isBubbleVisible, setIsBubbleVisible] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [isOnline, setIsOnline] = useState<boolean>(() => isWithinBusinessHours());
+
+  // Notifica o rodapé e a aplicação quando o balão do WhatsApp surge ou fecha
+  useEffect(() => {
+    onBubbleStateChange?.(isBubbleVisible);
+    try {
+      window.dispatchEvent(
+        new CustomEvent('elosites-bubble-visibility', {
+          detail: { isVisible: isBubbleVisible },
+        })
+      );
+    } catch {}
+  }, [isBubbleVisible, onBubbleStateChange]);
 
   // Acessibilidade e preferências de redução de movimento
   const systemPrefersReduced = useReducedMotion();
@@ -370,8 +386,11 @@ export const FloatingWhatsApp: React.FC = () => {
               </button>
             </div>
 
-            {/* 2. Message Body: Texto centralizado com quebra de linha harmônica */}
-            <p className="text-[12.5px] leading-snug text-slate-100 selection:bg-indigo-500 text-center px-1 py-0.5 font-normal">
+            {/* 2. Message Body: Texto centralizado com quebra de linha harmônica, abaixado em 0.7px */}
+            <p
+              style={{ transform: 'translateY(0.7px)' }}
+              className="text-[12.5px] leading-snug text-slate-100 selection:bg-indigo-500 text-center px-1 py-0.5 font-normal translate-y-[0.7px]"
+            >
               Olá! Precisa de um site?
               <br />
               Me fale sobre o seu projeto.

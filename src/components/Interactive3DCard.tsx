@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useReducedMotion } from 'motion/react';
 import { shouldReduceMedia } from '../mediaPrefs';
 
@@ -14,7 +14,7 @@ interface Interactive3DCardProps {
 export const Interactive3DCard: React.FC<Interactive3DCardProps> = ({
   children,
   className = '',
-  maxTilt = 6,
+  maxTilt = 2.5,
   glare = true,
   style = {},
   onClick,
@@ -22,9 +22,16 @@ export const Interactive3DCard: React.FC<Interactive3DCardProps> = ({
   const cardRef = useRef<HTMLDivElement>(null);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [glarePos, setGlarePos] = useState({ x: 50, y: 50, opacity: 0 });
+  const rafIdRef = useRef<number | null>(null);
 
   const systemPrefersReduced = useReducedMotion();
   const prefersReduced = Boolean(systemPrefersReduced || shouldReduceMedia());
+
+  useEffect(() => {
+    return () => {
+      if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
+    };
+  }, []);
 
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     // Evita tilt em dispositivos de toque puro ou caso haja preferência por redução de movimento
@@ -32,32 +39,39 @@ export const Interactive3DCard: React.FC<Interactive3DCardProps> = ({
     const card = cardRef.current;
     if (!card) return;
 
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    const clientX = e.clientX;
+    const clientY = e.clientY;
 
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
+    if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
+    rafIdRef.current = requestAnimationFrame(() => {
+      if (!cardRef.current) return;
+      const rect = cardRef.current.getBoundingClientRect();
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
 
-    const rotateX = ((y - centerY) / centerY) * -maxTilt;
-    const rotateY = ((x - centerX) / centerX) * maxTilt;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
 
-    setTilt({ x: rotateX, y: rotateY });
-    if (glare) {
-      setGlarePos({
-        x: (x / rect.width) * 100,
-        y: (y / rect.height) * 100,
-        opacity: 0.22,
-      });
-    }
+      // Movimento suave com ângulo reduzido para evitar tremores e sensibilidade a labirintite
+      const rotateX = Number((((y - centerY) / centerY) * -maxTilt).toFixed(2));
+      const rotateY = Number((((x - centerX) / centerX) * maxTilt).toFixed(2));
+
+      setTilt({ x: rotateX, y: rotateY });
+      if (glare) {
+        setGlarePos({
+          x: Math.round((x / rect.width) * 100),
+          y: Math.round((y / rect.height) * 100),
+          opacity: 0.14,
+        });
+      }
+    });
   };
 
   const handlePointerLeave = () => {
+    if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
     setTilt({ x: 0, y: 0 });
     setGlarePos((prev) => ({ ...prev, opacity: 0 }));
   };
-
-  const isTilting = tilt.x !== 0 || tilt.y !== 0;
 
   return (
     <div
@@ -65,22 +79,22 @@ export const Interactive3DCard: React.FC<Interactive3DCardProps> = ({
       onClick={onClick}
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
-      className={`relative rounded-2xl transition-transform duration-200 ease-out will-change-transform ${className}`}
+      className={`relative rounded-2xl transition-transform duration-500 ease-out will-change-transform ${className}`}
       style={{
         transform: prefersReduced
           ? undefined
-          : `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) ${isTilting ? 'translateZ(6px)' : ''}`,
+          : `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
         transformStyle: 'preserve-3d',
         ...style,
       }}
     >
       {children}
 
-      {/* Brilho especular e flare dinâmico acompanhando o cursor */}
+      {/* Brilho especular suave acompanhando o cursor */}
       {glare && !prefersReduced && (
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 rounded-2xl transition-opacity duration-300 z-20 overflow-hidden"
+          className="pointer-events-none absolute inset-0 rounded-2xl transition-opacity duration-500 z-20 overflow-hidden"
           style={{
             background: `radial-gradient(circle 260px at ${glarePos.x}% ${glarePos.y}%, rgba(129, 140, 248, ${glarePos.opacity}), transparent 75%)`,
             opacity: glarePos.opacity,

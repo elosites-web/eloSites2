@@ -180,7 +180,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
       y: 0,
       transition: {
         duration: prefersReduced ? 0 : 0.45,
-        ease: [0.22, 1, 0.36, 1],
+        ease: [0.22, 1, 0.36, 1] as const,
       },
     },
   };
@@ -218,7 +218,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.12 }}
-            className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-7 lg:gap-8 min-w-0 items-stretch lg:grid-rows-[repeat(5,auto)]"
+            className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-7 lg:gap-8 min-w-0 items-stretch lg:grid-rows-[repeat(5,auto)] service-list scroll-perf-list"
           >
             {SERVICES.map((service) => {
               const Icon = service.icon;
@@ -232,7 +232,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                 >
                   <Interactive3DCard maxTilt={5} className="h-full w-full lg:row-span-5 lg:grid lg:grid-rows-subgrid">
                     <article
-                      className="glass-card-interactive surface-card accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 md:p-8 flex flex-col space-y-5 lg:space-y-0 lg:row-span-5 lg:grid lg:grid-rows-subgrid shadow-2xl shadow-black/60 bracket-panel transition-colors h-full w-full"
+                      className="glass-card-interactive surface-card service-card scroll-perf-card accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 md:p-8 flex flex-col space-y-5 lg:space-y-0 lg:row-span-5 lg:grid lg:grid-rows-subgrid shadow-2xl shadow-black/60 bracket-panel transition-colors h-full w-full"
                     >
                       {/* Linha 1: Topo do card + Título + Descrição */}
                       <div className="space-y-4 lg:pb-4">
@@ -260,7 +260,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                         <span className="text-xs font-bold uppercase tracking-wider text-slate-300 block">
                           INCLUI:
                         </span>
-                        <div className="grid grid-cols-1 gap-2 text-sm text-slate-300">
+                        <div className="grid grid-cols-1 gap-2 text-sm text-slate-300 service-list scroll-perf-list">
                           {service.includes.map((item) => (
                             <div key={item} className="flex items-start gap-2">
                               <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" aria-hidden="true" />
@@ -284,7 +284,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                             <span className="text-xs font-bold uppercase tracking-wider text-slate-400 block">
                               NÃO INCLUSO:
                             </span>
-                            <div className="grid grid-cols-1 gap-1.5 text-xs text-slate-400">
+                            <div className="grid grid-cols-1 gap-1.5 text-xs text-slate-400 service-list scroll-perf-list">
                               {service.excluded.map((item) => (
                                 <div key={item} className="flex items-start gap-2">
                                   <X className="w-3.5 h-3.5 text-slate-500 shrink-0 mt-0.5" aria-hidden="true" />
@@ -361,7 +361,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                   },
                 },
               }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 service-list scroll-perf-list"
             >
               {/* Regra 1: 50% Entrada + 50% Final */}
               <motion.div
@@ -377,7 +377,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                 className="h-full"
               >
                 <Interactive3DCard maxTilt={5} className="h-full">
-                  <div className="glass-card-interactive surface-card accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors">
+                  <div className="glass-card-interactive surface-card service-card scroll-perf-card accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors">
                     <div className="space-y-3">
                       <div className="w-10 h-10 rounded-xl bg-indigo-950/90 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
                         <Split className="w-5 h-5" />
@@ -410,7 +410,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                 className="h-full"
               >
                 <Interactive3DCard maxTilt={5} className="h-full">
-                  <div className="glass-card-interactive surface-card accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-emerald-500/40 hover:border-emerald-400/70 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors bg-gradient-to-b from-emerald-950/20 to-[#0B101D]">
+                  <div className="glass-card-interactive surface-card service-card scroll-perf-card accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-emerald-500/40 hover:border-emerald-400/70 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors bg-gradient-to-b from-emerald-950/20 to-[#0B101D]">
                     <div className="space-y-3">
                       <div className="w-10 h-10 rounded-xl bg-emerald-950/90 border border-emerald-500/40 flex items-center justify-center text-emerald-300">
                         <Percent className="w-5 h-5" />
@@ -448,7 +448,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                 className="h-full"
               >
                 <Interactive3DCard maxTilt={5} className="h-full">
-                  <div className="glass-card-interactive surface-card accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors">
+                  <div className="glass-card-interactive surface-card service-card scroll-perf-card accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors">
                     <div className="space-y-3">
                       <div className="w-10 h-10 rounded-xl bg-indigo-950/90 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
                         <CreditCard className="w-5 h-5" />
@@ -481,7 +481,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                 className="h-full"
               >
                 <Interactive3DCard maxTilt={5} className="h-full">
-                  <div className="glass-card-interactive surface-card accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors">
+                  <div className="glass-card-interactive surface-card service-card scroll-perf-card accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors">
                     <div className="space-y-3">
                       <div className="w-10 h-10 rounded-xl bg-indigo-950/90 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
                         <Calendar className="w-5 h-5" />
@@ -503,7 +503,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
 
             {/* SIMULADOR INTERATIVO DE CONDIÇÕES */}
             <Interactive3DCard maxTilt={3} className="mt-8 w-full">
-              <div className="glass-card-interactive surface-card relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/40 p-6 sm:p-8 shadow-2xl shadow-black/60 bracket-panel transition-colors">
+              <div className="glass-card-interactive surface-card service-card scroll-perf-card relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/40 p-6 sm:p-8 shadow-2xl shadow-black/60 bracket-panel transition-colors">
               <div className="flex flex-col lg:flex-row items-center justify-between gap-6 pb-6 border-b border-white/[0.08]">
                 <div className="space-y-1 text-center lg:text-left">
                   <div className="inline-flex items-center gap-1.5 text-xs text-indigo-400 font-semibold uppercase">

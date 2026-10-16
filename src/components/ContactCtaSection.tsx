@@ -79,7 +79,7 @@ export const ContactCtaSection: React.FC<ContactCtaSectionProps> = ({ onNavigate
             href={mainWhatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3.5 glass-panel glass-card-interactive p-4 rounded-2xl text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]"
+            className="flex items-center gap-3.5 glass-panel glass-card-interactive p-4 rounded-2xl text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] bracket-panel relative"
           >
             <div className="w-10 h-10 rounded-xl bg-emerald-950/70 border border-emerald-500/30 flex items-center justify-center shrink-0">
               <WhatsAppIcon className="w-5 h-5 text-emerald-400" />
@@ -90,7 +90,7 @@ export const ContactCtaSection: React.FC<ContactCtaSectionProps> = ({ onNavigate
             </div>
           </a>
 
-          <div className="flex items-center gap-3.5 glass-panel p-4 rounded-2xl text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+          <div className="flex items-center gap-3.5 glass-panel p-4 rounded-2xl text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] bracket-panel relative">
             <div className="w-10 h-10 rounded-xl bg-indigo-950/70 border border-indigo-500/30 flex items-center justify-center shrink-0">
               <Mail className="w-5 h-5 text-indigo-400" aria-hidden="true" />
             </div>

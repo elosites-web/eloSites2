@@ -23,14 +23,6 @@ import {
 import { ScreenId, SCREENS } from './types';
 import { shouldReduceMedia, getMotionTier } from './mediaPrefs';
 import { withViewTransition, supportsViewTransitions } from './viewTransition';
-import {
-  ChevronLeft,
-  ChevronRight,
-  Compass,
-  ArrowRight,
-  Layers,
-  Sparkles,
-} from 'lucide-react';
 
 // Code-splitting via React.lazy para acelerar a carga inicial da tela Início
 const PortfolioSection = lazy(() =>
@@ -58,6 +50,7 @@ export default function App() {
   const [direction, setDirection] = useState<number>(1);
   const [legalModal, setLegalModal] = useState<'privacy' | 'terms' | null>(null);
   const [isSitemapOpen, setIsSitemapOpen] = useState<boolean>(false);
+  const [isWhatsAppBubbleOpen, setIsWhatsAppBubbleOpen] = useState<boolean>(false);
 
   // Hook do Framer Motion combinado com a preferência de acessibilidade
   const systemPrefersReduced = useReducedMotion();
@@ -86,14 +79,13 @@ export default function App() {
     });
   };
 
-  // Sincronização inicial e bidirecional com a hash da URL (7 telas oficiais)
+  // Sincronização inicial e bidirecional com a hash da URL (6 telas oficiais)
   useEffect(() => {
     const validIds: ScreenId[] = [
       'inicio',
       'portfolio',
       'servicos',
       'processo',
-      'diferenciais',
       'orcamento',
       'faq',
     ];
@@ -112,6 +104,21 @@ export default function App() {
           }
           return targetScreen;
         });
+      } else if (rawHash === 'diferenciais') {
+        setCurrentScreen((prev) => {
+          if (prev !== 'processo') {
+            const prevIdx = SCREENS.findIndex((s) => s.id === prev);
+            const nextIdx = SCREENS.findIndex((s) => s.id === 'processo');
+            if (nextIdx !== -1 && prevIdx !== -1) {
+              setDirection(nextIdx > prevIdx ? 1 : -1);
+            }
+          }
+          return 'processo';
+        });
+        setTimeout(() => {
+          const el = document.getElementById('diferenciais');
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }, 150);
       } else if (rawHash === 'contato') {
         setCurrentScreen((prev) => {
           if (prev !== 'faq') {
@@ -140,6 +147,12 @@ export default function App() {
         });
         setTimeout(() => {
           const el = document.getElementById('testemunhos');
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }, 150);
+      } else if (rawHash === 'apresentacao') {
+        setCurrentScreen('inicio');
+        setTimeout(() => {
+          const el = document.getElementById('apresentacao');
           if (el) el.scrollIntoView({ behavior: 'smooth' });
         }, 150);
       } else if (rawHash === 'sitemap' || rawHash === 'mapa-do-site') {
@@ -372,16 +385,10 @@ export default function App() {
         </div>
       )}
 
-      {/* TELA 04: Processo em 4 Etapas */}
+      {/* TELA 04: Processo em 4 Etapas & Diferenciais como continuidade */}
       {currentScreen === 'processo' && (
-        <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style]">
+        <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style] space-y-0">
           <ProcessSection />
-        </div>
-      )}
-
-      {/* TELA 05: Diferenciais */}
-      {currentScreen === 'diferenciais' && (
-        <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style]">
           <SectionErrorBoundary>
             <Suspense fallback={<DifferentialsSkeleton />}>
               <DifferentialsSection onNavigateToPortfolio={() => navigateToScreen('portfolio')} />
@@ -390,7 +397,7 @@ export default function App() {
         </div>
       )}
 
-      {/* TELA 06: Briefing & Agendamento */}
+      {/* TELA 05: Briefing & Agendamento */}
       {currentScreen === 'orcamento' && (
         <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style]">
           <SectionErrorBoundary>
@@ -401,7 +408,7 @@ export default function App() {
         </div>
       )}
 
-      {/* TELA 07: Perguntas Frequentes (FAQ) & Contato (Tela 8 incorporada ao final da Tela 7) */}
+      {/* TELA 06: Perguntas Frequentes (FAQ) & Contato */}
       {currentScreen === 'faq' && (
         <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style] space-y-0">
           <FaqSection />
@@ -474,70 +481,6 @@ export default function App() {
         )}
       </main>
 
-      {/* DOCK / CONTROLADOR FIXO DE NAVEGAÇÃO MULTITELAS CENTRALIZADO E DISCRETO: < -------- > */}
-      <nav
-        aria-label="Navegador de telas"
-        className="sticky bottom-0 z-30 bg-[#070A12]/80 backdrop-blur-md border-t border-white/[0.04] py-1.5 px-2 shadow-lg"
-      >
-        <div className="max-w-7xl mx-auto flex items-center justify-center">
-          <div className="flex items-center gap-1 sm:gap-1.5 px-2.5 py-1 rounded-full bg-slate-950/60 border border-white/[0.06] shadow-sm">
-            {/* Seta Esquerda (<) */}
-            <button
-              type="button"
-              disabled={!previousScreen}
-              onClick={handlePrevious}
-              className="flex items-center justify-center p-1.5 rounded-lg text-slate-400 hover:text-white bg-transparent hover:bg-white/[0.06] disabled:opacity-20 disabled:pointer-events-none transition-colors cursor-pointer"
-              aria-label={previousScreen ? `Voltar para Tela ${previousScreen.shortTitle}` : 'Sem tela anterior'}
-              title={previousScreen ? `Anterior: ${previousScreen.shortTitle}` : ''}
-            >
-              <ChevronLeft className="w-3.5 h-3.5" />
-            </button>
-
-            {/* Traços / Pontos Centrais de Navegação Discretos (-------) */}
-            <div className="flex items-center gap-1 sm:gap-1.5 px-1 sm:px-1.5">
-              {SCREENS.map((s) => {
-                const isSelected = s.id === currentScreen;
-                return (
-                  <button
-                    key={s.id}
-                    type="button"
-                    onClick={() => navigateToScreen(s.id)}
-                    title={`Tela ${s.number}: ${s.title}`}
-                    aria-label={`Ir para ${s.title}`}
-                    aria-current={isSelected ? 'page' : undefined}
-                    className="group relative flex items-center justify-center py-1.5 px-0.5 focus:outline-none cursor-pointer"
-                  >
-                    {/* Traço / Indicador Minimalista */}
-                    <div
-                      className={`h-1.5 rounded-full transition-all duration-300 ${
-                        isSelected
-                          ? 'w-5 sm:w-6 bg-indigo-400/90 shadow-[0_0_8px_rgba(99,102,241,0.5)]'
-                          : 'w-1.5 sm:w-2 bg-slate-700/60 group-hover:bg-slate-500 group-hover:w-2.5'
-                      }`}
-                    />
-                    <span className="sr-only">
-                      {s.number} - {s.shortTitle}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Seta Direita (>) */}
-            <button
-              type="button"
-              disabled={!nextScreen}
-              onClick={handleNext}
-              className="flex items-center justify-center p-1.5 rounded-lg text-slate-400 hover:text-white bg-transparent hover:bg-white/[0.06] disabled:opacity-20 disabled:pointer-events-none transition-colors cursor-pointer"
-              aria-label={nextScreen ? `Avançar para Tela ${nextScreen.shortTitle}` : 'Última tela'}
-              title={nextScreen ? `Próxima: ${nextScreen.shortTitle}` : ''}
-            >
-              <ChevronRight className="w-3.5 h-3.5" />
-            </button>
-          </div>
-        </div>
-      </nav>
-
       {/* Rodapé Institucional com Links de Telas e Termos Legais */}
       <Footer
         onOpenPrivacy={() => setLegalModal('privacy')}
@@ -547,10 +490,11 @@ export default function App() {
         currentScreen={currentScreen}
         isHighContrast={isHighContrast}
         onToggleHighContrast={toggleHighContrast}
+        isWhatsAppBubbleOpen={isWhatsAppBubbleOpen}
       />
 
       {/* Botão Flutuante Oficial do WhatsApp */}
-      <FloatingWhatsApp />
+      <FloatingWhatsApp onBubbleStateChange={setIsWhatsAppBubbleOpen} />
 
       {/* Modais Legais (Política de Privacidade e Termos de Uso) */}
       <LegalModals

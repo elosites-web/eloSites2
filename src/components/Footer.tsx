@@ -15,6 +15,7 @@ interface FooterProps {
   currentScreen?: ScreenId;
   isHighContrast?: boolean;
   onToggleHighContrast?: () => void;
+  isWhatsAppBubbleOpen?: boolean;
 }
 
 export const Footer: React.FC<FooterProps> = ({
@@ -25,8 +26,29 @@ export const Footer: React.FC<FooterProps> = ({
   currentScreen,
   isHighContrast,
   onToggleHighContrast,
+  isWhatsAppBubbleOpen = false,
 }) => {
   const currentYear = new Date().getFullYear();
+
+  // Monitora visibilidade do balão de WhatsApp para expandir o respiro inferior e não cobrir nenhum texto
+  const [bubbleOpen, setBubbleOpen] = React.useState<boolean>(isWhatsAppBubbleOpen);
+
+  React.useEffect(() => {
+    setBubbleOpen(isWhatsAppBubbleOpen);
+  }, [isWhatsAppBubbleOpen]);
+
+  React.useEffect(() => {
+    const handleBubbleVisibility = (e: Event) => {
+      const custom = e as CustomEvent<{ isVisible: boolean }>;
+      if (custom.detail && typeof custom.detail.isVisible === 'boolean') {
+        setBubbleOpen(custom.detail.isVisible);
+      }
+    };
+    window.addEventListener('elosites-bubble-visibility', handleBubbleVisibility);
+    return () => {
+      window.removeEventListener('elosites-bubble-visibility', handleBubbleVisibility);
+    };
+  }, []);
 
   const footerWhatsappUrl = whatsappUrl(SITE_CONFIG.footerWhatsappMessage);
 
@@ -80,8 +102,7 @@ export const Footer: React.FC<FooterProps> = ({
                 const getScreenFromHref = (href: string): ScreenId => {
                   if (href.includes('portfolio')) return 'portfolio';
                   if (href.includes('servico')) return 'servicos';
-                  if (href.includes('processo') || href.includes('como-funciona')) return 'processo';
-                  if (href.includes('diferencia')) return 'diferenciais';
+                  if (href.includes('processo') || href.includes('como-funciona') || href.includes('diferencia')) return 'processo';
                   if (href.includes('briefing') || href.includes('orcamento')) return 'orcamento';
                   if (href.includes('faq') || href.includes('contato')) return 'faq';
                   return 'inicio';
@@ -100,20 +121,20 @@ export const Footer: React.FC<FooterProps> = ({
                           window.scrollTo({ top: 0, behavior: 'smooth' });
                         }
                       }}
-                      className={`text-left transition-colors relative flex items-center gap-2 py-0.5 cursor-pointer ${
+                      className={`text-left transition-all duration-200 relative flex items-center gap-2 py-0.5 cursor-pointer group hover:-translate-y-0.5 hover:translate-x-1 ${
                         isActive
-                          ? 'text-indigo-300 font-semibold'
-                          : 'text-slate-400 hover:text-indigo-300'
+                          ? 'text-cyan-300 font-semibold drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]'
+                          : 'text-slate-400 hover:text-cyan-300 hover:drop-shadow-[0_0_10px_rgba(34,211,238,0.65)]'
                       }`}
                     >
                       {isActive && (
                         <motion.span
                           layoutId="footer-active-nav-dot"
                           transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                          className="w-1.5 h-1.5 rounded-full bg-indigo-400 shadow-[0_0_8px_#818cf8] shrink-0"
+                          className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_#22d3ee] shrink-0"
                         />
                       )}
-                      <span>{item.label}</span>
+                      <span className="transition-transform duration-200">{item.label}</span>
                     </button>
                   </li>
                 );
@@ -126,12 +147,15 @@ export const Footer: React.FC<FooterProps> = ({
             <h4 className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-200">
               Especialidades
             </h4>
-            <p className="text-xs text-slate-400 leading-relaxed">
+            <p className="text-[13px] text-slate-300/90 leading-relaxed">
               Sites institucionais e landing pages desenvolvidos especificamente para prestadores de serviços:
               Personal trainers, advogados, salões de beleza, barbearias, clínicas e profissionais autônomos.
             </p>
             <div className="pt-2 text-[11px] text-slate-400 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-400" />
+              <span className="relative flex h-2 w-2 shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />
+              </span>
               <span>Código limpo • Sem templates prontos genéricos</span>
             </div>
           </div>
@@ -177,16 +201,28 @@ export const Footer: React.FC<FooterProps> = ({
           </button>
         </div>
 
-        {/* Última linha do rodapé: Créditos Oficiais solicitados na imagem */}
-        <div className="mt-8 pt-6 border-t border-slate-800/60 flex flex-col items-center justify-center text-center gap-1.5 select-none">
-          <div className="flex flex-wrap items-center justify-center gap-2 text-xs sm:text-sm font-semibold tracking-wider uppercase text-slate-300">
-            <span>CRIADO E DESENVOLVIDO POR</span>
-            <EloLogo size="sm" className="h-5 sm:h-6 w-auto inline-block align-middle" />
+        {/* Última linha do rodapé: Linha com fonte aumentada em 1px e quebra de linha após o logo */}
+        <div className="mt-8 pt-6 border-t border-slate-800/60 flex flex-col items-center justify-center text-center select-none overflow-hidden max-w-full px-2">
+          <div className="flex flex-col items-center justify-center gap-1.5 text-[9px] min-[380px]:text-[10px] sm:text-[10.5px] font-semibold tracking-wide sm:tracking-wider uppercase text-slate-300">
+            <div className="inline-flex items-center justify-center gap-1.5 sm:gap-2">
+              <span>CRIADO E DESENVOLVIDO POR</span>
+              <img
+                src="/logo-elosites-final.png"
+                alt="ēloSites"
+                className="h-[14px] sm:h-[16px] w-auto shrink-0 inline-block align-middle object-contain"
+              />
+            </div>
+            <span className="text-slate-400 font-medium">O MELHOR SITE PELO MELHOR PREÇO</span>
           </div>
-          <p className="text-[11px] sm:text-xs font-medium tracking-widest uppercase text-slate-400">
-            O MELHOR SITE PELO MELHOR PREÇO
-          </p>
         </div>
+
+        {/* Espaço adicional dinâmico abaixo da frase quando o balão do WhatsApp surge, prevenindo sobreposição em qualquer tela */}
+        <div
+          className={`transition-all duration-500 ease-out w-full pointer-events-none ${
+            bubbleOpen ? 'h-36 sm:h-44 md:h-48' : 'h-6 sm:h-8'
+          }`}
+          aria-hidden="true"
+        />
       </div>
     </footer>
   );
