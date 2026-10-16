@@ -146,12 +146,12 @@ export const Hero: React.FC<HeroProps> = ({
                 className="relative flex flex-col items-center justify-center pointer-events-auto"
               >
                 {/* Brilho decorativo suave e discreto */}
-                <div className="absolute -inset-4 sm:-inset-6 bg-gradient-to-r from-teal-500/10 via-cyan-500/15 to-indigo-500/10 blur-xl rounded-full pointer-events-none" />
+                <div className="absolute -inset-2 sm:-inset-3 bg-gradient-to-r from-teal-500/5 via-cyan-500/8 to-indigo-500/5 blur-md rounded-full pointer-events-none" />
 
                 <img
                   src="/logo-elosites-final.png"
                   alt="ēloSites"
-                  className="h-9 sm:h-11 md:h-13 lg:h-15 max-w-[65vw] sm:max-w-[280px] md:max-w-[320px] w-auto object-contain drop-shadow-[0_0_18px_rgba(34,211,238,0.28)] relative z-10"
+                  className="h-6 sm:h-7 md:h-8 max-w-[45vw] sm:max-w-[190px] md:max-w-[210px] w-auto object-contain drop-shadow-[0_0_12px_rgba(34,211,238,0.2)] relative z-10"
                 />
               </motion.div>
             )}

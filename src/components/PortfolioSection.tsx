@@ -426,7 +426,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
   return (
     <section
       id="portfolio"
-      className="section-auto-contain pt-24 pb-12 sm:pt-28 sm:pb-14 lg:pt-32 lg:pb-16 bg-[#090D16]/30 backdrop-blur-[0.5px] relative"
+      className="section-auto-contain pt-24 pb-6 sm:pt-28 sm:pb-7 lg:pt-32 lg:pb-8 bg-[#090D16]/30 backdrop-blur-[0.5px] relative"
     >
       {/* Luz ambiente de fundo */}
       <div className="absolute top-1/4 left-0 w-96 h-96 bg-indigo-500/[0.08] blur-[140px] rounded-full pointer-events-none" />
@@ -487,8 +487,8 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
             </div>
           </div>
 
-          {/* Grade de Projetos Reais com animação de reveal ao rolar */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch lg:grid-rows-[repeat(8,auto)] portfolio-list scroll-perf-list">
+          {/* Grade de Projetos Reais — Espaçamento entre cards reduzido em exatamente 50% (de gap-6/sm:gap-8 para gap-3/sm:gap-4) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 items-stretch lg:grid-rows-[repeat(8,auto)] portfolio-list scroll-perf-list">
             {filteredProjects.map((project, index) => {
               const isOddLastOnTwoCols =
                 filteredProjects.length === 3 && index === 2;
@@ -513,7 +513,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
                   }}
                   className={`h-full lg:row-span-8 lg:grid lg:grid-rows-subgrid ${
                     isOddLastOnTwoCols
-                      ? 'md:col-span-2 md:w-[calc(50%-1rem)] md:mx-auto lg:col-span-1 lg:w-full lg:mx-0'
+                      ? 'md:col-span-2 md:w-[calc(50%-0.5rem)] md:mx-auto lg:col-span-1 lg:w-full lg:mx-0'
                       : ''
                   }`}
                 >
@@ -531,8 +531,8 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
           </div>
         </div>
 
-        {/* Banner Inferior com Conversão Direta e 3D Tilt */}
-        <Interactive3DCard maxTilt={3} className="mt-12 sm:mt-16 w-full">
+        {/* Banner Inferior com Conversão Direta e 3D Tilt — Espaçamento superior reduzido em exatamente 50% (de mt-12/sm:mt-16 para mt-6/sm:mt-8) */}
+        <Interactive3DCard maxTilt={3} className="mt-6 sm:mt-8 w-full">
           <div className="glass-card-interactive surface-card portfolio-card scroll-perf-card p-6 sm:p-7 md:p-8 rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 shadow-2xl shadow-black/60 bracket-panel transition-colors">
             <div className="space-y-2 text-left w-full lg:max-w-xl">
               <h3 className="text-xl sm:text-2xl font-bold text-white font-display">

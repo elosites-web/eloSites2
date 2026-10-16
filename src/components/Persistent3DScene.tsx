@@ -207,11 +207,12 @@ function createPulseGlowTexture(): THREE.CanvasTexture {
   canvas.height = 32;
   const ctx = canvas.getContext('2d');
   if (ctx) {
-    const gradient = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
+    const gradient = ctx.createRadialGradient(16, 16, 0, 16, 16, 10);
     gradient.addColorStop(0, '#ffffff');
-    gradient.addColorStop(0.25, 'rgba(56, 189, 248, 0.95)');
-    gradient.addColorStop(0.65, 'rgba(99, 102, 241, 0.45)');
-    gradient.addColorStop(1, 'rgba(6, 9, 18, 0)');
+    gradient.addColorStop(0.2, 'rgba(56, 189, 248, 0.7)');
+    gradient.addColorStop(0.5, 'rgba(99, 102, 241, 0.15)');
+    gradient.addColorStop(0.8, 'rgba(6, 9, 18, 0)');
+    gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, 32, 32);
   }
@@ -414,7 +415,7 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted,
     const card1HaloMat = new THREE.MeshBasicMaterial({
       map: haloCyanTex,
       transparent: true,
-      opacity: inApp ? 0.18 : 0.3,
+      opacity: inApp ? 0.12 : 0.2,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
       side: THREE.DoubleSide,
@@ -432,11 +433,11 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted,
         map: textureMetrics,
         emissiveMap: textureMetrics,
         emissive: new THREE.Color(0x818cf8),
-        emissiveIntensity: 0.4,
+        emissiveIntensity: 0.38,
         roughness: 0.22,
         metalness: 0.1,
         transparent: true,
-        opacity: 0.48,
+        opacity: 0.45,
         blending: THREE.AdditiveBlending,
         depthWrite: false,
         side: THREE.DoubleSide,
@@ -453,7 +454,7 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted,
       card2HaloMat = new THREE.MeshBasicMaterial({
         map: haloVioletTex,
         transparent: true,
-        opacity: 0.26,
+        opacity: 0.18,
         blending: THREE.AdditiveBlending,
         depthWrite: false,
         side: THREE.DoubleSide,
@@ -477,26 +478,29 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted,
     }
 
     const traces: CircuitTrace[] = [];
-    const TRACE_COUNT = inApp ? 4 : isMobile ? 6 : 9;
+    const TRACE_COUNT = inApp ? 3 : isMobile ? 4 : 5;
     const circuitPoints: number[] = [];
     const circuitColors: number[] = [];
 
+    const spanX = 14;
     for (let t = 0; t < TRACE_COUNT; t++) {
       const tracePoints: THREE.Vector3[] = [];
-      let x = (Math.random() - 0.5) * 14;
+      // Distribuição uniforme por faixas laterais distintas para impedir sobreposição e aglomeração
+      const corridorOffset = ((t / (TRACE_COUNT - 1 || 1)) - 0.5) * spanX;
+      let x = corridorOffset + (Math.random() - 0.5) * 0.8;
       let y = -3.76; // Ligeiramente acima da grade do solo
-      let z = -22 + Math.random() * 6;
+      let z = -22 + (t * 2.5);
 
       tracePoints.push(new THREE.Vector3(x, y, z));
 
-      const steps = 3 + Math.floor(Math.random() * 3);
+      const steps = 3;
       for (let s = 0; s < steps; s++) {
         // Passo em Z
-        z += 3 + Math.random() * 4;
+        z += 3.5 + Math.random() * 2.5;
         tracePoints.push(new THREE.Vector3(x, y, z));
 
-        // Curva ortogonal em 90 graus em X
-        const xOffset = (Math.random() > 0.5 ? 1 : -1) * (2 + Math.random() * 3);
+        // Curva ortogonal em 90 graus em X mantendo o corredor lateral
+        const xOffset = (t % 2 === 0 ? 1 : -1) * (1.6 + Math.random() * 1.4);
         x += xOffset;
         tracePoints.push(new THREE.Vector3(x, y, z));
       }
@@ -510,8 +514,8 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted,
 
         const isCyan = t % 2 === 0;
         const color = isCyan ? cyanCol : indigoCol;
-        circuitColors.push(color.r * 0.6, color.g * 0.6, color.b * 0.7);
-        circuitColors.push(color.r * 0.4, color.g * 0.4, color.b * 0.5);
+        circuitColors.push(color.r * 0.55, color.g * 0.55, color.b * 0.65);
+        circuitColors.push(color.r * 0.35, color.g * 0.35, color.b * 0.45);
       }
 
       // Calcula comprimento total do caminho
@@ -520,11 +524,12 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted,
         totalLen += tracePoints[p].distanceTo(tracePoints[p + 1]);
       }
 
+      // Fases uniformemente espaçadas e velocidades cadenciadas para animação natural sem aglomeração
       traces.push({
         points: tracePoints,
         totalLen,
-        progress: (t / TRACE_COUNT) + (Math.random() * 0.1),
-        speed: (0.12 + Math.random() * 0.1) * (prefersReduced ? 0.3 : 1.0),
+        progress: t / TRACE_COUNT,
+        speed: (0.09 + (t % 3) * 0.015) * (prefersReduced ? 0.3 : 1.0),
       });
     }
 
@@ -574,13 +579,13 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted,
     pulseGeo.setAttribute('position', new THREE.BufferAttribute(pulsePositions, 3));
 
     const pulseMat = new THREE.PointsMaterial({
-      size: inApp ? 0.65 : isMobile ? 0.75 : 0.9,
+      size: inApp ? 0.12 : isMobile ? 0.14 : 0.18,
       map: pulseTexture,
       transparent: true,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
       color: 0x38bdf8,
-      opacity: inApp ? 0.7 : 0.85,
+      opacity: inApp ? 0.32 : 0.42,
     });
 
     const pulseMesh = new THREE.Points(pulseGeo, pulseMat);
@@ -589,7 +594,7 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted,
     // =========================================================================
     // 4. CHUVA DIGITAL LEVE NO HORIZONTE (MATRIX/CYBER STREAM EM BAIXA DENSIDADE)
     // =========================================================================
-    const STREAM_COUNT = inApp ? 16 : isMobile ? 24 : 38;
+    const STREAM_COUNT = inApp ? 8 : isMobile ? 12 : 18;
     const streamGeo = new THREE.BufferGeometry();
     const streamPositions = new Float32Array(STREAM_COUNT * 3);
     const streamVelocities: number[] = [];
@@ -604,10 +609,10 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted,
     streamGeo.setAttribute('position', new THREE.BufferAttribute(streamPositions, 3));
 
     const streamMat = new THREE.PointsMaterial({
-      size: 0.26,
+      size: 0.14,
       map: pulseTexture,
       transparent: true,
-      opacity: inApp ? 0.2 : 0.28,
+      opacity: inApp ? 0.1 : 0.16,
       blending: THREE.AdditiveBlending,
       color: 0x06b6d4,
       depthWrite: false,
@@ -772,7 +777,7 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted,
                 card1HaloMat.opacity = 0.15;
 
                 // 3. Reduz diâmetro de partículas para menor fill-rate da GPU
-                pulseMat.size = 0.75;
+                pulseMat.size = 0.14;
                 pulseMat.needsUpdate = true;
               }
             } else {
@@ -822,11 +827,11 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted,
       // Brilho emissivo nos painéis holográficos reagindo à proximidade e energia global
       const pointerEnergy = (Math.abs(currentPointerX) + Math.abs(currentPointerY)) * 0.12;
       cardMat1.emissiveIntensity = isLowPerf ? 0.32 : breathCyan + pointerEnergy;
-      card1HaloMat.opacity = isLowPerf ? 0.15 : 0.22 + breathCyan * 0.22 + pointerEnergy * 0.18;
+      card1HaloMat.opacity = isLowPerf ? 0.1 : 0.14 + breathCyan * 0.12 + pointerEnergy * 0.1;
 
       if (cardMat2 && card2HaloMat) {
-        cardMat2.emissiveIntensity = isLowPerf ? 0.35 : breathViolet + pointerEnergy;
-        card2HaloMat.opacity = isLowPerf ? 0.14 : 0.20 + breathViolet * 0.22 + pointerEnergy * 0.18;
+        cardMat2.emissiveIntensity = isLowPerf ? 0.32 : breathViolet + pointerEnergy;
+        card2HaloMat.opacity = isLowPerf ? 0.1 : 0.12 + breathViolet * 0.12 + pointerEnergy * 0.1;
       }
 
       if (!prefersReduced) {

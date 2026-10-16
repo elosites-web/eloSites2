@@ -776,10 +776,12 @@ a[id*="whatsapp"]:hover > svg {
   }
 }
 
-/* Tipografia responsiva dos itens do Menu de Navegação:
+/* Tipografia e cores responsivas dos itens do Menu de Navegação:
    - Mobile: clamp(14px, 4vw, 16px) com line-height: 1.25 para legibilidade nítida
    - Tablet (sm >= 640px): 15px
-   - Desktop (md >= 768px): 18px (redução de 50% preservada para telas maiores) */
+   - Desktop (md >= 768px): 18px (redução de 50% preservada para telas maiores)
+   - Tom azul-lilás / púrpura oficial do logotipo ēloSites (#818cf8 / rgb(129, 140, 248)):
+     aplicado com fidelidade ao hover, foco de teclado e item ativo com transição suave */
 .nav-menu-link-text {
   font-size: clamp(14px, 4vw, 16px);
   line-height: 1.25;
@@ -796,6 +798,74 @@ a[id*="whatsapp"]:hover > svg {
   .nav-menu-link-text {
     font-size: 18px;
     line-height: 1.5;
+  }
+}
+
+.nav-menu-link-item {
+  color: #e2e8f0;
+  transition: color 280ms cubic-bezier(0.23, 1, 0.32, 1),
+              filter 280ms cubic-bezier(0.23, 1, 0.32, 1),
+              transform 280ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.nav-menu-link-item:hover,
+.nav-menu-link-item:focus-visible,
+.nav-menu-link-item:active {
+  color: #818cf8;
+  filter: drop-shadow(0 0 14px rgba(129, 140, 248, 0.65));
+}
+
+.nav-menu-link-item.is-active {
+  color: #818cf8;
+  font-weight: 700;
+  filter: drop-shadow(0 0 16px rgba(129, 140, 248, 0.85));
+}
+
+/* Layout compacto exclusivo para dispositivos móveis em modo paisagem (Mobile Landscape: altura <= 500px) */
+@media (orientation: landscape) and (max-height: 500px) {
+  .nav-menu-modal-container {
+    padding-top: 0.35rem !important;
+    padding-bottom: 0.35rem !important;
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+    justify-content: center !important;
+  }
+
+  .nav-menu-list-wrap {
+    padding-top: 0.15rem !important;
+    padding-bottom: 0.15rem !important;
+    margin-top: auto !important;
+    margin-bottom: auto !important;
+  }
+
+  .nav-menu-logo-wrap {
+    margin-bottom: 0.35rem !important;
+  }
+
+  .nav-menu-logo-img {
+    height: 1.35rem !important; /* ~21px */
+  }
+
+  .nav-menu-list {
+    gap: 0.15rem !important;
+  }
+
+  .nav-menu-link-text {
+    font-size: clamp(12px, 3.2vh, 14px) !important;
+    line-height: 1.15 !important;
+  }
+
+  .nav-menu-link-item {
+    padding-top: 0.1rem !important;
+    padding-bottom: 0.1rem !important;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+
+  .nav-menu-close-btn {
+    margin-top: 0.25rem !important;
+    width: 1.625rem !important;
+    height: 1.625rem !important;
   }
 }
 

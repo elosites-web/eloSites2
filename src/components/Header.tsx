@@ -173,36 +173,34 @@ export const Header: React.FC<HeaderProps> = ({
           role="dialog"
           aria-modal="true"
           aria-label="Menu de Navegação das Seções ēloSites"
-          className="fixed inset-0 z-50 flex flex-col items-center justify-center p-4 sm:p-6 bg-black/40 backdrop-blur-[2px] animate-in fade-in duration-200 select-none overflow-y-auto"
+          className="nav-menu-modal-container fixed inset-0 z-50 flex flex-col items-center justify-center p-3 sm:p-6 bg-black/40 backdrop-blur-[2px] animate-in fade-in duration-200 select-none overflow-y-auto"
           onClick={handleCloseMenuWithoutNav}
         >
-          {/* Logotipo pequeno no lugar exato onde estava o botão menu no topo */}
+          {/* Container centrado contendo o logotipo no topo, os 7 links em cascata e o botão fechar */}
           <div
-            className="fixed top-4 sm:top-6 left-1/2 -translate-x-1/2 z-50 pointer-events-auto"
+            className="nav-menu-list-wrap relative w-full max-w-lg flex flex-col items-center justify-center text-center my-auto px-4 pt-3 pb-5 sm:pt-4 sm:pb-6 pointer-events-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            <button
-              type="button"
-              onClick={() => {
-                onSelectScreen('home');
-              }}
-              className="group focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 rounded-lg p-1 transition-transform hover:scale-105 cursor-pointer flex items-center justify-center"
-              aria-label="ēloSites — Home"
-            >
-              <img
-                src="/logo-elosites-final.png"
-                alt="ēloSites"
-                className="h-7 sm:h-8 w-auto object-contain drop-shadow-[0_0_20px_rgba(34,211,238,0.55)]"
-              />
-            </button>
-          </div>
+            {/* Logotipo pequeno no topo com separação garantida em relação ao item Home (sem sobreposição) */}
+            <div className="nav-menu-logo-wrap mb-3.5 sm:mb-5">
+              <button
+                type="button"
+                onClick={() => {
+                  onSelectScreen('home');
+                }}
+                className="group focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 rounded-lg p-1 transition-transform hover:scale-105 cursor-pointer flex items-center justify-center"
+                aria-label="ēloSites — Home"
+              >
+                <img
+                  src="/logo-elosites-final.png"
+                  alt="ēloSites"
+                  className="nav-menu-logo-img h-6 sm:h-7 md:h-8 w-auto object-contain drop-shadow-[0_0_20px_rgba(34,211,238,0.55)]"
+                />
+              </button>
+            </div>
 
-          {/* Somente os 7 nomes de seções em cascata — SEM QUADRO EM VOLTA */}
-          <div
-            className="relative w-full max-w-lg flex flex-col items-center justify-center text-center my-auto px-4 pt-14 pb-6 sm:pt-16 sm:pb-8 pointer-events-auto"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <ul className="flex flex-col items-center justify-center gap-1.5 sm:gap-2.5 md:gap-3 py-1 w-full">
+            {/* Somente os 7 nomes de seções em cascata — SEM QUADRO EM VOLTA */}
+            <ul className="nav-menu-list flex flex-col items-center justify-center gap-1 sm:gap-2 md:gap-2.5 py-0.5 w-full">
               {SCREENS.map((screen, index) => {
                 const isActive = screen.id === currentScreen;
 
@@ -223,17 +221,17 @@ export const Header: React.FC<HeaderProps> = ({
                       onClick={() => {
                         onSelectScreen(screen.id);
                       }}
-                      className={`group relative py-1 px-3 sm:py-1.5 sm:px-4 transition-all duration-200 flex items-center justify-center cursor-pointer ${
-                        isActive
-                          ? 'text-cyan-300 font-bold scale-105 drop-shadow-[0_0_18px_rgba(34,211,238,0.9)]'
-                          : 'text-slate-200 hover:text-cyan-300 font-semibold hover:scale-105 hover:drop-shadow-[0_0_14px_rgba(34,211,238,0.7)]'
+                      className={`nav-menu-link-item group relative py-1 px-3 sm:py-1.5 sm:px-4 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/70 flex items-center justify-center cursor-pointer ${
+                        isActive ? 'is-active scale-105' : 'hover:scale-105'
                       }`}
                     >
                       {/*
                         Tipografia responsiva dos itens de menu:
-                        - Mobile: clamp(14px, 4vw, 16px) com line-height: 1.25 (legibilidade ideal sem estourar altura)
+                        - Mobile retrato: clamp(14px, 4vw, 16px) com line-height: 1.25 (legibilidade ideal)
+                        - Mobile paisagem: clamp(12.5px, 3.4vh, 14.5px) com line-height: 1.15
                         - Tablet (sm): 15px
                         - Desktop (md): 18px (redução de 50% preservada em telas maiores)
+                        - Hover / Ativo: Tom azul-lilás (#818cf8) do logotipo oficial
                       */}
                       <span className="font-display nav-menu-link-text tracking-tight transition-transform duration-200 group-hover:-translate-y-0.5">
                         {screen.shortTitle}
@@ -252,7 +250,7 @@ export const Header: React.FC<HeaderProps> = ({
               transition={{ delay: 0.24, duration: 0.25 }}
               onClick={handleCloseMenuWithoutNav}
               aria-label="Fechar menu de navegação"
-              className="mt-3.5 sm:mt-5 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-indigo-300 hover:text-cyan-300 bg-indigo-950/40 hover:bg-indigo-900/60 border border-indigo-500/30 hover:border-cyan-400/60 shadow-[0_0_12px_rgba(99,102,241,0.25)] hover:shadow-[0_0_16px_rgba(34,211,238,0.5)] transition-all duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 group"
+              className="nav-menu-close-btn mt-3 sm:mt-4 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-indigo-300 hover:text-cyan-300 bg-indigo-950/40 hover:bg-indigo-900/60 border border-indigo-500/30 hover:border-cyan-400/60 shadow-[0_0_12px_rgba(99,102,241,0.25)] hover:shadow-[0_0_16px_rgba(34,211,238,0.5)] transition-all duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 group"
             >
               <X className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-300 group-hover:text-cyan-300 transition-colors" />
             </motion.button>
