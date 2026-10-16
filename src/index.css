@@ -239,10 +239,12 @@ body {
   background-size: 24px 24px;
 }
 
-/* Smooth focus visible styles */
+/* Enhanced global focus-visible styles with subtle inner glow effect without layout boundary shifts */
 *:focus-visible {
   outline: 2px solid #6366f1;
   outline-offset: 2px;
+  box-shadow: inset 0 0 10px rgba(129, 140, 248, 0.35), inset 0 0 2px rgba(165, 180, 252, 0.5);
+  transition: box-shadow var(--dur-press) var(--ease-out), outline-color var(--dur-press) var(--ease-out);
 }
 
 /* Subtle continuous breathing pulse for floating WhatsApp button */

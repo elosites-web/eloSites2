@@ -44,8 +44,16 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const { request } = event;
 
-  // Ignorar requisições não-GET ou extensões do navegador
-  if (request.method !== 'GET' || !request.url.startsWith('http')) {
+  // Ignorar requisições não-GET, extensões, ou dependências do Vite em desenvolvimento
+  if (
+    request.method !== 'GET' ||
+    !request.url.startsWith('http') ||
+    request.url.includes('/node_modules/') ||
+    request.url.includes('/@vite/') ||
+    request.url.includes('/@fs/') ||
+    request.url.includes('/src/') ||
+    request.url.includes('?v=')
+  ) {
     return;
   }
 

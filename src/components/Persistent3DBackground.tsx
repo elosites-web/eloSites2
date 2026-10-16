@@ -20,13 +20,13 @@ export const Persistent3DSkeleton: React.FC<{ isLoaded?: boolean }> = ({ isLoade
       }`}
     >
       {/* Base escura e gradiente suave central */}
-      <div className="absolute inset-0 bg-[#070B16]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(99,102,241,0.12),transparent_70%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_80%,rgba(168,85,247,0.08),transparent_60%)]" />
+      <div className="absolute inset-0 bg-[#060912]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(6,182,212,0.1),transparent_70%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_80%,rgba(99,102,241,0.08),transparent_60%)]" />
       {/* Padrão de grade sutil para continuidade estética */}
       <div className="absolute inset-0 tech-grid-pattern opacity-60" />
       {/* Horizonte suave em perspectiva */}
-      <div className="absolute top-[65%] inset-x-0 h-px bg-gradient-to-r from-transparent via-indigo-500/20 to-transparent" />
+      <div className="absolute top-[65%] inset-x-0 h-px bg-gradient-to-r from-transparent via-cyan-500/25 to-transparent" />
     </div>
   );
 };

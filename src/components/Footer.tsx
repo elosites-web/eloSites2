@@ -10,6 +10,7 @@ import { ScreenId } from '../types';
 interface FooterProps {
   onOpenPrivacy: () => void;
   onOpenTerms: () => void;
+  onOpenSitemap?: () => void;
   onSelectScreen?: (screen: ScreenId) => void;
   currentScreen?: ScreenId;
   isHighContrast?: boolean;
@@ -19,6 +20,7 @@ interface FooterProps {
 export const Footer: React.FC<FooterProps> = ({
   onOpenPrivacy,
   onOpenTerms,
+  onOpenSitemap,
   onSelectScreen,
   currentScreen,
   isHighContrast,
@@ -35,7 +37,7 @@ export const Footer: React.FC<FooterProps> = ({
 
   return (
     <footer className="bg-[#060912]/85 backdrop-blur-[4px] border-t border-slate-800/90 text-slate-400 text-sm pb-[3px]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-16 pb-20 sm:pb-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-16 pb-16 sm:pb-20">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10">
           {/* Marca e Posicionamento */}
           <div className="md:col-span-5 space-y-4">
@@ -98,7 +100,7 @@ export const Footer: React.FC<FooterProps> = ({
                           window.scrollTo({ top: 0, behavior: 'smooth' });
                         }
                       }}
-                      className={`text-left transition-colors relative flex items-center gap-2 py-0.5 ${
+                      className={`text-left transition-colors relative flex items-center gap-2 py-0.5 cursor-pointer ${
                         isActive
                           ? 'text-indigo-300 font-semibold'
                           : 'text-slate-400 hover:text-indigo-300'
@@ -142,28 +144,48 @@ export const Footer: React.FC<FooterProps> = ({
             <button
               type="button"
               onClick={onOpenPrivacy}
-              className="text-slate-400 hover:text-indigo-300 transition-colors underline-offset-4 hover:underline"
+              className="text-slate-400 hover:text-indigo-300 transition-colors underline-offset-4 hover:underline cursor-pointer"
             >
               Política de Privacidade
             </button>
             <button
               type="button"
               onClick={onOpenTerms}
-              className="text-slate-400 hover:text-indigo-300 transition-colors underline-offset-4 hover:underline"
+              className="text-slate-400 hover:text-indigo-300 transition-colors underline-offset-4 hover:underline cursor-pointer"
             >
               Termos de Uso
             </button>
+            {onOpenSitemap && (
+              <button
+                type="button"
+                onClick={onOpenSitemap}
+                className="text-slate-400 hover:text-indigo-300 transition-colors underline-offset-4 hover:underline cursor-pointer"
+              >
+                Mapa do Site (XML)
+              </button>
+            )}
           </div>
 
           <button
             type="button"
             onClick={scrollToTop}
-            className="inline-flex items-center justify-center text-center gap-1.5 text-slate-400 hover:text-white transition-colors"
+            className="inline-flex items-center justify-center text-center gap-1.5 text-slate-400 hover:text-white transition-colors cursor-pointer"
             aria-label="Voltar ao início da página"
           >
             <span className="text-center">Voltar ao topo</span>
             <ArrowUp className="w-3.5 h-3.5" />
           </button>
+        </div>
+
+        {/* Última linha do rodapé: Créditos Oficiais solicitados na imagem */}
+        <div className="mt-8 pt-6 border-t border-slate-800/60 flex flex-col items-center justify-center text-center gap-1.5 select-none">
+          <div className="flex flex-wrap items-center justify-center gap-2 text-xs sm:text-sm font-semibold tracking-wider uppercase text-slate-300">
+            <span>CRIADO E DESENVOLVIDO POR</span>
+            <EloLogo size="sm" className="h-5 sm:h-6 w-auto inline-block align-middle" />
+          </div>
+          <p className="text-[11px] sm:text-xs font-medium tracking-widest uppercase text-slate-400">
+            O MELHOR SITE PELO MELHOR PREÇO
+          </p>
         </div>
       </div>
     </footer>

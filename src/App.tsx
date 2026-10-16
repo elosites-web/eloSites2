@@ -12,6 +12,7 @@ import { ContactCtaSection } from './components/ContactCtaSection';
 import { Footer } from './components/Footer';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { LegalModals } from './components/LegalModals';
+import { SitemapModal } from './components/SitemapModal';
 import { ReadingProgressBar } from './components/ReadingProgressBar';
 import {
   DifferentialsSkeleton,
@@ -56,6 +57,7 @@ export default function App() {
   const [currentScreen, setCurrentScreen] = useState<ScreenId>('inicio');
   const [direction, setDirection] = useState<number>(1);
   const [legalModal, setLegalModal] = useState<'privacy' | 'terms' | null>(null);
+  const [isSitemapOpen, setIsSitemapOpen] = useState<boolean>(false);
 
   // Hook do Framer Motion combinado com a preferência de acessibilidade
   const systemPrefersReduced = useReducedMotion();
@@ -140,6 +142,8 @@ export default function App() {
           const el = document.getElementById('testemunhos');
           if (el) el.scrollIntoView({ behavior: 'smooth' });
         }, 150);
+      } else if (rawHash === 'sitemap' || rawHash === 'mapa-do-site') {
+        setIsSitemapOpen(true);
       }
     };
 
@@ -266,48 +270,61 @@ export default function App() {
 
   const currentMeta = SCREENS[currentIndex] || SCREENS[0];
 
-  // Transição contínua e suave na diagonal em 12px solicitada pelo usuário
-  const sectionTransitionVariants: Variants = {
+  // 'SlideFade' transition variant for AnimatePresence:
+  // Uses a smooth deceleration curve [0.16, 1, 0.3, 1] on entrance,
+  // and a distinctly differentiated exit easing curve [0.7, 0, 0.84, 0] (anticipation & swift departure)
+  const slideFadeVariants: Variants = {
     initial: (dir: number) => ({
       opacity: 0,
-      x: prefersReduced ? 0 : dir >= 0 ? 12 : -12,
-      y: prefersReduced ? 0 : dir >= 0 ? 12 : -12,
+      x: prefersReduced ? 0 : dir >= 0 ? 16 : -16,
+      y: prefersReduced ? 0 : dir >= 0 ? 8 : -8,
+      scale: prefersReduced ? 1 : 0.995,
     }),
     animate: {
       opacity: 1,
       x: 0,
       y: 0,
+      scale: 1,
       transition: {
         x: {
-          duration: prefersReduced ? 0 : 0.22,
-          ease: [0.22, 1, 0.36, 1],
+          duration: prefersReduced ? 0 : 0.26,
+          ease: [0.16, 1, 0.3, 1], // Deceleration entrance curve
         },
         y: {
-          duration: prefersReduced ? 0 : 0.22,
-          ease: [0.22, 1, 0.36, 1],
+          duration: prefersReduced ? 0 : 0.26,
+          ease: [0.16, 1, 0.3, 1],
+        },
+        scale: {
+          duration: prefersReduced ? 0 : 0.24,
+          ease: [0.16, 1, 0.3, 1],
         },
         opacity: {
-          duration: prefersReduced ? 0.15 : 0.2,
+          duration: prefersReduced ? 0.15 : 0.22,
           ease: 'easeOut',
         },
       },
     },
     exit: (dir: number) => ({
       opacity: 0,
-      x: prefersReduced ? 0 : dir >= 0 ? -12 : 12,
-      y: prefersReduced ? 0 : dir >= 0 ? -12 : 12,
+      x: prefersReduced ? 0 : dir >= 0 ? -16 : 16,
+      y: prefersReduced ? 0 : dir >= 0 ? -8 : 8,
+      scale: prefersReduced ? 1 : 0.99,
       transition: {
         x: {
-          duration: prefersReduced ? 0 : 0.16,
-          ease: [0.32, 0.72, 0, 1],
+          duration: prefersReduced ? 0 : 0.18,
+          ease: [0.7, 0, 0.84, 0], // Differentiated exit easing curve (crisp anticipation acceleration)
         },
         y: {
+          duration: prefersReduced ? 0 : 0.18,
+          ease: [0.7, 0, 0.84, 0],
+        },
+        scale: {
           duration: prefersReduced ? 0 : 0.16,
-          ease: [0.32, 0.72, 0, 1],
+          ease: [0.7, 0, 0.84, 0],
         },
         opacity: {
           duration: prefersReduced ? 0.12 : 0.15,
-          ease: [0.32, 0.72, 0, 1],
+          ease: [0.4, 0, 1, 1],
         },
       },
     }),
@@ -444,7 +461,7 @@ export default function App() {
             <motion.div
               key={currentScreen}
               custom={direction}
-              variants={sectionTransitionVariants}
+              variants={slideFadeVariants}
               initial="initial"
               animate="animate"
               exit="exit"
@@ -525,6 +542,7 @@ export default function App() {
       <Footer
         onOpenPrivacy={() => setLegalModal('privacy')}
         onOpenTerms={() => setLegalModal('terms')}
+        onOpenSitemap={() => setIsSitemapOpen(true)}
         onSelectScreen={navigateToScreen}
         currentScreen={currentScreen}
         isHighContrast={isHighContrast}
@@ -539,6 +557,13 @@ export default function App() {
         isOpen={legalModal !== null}
         type={legalModal}
         onClose={() => setLegalModal(null)}
+      />
+
+      {/* Modal do Mapa do Site Dinâmico XML (Google Search Console) */}
+      <SitemapModal
+        isOpen={isSitemapOpen}
+        onClose={() => setIsSitemapOpen(false)}
+        onNavigateToScreen={navigateToScreen}
       />
     </div>
   );

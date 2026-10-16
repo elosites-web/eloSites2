@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { motion, useMotionValue, useSpring, useTransform, useReducedMotion } from 'motion/react';
+import { motion, useMotionValue, useSpring, useTransform } from 'motion/react';
 import { shouldReduceMedia } from '../mediaPrefs';
 
 interface ReadingProgressBarProps {
@@ -12,8 +12,7 @@ interface ReadingProgressBarProps {
  * (gradiente índigo/violeta) e uma ponta levemente brilhante (glowing tip) com beacon dinâmico.
  */
 export const ReadingProgressBar: React.FC<ReadingProgressBarProps> = ({ currentScreen }) => {
-  const systemPrefersReduced = useReducedMotion();
-  const prefersReduced = Boolean(systemPrefersReduced || shouldReduceMedia());
+  const prefersReduced = shouldReduceMedia();
 
   // Valor de movimento direto para o progresso normalizado (0 a 1)
   const progressMotion = useMotionValue(0);
