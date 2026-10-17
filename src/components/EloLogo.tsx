@@ -33,8 +33,10 @@ export const EloLogo: React.FC<EloLogoProps> = ({
     const footerContent = (
       <div className="inline-flex flex-col items-start leading-tight">
         <img
-          src="/logo-elosites-final.png"
+          src="/logo-elosites-1360.png"
           alt="ēloSites — Logotipo Oficial"
+          width={1360}
+          height={337}
           fetchPriority="high"
           className={`${heights} w-auto shrink-0 object-contain ${className}`}
         />
@@ -64,8 +66,10 @@ export const EloLogo: React.FC<EloLogoProps> = ({
   const imgElement = (
     <img
       ref={logoRef}
-      src="/logo-elosites-final.png"
+      src="/logo-elosites-1360.png"
       alt="ēloSites — Logotipo Oficial"
+      width={1360}
+      height={337}
       fetchPriority="high"
       onLoad={handleImageLoad}
       className={`${heights} w-auto shrink-0 object-contain ${className}`}

@@ -10,22 +10,16 @@ import { ScreenId } from '../types';
 interface FooterProps {
   onOpenPrivacy: () => void;
   onOpenTerms: () => void;
-  onOpenSitemap?: () => void;
   onSelectScreen?: (screen: ScreenId) => void;
   currentScreen?: ScreenId;
-  isHighContrast?: boolean;
-  onToggleHighContrast?: () => void;
   isWhatsAppBubbleOpen?: boolean;
 }
 
 export const Footer: React.FC<FooterProps> = ({
   onOpenPrivacy,
   onOpenTerms,
-  onOpenSitemap,
   onSelectScreen,
   currentScreen,
-  isHighContrast,
-  onToggleHighContrast,
   isWhatsAppBubbleOpen = false,
 }) => {
   const currentYear = new Date().getFullYear();
@@ -225,8 +219,10 @@ export const Footer: React.FC<FooterProps> = ({
                 aria-label="ēloSites — Ir para a Página Inicial (Home)"
               >
                 <img
-                  src="/logo-elosites-final.png"
+                  src="/logo-elosites-1360.png"
                   alt="ēloSites"
+                  width={1360}
+                  height={337}
                   className="h-[14px] sm:h-[16px] w-auto shrink-0 inline-block align-middle object-contain"
                 />
               </button>

@@ -3,21 +3,17 @@ import { motion, AnimatePresence, useReducedMotion, type Variants } from 'motion
 import { SectionErrorBoundary } from './components/SectionErrorBoundary';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
-import { ProcessSection } from './components/ProcessSection';
-import { FaqSection } from './components/FaqSection';
-import { ContactCtaSection } from './components/ContactCtaSection';
-import { PaidTrafficPartnershipSection } from './components/PaidTrafficPartnershipSection';
 import { Footer } from './components/Footer';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
-import { LegalModals } from './components/LegalModals';
-import { SitemapModal } from './components/SitemapModal';
 import { ReadingProgressBar } from './components/ReadingProgressBar';
 import {
   DifferentialsSkeleton,
   PortfolioSkeleton,
   ServicesSkeleton,
   BookingSkeleton,
+  SimpleSectionSkeleton,
 } from './components/SectionSkeletons';
+import { preloadAllScreens } from './preloadScreens';
 import { ScreenId, SCREENS } from './types';
 import { shouldReduceMedia, getMotionTier } from './mediaPrefs';
 import { withViewTransition, supportsViewTransitions } from './viewTransition';
@@ -40,6 +36,28 @@ const ProjectBriefBookingSection = lazy(() =>
     default: mod.ProjectBriefBookingSection,
   }))
 );
+const ProcessSection = lazy(() =>
+  import('./components/ProcessSection').then((mod) => ({ default: mod.ProcessSection }))
+);
+const FaqSection = lazy(() =>
+  import('./components/FaqSection').then((mod) => ({ default: mod.FaqSection }))
+);
+const ContactCtaSection = lazy(() =>
+  import('./components/ContactCtaSection').then((mod) => ({
+    default: mod.ContactCtaSection,
+  }))
+);
+const PaidTrafficPartnershipSection = lazy(() =>
+  import('./components/PaidTrafficPartnershipSection').then((mod) => ({
+    default: mod.PaidTrafficPartnershipSection,
+  }))
+);
+const LegalModals = lazy(() =>
+  import('./components/LegalModals').then((mod) => ({ default: mod.LegalModals }))
+);
+const SitemapModal = lazy(() =>
+  import('./components/SitemapModal').then((mod) => ({ default: mod.SitemapModal }))
+);
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<ScreenId>('home');
@@ -58,7 +76,7 @@ export default function App() {
   const useViewTransitions = supportsViewTransitions() && getMotionTier() !== 'none';
 
   // Modo de alto contraste para acessibilidade
-  const [isHighContrast, setIsHighContrast] = useState<boolean>(() => {
+  const [isHighContrast] = useState<boolean>(() => {
     try {
       return localStorage.getItem('elosites_contrast') === 'high';
     } catch {
@@ -66,15 +84,41 @@ export default function App() {
     }
   });
 
-  const toggleHighContrast = () => {
-    setIsHighContrast((prev) => {
-      const next = !prev;
-      try {
-        localStorage.setItem('elosites_contrast', next ? 'high' : 'normal');
-      } catch {}
-      return next;
-    });
-  };
+  // Pré-carrega os chunks das telas secundárias e dos modais quando o navegador
+  // estiver ocioso (ou no primeiro toque/clique/foco), para trocas instantâneas.
+  useEffect(() => {
+    let idleId: number | undefined;
+    let timeoutId: number | undefined;
+    let done = false;
+
+    const run = () => {
+      if (done) return;
+      done = true;
+      preloadAllScreens();
+    };
+
+    const onFirstInteraction = () => run();
+
+    if (typeof window.requestIdleCallback === 'function') {
+      idleId = window.requestIdleCallback(run, { timeout: 2500 });
+    } else {
+      timeoutId = window.setTimeout(run, 1500);
+    }
+
+    window.addEventListener('pointerdown', onFirstInteraction, { once: true, passive: true });
+    window.addEventListener('touchstart', onFirstInteraction, { once: true, passive: true });
+    window.addEventListener('keydown', onFirstInteraction, { once: true });
+
+    return () => {
+      if (idleId !== undefined && typeof window.cancelIdleCallback === 'function') {
+        window.cancelIdleCallback(idleId);
+      }
+      if (timeoutId !== undefined) window.clearTimeout(timeoutId);
+      window.removeEventListener('pointerdown', onFirstInteraction);
+      window.removeEventListener('touchstart', onFirstInteraction);
+      window.removeEventListener('keydown', onFirstInteraction);
+    };
+  }, []);
 
   // Sincronização inicial e bidirecional com a hash da URL (7 telas oficiais)
   useEffect(() => {
@@ -207,10 +251,6 @@ export default function App() {
       navigateToScreen(nextScreen.id);
     }
   }, [nextScreen, navigateToScreen]);
-
-  const handleSelectPartnership = useCallback(() => {
-    navigateToScreen('parceria-trafego');
-  }, [navigateToScreen]);
 
   // Suporte a navegação por setas do teclado (Esquerda e Direita)
   useEffect(() => {
@@ -444,7 +484,7 @@ export default function App() {
     <>
       {/* TELA 01: Home (Background-only Hero com Menu Centralizado e Logo Flutuante) */}
       {currentScreen === 'home' && (
-        <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style]">
+        <div style={{ contain: 'layout style' }} className="w-full [contain:layout_style]">
           <Hero
             mode="home"
             isMenuOpen={isMenuOpen}
@@ -454,23 +494,21 @@ export default function App() {
 
       {/* TELA 02: Início (Apresentação Completa, Marquee 90s, CTAs e Terminal 3D) */}
       {currentScreen === 'inicio' && (
-        <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style]">
+        <div style={{ contain: 'layout style' }} className="w-full [contain:layout_style]">
           <Hero
             mode="inicio"
             onNavigateToPortfolio={() => navigateToScreen('portfolio')}
-            onNavigateToServices={() => navigateToScreen('servicos')}
           />
         </div>
       )}
 
       {/* TELA 02: Portfólio de Projetos Reais & Depoimentos (Social Proof) */}
       {currentScreen === 'portfolio' && (
-        <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style]">
+        <div style={{ contain: 'layout style' }} className="w-full [contain:layout_style]">
           <SectionErrorBoundary>
             <Suspense fallback={<PortfolioSkeleton />}>
               <PortfolioSection
                 onNavigateToServices={() => navigateToScreen('servicos')}
-                onNavigateToOrcamento={() => navigateToScreen('orcamento')}
               />
               <TestimonialsSection
                 onNavigateToServices={() => navigateToScreen('servicos')}
@@ -482,7 +520,7 @@ export default function App() {
 
       {/* TELA 03: Serviços & Condições Comerciais */}
       {currentScreen === 'servicos' && (
-        <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style]">
+        <div style={{ contain: 'layout style' }} className="w-full [contain:layout_style]">
           <SectionErrorBoundary>
             <Suspense fallback={<ServicesSkeleton />}>
               <ServicesSection onNavigateToOrcamento={() => navigateToScreen('orcamento')} />
@@ -493,11 +531,13 @@ export default function App() {
 
       {/* TELA 04: Processo em 4 Etapas & Diferenciais como continuidade */}
       {currentScreen === 'processo' && (
-        <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style] space-y-0">
-          <ProcessSection />
+        <div style={{ contain: 'layout style' }} className="w-full [contain:layout_style] space-y-0">
           <SectionErrorBoundary>
             <Suspense fallback={<DifferentialsSkeleton />}>
-              <DifferentialsSection onNavigateToPortfolio={() => navigateToScreen('portfolio')} />
+              <ProcessSection />
+              <Suspense fallback={<DifferentialsSkeleton />}>
+                <DifferentialsSection onNavigateToPortfolio={() => navigateToScreen('portfolio')} />
+              </Suspense>
             </Suspense>
           </SectionErrorBoundary>
         </div>
@@ -505,7 +545,7 @@ export default function App() {
 
       {/* TELA 05: Briefing & Agendamento */}
       {currentScreen === 'orcamento' && (
-        <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style]">
+        <div style={{ contain: 'layout style' }} className="w-full [contain:layout_style]">
           <SectionErrorBoundary>
             <Suspense fallback={<BookingSkeleton />}>
               <ProjectBriefBookingSection onOpenPrivacy={() => setLegalModal('privacy')} />
@@ -516,16 +556,24 @@ export default function App() {
 
       {/* TELA 06: Perguntas Frequentes (FAQ) & Contato */}
       {currentScreen === 'faq' && (
-        <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style] space-y-0">
-          <FaqSection />
-          <ContactCtaSection onNavigateToOrcamento={() => navigateToScreen('orcamento')} />
+        <div style={{ contain: 'layout style' }} className="w-full [contain:layout_style] space-y-0">
+          <SectionErrorBoundary>
+            <Suspense fallback={<SimpleSectionSkeleton />}>
+              <FaqSection />
+              <ContactCtaSection onNavigateToOrcamento={() => navigateToScreen('orcamento')} />
+            </Suspense>
+          </SectionErrorBoundary>
         </div>
       )}
 
       {/* TELA 07: Parceria Estratégica | Tráfego Pago */}
       {currentScreen === 'parceria-trafego' && (
-        <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style] space-y-0">
-          <PaidTrafficPartnershipSection />
+        <div style={{ contain: 'layout style' }} className="w-full [contain:layout_style] space-y-0">
+          <SectionErrorBoundary>
+            <Suspense fallback={<SimpleSectionSkeleton />}>
+              <PaidTrafficPartnershipSection />
+            </Suspense>
+          </SectionErrorBoundary>
         </div>
       )}
     </>
@@ -553,7 +601,6 @@ export default function App() {
       <Header
         currentScreen={currentScreen}
         onSelectScreen={navigateToScreen}
-        onSelectPartnership={handleSelectPartnership}
         onPreviousScreen={handlePrevious}
         onNextScreen={handleNext}
         isMenuOpen={isMenuOpen}
@@ -585,8 +632,8 @@ export default function App() {
               initial="initial"
               animate="animate"
               exit="exit"
-              style={{ willChange: 'transform', contain: 'layout style' }}
-              className="w-full will-change-transform [contain:layout_style]"
+              style={{ contain: 'layout style' }}
+              className="w-full [contain:layout_style]"
             >
               {renderActiveScreen()}
             </motion.div>
@@ -601,8 +648,6 @@ export default function App() {
           onOpenTerms={() => setLegalModal('terms')}
           onSelectScreen={navigateToScreen}
           currentScreen={currentScreen}
-          isHighContrast={isHighContrast}
-          onToggleHighContrast={toggleHighContrast}
           isWhatsAppBubbleOpen={isWhatsAppBubbleOpen}
         />
       )}
@@ -616,18 +661,22 @@ export default function App() {
       )}
 
       {/* Modais Legais (Política de Privacidade e Termos de Uso) */}
-      <LegalModals
-        isOpen={legalModal !== null}
-        type={legalModal}
-        onClose={() => setLegalModal(null)}
-      />
+      <Suspense fallback={null}>
+        <LegalModals
+          isOpen={legalModal !== null}
+          type={legalModal}
+          onClose={() => setLegalModal(null)}
+        />
+      </Suspense>
 
       {/* Modal do Mapa do Site Dinâmico XML (Google Search Console) */}
-      <SitemapModal
-        isOpen={isSitemapOpen}
-        onClose={() => setIsSitemapOpen(false)}
-        onNavigateToScreen={navigateToScreen}
-      />
+      <Suspense fallback={null}>
+        <SitemapModal
+          isOpen={isSitemapOpen}
+          onClose={() => setIsSitemapOpen(false)}
+          onNavigateToScreen={navigateToScreen}
+        />
+      </Suspense>
     </div>
   );
 }

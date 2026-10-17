@@ -8,7 +8,6 @@ import {
   TrendingUp,
   Sparkles,
   Layers,
-  ArrowUpRight,
 } from 'lucide-react';
 import { WhatsAppIcon } from './WhatsAppIcon';
 import { PortfolioProjectData } from './PortfolioSection';

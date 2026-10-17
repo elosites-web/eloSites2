@@ -137,4 +137,28 @@ export const BookingSkeleton: React.FC = () => {
   );
 };
 
-export { SkeletonFloatingWhatsApp } from './FloatingWhatsApp';
+
+/**
+ * Esqueleto genérico e leve para telas curtas que ainda estão sendo carregadas.
+ */
+export const SimpleSectionSkeleton: React.FC = () => {
+  return (
+    <section className="py-24 sm:py-32 bg-[#090D16] relative border-t border-white/[0.05] animate-pulse">
+      <div className="page-shell page-x max-w-4xl mx-auto">
+        <div className="text-center space-y-4 mb-12">
+          <div className="w-32 h-6 rounded-full bg-slate-800/80 mx-auto" />
+          <div className="w-3/4 h-10 rounded-xl bg-slate-800 mx-auto" />
+          <div className="w-1/2 h-4 rounded bg-slate-850 mx-auto" />
+        </div>
+        <div className="space-y-4">
+          {[1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className="rounded-2xl p-6 bg-[#0B101D]/90 border border-white/[0.06] min-h-[120px]"
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};

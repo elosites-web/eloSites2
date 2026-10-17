@@ -112,14 +112,12 @@ interface ProjectCardProps {
   project: PortfolioProjectData;
   onOpenZoom: (imgSrc: string, title: string) => void;
   onOpenDetails: (project: PortfolioProjectData) => void;
-  onNavigateToServices?: () => void;
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({
   project,
   onOpenZoom,
   onOpenDetails,
-  onNavigateToServices,
 }) => {
   const [viewMode, setViewMode] = useState<ViewMode>('composite');
 
@@ -402,12 +400,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
 interface PortfolioSectionProps {
   onNavigateToServices?: () => void;
-  onNavigateToOrcamento?: () => void;
 }
 
 export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
   onNavigateToServices,
-  onNavigateToOrcamento,
 }) => {
   const [filter, setFilter] = useState<'all' | 'landing' | 'institutional'>('all');
   const [zoomModal, setZoomModal] = useState<{ src: string; title: string } | null>(null);
@@ -512,7 +508,6 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
                       project={project}
                       onOpenZoom={(src, title) => setZoomModal({ src, title })}
                       onOpenDetails={(p) => setSelectedProject(p)}
-                      onNavigateToServices={onNavigateToServices}
                     />
                   </Interactive3DCard>
                 </motion.div>

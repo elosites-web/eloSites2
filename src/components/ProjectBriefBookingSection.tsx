@@ -21,7 +21,6 @@ import {
   Check,
   CalendarPlus,
   Download,
-  Building2,
   Sparkles,
   ShieldCheck,
 } from 'lucide-react';

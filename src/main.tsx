@@ -3,7 +3,15 @@ import {StrictMode} from 'react';
 import {createRoot} from 'react-dom/client';
 import App from './App.tsx';
 import { ToastProvider } from './components/Toast';
+import { getMotionTier, isInAppBrowser } from './mediaPrefs';
 import './index.css';
+
+// Expõe o tier de movimento ao CSS sem sniffing de navegador espalhado pelo código.
+if (typeof document !== 'undefined') {
+  const root = document.documentElement;
+  root.dataset.motionTier = getMotionTier();
+  root.dataset.inApp = isInAppBrowser() ? 'true' : 'false';
+}
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -21,14 +29,8 @@ if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker
         .register('/sw.js')
-        .then((registration) => {
-          if (registration.installing) {
-            console.debug('[ēloSites SW] Instalando service worker...');
-          }
-        })
-        .catch((err) => {
-          console.debug('[ēloSites SW] Erro ao registrar service worker:', err);
-        });
+        .then(() => {})
+        .catch(() => {});
     });
   } else {
     navigator.serviceWorker.getRegistrations().then((registrations) => {

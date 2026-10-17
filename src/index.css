@@ -138,7 +138,6 @@ summary,
   box-shadow:
     0 10px 30px -10px rgba(0, 0, 0, 0.6),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  transform: translateZ(0);
 }
 
 /* Superfície de vidro mais "premium": realce interno no topo e brilho sutil
@@ -247,10 +246,7 @@ summary,
 .service-list,
 .scroll-perf-card,
 .scroll-perf-list {
-  will-change: transform;
   contain: layout style;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
 }
 
 .glass-card-interactive,
@@ -376,21 +372,19 @@ summary,
 
 /* Efeito de elevação sutil no hover (apenas ponteiro fino) do balão */
 .whatsapp-bubble-interactive {
-  will-change: transform, border-color;
-  transform: translateZ(0);
   transition: transform var(--dur-hover) var(--ease-out),
               border-color var(--dur-hover) var(--ease);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .whatsapp-bubble-interactive:hover {
-    transform: translateY(-2px) translateZ(0);
+    transform: translateY(-2px);
     border-color: rgba(129, 140, 248, 0.9);
   }
 }
 
 .whatsapp-bubble-interactive:active {
-  transform: scale(0.98) translateZ(0);
+  transform: scale(0.98);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -445,25 +439,21 @@ summary,
 }
 
 .animate-gradient-pulse-button {
-  will-change: transform, box-shadow;
   backface-visibility: hidden;
   animation: pulseGradientButton 2.8s ease-in-out infinite;
 }
 
 .animate-gradient-pulse-aura {
-  will-change: transform, opacity;
   backface-visibility: hidden;
   animation: pulseGradientAura 2.8s ease-in-out infinite;
 }
 
 .animate-gradient-dot-ping {
-  will-change: transform, opacity;
   backface-visibility: hidden;
   animation: pulseGradientGreenDot 2s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
 .animate-gradient-dot-glow {
-  will-change: box-shadow;
   backface-visibility: hidden;
   animation: pulseGradientGreenGlow 2s ease-in-out infinite;
 }
@@ -552,24 +542,25 @@ a[id*="whatsapp"] {
 }
 
 /* Efeito neon premium em ícones interativos */
-button:hover > svg,
-a:hover > svg {
-  filter: drop-shadow(0 0 6px rgba(129, 140, 248, 0.65));
-  transition: filter 0.25s ease;
-}
+@media (hover: hover) and (pointer: fine) {
+  button:hover > svg,
+  a:hover > svg {
+    filter: drop-shadow(0 0 6px rgba(129, 140, 248, 0.65));
+    transition: filter 0.25s ease;
+  }
 
-a[href*="wa.me"]:hover > svg,
-a[href*="whatsapp.com"]:hover > svg,
-button[id*="whatsapp"]:hover > svg,
-a[id*="whatsapp"]:hover > svg {
-  filter: drop-shadow(0 0 8px rgba(74, 222, 128, 0.85));
+  a[href*="wa.me"]:hover > svg,
+  a[href*="whatsapp.com"]:hover > svg,
+  button[id*="whatsapp"]:hover > svg,
+  a[id*="whatsapp"]:hover > svg {
+    filter: drop-shadow(0 0 8px rgba(74, 222, 128, 0.85));
+  }
 }
 
 /* Rotação dinâmica do ícone dentro de #floating-whatsapp-btn (500ms ease-out exclusivamente no hover ou ao clicar) */
 #floating-whatsapp-btn svg {
   transition: transform 500ms ease-out;
   transform-origin: center center;
-  will-change: transform;
 }
 
 #floating-whatsapp-btn:hover svg,
@@ -706,7 +697,6 @@ a[id*="whatsapp"]:hover > svg {
   transition:
     opacity var(--dur-reveal) var(--ease-out) var(--reveal-delay),
     transform var(--dur-reveal) var(--ease-out) var(--reveal-delay);
-  will-change: opacity, transform;
 }
 
 .reveal.is-visible {
@@ -736,7 +726,6 @@ a[id*="whatsapp"]:hover > svg {
     transform var(--dur-reveal) var(--ease-out),
     opacity var(--dur-reveal) var(--ease-out);
   transition-delay: calc(var(--d, 0) * var(--stagger));
-  will-change: transform, opacity;
 }
 
 .split-lines.is-visible .sl-inner {
@@ -760,7 +749,6 @@ a[id*="whatsapp"]:hover > svg {
   transition:
     clip-path var(--dur-reveal) var(--ease-out),
     opacity var(--dur-reveal) var(--ease-out);
-  will-change: clip-path, opacity;
 }
 
 .mask-reveal.is-visible {
@@ -1256,19 +1244,23 @@ a[id*="whatsapp"]:hover > svg {
   box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.09);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.28s ease,
+              box-shadow 0.28s ease;
   white-space: nowrap;
   flex-shrink: 0;
   contain: content;
 }
 
-.audience-pill:hover {
-  transform: translateY(-2px);
-  border-color: rgba(165, 180, 252, 0.6);
-  background: linear-gradient(135deg, rgba(30, 27, 75, 0.95) 0%, rgba(15, 23, 42, 0.95) 100%);
-  box-shadow: 0 8px 24px -4px rgba(99, 102, 241, 0.35),
-              0 0 18px -2px rgba(129, 140, 248, 0.35),
-              inset 0 1px 0 rgba(255, 255, 255, 0.18);
+@media (hover: hover) and (pointer: fine) {
+  .audience-pill:hover {
+    transform: translateY(-2px);
+    border-color: rgba(165, 180, 252, 0.6);
+    background: linear-gradient(135deg, rgba(30, 27, 75, 0.95) 0%, rgba(15, 23, 42, 0.95) 100%);
+    box-shadow: 0 8px 24px -4px rgba(99, 102, 241, 0.35),
+                0 0 18px -2px rgba(129, 140, 248, 0.35),
+                inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1280,6 +1272,18 @@ a[id*="whatsapp"]:hover > svg {
     -webkit-transform: none !important;
     overflow-x: auto;
   }
+}
+
+/* Em aparelhos leves e WebViews sociais a faixa fica estática (rolável),
+   economizando um loop de composição permanente. */
+html:not([data-motion-tier="full"]) .niche-marquee,
+html:not([data-motion-tier="full"]) .audience-marquee {
+  animation: none !important;
+  -webkit-animation: none !important;
+  will-change: auto;
+  transform: none !important;
+  -webkit-transform: none !important;
+  overflow-x: auto;
 }
 
 /* View Transitions API: crossfade entre telas (fallback = transição suave atual). */
@@ -1325,3 +1329,17 @@ body,
 }
 
 
+
+
+/* ===== Compatibilidade de viewport e preferências de movimento ===== */
+/* 100dvh evita o "salto" da barra de endereço em navegadores móveis. */
+.hero-home-viewport {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

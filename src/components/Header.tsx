@@ -2,11 +2,11 @@ import React, { useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { EloLogo } from './EloLogo';
 import { ScreenId, SCREENS } from '../types';
+import { preloadScreen } from '../preloadScreens';
 
 interface HeaderProps {
   currentScreen: ScreenId;
   onSelectScreen: (screenId: ScreenId) => void;
-  onSelectPartnership?: () => void;
   onPreviousScreen?: () => void;
   onNextScreen?: () => void;
   isMenuOpen: boolean;
@@ -16,7 +16,6 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({
   currentScreen,
   onSelectScreen,
-  onSelectPartnership,
   isMenuOpen,
   setIsMenuOpen,
 }) => {
@@ -247,6 +246,9 @@ export const Header: React.FC<HeaderProps> = ({
                       onClick={() => {
                         onSelectScreen(screen.id);
                       }}
+                      onPointerEnter={() => preloadScreen(screen.id)}
+                      onFocus={() => preloadScreen(screen.id)}
+                      onTouchStart={() => preloadScreen(screen.id)}
                       className={`nav-menu-link-item group relative rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/70 flex items-center justify-center cursor-pointer ${
                         isActive ? 'is-active scale-105' : 'hover:scale-105'
                       }`}
@@ -275,8 +277,10 @@ export const Header: React.FC<HeaderProps> = ({
               aria-label="ēloSites — Ir para a Página Inicial (Home)"
             >
               <img
-                src="/logo-elosites-final.png"
+                src="/logo-elosites-1360.png"
                 alt="ēloSites"
+                width={1360}
+                height={337}
                 className="nav-menu-logo-img w-auto object-contain drop-shadow-[0_0_20px_rgba(168,85,247,0.35)]"
               />
               <div className="flex flex-col items-center justify-center text-center">

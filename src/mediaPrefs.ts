@@ -37,7 +37,7 @@ export function webglSupported(): boolean {
 export function isInAppBrowser(): boolean {
   try {
     const ua = navigator.userAgent || navigator.vendor || (window as unknown as { opera?: string }).opera || '';
-    return /FBAN|FBAV|Instagram|FB_IAB|FBSS|TikTok|musical_ly|Line\/|Snapchat/i.test(ua);
+    return /FBAN|FBAV|FB_IAB|FBSS|Instagram|BytedanceWebview|TikTok|musical_ly|Line\/|Snapchat/i.test(ua);
   } catch {
     return false;
   }
@@ -107,6 +107,10 @@ function weakDevice(): boolean {
 
 export function getMotionTier(): MotionTier {
   if (shouldReduceMedia() || weakDevice()) return 'none';
+
+  // WebViews de redes sociais (Facebook, Instagram, TikTok, Line) são
+  // historicamente mais lentos: ficam no tier leve, sem 3D/marquee/blur pesado.
+  if (isInAppBrowser()) return 'lite';
 
   const cores = cpuConcurrency();
   const mem = deviceMemoryGB();

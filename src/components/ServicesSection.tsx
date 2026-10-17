@@ -152,9 +152,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
 
   const discountValue = Math.round(simulatedValue * (1 - PAYMENT_CONDITIONS.cashDiscountPercent / 100));
   const pixSplitFirst = Math.round(simulatedValue * 0.5);
-  const pixSplitSecond = simulatedValue - pixSplitFirst;
   const installment5x = (simulatedValue / 5).toFixed(2);
-  const installment12xEst = ((simulatedValue * 1.15) / 12).toFixed(2);
 
   // Variantes dinâmicas de entrada com Framer Motion para fluidez máxima ao rolar (service-card)
   const serviceCardVariants: Variants = {

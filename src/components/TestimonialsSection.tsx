@@ -479,7 +479,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
                       }
                     }}
                   >
-                    {/* Card com aceleração direta na GPU: will-change e backface-visibility */}
+                    {/* Card do carrossel: transição apenas de transform/opacity (sem camada permanente) */}
                     <div
                       onClick={() => {
                         if (!isActive) scrollTo(idx);
@@ -489,7 +489,6 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
                           ? `scale(${scale})`
                           : `scale(${scale}) rotateY(${rotateY}deg) translateZ(${translateZ}px)`,
                         opacity,
-                        willChange: 'transform',
                         backfaceVisibility: 'hidden',
                         WebkitBackfaceVisibility: 'hidden',
                         transformStyle: prefersReduced ? 'flat' : 'preserve-3d',
@@ -497,7 +496,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
                           ? 'opacity 0.2s ease, transform 0.2s ease'
                           : 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s ease, border-color 0.3s ease, box-shadow 0.3s ease',
                       }}
-                      className={`relative rounded-2xl bracket-panel overflow-hidden [will-change:transform] [backface-visibility:hidden] select-none h-full flex flex-col justify-between ${
+                      className={`relative rounded-2xl bracket-panel overflow-hidden [backface-visibility:hidden] select-none h-full flex flex-col justify-between ${
                         isActive
                           ? 'bg-[#0B101D] border-2 border-cyan-400/40 shadow-[0_12px_36px_-6px_rgba(6,182,212,0.25)] ring-1 ring-cyan-400/20 cursor-default'
                           : 'bg-[#090E1A]/85 border border-slate-800/80 hover:border-indigo-400/40 shadow-xl cursor-pointer hover:opacity-75'

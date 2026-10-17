@@ -517,7 +517,7 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ onBubbleStat
 
                   {/* Ícone Oficial do WhatsApp com efeito de preenchimento gradual sincronizado com a barra de progresso do balão */}
                   <div
-                    className="relative w-7 h-7 flex items-center justify-center transition-transform duration-500 ease-out group-hover:rotate-[360deg] group-hover:scale-110 will-change-transform"
+                    className="relative w-7 h-7 flex items-center justify-center transition-transform duration-500 ease-out group-hover:rotate-[360deg] group-hover:scale-110"
                     aria-hidden="true"
                   >
                     {/* Estado de Espera (Waiting State): Base em tom calmo e sutil de espera */}

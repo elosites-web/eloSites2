@@ -9,14 +9,12 @@ import { Interactive3DCard } from './Interactive3DCard';
 interface HeroProps {
   mode?: 'home' | 'inicio' | 'all';
   onNavigateToPortfolio?: () => void;
-  onNavigateToServices?: () => void;
   isMenuOpen?: boolean;
 }
 
 export const Hero: React.FC<HeroProps> = ({
   mode = 'all',
   onNavigateToPortfolio,
-  onNavigateToServices,
   isMenuOpen = false,
 }) => {
   const heroWhatsappUrl = whatsappUrl(SITE_CONFIG.heroWhatsappMessage);
@@ -51,9 +49,9 @@ export const Hero: React.FC<HeroProps> = ({
   ];
 
   const systemPrefersReduced = useReducedMotion();
-  const isReduced = Boolean(systemPrefersReduced || shouldReduceMedia());
-  // Faixa deslizante dos segmentos ativa em todos os dispositivos e celulares
-  const marquee = !isReduced;
+  const motionTier = getMotionTier();
+  const isReduced = Boolean(systemPrefersReduced || shouldReduceMedia() || motionTier === 'none');
+  const heavyMotion = !isReduced && motionTier === 'full';
 
   // Sequência de entrada do hero: roda apenas na primeira montagem da sessão
   // (efeito raro = delight). Nas demais navegações o conteúdo já aparece pronto.
@@ -72,19 +70,39 @@ export const Hero: React.FC<HeroProps> = ({
   const [counterDrift, setCounterDrift] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    if (isReduced) return;
+    if (!heavyMotion) return;
+
+    let rafId = 0;
+    let pending = false;
+    let lastX = 0;
+    let lastY = 0;
+
     const handleMouseMove = (e: MouseEvent) => {
-      const { innerWidth, innerHeight } = window;
-      const normX = (e.clientX / innerWidth - 0.5) * 2;
-      const normY = (e.clientY / innerHeight - 0.5) * 2;
-      setCounterDrift({
-        x: normX * 6,
-        y: normY * 5,
+      lastX = e.clientX;
+      lastY = e.clientY;
+      if (pending) return;
+      pending = true;
+      rafId = requestAnimationFrame(() => {
+        pending = false;
+        const { innerWidth, innerHeight } = window;
+        const normX = (lastX / innerWidth - 0.5) * 2;
+        const normY = (lastY / innerHeight - 0.5) * 2;
+        const nextX = normX * 6;
+        const nextY = normY * 5;
+        setCounterDrift((prev) =>
+          Math.abs(prev.x - nextX) < 0.1 && Math.abs(prev.y - nextY) < 0.1
+            ? prev
+            : { x: nextX, y: nextY }
+        );
       });
     };
+
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [isReduced]);
+    return () => {
+      cancelAnimationFrame(rafId);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, [heavyMotion]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -115,7 +133,7 @@ export const Hero: React.FC<HeroProps> = ({
       {(mode === 'home' || mode === 'all') && (
         <section
           id="home"
-          className="h-screen min-h-[580px] w-full flex flex-col items-center justify-center relative select-none px-4 overflow-hidden pointer-events-none"
+          className="hero-home-viewport min-h-[580px] w-full flex flex-col items-center justify-center relative select-none px-4 overflow-hidden pointer-events-none"
         >
           {/* Logo grande centralizado sobre o fundo azul marinho estático */}
           <AnimatePresence>
@@ -124,24 +142,28 @@ export const Hero: React.FC<HeroProps> = ({
                 key="hero-main-floating-logo"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={
-                  isReduced
-                    ? { opacity: 1, scale: 1 }
-                    : {
+                  heavyMotion
+                    ? {
                         opacity: 1,
                         scale: 1,
                         y: [-8 + counterDrift.y, 8 + counterDrift.y, -8 + counterDrift.y],
                         x: [4 + counterDrift.x, -4 + counterDrift.x, 4 + counterDrift.x],
                         rotate: [-0.5, 0.5, -0.5],
                       }
+                    : { opacity: 1, scale: 1 }
                 }
                 exit={{ opacity: 0, scale: 0.85, transition: { duration: 0.25 } }}
-                transition={{
-                  opacity: { duration: 0.45 },
-                  scale: { duration: 0.45 },
-                  y: { duration: 7, repeat: Infinity, ease: 'easeInOut' },
-                  x: { duration: 8, repeat: Infinity, ease: 'easeInOut' },
-                  rotate: { duration: 9, repeat: Infinity, ease: 'easeInOut' },
-                }}
+                transition={
+                  heavyMotion
+                    ? {
+                        opacity: { duration: 0.45 },
+                        scale: { duration: 0.45 },
+                        y: { duration: 7, repeat: Infinity, ease: 'easeInOut' },
+                        x: { duration: 8, repeat: Infinity, ease: 'easeInOut' },
+                        rotate: { duration: 9, repeat: Infinity, ease: 'easeInOut' },
+                      }
+                    : { opacity: { duration: 0.45 }, scale: { duration: 0.45 } }
+                }
                 className="relative flex flex-col items-center justify-center pointer-events-auto"
               >
                 {/* Brilho decorativo minimalista e suave de acordo com as cores do logo e botão de menu */}
@@ -158,8 +180,10 @@ export const Hero: React.FC<HeroProps> = ({
                   aria-label="ēloSites — Página Inicial (Home)"
                 >
                   <img
-                    src="/logo-elosites-final.png"
+                    src="/logo-elosites-1360.png"
                     alt="ēloSites"
+                    width={1360}
+                    height={337}
                     className="hero-home-logo w-auto object-contain relative z-10"
                   />
                 </a>
