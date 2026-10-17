@@ -1348,3 +1348,36 @@ body,
     scroll-behavior: auto;
   }
 }
+
+/* ===== Gating de backdrop-filter por capacidade do dispositivo ===== */
+/* Sem tier "full" (ou dentro de navegador in-app), remove o custo de blur em toda a árvore. */
+html[data-motion-tier="none"] *,
+html[data-in-app="true"] * {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* Tier "lite": manter blur apenas em elementos pequenos; desligar em camadas grandes/tela cheia. */
+html[data-motion-tier="lite"] :where(
+  header[class*="backdrop-blur"],
+  footer[class*="backdrop-blur"],
+  section[class*="backdrop-blur"],
+  .section-auto-contain[class*="backdrop-blur"],
+  .nav-menu-modal-container,
+  [class*="backdrop-blur"].fixed.inset-0,
+  .glass-panel[class*="backdrop-blur"]
+) {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* Fallback de contraste quando o blur é removido em superfícies translúcidas. */
+html[data-motion-tier="none"] .nav-menu-modal-container,
+html[data-in-app="true"] .nav-menu-modal-container {
+  background-color: rgba(0, 0, 0, 0.84);
+}
+
+html[data-motion-tier="none"] .glass-panel[class*="backdrop-blur"],
+html[data-in-app="true"] .glass-panel[class*="backdrop-blur"] {
+  background-color: rgba(11, 16, 29, 0.94);
+}
