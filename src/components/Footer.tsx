@@ -203,10 +203,10 @@ export const Footer: React.FC<FooterProps> = ({
           </button>
         </div>
 
-        {/* Última linha do rodapé: Linha com fonte aumentada em 1px e quebra de linha após o logo */}
+        {/* Última linha do rodapé: Linha com quebra em telas móveis e sem quebra no desktop */}
         <div className="mt-8 pt-6 border-t border-slate-800/60 flex flex-col items-center justify-center text-center select-none overflow-hidden max-w-full px-2">
-          <div className="flex flex-col items-center justify-center gap-1.5 text-[9px] min-[380px]:text-[10px] sm:text-[10.5px] font-semibold tracking-wide sm:tracking-wider uppercase text-slate-300">
-            <div className="inline-flex items-center justify-center gap-1.5 sm:gap-2">
+          <div className="flex flex-col md:flex-row md:flex-nowrap items-center justify-center gap-1.5 md:gap-2.5 text-[9px] min-[380px]:text-[10px] sm:text-[10.5px] font-semibold tracking-wide sm:tracking-wider uppercase text-slate-300 md:whitespace-nowrap">
+            <div className="inline-flex items-center justify-center gap-1.5 sm:gap-2 shrink-0">
               <span>CRIADO E DESENVOLVIDO POR</span>
               <img
                 src="/logo-elosites-final.png"
@@ -214,7 +214,8 @@ export const Footer: React.FC<FooterProps> = ({
                 className="h-[14px] sm:h-[16px] w-auto shrink-0 inline-block align-middle object-contain"
               />
             </div>
-            <span className="text-slate-400 font-medium">O MELHOR SITE PELO MELHOR PREÇO</span>
+            <span className="hidden md:inline text-slate-500/80 mx-0.5 select-none" aria-hidden="true">•</span>
+            <span className="text-slate-400 font-medium shrink-0">O MELHOR SITE PELO MELHOR PREÇO</span>
           </div>
         </div>
 

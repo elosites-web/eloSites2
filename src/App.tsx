@@ -532,8 +532,8 @@ export default function App() {
       {/* Fundo animado leve em CSS puro (substitui o vídeo global) */}
       <AnimatedBackdrop />
 
-      {/* Cena 3D Persistente procedural no fundo (com circuito contínuo, pulsos luminosos e chuva digital) */}
-      <Persistent3DBackground isMenuOpen={isMenuOpen} />
+      {/* Cena 3D Persistente procedural no fundo (circuitos cibernéticos de construção de sites e pontos azuis) */}
+      <Persistent3DBackground isMenuOpen={isMenuOpen} currentScreen={currentScreen} />
 
       {/* Efeitos exclusivos do tier 'full' (holofote, pausas) */}
       <PointerSpotlight />

@@ -218,7 +218,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.12 }}
-            className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-7 lg:gap-8 min-w-0 items-stretch lg:grid-rows-[repeat(5,auto)] service-list scroll-perf-list"
+            className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-7 lg:gap-8 min-w-0 items-stretch lg:grid-rows-[repeat(5,auto)] service-list scroll-perf-list p-0.5 overflow-visible"
           >
             {SERVICES.map((service) => {
               const Icon = service.icon;
@@ -228,11 +228,11 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                 <motion.div
                   key={service.id}
                   variants={serviceCardVariants}
-                  className="h-full w-full lg:row-span-5 lg:grid lg:grid-rows-subgrid"
+                  className="h-full w-full min-w-0 max-w-full lg:row-span-5 lg:grid lg:grid-rows-subgrid"
                 >
-                  <Interactive3DCard maxTilt={5} className="h-full w-full lg:row-span-5 lg:grid lg:grid-rows-subgrid">
+                  <Interactive3DCard maxTilt={5} className="h-full w-full min-w-0 max-w-full lg:row-span-5 lg:grid lg:grid-rows-subgrid">
                     <article
-                      className="glass-card-interactive surface-card service-card scroll-perf-card accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 md:p-8 flex flex-col space-y-5 lg:space-y-0 lg:row-span-5 lg:grid lg:grid-rows-subgrid shadow-2xl shadow-black/60 bracket-panel transition-colors h-full w-full"
+                      className="glass-card-interactive surface-card service-card scroll-perf-card accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 md:p-8 flex flex-col space-y-5 lg:space-y-0 lg:row-span-5 lg:grid lg:grid-rows-subgrid shadow-2xl shadow-black/60 bracket-panel transition-colors h-full w-full min-w-0 max-w-full box-border"
                     >
                       {/* Linha 1: Topo do card + Título + Descrição */}
                       <div className="space-y-4 lg:pb-4">
@@ -317,10 +317,10 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                           href={ctaUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="cta-primary w-full inline-flex items-center justify-center text-center gap-1.5 sm:gap-2 py-3.5 px-2.5 sm:px-3 rounded-xl text-xs sm:text-[13px] md:text-sm font-semibold text-white transition-all shadow-lg shadow-indigo-600/25 min-h-12 whitespace-nowrap"
+                          className="cta-primary w-full inline-flex items-center justify-center text-center gap-1.5 sm:gap-2 py-3.5 px-3 sm:px-4 rounded-xl text-xs sm:text-[13px] md:text-sm font-semibold text-white transition-all shadow-lg shadow-indigo-600/25 min-h-12"
                         >
                           <WhatsAppIcon className="w-4 h-4 text-emerald-300 shrink-0" />
-                          <span className="text-center whitespace-nowrap">{service.ctaLabel}</span>
+                          <span className="text-center">{service.ctaLabel}</span>
                         </a>
                       </div>
                     </article>

@@ -1,31 +1,97 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
-import { isInAppBrowser, getOptimalDpr, prefersReducedMotion } from '../mediaPrefs';
+import {
+  isInAppBrowser,
+  getOptimalDpr,
+  prefersReducedMotion,
+  shouldReduceMedia,
+  getMotionTier,
+} from '../mediaPrefs';
+import type { ScreenId } from '../types';
 
 /**
- * Gera textura procedural 2D de alta definição contendo o blueprint cibernético
- * com código HTML/CSS, wireframe e árvore de arquitetura (idêntico às referências)
+ * Textura procedural do ponto de luz azul neon.
+ * Orbe redondo no azul vibrante (#2F6BFF a #00D2FE) com núcleo branco brilhante e halo difuso.
  */
-function createCyberBlueprintTexture(type: 'architecture' | 'components'): THREE.CanvasTexture {
+function createDotGlowTexture(): THREE.CanvasTexture {
+  const canvas = document.createElement('canvas');
+  canvas.width = 64;
+  canvas.height = 64;
+  const ctx = canvas.getContext('2d');
+  if (ctx) {
+    const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+    gradient.addColorStop(0, '#ffffff');
+    gradient.addColorStop(0.18, '#93c5fd');
+    gradient.addColorStop(0.38, '#3b82f6');
+    gradient.addColorStop(0.65, 'rgba(47, 107, 255, 0.45)');
+    gradient.addColorStop(0.85, 'rgba(0, 210, 254, 0.15)');
+    gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, 64, 64);
+  }
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  return texture;
+}
+
+/**
+ * Textura do anel de onda de choque elétrica azul disparada no clique.
+ */
+function createShockwaveTexture(): THREE.CanvasTexture {
+  const canvas = document.createElement('canvas');
+  canvas.width = 128;
+  canvas.height = 128;
+  const ctx = canvas.getContext('2d');
+  if (ctx) {
+    ctx.clearRect(0, 0, 128, 128);
+    const grad = ctx.createRadialGradient(64, 64, 42, 64, 64, 64);
+    grad.addColorStop(0, 'rgba(0, 210, 254, 0)');
+    grad.addColorStop(0.65, 'rgba(59, 130, 246, 0.7)');
+    grad.addColorStop(0.82, 'rgba(147, 197, 253, 0.95)');
+    grad.addColorStop(0.92, 'rgba(0, 210, 254, 0.8)');
+    grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = 14;
+    ctx.beginPath();
+    ctx.arc(64, 64, 54, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  return texture;
+}
+
+/**
+ * Gera textura procedural do Blueprint Arquitetural Central (construção de sites).
+ * Estilo futurista em violeta/púrpura com acentos em ciano/azul:
+ * - Janela com wireframe de website (header, hero, grids, footer)
+ * - Blocos de código limpos (HTML & CSS flexbox/grid)
+ * - Árvore de componentes e nós de arquitetura
+ * - 100% límpida sem blocos escuros/opacos
+ */
+function createArchitectBlueprintTexture(): THREE.CanvasTexture {
   const canvas = document.createElement('canvas');
   canvas.width = 512;
   canvas.height = 512;
   const ctx = canvas.getContext('2d');
 
   if (ctx) {
-    // Fundo translúcido com brilho ciano suave
-    ctx.fillStyle = 'rgba(6, 12, 24, 0.72)';
+    ctx.clearRect(0, 0, 512, 512);
+
+    // Fundo semitranslúcido violeta atmosférico sutil
+    ctx.fillStyle = 'rgba(139, 92, 246, 0.035)';
     ctx.fillRect(0, 0, 512, 512);
 
-    // Borda técnica externa
-    ctx.strokeStyle = 'rgba(56, 189, 248, 0.45)';
+    // Borda externa técnica
+    ctx.strokeStyle = 'rgba(168, 85, 247, 0.45)';
     ctx.lineWidth = 1.5;
     ctx.strokeRect(8, 8, 496, 496);
 
-    // Cantos destacados (bracket corners)
-    ctx.strokeStyle = '#38bdf8';
+    // Cantos em bracket neon violeta
+    ctx.strokeStyle = '#c084fc';
     ctx.lineWidth = 3;
-    const corner = 24;
+    const corner = 22;
     // Top-left
     ctx.beginPath();
     ctx.moveTo(8, 8 + corner);
@@ -51,146 +117,115 @@ function createCyberBlueprintTexture(type: 'architecture' | 'components'): THREE
     ctx.lineTo(504, 504 - corner);
     ctx.stroke();
 
-    // Barra superior com título e nós de circuito
-    ctx.fillStyle = 'rgba(14, 165, 233, 0.15)';
-    ctx.fillRect(10, 10, 492, 38);
-    ctx.fillStyle = '#38bdf8';
-    ctx.font = 'bold 15px "JetBrains Mono", monospace';
-    ctx.fillText(type === 'architecture' ? '// SITE ARCHITECTURE & DOM' : '// CORE ENGINE METRICS', 24, 34);
+    // Barra superior com título de arquitetura
+    ctx.fillStyle = 'rgba(139, 92, 246, 0.18)';
+    ctx.fillRect(10, 10, 492, 36);
+    ctx.fillStyle = '#e9d5ff';
+    ctx.font = 'bold 14px "JetBrains Mono", monospace';
+    ctx.fillText('SITE ARCHITECTURE & DOM CORE', 24, 33);
 
-    // 3 pontos de interface
-    ctx.fillStyle = 'rgba(56, 189, 248, 0.8)';
+    // Indicadores de nós de status no cabeçalho
+    ctx.fillStyle = '#38bdf8';
     ctx.beginPath();
-    ctx.arc(460, 29, 3.5, 0, Math.PI * 2);
-    ctx.arc(474, 29, 3.5, 0, Math.PI * 2);
-    ctx.arc(488, 29, 3.5, 0, Math.PI * 2);
+    ctx.arc(456, 28, 3.5, 0, Math.PI * 2);
+    ctx.arc(472, 28, 3.5, 0, Math.PI * 2);
+    ctx.arc(488, 28, 3.5, 0, Math.PI * 2);
     ctx.fill();
 
-    if (type === 'architecture') {
-      // Wireframe superior estilo blueprint (como na referência)
-      ctx.strokeStyle = 'rgba(129, 140, 248, 0.5)';
-      ctx.lineWidth = 1.5;
-      ctx.strokeRect(30, 64, 210, 110);
-      ctx.strokeRect(270, 64, 210, 110);
+    // 1. Wireframe Superior (Layout Web)
+    ctx.strokeStyle = 'rgba(168, 85, 247, 0.55)';
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(26, 60, 220, 114);
+    ctx.strokeRect(266, 60, 220, 114);
 
-      // Linhas diagonais de wireframe no box 1
-      ctx.beginPath();
-      ctx.moveTo(30, 64);
-      ctx.lineTo(240, 174);
-      ctx.moveTo(240, 64);
-      ctx.lineTo(30, 174);
-      ctx.stroke();
+    // Imagem wireframe com 'X' no box 1
+    ctx.beginPath();
+    ctx.moveTo(26, 60);
+    ctx.lineTo(246, 174);
+    ctx.moveTo(246, 60);
+    ctx.lineTo(26, 174);
+    ctx.stroke();
 
-      // Linhas de layout no box 2
-      ctx.strokeRect(280, 74, 190, 20);
-      ctx.strokeRect(280, 104, 90, 60);
-      ctx.strokeRect(380, 104, 90, 60);
+    // Mini navbar e estrutura no box 2
+    ctx.strokeRect(276, 70, 200, 18);
+    ctx.strokeRect(276, 98, 94, 64);
+    ctx.strokeRect(382, 98, 94, 64);
 
-      // Bloco de código central estilizado
-      ctx.fillStyle = 'rgba(6, 182, 212, 0.08)';
-      ctx.fillRect(30, 190, 450, 180);
-      ctx.strokeStyle = 'rgba(6, 182, 212, 0.4)';
-      ctx.strokeRect(30, 190, 450, 180);
+    // 2. Bloco Central de Código HTML/CSS Estilizado
+    ctx.fillStyle = 'rgba(99, 102, 241, 0.08)';
+    ctx.fillRect(26, 192, 460, 174);
+    ctx.strokeStyle = 'rgba(139, 92, 246, 0.4)';
+    ctx.strokeRect(26, 192, 460, 174);
 
-      ctx.fillStyle = '#67e8f9';
-      ctx.font = '13px "JetBrains Mono", monospace';
-      const lines = [
-        '<div class="site-container">',
-        '  <header class="hero-section">',
-        '    display: flex; gap: 24px;',
-        '    align-items: center;',
-        '  </header>',
-        '  <main class="responsive-core">',
-        '    seo_score: 100% // technical',
-        '    performance: 99+ // clean_code',
-        '  </main>',
-        '</div>',
-      ];
-      lines.forEach((line, i) => {
-        ctx.fillText(line, 45, 216 + i * 16.5);
-      });
-
-      // Trilhas e nós na base (estilo árvore de arquitetura)
-      ctx.strokeStyle = '#818cf8';
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.moveTo(100, 390);
-      ctx.lineTo(100, 430);
-      ctx.lineTo(256, 430);
-      ctx.lineTo(256, 470);
-      ctx.moveTo(412, 390);
-      ctx.lineTo(412, 430);
-      ctx.lineTo(256, 430);
-      ctx.stroke();
-
-      // Caixinhas de nós na árvore
-      ctx.fillStyle = 'rgba(99, 102, 241, 0.2)';
-      ctx.fillRect(60, 390, 80, 24);
-      ctx.strokeRect(60, 390, 80, 24);
-      ctx.fillRect(372, 390, 80, 24);
-      ctx.strokeRect(372, 390, 80, 24);
-      ctx.fillRect(206, 470, 100, 24);
-      ctx.strokeRect(206, 470, 100, 24);
-
-      ctx.fillStyle = '#a5b4fc';
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.fillText('<Layout />', 68, 406);
-      ctx.fillText('<Header />', 380, 406);
-      ctx.fillText('<AppRoot />', 216, 486);
-    } else {
-      // Painel de métricas e gráficos holográficos
-      ctx.strokeStyle = 'rgba(6, 182, 212, 0.4)';
-      ctx.lineWidth = 1.5;
-
-      // Gráfico de barras digital
-      ctx.fillStyle = 'rgba(14, 165, 233, 0.1)';
-      ctx.fillRect(30, 64, 450, 140);
-      ctx.strokeRect(30, 64, 450, 140);
-
-      ctx.fillStyle = '#38bdf8';
-      ctx.font = '12px "JetBrains Mono", monospace';
-      ctx.fillText('SPEED & CONVERSION METRICS', 45, 88);
-
-      const bars = [40, 65, 85, 95, 75, 100, 92, 98];
-      bars.forEach((val, idx) => {
-        const barHeight = (val / 100) * 80;
-        ctx.fillStyle = idx % 2 === 0 ? 'rgba(56, 189, 248, 0.65)' : 'rgba(129, 140, 248, 0.65)';
-        ctx.fillRect(50 + idx * 50, 184 - barHeight, 32, barHeight);
-      });
-
-      // Bloco de circuito e microprocessador
-      ctx.fillStyle = 'rgba(99, 102, 241, 0.12)';
-      ctx.fillRect(30, 224, 450, 250);
-      ctx.strokeStyle = 'rgba(99, 102, 241, 0.4)';
-      ctx.strokeRect(30, 224, 450, 250);
-
-      // Chip central
-      ctx.strokeStyle = '#38bdf8';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(186, 280, 140, 110);
-      ctx.fillStyle = '#38bdf8';
-      ctx.font = 'bold 13px "JetBrains Mono", monospace';
-      ctx.fillText('ēloSites', 222, 332);
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.fillStyle = '#a5b4fc';
-      ctx.fillText('ENGINE v2', 226, 350);
-
-      // Pinos saindo do chip em 90 graus
-      ctx.strokeStyle = 'rgba(56, 189, 248, 0.5)';
-      ctx.lineWidth = 1.5;
-      for (let p = 0; p < 4; p++) {
-        // Esquerda
-        ctx.beginPath();
-        ctx.moveTo(186, 296 + p * 24);
-        ctx.lineTo(80, 296 + p * 24);
-        ctx.stroke();
-        // Direita
-        ctx.beginPath();
-        ctx.moveTo(326, 296 + p * 24);
-        ctx.lineTo(430, 296 + p * 24);
-        ctx.stroke();
+    ctx.fillStyle = '#a78bfa';
+    ctx.font = '12px "JetBrains Mono", monospace';
+    const lines = [
+      '<div class="site-container">',
+      '  <header class="hero-section">',
+      '    display: flex; gap: 24px; align-items: center;',
+      '  </header>',
+      '  <main class="responsive-core">',
+      '    seo_score: 100% /* technical */',
+      '    conversion_rate: max /* whatsapp_flow */',
+      '  </main>',
+      '  <footer class="clean-code" />',
+      '</div>',
+    ];
+    lines.forEach((line, i) => {
+      // Destaca tags em ciano suave
+      if (line.includes('<') || line.includes('>')) {
+        ctx.fillStyle = '#67e8f9';
+      } else if (line.includes('display:') || line.includes('gap:')) {
+        ctx.fillStyle = '#c084fc';
+      } else {
+        ctx.fillStyle = '#93c5fd';
       }
-    }
+      ctx.fillText(line, 42, 214 + i * 16.5);
+    });
+
+    // 3. Diagrama Inferior: Árvore de Componentes & Nós de Circuito
+    ctx.strokeStyle = '#818cf8';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    // Nó central inferior
+    ctx.moveTo(256, 380);
+    ctx.lineTo(256, 410);
+    // Ramificação esquerda
+    ctx.lineTo(120, 410);
+    ctx.lineTo(120, 436);
+    // Ramificação direita
+    ctx.moveTo(256, 410);
+    ctx.lineTo(392, 410);
+    ctx.lineTo(392, 436);
+    ctx.stroke();
+
+    // Caixinhas de componentes na base
+    const drawPillBox = (x: number, y: number, w: number, h: number, text: string) => {
+      ctx.fillStyle = 'rgba(139, 92, 246, 0.2)';
+      ctx.fillRect(x, y, w, h);
+      ctx.strokeStyle = '#a855f7';
+      ctx.strokeRect(x, y, w, h);
+      ctx.fillStyle = '#e9d5ff';
+      ctx.font = 'bold 11px "JetBrains Mono", monospace';
+      ctx.fillText(text, x + 10, y + 15);
+    };
+
+    drawPillBox(65, 436, 110, 22, 'UI Elements');
+    drawPillBox(200, 436, 112, 22, 'Site Schema');
+    drawPillBox(340, 436, 105, 22, 'Code Base');
+
+    // Terminais e nós de circuito na base
+    ctx.fillStyle = '#38bdf8';
+    [120, 256, 392].forEach((x) => {
+      ctx.beginPath();
+      ctx.arc(x, 480, 4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#38bdf8';
+      ctx.beginPath();
+      ctx.moveTo(x, 458);
+      ctx.lineTo(x, 476);
+      ctx.stroke();
+    });
   }
 
   const texture = new THREE.CanvasTexture(canvas);
@@ -199,65 +234,142 @@ function createCyberBlueprintTexture(type: 'architecture' | 'components'): THREE
 }
 
 /**
- * Textura procedural de pulso luminoso para partículas de circuito
+ * Gera textura procedural do Painel Satélite Lateral:
+ * Métricas de usuário, gráficos HUD, campos de busca e controles de layout.
  */
-function createPulseGlowTexture(): THREE.CanvasTexture {
+function createSubSchematicTexture(): THREE.CanvasTexture {
   const canvas = document.createElement('canvas');
-  canvas.width = 32;
-  canvas.height = 32;
+  canvas.width = 512;
+  canvas.height = 256;
   const ctx = canvas.getContext('2d');
+
   if (ctx) {
-    const gradient = ctx.createRadialGradient(16, 16, 0, 16, 16, 10);
-    gradient.addColorStop(0, '#ffffff');
-    gradient.addColorStop(0.2, 'rgba(56, 189, 248, 0.7)');
-    gradient.addColorStop(0.5, 'rgba(99, 102, 241, 0.15)');
-    gradient.addColorStop(0.8, 'rgba(6, 9, 18, 0)');
-    gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, 32, 32);
+    ctx.clearRect(0, 0, 512, 256);
+
+    ctx.fillStyle = 'rgba(139, 92, 246, 0.03)';
+    ctx.fillRect(0, 0, 512, 256);
+
+    ctx.strokeStyle = 'rgba(168, 85, 247, 0.4)';
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(8, 8, 496, 240);
+
+    // Título
+    ctx.fillStyle = '#c084fc';
+    ctx.font = 'bold 12px "JetBrains Mono", monospace';
+    ctx.fillText('ANALYTICS & CONVERSION ENGINE', 22, 28);
+
+    // Gráfico de barras (User Metrics)
+    ctx.strokeStyle = 'rgba(129, 140, 248, 0.5)';
+    ctx.strokeRect(22, 42, 220, 120);
+
+    const barHeights = [28, 45, 65, 52, 78, 92, 85, 100];
+    barHeights.forEach((h, i) => {
+      const bx = 34 + i * 24;
+      const by = 152 - h;
+      ctx.fillStyle = i >= 5 ? '#38bdf8' : 'rgba(168, 85, 247, 0.7)';
+      ctx.fillRect(bx, by, 16, h);
+    });
+
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '10px "JetBrains Mono", monospace';
+    ctx.fillText('Growth: +140%', 28, 180);
+
+    // Gráfico de curva contínua à direita
+    ctx.strokeStyle = 'rgba(129, 140, 248, 0.5)';
+    ctx.strokeRect(266, 42, 220, 120);
+
+    ctx.strokeStyle = '#38bdf8';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(276, 140);
+    ctx.bezierCurveTo(320, 130, 360, 70, 410, 80);
+    ctx.bezierCurveTo(430, 85, 450, 55, 476, 50);
+    ctx.stroke();
+
+    ctx.fillStyle = '#38bdf8';
+    ctx.fillText('SEO Technical: 100', 272, 180);
+
+    // Controles de interface na parte inferior
+    ctx.strokeStyle = 'rgba(168, 85, 247, 0.6)';
+    ctx.strokeRect(22, 200, 150, 28);
+    ctx.fillStyle = '#e9d5ff';
+    ctx.fillText('🔍 Search Modules', 32, 218);
+
+    ctx.strokeStyle = 'rgba(56, 189, 248, 0.6)';
+    ctx.strokeRect(190, 200, 140, 28);
+    ctx.fillStyle = '#67e8f9';
+    ctx.fillText('⚡ Fast Deploy', 204, 218);
+
+    ctx.strokeStyle = 'rgba(168, 85, 247, 0.6)';
+    ctx.strokeRect(348, 200, 138, 28);
+    ctx.fillStyle = '#e9d5ff';
+    ctx.fillText('⚙ System Active', 360, 218);
   }
+
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
   return texture;
 }
 
-/**
- * Textura procedural de halo emissivo para realce holográfico ciano/violeta
- */
-function createEmissiveHaloTexture(colorType: 'cyan' | 'violet'): THREE.CanvasTexture {
-  const canvas = document.createElement('canvas');
-  canvas.width = 128;
-  canvas.height = 128;
-  const ctx = canvas.getContext('2d');
-  if (ctx) {
-    const gradient = ctx.createRadialGradient(64, 64, 14, 64, 64, 64);
-    if (colorType === 'cyan') {
-      gradient.addColorStop(0, 'rgba(56, 189, 248, 0.42)');
-      gradient.addColorStop(0.35, 'rgba(6, 182, 212, 0.24)');
-      gradient.addColorStop(0.7, 'rgba(99, 102, 241, 0.08)');
-      gradient.addColorStop(1, 'rgba(6, 9, 18, 0)');
-    } else {
-      gradient.addColorStop(0, 'rgba(165, 180, 252, 0.42)');
-      gradient.addColorStop(0.35, 'rgba(129, 140, 248, 0.24)');
-      gradient.addColorStop(0.7, 'rgba(6, 182, 212, 0.08)');
-      gradient.addColorStop(1, 'rgba(6, 9, 18, 0)');
-    }
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, 128, 128);
-  }
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.colorSpace = THREE.SRGBColorSpace;
-  return texture;
+// Representação de nós e segmentos de circuitos para o sistema de partículas
+interface CircuitNode {
+  x: number;
+  y: number;
+  z: number;
+  neighbors: number[];
+}
+
+interface BlueDot {
+  fromNode: number;
+  toNode: number;
+  progress: number;
+  speed: number;
+  life: number;
+  maxLife: number;
+  pulseBoost: number;
+  size: number;
 }
 
 interface Persistent3DSceneProps {
   onMounted?: () => void;
   isMenuOpen?: boolean;
+  currentScreen?: ScreenId;
 }
 
-export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted, isMenuOpen = false }) => {
+/**
+ * Coordenadas de câmera dinâmicas por seção para navegação espacial suave
+ */
+const CAMERA_PRESETS: Record<ScreenId, { pos: [number, number, number]; target: [number, number, number] }> = {
+  home: { pos: [0, 1.2, 11.2], target: [0, 0.3, 0] },
+  inicio: { pos: [1.2, 0.7, 10.2], target: [-0.4, 0.2, 0] },
+  portfolio: { pos: [-1.8, 1.5, 11.6], target: [0.5, 0.1, -1] },
+  servicos: { pos: [1.5, -0.3, 9.8], target: [-0.5, 0.5, 0] },
+  processo: { pos: [-1.1, 0.9, 10.5], target: [0.3, 0.3, -0.5] },
+  orcamento: { pos: [0.9, 1.7, 10.9], target: [-0.2, 0.2, 0] },
+  faq: { pos: [0, 0.6, 11.6], target: [0, 0.1, 0] },
+};
+
+/**
+ * Componente Principal do Fundo 3D Persistente:
+ * - Desenho de construção de sites (wireframes, blocos de código, esquemáticos e árvores)
+ * - Circuitos em paleta futurista púrpura/violeta
+ * - Pontos luminosos azuis correndo aleatoriamente pelas trilhas em movimento constante
+ * - Balanço e resposta ao cursor do mouse e toques
+ * - Pulso elétrico azul expansivo emitido a cada clique
+ * - Câmera 3D viajando suavemente pelo espaço a cada seção
+ */
+export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({
+  onMounted,
+  isMenuOpen = false,
+  currentScreen = 'home',
+}) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const isMenuOpenRef = useRef(isMenuOpen);
+  const currentScreenRef = useRef<ScreenId>(currentScreen);
+  const isMenuOpenRef = useRef<boolean>(isMenuOpen);
+
+  useEffect(() => {
+    currentScreenRef.current = currentScreen;
+  }, [currentScreen]);
 
   useEffect(() => {
     isMenuOpenRef.current = isMenuOpen;
@@ -267,23 +379,28 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted,
     const container = containerRef.current;
     if (!container) return;
 
-    const prefersReduced = prefersReducedMotion();
     const isMobile = window.innerWidth < 768;
     const inApp = isInAppBrowser();
+    const isReduced = prefersReducedMotion() || shouldReduceMedia();
+    const motionTier = getMotionTier();
 
-    // Cena e Névoa Atmosférica em tom obsidiana escuro
+    // 1. Criação de Cena e Névoa Atmosférica em tom obsidiana/violeta escuro
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x060912, 0.022);
+    scene.fog = new THREE.FogExp2(0x050711, 0.024);
 
+    // 2. Câmera Perspectiva
+    const initialPreset = CAMERA_PRESETS[currentScreenRef.current] || CAMERA_PRESETS.home;
     const camera = new THREE.PerspectiveCamera(
       48,
       window.innerWidth / window.innerHeight,
       0.1,
-      80
+      90
     );
-    camera.position.set(0, 1.2, 10.5);
+    camera.position.set(...initialPreset.pos);
+    const cameraLookAt = new THREE.Vector3(...initialPreset.target);
+    camera.lookAt(cameraLookAt);
 
-    // Renderer WebGL altamente otimizado
+    // 3. Renderer WebGL de Alta Performance
     let renderer: THREE.WebGLRenderer;
     try {
       renderer = new THREE.WebGLRenderer({
@@ -293,7 +410,7 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted,
         precision: inApp || isMobile ? 'mediump' : 'highp',
       });
     } catch (err) {
-      console.warn('WebGL indisponível; utilizando fundo CSS.', err);
+      console.warn('WebGL indisponível, usando fallback CSS:', err);
       return;
     }
 
@@ -303,687 +420,521 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted,
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     container.appendChild(renderer.domElement);
 
-    // =========================================================================
-    // SISTEMA DE ILUMINAÇÃO GLOBAL CIANO-VIOLETA
-    // =========================================================================
-    const ambientLight = new THREE.AmbientLight(0x0f172a, 1.4);
+    // 4. Sistema de Iluminação Atmosférica (Violeta e Azul Neon)
+    const ambientLight = new THREE.AmbientLight(0x1e1b4b, 1.4);
     scene.add(ambientLight);
 
-    const globalCyanLight = new THREE.PointLight(0x06b6d4, 3.2, 32, 1.4);
-    globalCyanLight.position.set(-3.5, 2.5, 3);
-    scene.add(globalCyanLight);
+    const violetLight = new THREE.PointLight(0x8b5cf6, 3.8, 36, 1.3);
+    violetLight.position.set(3.5, 2.0, 3);
+    scene.add(violetLight);
 
-    const globalVioletLight = new THREE.PointLight(0x818cf8, 2.8, 32, 1.4);
-    globalVioletLight.position.set(3.5, 0.5, 1);
-    scene.add(globalVioletLight);
+    const blueLight = new THREE.PointLight(0x3b82f6, 3.2, 32, 1.3);
+    blueLight.position.set(-3.5, 0.5, 2);
+    scene.add(blueLight);
 
-    // =========================================================================
-    // 1. GRADE DE PERSPECTIVA INFINITA NO SOLO (GROUND GRID EM CIANO/VIOLETA)
-    // =========================================================================
-    const gridCols = inApp ? 12 : isMobile ? 14 : 20;
-    const gridRows = inApp ? 14 : isMobile ? 18 : 26;
-    const gridSpacing = 1.8;
-    const totalW = gridCols * gridSpacing;
-    const totalL = gridRows * gridSpacing;
+    const cyanLight = new THREE.PointLight(0x06b6d4, 2.0, 24, 1.4);
+    cyanLight.position.set(0, -2.5, 4);
+    scene.add(cyanLight);
 
-    const gridPoints: number[] = [];
-    const gridColors: number[] = [];
+    // 5. Grupo Interativo Principal (segue o cursor do mouse e balança)
+    const worldGroup = new THREE.Group();
+    scene.add(worldGroup);
 
-    const cyanCol = new THREE.Color(0x06b6d4);
-    const indigoCol = new THREE.Color(0x6366f1);
-    const dimCyan = new THREE.Color(0x0284c7);
+    // 6. Construção do Grafo de Circuitos (PCB Traces) e Grade do Piso
+    const nodes: CircuitNode[] = [];
+    const addNode = (x: number, y: number, z: number): number => {
+      nodes.push({ x, y, z, neighbors: [] });
+      return nodes.length - 1;
+    };
+    const connectNodes = (a: number, b: number) => {
+      if (!nodes[a].neighbors.includes(b)) nodes[a].neighbors.push(b);
+      if (!nodes[b].neighbors.includes(a)) nodes[b].neighbors.push(a);
+    };
 
-    // Linhas paralelas em Z (profundidade)
-    for (let c = 0; c <= gridCols; c++) {
-      const x = -totalW / 2 + c * gridSpacing;
-      // Vértice perto
-      gridPoints.push(x, -3.8, 4);
-      // Vértice longe no horizonte
-      gridPoints.push(x, -3.8, -totalL + 4);
+    // Linhas do Piso com perspectiva (Grid ortogonal com curvas de circuito)
+    const floorY = -3.7;
+    const gridCols = inApp ? 10 : isMobile ? 12 : 16;
+    const gridRows = inApp ? 12 : isMobile ? 14 : 20;
+    const spacingX = 1.6;
+    const spacingZ = 1.6;
+    const startX = -(gridCols * spacingX) / 2;
+    const startZ = 4.0;
 
-      const t = Math.abs(x) / (totalW / 2);
-      const col = t > 0.6 ? indigoCol : cyanCol;
-      gridColors.push(col.r * 0.7, col.g * 0.7, col.b * 0.7);
-      gridColors.push(dimCyan.r * 0.15, dimCyan.g * 0.15, dimCyan.b * 0.25);
-    }
-
-    // Linhas perpendiculares em X (largura)
+    const floorNodeIndices: number[][] = [];
     for (let r = 0; r <= gridRows; r++) {
-      const z = 4 - r * gridSpacing;
-      gridPoints.push(-totalW / 2, -3.8, z);
-      gridPoints.push(totalW / 2, -3.8, z);
-
-      const fade = Math.max(0, 1 - r / gridRows);
-      gridColors.push(cyanCol.r * 0.5 * fade, cyanCol.g * 0.5 * fade, cyanCol.b * 0.6 * fade);
-      gridColors.push(cyanCol.r * 0.5 * fade, cyanCol.g * 0.5 * fade, cyanCol.b * 0.6 * fade);
+      floorNodeIndices[r] = [];
+      const z = startZ - r * spacingZ;
+      for (let c = 0; c <= gridCols; c++) {
+        const x = startX + c * spacingX;
+        const idx = addNode(x, floorY, z);
+        floorNodeIndices[r][c] = idx;
+      }
     }
 
-    const groundGridGeo = new THREE.BufferGeometry();
-    groundGridGeo.setAttribute('position', new THREE.Float32BufferAttribute(gridPoints, 3));
-    groundGridGeo.setAttribute('color', new THREE.Float32BufferAttribute(gridColors, 3));
+    // Conecta linhas do piso em Z (longitudinais)
+    for (let c = 0; c <= gridCols; c++) {
+      for (let r = 0; r < gridRows; r++) {
+        connectNodes(floorNodeIndices[r][c], floorNodeIndices[r + 1][c]);
+      }
+    }
 
-    const groundGridMat = new THREE.LineBasicMaterial({
-      vertexColors: true,
-      transparent: true,
-      opacity: inApp ? 0.35 : 0.45,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
+    // Conecta linhas do piso em X (transversais alternadas estilo circuito)
+    for (let r = 0; r <= gridRows; r++) {
+      for (let c = 0; c < gridCols; c++) {
+        // Padrão de circuito: quase todas as conexões horizontais mantidas para continuidade
+        if ((r + c) % 3 !== 2) {
+          connectNodes(floorNodeIndices[r][c], floorNodeIndices[r][c + 1]);
+        }
+      }
+    }
+
+    // Circuitos verticais e diagonais que sobem do piso em direção aos blueprints
+    const conduitRisingIndices: number[] = [];
+    const risingSpawns = [
+      { c: Math.floor(gridCols * 0.25), r: 2, topX: -2.8, topY: 1.2, topZ: 0.5 },
+      { c: Math.floor(gridCols * 0.4), r: 3, topX: -1.2, topY: -0.2, topZ: -0.4 },
+      { c: Math.floor(gridCols * 0.5), r: 4, topX: 0.0, topY: 0.8, topZ: -0.8 },
+      { c: Math.floor(gridCols * 0.6), r: 3, topX: 1.2, topY: -0.2, topZ: -0.4 },
+      { c: Math.floor(gridCols * 0.75), r: 2, topX: 2.8, topY: 1.2, topZ: 0.5 },
+      { c: Math.floor(gridCols * 0.3), r: 6, topX: -3.5, topY: 2.2, topZ: -1.5 },
+      { c: Math.floor(gridCols * 0.7), r: 6, topX: 3.5, topY: 2.2, topZ: -1.5 },
+    ];
+
+    risingSpawns.forEach((spawn) => {
+      const baseNode = floorNodeIndices[spawn.r]?.[spawn.c];
+      if (baseNode !== undefined) {
+        // Ponto intermediário a 45 graus (estilo placa de circuito integrado PCB)
+        const midY = (floorY + spawn.topY) * 0.5;
+        const midX = (nodes[baseNode].x + spawn.topX) * 0.5;
+        const midZ = (nodes[baseNode].z + spawn.topZ) * 0.5;
+        const midNode = addNode(midX, midY, midZ);
+        const topNode = addNode(spawn.topX, spawn.topY, spawn.topZ);
+        connectNodes(baseNode, midNode);
+        connectNodes(midNode, topNode);
+        conduitRisingIndices.push(topNode);
+      }
     });
 
-    const groundGridMesh = new THREE.LineSegments(groundGridGeo, groundGridMat);
+    // Conecta os nós superiores entre si formando a moldura cibernética
+    for (let i = 0; i < conduitRisingIndices.length - 1; i++) {
+      connectNodes(conduitRisingIndices[i], conduitRisingIndices[i + 1]);
+    }
 
-    // Grupo interativo para inclinação conjunta da grade de perspectiva e circuitos
-    const gridInteractiveGroup = new THREE.Group();
-    scene.add(gridInteractiveGroup);
-    gridInteractiveGroup.add(groundGridMesh);
+    // 7. Geometria de Linhas de Circuito (THREE.LineSegments com vertex colors)
+    const linePoints: number[] = [];
+    const lineColors: number[] = [];
+    const colorViolet = new THREE.Color(0xa855f7);
+    const colorIndigo = new THREE.Color(0x6366f1);
+    const colorCyan = new THREE.Color(0x38bdf8);
+    const colorDeep = new THREE.Color(0x3b0764);
 
-    // =========================================================================
-    // 2. PAINÉIS HOLOGRÁFICOS DE CÓDIGO E BLUEPRINT COM BRILHO EMISSIVO REATIVO
-    // =========================================================================
-    const codePanelsGroup = new THREE.Group();
-    scene.add(codePanelsGroup);
+    const visitedPairs = new Set<string>();
+    nodes.forEach((node, i) => {
+      node.neighbors.forEach((nbr) => {
+        const pairKey = i < nbr ? `${i}-${nbr}` : `${nbr}-${i}`;
+        if (!visitedPairs.has(pairKey)) {
+          visitedPairs.add(pairKey);
+          const target = nodes[nbr];
 
-    const textureArch = createCyberBlueprintTexture('architecture');
-    const textureMetrics = createCyberBlueprintTexture('components');
-    const haloCyanTex = createEmissiveHaloTexture('cyan');
-    let haloVioletTex: THREE.CanvasTexture | null = null;
+          linePoints.push(node.x, node.y, node.z);
+          linePoints.push(target.x, target.y, target.z);
 
-    const cardPlaneGeo = new THREE.PlaneGeometry(5.2, 5.2);
-    const haloGeo = new THREE.PlaneGeometry(6.4, 6.4);
+          // Gradiente baseado na altura e profundidade
+          const t = Math.max(0, Math.min(1, (node.y - floorY) / 6.0));
+          const depthFade = Math.max(0.15, Math.min(1, (node.z + 18) / 22));
 
-    const cardMat1 = new THREE.MeshStandardMaterial({
-      map: textureArch,
-      emissiveMap: textureArch,
-      emissive: new THREE.Color(0x06b6d4),
-      emissiveIntensity: 0.36,
-      roughness: 0.22,
-      metalness: 0.1,
-      transparent: true,
-      opacity: inApp ? 0.44 : 0.56,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
-      side: THREE.DoubleSide,
+          const c1 = t > 0.4 ? colorViolet : colorIndigo;
+          const c2 = t > 0.4 ? colorCyan : colorDeep;
+
+          lineColors.push(c1.r * depthFade, c1.g * depthFade, c1.b * depthFade);
+          lineColors.push(c2.r * depthFade, c2.g * depthFade, c2.b * depthFade);
+        }
+      });
     });
-
-    const card1 = new THREE.Mesh(cardPlaneGeo, cardMat1);
-    card1.position.set(isMobile ? -0.2 : -3.6, 0.4, -4.5);
-    card1.rotation.y = 0.22;
-    card1.rotation.x = -0.05;
-    codePanelsGroup.add(card1);
-
-    // Halo emissivo traseiro com brilho difuso ciano
-    const card1HaloMat = new THREE.MeshBasicMaterial({
-      map: haloCyanTex,
-      transparent: true,
-      opacity: inApp ? 0.12 : 0.2,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
-      side: THREE.DoubleSide,
-    });
-    const card1Halo = new THREE.Mesh(haloGeo, card1HaloMat);
-    card1Halo.position.set(0, 0, -0.04);
-    card1.add(card1Halo);
-
-    let card2: THREE.Mesh | null = null;
-    let cardMat2: THREE.MeshStandardMaterial | null = null;
-    let card2HaloMat: THREE.MeshBasicMaterial | null = null;
-
-    if (!isMobile && !inApp) {
-      cardMat2 = new THREE.MeshStandardMaterial({
-        map: textureMetrics,
-        emissiveMap: textureMetrics,
-        emissive: new THREE.Color(0x818cf8),
-        emissiveIntensity: 0.38,
-        roughness: 0.22,
-        metalness: 0.1,
-        transparent: true,
-        opacity: 0.45,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false,
-        side: THREE.DoubleSide,
-      });
-
-      card2 = new THREE.Mesh(cardPlaneGeo, cardMat2);
-      card2.position.set(3.8, -0.2, -6.0);
-      card2.rotation.y = -0.26;
-      card2.rotation.x = -0.04;
-      codePanelsGroup.add(card2);
-
-      // Halo emissivo traseiro com brilho difuso violeta
-      haloVioletTex = createEmissiveHaloTexture('violet');
-      card2HaloMat = new THREE.MeshBasicMaterial({
-        map: haloVioletTex,
-        transparent: true,
-        opacity: 0.18,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false,
-        side: THREE.DoubleSide,
-      });
-      const card2Halo = new THREE.Mesh(haloGeo, card2HaloMat);
-      card2Halo.position.set(0, 0, -0.04);
-      card2.add(card2Halo);
-    }
-
-    // =========================================================================
-    // 3. TRILHAS DE CIRCUITO EM 90 GRAUS E PULSOS DE ENERGIA LUMINOSA
-    // =========================================================================
-    const circuitsGroup = new THREE.Group();
-    gridInteractiveGroup.add(circuitsGroup);
-
-    interface CircuitTrace {
-      points: THREE.Vector3[];
-      totalLen: number;
-      progress: number;
-      speed: number;
-    }
-
-    const traces: CircuitTrace[] = [];
-    const TRACE_COUNT = inApp ? 3 : isMobile ? 4 : 5;
-    const circuitPoints: number[] = [];
-    const circuitColors: number[] = [];
-
-    const spanX = 14;
-    for (let t = 0; t < TRACE_COUNT; t++) {
-      const tracePoints: THREE.Vector3[] = [];
-      // Distribuição uniforme por faixas laterais distintas para impedir sobreposição e aglomeração
-      const corridorOffset = ((t / (TRACE_COUNT - 1 || 1)) - 0.5) * spanX;
-      let x = corridorOffset + (Math.random() - 0.5) * 0.8;
-      let y = -3.76; // Ligeiramente acima da grade do solo
-      let z = -22 + (t * 2.5);
-
-      tracePoints.push(new THREE.Vector3(x, y, z));
-
-      const steps = 3;
-      for (let s = 0; s < steps; s++) {
-        // Passo em Z
-        z += 3.5 + Math.random() * 2.5;
-        tracePoints.push(new THREE.Vector3(x, y, z));
-
-        // Curva ortogonal em 90 graus em X mantendo o corredor lateral
-        const xOffset = (t % 2 === 0 ? 1 : -1) * (1.6 + Math.random() * 1.4);
-        x += xOffset;
-        tracePoints.push(new THREE.Vector3(x, y, z));
-      }
-
-      // Converte pontos em pares de linha para LineSegments
-      for (let p = 0; p < tracePoints.length - 1; p++) {
-        const p1 = tracePoints[p];
-        const p2 = tracePoints[p + 1];
-        circuitPoints.push(p1.x, p1.y, p1.z);
-        circuitPoints.push(p2.x, p2.y, p2.z);
-
-        const isCyan = t % 2 === 0;
-        const color = isCyan ? cyanCol : indigoCol;
-        circuitColors.push(color.r * 0.55, color.g * 0.55, color.b * 0.65);
-        circuitColors.push(color.r * 0.35, color.g * 0.35, color.b * 0.45);
-      }
-
-      // Calcula comprimento total do caminho
-      let totalLen = 0;
-      for (let p = 0; p < tracePoints.length - 1; p++) {
-        totalLen += tracePoints[p].distanceTo(tracePoints[p + 1]);
-      }
-
-      // Fases uniformemente espaçadas e velocidades cadenciadas para animação natural sem aglomeração
-      const baseSpeed = isMobile ? 0.09 : 0.13;
-      const speedVariation = isMobile ? 0.015 : 0.022;
-      traces.push({
-        points: tracePoints,
-        totalLen,
-        progress: (t / TRACE_COUNT + t * 0.07) % 1,
-        speed: (baseSpeed + (t % 3) * speedVariation) * (prefersReduced ? 0.3 : 1.0),
-      });
-    }
 
     const circuitGeo = new THREE.BufferGeometry();
-    circuitGeo.setAttribute('position', new THREE.Float32BufferAttribute(circuitPoints, 3));
-    circuitGeo.setAttribute('color', new THREE.Float32BufferAttribute(circuitColors, 3));
+    circuitGeo.setAttribute('position', new THREE.Float32BufferAttribute(linePoints, 3));
+    circuitGeo.setAttribute('color', new THREE.Float32BufferAttribute(lineColors, 3));
 
     const circuitMat = new THREE.LineBasicMaterial({
       vertexColors: true,
       transparent: true,
-      opacity: inApp ? 0.4 : 0.55,
+      opacity: inApp ? 0.38 : 0.52,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     });
-
     const circuitLinesMesh = new THREE.LineSegments(circuitGeo, circuitMat);
-    circuitsGroup.add(circuitLinesMesh);
+    worldGroup.add(circuitLinesMesh);
 
-    // Partículas de pulso que viajam sobre as trilhas ortogonais (já distribuídas desde o frame 0)
-    const pulseTexture = createPulseGlowTexture();
-    const pulseGeo = new THREE.BufferGeometry();
-    const pulsePositions = new Float32Array(TRACE_COUNT * 3);
-    for (let t = 0; t < TRACE_COUNT; t++) {
-      const trace = traces[t];
-      const targetDist = (trace.progress % 1) * trace.totalLen;
-      let accum = 0;
-      let pX = trace.points[0].x;
-      let pY = trace.points[0].y;
-      let pZ = trace.points[0].z;
+    // 8. Painéis de Construção de Websites Flutuantes (Blueprints de wireframes e código)
+    const blueprintTex = createArchitectBlueprintTexture();
+    const subBlueprintTex = createSubSchematicTexture();
 
-      for (let p = 0; p < trace.points.length - 1; p++) {
-        const segLen = trace.points[p].distanceTo(trace.points[p + 1]);
-        if (accum + segLen >= targetDist) {
-          const segRatio = segLen > 0 ? (targetDist - accum) / segLen : 0;
-          pX = trace.points[p].x + (trace.points[p + 1].x - trace.points[p].x) * segRatio;
-          pY = trace.points[p].y + (trace.points[p + 1].y - trace.points[p].y) * segRatio;
-          pZ = trace.points[p].z + (trace.points[p + 1].z - trace.points[p].z) * segRatio;
-          break;
-        }
-        accum += segLen;
-      }
+    // Painel Central (Layout e Código HTML/CSS)
+    const centralCardGeo = new THREE.PlaneGeometry(isMobile ? 3.4 : 4.4, isMobile ? 3.4 : 4.4);
+    const centralCardMat = new THREE.MeshBasicMaterial({
+      map: blueprintTex,
+      transparent: true,
+      opacity: inApp ? 0.72 : 0.88,
+      blending: THREE.AdditiveBlending,
+      side: THREE.DoubleSide,
+      depthWrite: false,
+    });
+    const centralCard = new THREE.Mesh(centralCardGeo, centralCardMat);
+    centralCard.position.set(0, 0.4, -0.6);
+    worldGroup.add(centralCard);
 
-      pulsePositions[t * 3] = pX;
-      pulsePositions[t * 3 + 1] = pY;
-      pulsePositions[t * 3 + 2] = pZ;
+    // Moldura de arame iluminada ao redor do card central
+    const centralEdges = new THREE.EdgesGeometry(centralCardGeo);
+    const centralEdgeMat = new THREE.LineBasicMaterial({
+      color: 0xc084fc,
+      transparent: true,
+      opacity: 0.65,
+      blending: THREE.AdditiveBlending,
+    });
+    const centralEdgeMesh = new THREE.LineSegments(centralEdges, centralEdgeMat);
+    centralCard.add(centralEdgeMesh);
+
+    // Painel Satélite Esquerdo (Métricas e Analytics)
+    const leftCardGeo = new THREE.PlaneGeometry(3.0, 1.5);
+    const leftCardMat = new THREE.MeshBasicMaterial({
+      map: subBlueprintTex,
+      transparent: true,
+      opacity: inApp ? 0.55 : 0.75,
+      blending: THREE.AdditiveBlending,
+      side: THREE.DoubleSide,
+      depthWrite: false,
+    });
+    const leftCard = new THREE.Mesh(leftCardGeo, leftCardMat);
+    leftCard.position.set(-3.6, -0.8, 0.8);
+    leftCard.rotation.y = 0.35;
+    worldGroup.add(leftCard);
+
+    // Painel Satélite Direito (Site Architecture & Rules)
+    const rightCardGeo = new THREE.PlaneGeometry(3.0, 1.5);
+    const rightCardMat = new THREE.MeshBasicMaterial({
+      map: subBlueprintTex,
+      transparent: true,
+      opacity: inApp ? 0.55 : 0.75,
+      blending: THREE.AdditiveBlending,
+      side: THREE.DoubleSide,
+      depthWrite: false,
+    });
+    const rightCard = new THREE.Mesh(rightCardGeo, rightCardMat);
+    rightCard.position.set(3.6, -0.8, 0.8);
+    rightCard.rotation.y = -0.35;
+    worldGroup.add(rightCard);
+
+    // 9. Sistema de Pontos de Luz Azuis (Elétrons cibernéticos que viajam pelas trilhas)
+    const dotTex = createDotGlowTexture();
+    const dotCount = isReduced
+      ? 0
+      : motionTier === 'lite' || inApp
+      ? 12
+      : isMobile
+      ? 18
+      : 32;
+
+    const blueDots: BlueDot[] = [];
+    const dotPositions = new Float32Array(Math.max(1, dotCount) * 3);
+    const dotColors = new Float32Array(Math.max(1, dotCount) * 3);
+    const dotSizes = new Float32Array(Math.max(1, dotCount));
+
+    for (let i = 0; i < dotCount; i++) {
+      const from = Math.floor(Math.random() * nodes.length);
+      const neighbors = nodes[from].neighbors;
+      const to = neighbors.length > 0 ? neighbors[Math.floor(Math.random() * neighbors.length)] : from;
+
+      blueDots.push({
+        fromNode: from,
+        toNode: to,
+        progress: Math.random(),
+        speed: 0.35 + Math.random() * 0.55,
+        life: 0,
+        maxLife: 3.5 + Math.random() * 4.0,
+        pulseBoost: 0,
+        size: isMobile ? 18.0 : 26.0,
+      });
+
+      // Inicializa posições na array
+      const nFrom = nodes[from];
+      dotPositions[i * 3 + 0] = nFrom.x;
+      dotPositions[i * 3 + 1] = nFrom.y;
+      dotPositions[i * 3 + 2] = nFrom.z;
+
+      // Cor azul neon vibrante (#38BDF8 a #3B82F6)
+      dotColors[i * 3 + 0] = 0.4;
+      dotColors[i * 3 + 1] = 0.75;
+      dotColors[i * 3 + 2] = 1.0;
+
+      dotSizes[i] = isMobile ? 18.0 : 26.0;
     }
-    pulseGeo.setAttribute('position', new THREE.BufferAttribute(pulsePositions, 3));
 
-    const pulseMat = new THREE.PointsMaterial({
-      size: inApp ? 0.12 : isMobile ? 0.14 : 0.18,
-      map: pulseTexture,
+    const dotGeo = new THREE.BufferGeometry();
+    dotGeo.setAttribute('position', new THREE.BufferAttribute(dotPositions, 3));
+    dotGeo.setAttribute('color', new THREE.BufferAttribute(dotColors, 3));
+    dotGeo.setAttribute('size', new THREE.BufferAttribute(dotSizes, 1));
+
+    const dotMat = new THREE.PointsMaterial({
+      size: isMobile ? 22 : 30,
+      map: dotTex,
+      vertexColors: true,
       transparent: true,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
-      color: 0x38bdf8,
-      opacity: inApp ? 0.32 : 0.42,
+      sizeAttenuation: true,
     });
 
-    const pulseMesh = new THREE.Points(pulseGeo, pulseMat);
-    circuitsGroup.add(pulseMesh);
+    const dotPointsMesh = new THREE.Points(dotGeo, dotMat);
+    worldGroup.add(dotPointsMesh);
 
-    // =========================================================================
-    // 4. CHUVA DIGITAL LEVE NO HORIZONTE (MATRIX/CYBER STREAM EM BAIXA DENSIDADE)
-    // =========================================================================
-    const STREAM_COUNT = inApp ? 8 : isMobile ? 12 : 18;
-    const streamGeo = new THREE.BufferGeometry();
-    const streamPositions = new Float32Array(STREAM_COUNT * 3);
-    const streamVelocities: number[] = [];
-
-    for (let i = 0; i < STREAM_COUNT; i++) {
-      streamPositions[i * 3] = (Math.random() - 0.5) * 22;
-      streamPositions[i * 3 + 1] = -4 + Math.random() * 12;
-      streamPositions[i * 3 + 2] = -12 - Math.random() * 14;
-      streamVelocities.push(0.016 + Math.random() * 0.028);
-    }
-
-    streamGeo.setAttribute('position', new THREE.BufferAttribute(streamPositions, 3));
-
-    const streamMat = new THREE.PointsMaterial({
-      size: 0.14,
-      map: pulseTexture,
+    // 10. Onda de Choque Elétrica Disparada no Clique (Shockwave Mesh)
+    const shockTex = createShockwaveTexture();
+    const shockGeo = new THREE.PlaneGeometry(1, 1);
+    const shockMat = new THREE.MeshBasicMaterial({
+      map: shockTex,
       transparent: true,
-      opacity: inApp ? 0.1 : 0.16,
+      opacity: 0,
       blending: THREE.AdditiveBlending,
-      color: 0x06b6d4,
       depthWrite: false,
+      side: THREE.DoubleSide,
     });
+    const shockwaveMesh = new THREE.Mesh(shockGeo, shockMat);
+    shockwaveMesh.rotation.x = -Math.PI / 2;
+    shockwaveMesh.position.set(0, floorY + 0.05, 0);
+    worldGroup.add(shockwaveMesh);
 
-    const streamMesh = new THREE.Points(streamGeo, streamMat);
-    scene.add(streamMesh);
+    let shockwaveActive = false;
+    let shockwaveScale = 0.1;
+    let shockwaveOpacity = 0;
+    let shockwaveOriginX = 0;
+    let shockwaveOriginZ = 0;
 
-    let targetScroll = 0;
-    let currentScroll = 0;
-    let targetPointerX = 0;
-    let targetPointerY = 0;
-    let currentPointerX = 0;
-    let currentPointerY = 0;
-    let returnToCenterTimeout: number | undefined;
+    const triggerClickPulse = (clientX: number, clientY: number) => {
+      // Converte coordenadas do clique para normalized device coordinates
+      const ndcX = (clientX / window.innerWidth) * 2 - 1;
+      const ndcY = -(clientY / window.innerHeight) * 2 + 1;
 
-    let scrollTicking = false;
-    let animationFrameId = 0;
-    let running = false;
-    let onScreen = true;
-    let lastFrameTime = 0;
+      // Projeta aproximadamente no plano do mundo
+      shockwaveOriginX = ndcX * 6.5;
+      shockwaveOriginZ = -ndcY * 3.5;
+      shockwaveMesh.position.x = shockwaveOriginX;
+      shockwaveMesh.position.z = shockwaveOriginZ;
 
-    // Monitor de Performance (FPS dinâmico) e taxa de quadros adaptativa
-    let isLowPerf = false;
-    let targetInterval = isMobile || inApp ? 1000 / 40 : 0; // ~40 FPS padrão em mobile; desktop inicia a 60 FPS
-    const FPS_SAMPLE_WINDOW = 60;
-    const frameDeltas: number[] = [];
-    let fpsWarmupFrames = 90; // Ignora os primeiros 90 quadros (~1.5s) de carga inicial
-    let lowFpsConsecutiveCount = 0;
-    const LOW_FPS_THRESHOLD = 45;
-    const LOW_FPS_CONSECUTIVE_LIMIT = 45; // ~1s sustentado abaixo de 45 FPS
-    let frameCounter = 0;
+      shockwaveActive = true;
+      shockwaveScale = 0.2;
+      shockwaveOpacity = 1.0;
 
-    const clock = new THREE.Clock();
-
-    const handleScroll = () => {
-      if (!scrollTicking) {
-        scrollTicking = true;
-        requestAnimationFrame(() => {
-          const scrollY = window.scrollY || window.pageYOffset;
-          const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-          targetScroll = maxScroll > 0 ? Math.min(Math.max(scrollY / maxScroll, 0), 1) : 0;
-          if (prefersReduced) {
-            currentScroll = targetScroll;
-            camera.position.y = 1.2 - currentScroll * 1.5;
-            camera.lookAt(0, -0.4 - currentScroll * 0.8, -8);
-            renderer.render(scene, camera);
-          }
-          scrollTicking = false;
-        });
-      }
+      // Impulso de aceleração elétrica instantânea nas partículas azuis
+      blueDots.forEach((dot) => {
+        dot.pulseBoost = 1.8;
+      });
     };
 
-    // Retorno automático e suave ao centro neutro quando o usuário para a interação
-    const resetPointerTarget = () => {
-      targetPointerX = 0;
-      targetPointerY = 0;
-    };
+    // 11. Controle de Ponteiro do Mouse e Toque (Balanço com amortecimento / Spring physics)
+    let pointerX = 0;
+    let pointerY = 0;
+    let targetTiltX = 0;
+    let targetTiltY = 0;
+    let currentTiltX = 0;
+    let currentTiltY = 0;
 
-    const scheduleReturnToCenter = () => {
-      if (returnToCenterTimeout) clearTimeout(returnToCenterTimeout);
-      returnToCenterTimeout = window.setTimeout(resetPointerTarget, 2200);
-    };
-
-    // Evento de hover de mouse / cursor
     const handlePointerMove = (e: PointerEvent) => {
-      if (prefersReduced) return;
-      targetPointerX = (e.clientX / window.innerWidth) * 2 - 1;
-      targetPointerY = -(e.clientY / window.innerHeight) * 2 + 1;
-      targetPointerX = Math.max(-1, Math.min(1, targetPointerX));
-      targetPointerY = Math.max(-1, Math.min(1, targetPointerY));
-      scheduleReturnToCenter();
+      pointerX = (e.clientX / window.innerWidth) * 2 - 1;
+      pointerY = -(e.clientY / window.innerHeight) * 2 + 1;
+
+      targetTiltY = pointerX * 0.14;
+      targetTiltX = -pointerY * 0.1;
     };
 
-    // Evento de toque (touch) em telas móveis e tablets
-    const handleTouchMove = (e: TouchEvent) => {
-      if (prefersReduced || !e.touches || e.touches.length === 0) return;
-      const touch = e.touches[0];
-      targetPointerX = (touch.clientX / window.innerWidth) * 2 - 1;
-      targetPointerY = -(touch.clientY / window.innerHeight) * 2 + 1;
-      targetPointerX = Math.max(-1, Math.min(1, targetPointerX));
-      targetPointerY = Math.max(-1, Math.min(1, targetPointerY));
-      scheduleReturnToCenter();
+    const handlePointerDown = (e: PointerEvent) => {
+      triggerClickPulse(e.clientX, e.clientY);
     };
 
-    const handlePointerLeave = () => {
-      resetPointerTarget();
-    };
-
-    const handleTouchEnd = () => {
-      resetPointerTarget();
-    };
-
-    const handleResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(getOptimalDpr(window.innerWidth < 768, inApp));
-      if (prefersReduced) {
-        renderer.render(scene, camera);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('pointermove', handlePointerMove, { passive: true });
-    window.addEventListener('pointerleave', handlePointerLeave, { passive: true });
-    document.addEventListener('mouseleave', handlePointerLeave, { passive: true });
-    window.addEventListener('touchmove', handleTouchMove, { passive: true });
-    window.addEventListener('touchend', handleTouchEnd, { passive: true });
-    window.addEventListener('touchcancel', handleTouchEnd, { passive: true });
+    window.addEventListener('pointerdown', handlePointerDown, { passive: true });
+
+    // 12. Redimensionamento e Pausa na Ocultação
+    const handleResize = () => {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    };
     window.addEventListener('resize', handleResize);
-    handleScroll();
 
-    // Controle de tempo robusto e autônomo baseado em delta independente
-    let elapsedTime = 0;
+    let isTabHidden = false;
+    const handleVisibility = () => {
+      isTabHidden = document.hidden;
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
 
-    // Loop de renderização com Zero GC (reaproveita arrays pré-alocados)
-    const animate = (timestamp = 0) => {
-      if (!running) return;
-      if (!prefersReduced) {
-        animationFrameId = requestAnimationFrame(animate);
-      }
+    // 13. Loop de Animação Contínua (Perpetual Movement com Zero GC)
+    let animationFrameId: number;
+    let lastTime = performance.now();
+    let clockTime = 0;
 
-      // Limita taxa de quadros (mobile ou fixada em 30 FPS no modo de economia)
-      if (targetInterval > 0 && timestamp - lastFrameTime < targetInterval) {
-        return;
-      }
-      lastFrameTime = timestamp;
-      frameCounter++;
+    const currentCamPos = camera.position.clone();
+    const currentCamTarget = cameraLookAt.clone();
 
-      const rawDelta = clock.getDelta();
-      const delta = Math.min(Math.max(rawDelta, 0.001), 0.05);
-      elapsedTime += delta;
+    const animate = () => {
+      animationFrameId = requestAnimationFrame(animate);
 
-      // =======================================================================
-      // MONITOR DE PERFORMANCE EM TEMPO REAL (FPS MONITOR)
-      // =======================================================================
-      if (!prefersReduced && !isLowPerf) {
-        if (fpsWarmupFrames > 0) {
-          fpsWarmupFrames--;
-        } else {
-          frameDeltas.push(delta);
-          if (frameDeltas.length > FPS_SAMPLE_WINDOW) {
-            frameDeltas.shift();
+      if (isTabHidden) return;
+
+      const now = performance.now();
+      const delta = Math.min((now - lastTime) / 1000, 0.1);
+      lastTime = now;
+      clockTime += delta;
+
+      // Interpolação suave da câmera de acordo com a seção ativa
+      const activePreset = CAMERA_PRESETS[currentScreenRef.current] || CAMERA_PRESETS.home;
+      const menuTargetY = isMenuOpenRef.current ? activePreset.pos[1] + 0.8 : activePreset.pos[1];
+
+      currentCamPos.x += (activePreset.pos[0] - currentCamPos.x) * 0.04;
+      currentCamPos.y += (menuTargetY - currentCamPos.y) * 0.04;
+      currentCamPos.z += (activePreset.pos[2] - currentCamPos.z) * 0.04;
+      camera.position.copy(currentCamPos);
+
+      currentCamTarget.x += (activePreset.target[0] - currentCamTarget.x) * 0.04;
+      currentCamTarget.y += (activePreset.target[1] - currentCamTarget.y) * 0.04;
+      currentCamTarget.z += (activePreset.target[2] - currentCamTarget.z) * 0.04;
+      camera.lookAt(currentCamTarget);
+
+      // Balanço elástico suave da cena seguindo o cursor do mouse
+      currentTiltX += (targetTiltX - currentTiltX) * 0.05;
+      currentTiltY += (targetTiltY - currentTiltY) * 0.05;
+
+      worldGroup.rotation.y = currentTiltY + Math.sin(clockTime * 0.35) * 0.025;
+      worldGroup.rotation.x = currentTiltX + Math.cos(clockTime * 0.4) * 0.015;
+      worldGroup.position.x = currentTiltY * 0.8;
+      worldGroup.position.y = -currentTiltX * 0.5;
+
+      // Flutuação suave dos painéis de blueprint de website
+      centralCard.position.y = 0.4 + Math.sin(clockTime * 0.8) * 0.06;
+      leftCard.position.y = -0.8 + Math.cos(clockTime * 0.9 + 1.2) * 0.05;
+      rightCard.position.y = -0.8 + Math.sin(clockTime * 0.9 + 2.0) * 0.05;
+
+      // Respiração pulsante sutil na iluminação violeta
+      violetLight.intensity = 3.4 + Math.sin(clockTime * 1.6) * 0.6;
+      blueLight.intensity = 3.0 + Math.cos(clockTime * 1.8) * 0.5;
+
+      // Atualização dos pontos de luz azuis ao longo dos circuitos
+      if (dotCount > 0) {
+        const posAttr = dotGeo.attributes.position as THREE.BufferAttribute;
+        const colAttr = dotGeo.attributes.color as THREE.BufferAttribute;
+        const sizeAttr = dotGeo.attributes.size as THREE.BufferAttribute;
+        const posArray = posAttr.array as Float32Array;
+        const colArray = colAttr.array as Float32Array;
+        const sizeArray = sizeAttr.array as Float32Array;
+
+        for (let i = 0; i < dotCount; i++) {
+          const dot = blueDots[i];
+          const nodeFrom = nodes[dot.fromNode];
+          const nodeTo = nodes[dot.toNode];
+
+          // Amortecimento do pulso acelerador de clique
+          if (dot.pulseBoost > 0) {
+            dot.pulseBoost = Math.max(0, dot.pulseBoost - delta * 2.2);
           }
 
-          if (frameDeltas.length >= FPS_SAMPLE_WINDOW) {
-            let totalDelta = 0;
-            for (let i = 0; i < frameDeltas.length; i++) {
-              totalDelta += frameDeltas[i];
-            }
-            const measuredFps = totalDelta > 0 ? frameDeltas.length / totalDelta : 60;
+          const currentSpeed = dot.speed + dot.pulseBoost;
+          dot.progress += delta * currentSpeed;
+          dot.life += delta;
 
-            // Se o FPS cair abaixo de 45 de forma mantida, ativa alívio de performance
-            if (measuredFps < LOW_FPS_THRESHOLD) {
-              lowFpsConsecutiveCount++;
-              if (lowFpsConsecutiveCount >= LOW_FPS_CONSECUTIVE_LIMIT) {
-                isLowPerf = true;
-                // 1. Fixa a taxa de renderização a 30 FPS estáveis
-                targetInterval = 1000 / 30;
-
-                // 2. Oculta painel holográfico secundário
-                if (card2) {
-                  card2.visible = false;
-                }
-                card1HaloMat.opacity = 0.15;
-
-                // 3. Reduz diâmetro de partículas para menor fill-rate da GPU
-                pulseMat.size = 0.14;
-                pulseMat.needsUpdate = true;
-              }
+          if (dot.progress >= 1.0 || dot.life >= dot.maxLife) {
+            // Chegou ao fim do segmento: escolhe próximo vizinho aleatório
+            dot.fromNode = dot.toNode;
+            const nextNeighbors = nodes[dot.fromNode]?.neighbors || [];
+            if (nextNeighbors.length > 0) {
+              dot.toNode = nextNeighbors[Math.floor(Math.random() * nextNeighbors.length)];
             } else {
-              lowFpsConsecutiveCount = Math.max(0, lowFpsConsecutiveCount - 1);
+              dot.fromNode = Math.floor(Math.random() * nodes.length);
+              const reNeighbors = nodes[dot.fromNode]?.neighbors || [];
+              dot.toNode = reNeighbors.length > 0 ? reNeighbors[0] : dot.fromNode;
+            }
+            dot.progress = 0;
+            if (dot.life >= dot.maxLife) {
+              dot.life = 0;
+              dot.maxLife = 3.5 + Math.random() * 4.0;
             }
           }
-        }
-      }
 
-      // Amortecimento suave de scroll e inclinação holográfica (lerp)
-      // Se o menu de navegação estiver aberto, o background 3D alinha-se suavemente à visão centralizada da Home (targetScroll = 0)
-      const effectiveTargetScroll = isMenuOpenRef.current ? 0 : targetScroll;
-      currentScroll += (effectiveTargetScroll - currentScroll) * 0.08;
-      currentPointerX += (targetPointerX - currentPointerX) * 0.05;
-      currentPointerY += (targetPointerY - currentPointerY) * 0.05;
+          // Interpolação linear da posição na trilha
+          const p = Math.min(1, Math.max(0, dot.progress));
+          const nx = nodeFrom.x + (nodeTo.x - nodeFrom.x) * p;
+          const ny = nodeFrom.y + (nodeTo.y - nodeFrom.y) * p;
+          const nz = nodeFrom.z + (nodeTo.z - nodeFrom.z) * p;
 
-      // Movimentação elegante e sutil da câmera com paralaxe e movimento autônomo contínuo
-      const autoCamX = Math.sin(elapsedTime * 0.22) * 0.16;
-      const autoCamY = Math.cos(elapsedTime * 0.18) * 0.1;
-      camera.position.x = currentPointerX * 0.45 + autoCamX;
-      camera.position.y = 1.2 + currentPointerY * 0.35 - currentScroll * 1.5 + autoCamY;
-      camera.lookAt(0, -0.4 - currentScroll * 0.8, -8);
+          posArray[i * 3 + 0] = nx;
+          posArray[i * 3 + 1] = ny;
+          posArray[i * 3 + 2] = nz;
 
-      // Deslocamento contínuo da grade de perspectiva infinita no solo (gliding perspective)
-      groundGridMesh.position.z = (elapsedTime * 0.8) % gridSpacing;
+          // Efeito de brilho estroboscópico azul neon suave
+          const pulseBright = 1.0 + dot.pulseBoost * 0.8;
+          colArray[i * 3 + 0] = 0.35 * pulseBright;
+          colArray[i * 3 + 1] = 0.75 * pulseBright;
+          colArray[i * 3 + 2] = 1.0 * pulseBright;
 
-      // Movimento autônomo sutil e contínuo do circuito e perspectiva (ativa mesmo com mouse estático)
-      const autoTiltZ = Math.sin(elapsedTime * 0.35) * 0.02;
-      const autoTiltX = Math.cos(elapsedTime * 0.28) * 0.016;
-      const autoGridX = Math.sin(elapsedTime * 0.3) * 0.08;
-
-      gridInteractiveGroup.rotation.z = -currentPointerX * 0.045 + autoTiltZ;
-      gridInteractiveGroup.rotation.x = currentPointerY * 0.04 + autoTiltX;
-      gridInteractiveGroup.position.x = currentPointerX * 0.25 + autoGridX;
-
-      // =======================================================================
-      // ILUMINAÇÃO GLOBAL E RESPOSTA EMISSIVA HOLOGRÁFICA CIANO-VIOLETA
-      // =======================================================================
-      const breathCyan = 0.35 + Math.sin(elapsedTime * 1.5) * 0.08;
-      const breathViolet = 0.38 + Math.cos(elapsedTime * 1.3) * 0.08;
-
-      // Fontes de luz globais reagem dinamicamente à posição do cursor/toque e scroll
-      globalCyanLight.position.x = -3.2 + currentPointerX * 3.8;
-      globalCyanLight.position.y = 2.0 + currentPointerY * 2.2 - currentScroll * 2.0;
-      globalCyanLight.intensity = 3.2 + Math.abs(currentPointerX) * 0.8;
-
-      globalVioletLight.position.x = 3.2 - currentPointerX * 3.8;
-      globalVioletLight.position.y = 0.5 - currentPointerY * 1.8 - currentScroll * 2.5;
-      globalVioletLight.intensity = 2.8 + Math.abs(currentPointerY) * 0.8;
-
-      // Brilho emissivo nos painéis holográficos reagindo à proximidade e energia global
-      const pointerEnergy = (Math.abs(currentPointerX) + Math.abs(currentPointerY)) * 0.12;
-      cardMat1.emissiveIntensity = isLowPerf ? 0.32 : breathCyan + pointerEnergy;
-      card1HaloMat.opacity = isLowPerf ? 0.1 : 0.14 + breathCyan * 0.12 + pointerEnergy * 0.1;
-
-      if (cardMat2 && card2HaloMat) {
-        cardMat2.emissiveIntensity = isLowPerf ? 0.32 : breathViolet + pointerEnergy;
-        card2HaloMat.opacity = isLowPerf ? 0.1 : 0.12 + breathViolet * 0.12 + pointerEnergy * 0.1;
-      }
-
-      if (!prefersReduced) {
-        // Flutuação holográfica suave dos painéis de código com rotação reactiva
-        card1.position.y = 0.4 + Math.sin(elapsedTime * 0.9) * 0.12;
-        card1.rotation.z = Math.sin(elapsedTime * 0.6) * 0.015;
-        card1.rotation.y = 0.22 + currentPointerX * 0.08;
-        card1.rotation.x = -0.05 - currentPointerY * 0.06;
-
-        if (card2 && card2.visible) {
-          card2.position.y = -0.2 + Math.cos(elapsedTime * 0.8) * 0.14;
-          card2.rotation.z = Math.cos(elapsedTime * 0.5) * 0.015;
-          card2.rotation.y = -0.26 + currentPointerX * 0.08;
-          card2.rotation.x = -0.04 - currentPointerY * 0.06;
-        }
-      }
-
-      // Movimentos procedurais de luzes andando no circuito 3D imersivo (contínuos e suaves)
-      const pulseArr = pulseGeo.attributes.position.array as Float32Array;
-      for (let t = 0; t < TRACE_COUNT; t++) {
-        const trace = traces[t];
-        trace.progress = (trace.progress + delta * trace.speed) % 1;
-
-        // Interpola a posição do pulso ao longo dos pontos ortogonais do caminho
-        const targetDist = trace.progress * trace.totalLen;
-        let accum = 0;
-        let pX = trace.points[0].x;
-        let pY = trace.points[0].y;
-        let pZ = trace.points[0].z;
-
-        for (let p = 0; p < trace.points.length - 1; p++) {
-          const segLen = trace.points[p].distanceTo(trace.points[p + 1]);
-          if (accum + segLen >= targetDist || p === trace.points.length - 2) {
-            const segRatio = segLen > 0 ? Math.min(Math.max((targetDist - accum) / segLen, 0), 1) : 0;
-            pX = trace.points[p].x + (trace.points[p + 1].x - trace.points[p].x) * segRatio;
-            pY = trace.points[p].y + (trace.points[p + 1].y - trace.points[p].y) * segRatio;
-            pZ = trace.points[p].z + (trace.points[p + 1].z - trace.points[p].z) * segRatio;
-            break;
-          }
-          accum += segLen;
+          sizeArray[i] = dot.size * (1.0 + dot.pulseBoost * 0.45);
         }
 
-        pulseArr[t * 3] = pX;
-        pulseArr[t * 3 + 1] = pY;
-        pulseArr[t * 3 + 2] = pZ;
+        posAttr.needsUpdate = true;
+        colAttr.needsUpdate = true;
+        sizeAttr.needsUpdate = true;
       }
-      pulseGeo.attributes.position.needsUpdate = true;
-      pulseMat.opacity = (inApp ? 0.32 : isMobile ? 0.42 : 0.46) + Math.sin(elapsedTime * 2.2) * 0.06;
 
-      // Atualização contínua e suave da chuva digital no horizonte
-      const streamArr = streamGeo.attributes.position.array as Float32Array;
-      const rainDelta = delta > 0 ? delta / 0.016 : 1;
-      for (let s = 0; s < STREAM_COUNT; s++) {
-        streamArr[s * 3 + 1] -= streamVelocities[s] * rainDelta;
-        if (streamArr[s * 3 + 1] < -4) {
-          streamArr[s * 3 + 1] = 8;
-          streamArr[s * 3] = (Math.random() - 0.5) * 24;
+      // Expansão da onda de choque azul ao clicar
+      if (shockwaveActive) {
+        shockwaveScale += delta * 14.0;
+        shockwaveOpacity -= delta * 1.6;
+
+        shockwaveMesh.scale.set(shockwaveScale, shockwaveScale, 1);
+        shockMat.opacity = Math.max(0, shockwaveOpacity);
+
+        if (shockwaveOpacity <= 0) {
+          shockwaveActive = false;
         }
       }
-      streamGeo.attributes.position.needsUpdate = true;
 
       renderer.render(scene, camera);
     };
 
-    const start = () => {
-      if (!running) {
-        running = true;
-        clock.start();
-        lastFrameTime = performance.now();
-        if (!animationFrameId) {
-          animationFrameId = requestAnimationFrame(animate);
-        }
-      }
-    };
+    animate();
+    if (onMounted) onMounted();
 
-    const stop = () => {
-      running = false;
-      clock.stop();
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-        animationFrameId = 0;
-      }
-    };
-
-    // Pausa inteligente apenas se a aba estiver oculta
-    const handleVisibility = () => {
-      if (document.hidden) stop();
-      else start();
-    };
-    document.addEventListener('visibilitychange', handleVisibility);
-
-    start();
-
-    // Notifica que o 3D foi montado com sucesso para transição suave do skeleton
-    requestAnimationFrame(() => {
-      onMounted?.();
-    });
-
-    // Desalocação completa de recursos ao desmontar (Zero Memory Leak)
+    // 14. Limpeza e Descarte Total ao Desmontar
     return () => {
-      stop();
-      if (returnToCenterTimeout) clearTimeout(returnToCenterTimeout);
-      document.removeEventListener('visibilitychange', handleVisibility);
-      document.removeEventListener('mouseleave', handlePointerLeave);
-      window.removeEventListener('scroll', handleScroll);
+      cancelAnimationFrame(animationFrameId);
       window.removeEventListener('pointermove', handlePointerMove);
-      window.removeEventListener('pointerleave', handlePointerLeave);
-      window.removeEventListener('touchmove', handleTouchMove);
-      window.removeEventListener('touchend', handleTouchEnd);
-      window.removeEventListener('touchcancel', handleTouchEnd);
+      window.removeEventListener('pointerdown', handlePointerDown);
       window.removeEventListener('resize', handleResize);
-
-      groundGridGeo.dispose();
-      groundGridMat.dispose();
-
-      cardPlaneGeo.dispose();
-      haloGeo.dispose();
-      cardMat1.dispose();
-      cardMat2?.dispose();
-      card1HaloMat.dispose();
-      card2HaloMat?.dispose();
-      textureArch.dispose();
-      textureMetrics.dispose();
-      haloCyanTex.dispose();
-      haloVioletTex?.dispose();
-
-      scene.remove(ambientLight);
-      scene.remove(globalCyanLight);
-      scene.remove(globalVioletLight);
+      document.removeEventListener('visibilitychange', handleVisibility);
 
       circuitGeo.dispose();
       circuitMat.dispose();
-      pulseGeo.dispose();
-      pulseMat.dispose();
-      pulseTexture.dispose();
+      centralCardGeo.dispose();
+      centralCardMat.dispose();
+      centralEdges.dispose();
+      centralEdgeMat.dispose();
+      leftCardGeo.dispose();
+      leftCardMat.dispose();
+      rightCardGeo.dispose();
+      rightCardMat.dispose();
+      dotGeo.dispose();
+      dotMat.dispose();
+      shockGeo.dispose();
+      shockMat.dispose();
 
-      streamGeo.dispose();
-      streamMat.dispose();
+      blueprintTex.dispose();
+      subBlueprintTex.dispose();
+      dotTex.dispose();
+      shockTex.dispose();
 
       renderer.dispose();
-      if (container.contains(renderer.domElement)) {
-        container.removeChild(renderer.domElement);
+      if (renderer.domElement.parentNode) {
+        renderer.domElement.parentNode.removeChild(renderer.domElement);
       }
     };
   }, []);
@@ -992,8 +943,7 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted,
     <div
       ref={containerRef}
       aria-hidden="true"
-      className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none opacity-85"
-      style={{ willChange: 'transform' }}
+      className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none"
     />
   );
 };

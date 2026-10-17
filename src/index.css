@@ -248,7 +248,7 @@ summary,
 .scroll-perf-card,
 .scroll-perf-list {
   will-change: transform;
-  contain: content;
+  contain: layout style;
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
 }

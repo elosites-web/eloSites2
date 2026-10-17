@@ -1,5 +1,6 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { webglSupported } from '../mediaPrefs';
+import type { ScreenId } from '../types';
 
 // O chunk do Three.js só é baixado quando <Persistent3DScene /> é realmente renderizado.
 const Persistent3DScene = lazy(() =>
@@ -8,8 +9,8 @@ const Persistent3DScene = lazy(() =>
 
 /**
  * Skeleton loading global do fundo 3D:
- * Exibe um gradiente suave com padrão de grade sutil em tela cheia enquanto a cena 3D inicializa,
- * eliminando qualquer flash ou travamento visual na carga inicial da página.
+ * Exibe um gradiente suave em paleta violeta/púrpura futurista com toques em azul neon
+ * e padrão de grade técnica em tela cheia enquanto a cena 3D inicializa.
  */
 export const Persistent3DSkeleton: React.FC<{ isLoaded?: boolean }> = ({ isLoaded = false }) => {
   return (
@@ -19,14 +20,16 @@ export const Persistent3DSkeleton: React.FC<{ isLoaded?: boolean }> = ({ isLoade
         isLoaded ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
     >
-      {/* Base escura e gradiente suave central */}
-      <div className="absolute inset-0 bg-[#060912]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(6,182,212,0.1),transparent_70%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_80%,rgba(99,102,241,0.08),transparent_60%)]" />
-      {/* Padrão de grade sutil para continuidade estética */}
-      <div className="absolute inset-0 tech-grid-pattern opacity-60" />
-      {/* Horizonte suave em perspectiva */}
-      <div className="absolute top-[65%] inset-x-0 h-px bg-gradient-to-r from-transparent via-cyan-500/25 to-transparent" />
+      {/* Base escura profunda */}
+      <div className="absolute inset-0 bg-[#050711]" />
+      {/* Brilhos atmosféricos em violeta futurista e azul neon */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_40%,rgba(139,92,246,0.12),transparent_70%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_65%,rgba(59,130,246,0.1),transparent_60%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_75%,rgba(168,85,247,0.08),transparent_60%)]" />
+      {/* Padrão de grade técnica */}
+      <div className="absolute inset-0 tech-grid-pattern opacity-50" />
+      {/* Horizonte suave em perspectiva com brilho azul/violeta */}
+      <div className="absolute top-[65%] inset-x-0 h-px bg-gradient-to-r from-transparent via-violet-500/30 to-transparent" />
     </div>
   );
 };
@@ -63,12 +66,16 @@ class Scene3DErrorBoundary extends React.Component<BoundaryProps, BoundaryState>
 
 interface Persistent3DBackgroundProps {
   isMenuOpen?: boolean;
+  currentScreen?: ScreenId;
 }
 
 /**
- * Fundo 3D com Skeleton Global e carregamento assíncrono em tempo ocioso
+ * Fundo 3D persistente com Skeleton Global e carregamento assíncrono em tempo ocioso
  */
-export const Persistent3DBackground: React.FC<Persistent3DBackgroundProps> = ({ isMenuOpen = false }) => {
+export const Persistent3DBackground: React.FC<Persistent3DBackgroundProps> = ({
+  isMenuOpen = false,
+  currentScreen = 'home',
+}) => {
   const [shouldLoad, setShouldLoad] = useState(false);
   const [isSceneMounted, setIsSceneMounted] = useState(false);
 
@@ -101,10 +108,15 @@ export const Persistent3DBackground: React.FC<Persistent3DBackgroundProps> = ({ 
       {shouldLoad && (
         <Scene3DErrorBoundary>
           <Suspense fallback={null}>
-            <Persistent3DScene onMounted={() => setIsSceneMounted(true)} isMenuOpen={isMenuOpen} />
+            <Persistent3DScene
+              onMounted={() => setIsSceneMounted(true)}
+              isMenuOpen={isMenuOpen}
+              currentScreen={currentScreen}
+            />
           </Suspense>
         </Scene3DErrorBoundary>
       )}
     </>
   );
 };
+
