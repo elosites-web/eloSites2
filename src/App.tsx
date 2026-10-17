@@ -100,9 +100,9 @@ export default function App() {
     const onFirstInteraction = () => run();
 
     if (typeof window.requestIdleCallback === 'function') {
-      idleId = window.requestIdleCallback(run, { timeout: 2500 });
+      idleId = window.requestIdleCallback(run, { timeout: 3000 });
     } else {
-      timeoutId = window.setTimeout(run, 1500);
+      timeoutId = window.setTimeout(run, 3000);
     }
 
     window.addEventListener('pointerdown', onFirstInteraction, { once: true, passive: true });
