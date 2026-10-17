@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence, type Variants } from 'motion/react';
+import { motion, AnimatePresence, useReducedMotion, type Variants } from 'motion/react';
 import { ChevronDown, HelpCircle } from 'lucide-react';
 import { FaqItem, SITE_CONFIG, whatsappUrl } from '../types';
 import { shouldReduceMedia } from '../mediaPrefs';
@@ -59,7 +59,8 @@ export const FaqSection: React.FC = () => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  const isReduced = shouldReduceMedia();
+  const systemPrefersReduced = useReducedMotion();
+  const isReduced = Boolean(systemPrefersReduced || shouldReduceMedia());
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -113,7 +114,8 @@ export const FaqSection: React.FC = () => {
         <motion.div
           variants={containerVariants}
           initial="hidden"
-          animate="visible"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
           className="space-y-4"
         >
           {faqs.map((faq, index) => {
@@ -142,15 +144,17 @@ export const FaqSection: React.FC = () => {
                     <span className="font-display text-base sm:text-lg font-semibold text-white min-w-0 text-pretty text-left">
                       {faq.question}
                     </span>
-                    <span
-                      className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-transform duration-260 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+                    <motion.span
+                      animate={{ rotate: isOpen ? 180 : 0 }}
+                      transition={{ duration: isReduced ? 0 : 0.35, ease: [0.16, 1, 0.3, 1] }}
+                      className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-colors duration-200 ${
                         isOpen
-                          ? 'rotate-180 bg-indigo-950 text-indigo-300'
+                          ? 'bg-indigo-950 text-indigo-300'
                           : 'bg-slate-800/90 text-slate-300'
                       }`}
                     >
                       <ChevronDown className="w-4 h-4" aria-hidden="true" />
-                    </span>
+                    </motion.span>
                   </button>
                 </h3>
 
@@ -160,30 +164,38 @@ export const FaqSection: React.FC = () => {
                       id={panelId}
                       role="region"
                       aria-labelledby={buttonId}
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{
-                        opacity: 1,
-                        height: 'auto',
-                        transition: {
-                          height: { duration: 0.26, ease: [0.23, 1, 0.32, 1] },
-                          opacity: { duration: 0.2, delay: 0.03, ease: 'easeOut' },
-                        },
-                      }}
-                      exit={{
-                        opacity: 0,
-                        height: 0,
-                        transition: {
-                          height: { duration: 0.2, ease: [0.23, 1, 0.32, 1] },
-                          opacity: { duration: 0.14 },
-                        },
-                      }}
+                      initial={isReduced ? { opacity: 0 } : { opacity: 0, height: 0 }}
+                      animate={
+                        isReduced
+                          ? { opacity: 1 }
+                          : {
+                              opacity: 1,
+                              height: 'auto',
+                              transition: {
+                                height: { duration: 0.38, ease: [0.16, 1, 0.3, 1] },
+                                opacity: { duration: 0.28, delay: 0.05, ease: 'easeOut' },
+                              },
+                            }
+                      }
+                      exit={
+                        isReduced
+                          ? { opacity: 0 }
+                          : {
+                              opacity: 0,
+                              height: 0,
+                              transition: {
+                                height: { duration: 0.3, ease: [0.16, 1, 0.3, 1] },
+                                opacity: { duration: 0.18, ease: 'easeIn' },
+                              },
+                            }
+                      }
                       className="overflow-hidden"
                     >
                       <motion.div
-                        initial={{ opacity: 0, y: isReduced ? 0 : 4 }}
+                        initial={isReduced ? { opacity: 0 } : { opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: isReduced ? 0 : -4 }}
-                        transition={{ duration: 0.2, ease: 'easeOut' }}
+                        exit={isReduced ? { opacity: 0 } : { opacity: 0, y: -6 }}
+                        transition={{ duration: isReduced ? 0 : 0.32, ease: [0.16, 1, 0.3, 1] }}
                         className="px-5 pb-5 sm:px-6 sm:pb-6 lg:px-8 lg:pb-8 text-sm sm:text-base text-slate-300/95 leading-relaxed border-t border-white/[0.06] pt-4"
                       >
                         {faq.answer}

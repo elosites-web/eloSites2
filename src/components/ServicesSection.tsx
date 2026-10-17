@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, useReducedMotion } from 'motion/react';
+import { motion, useReducedMotion, type Variants } from 'motion/react';
 import { shouldReduceMedia } from '../mediaPrefs';
 import {
   Target,
@@ -156,31 +156,84 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
   const installment5x = (simulatedValue / 5).toFixed(2);
   const installment12xEst = ((simulatedValue * 1.15) / 12).toFixed(2);
 
-  // Variantes para efeito staggered fade-in com Framer Motion (Serviços)
-  const serviceContainerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: prefersReduced ? 0 : 0.12,
-        delayChildren: prefersReduced ? 0 : 0.04,
-      },
+  // Variantes dinâmicas de entrada com Framer Motion para fluidez máxima ao rolar (service-card)
+  const serviceCardVariants: Variants = {
+    hidden: {
+      opacity: 0,
+      scale: prefersReduced ? 1 : 0.93,
+      y: prefersReduced ? 0 : 42,
+      filter: prefersReduced ? 'none' : 'blur(8px)',
     },
+    visible: (i: number = 0) => ({
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      filter: 'blur(0px)',
+      transition: {
+        y: prefersReduced
+          ? { duration: 0 }
+          : { type: 'spring', damping: 22, stiffness: 105, mass: 0.85, delay: i * 0.12 },
+        scale: prefersReduced
+          ? { duration: 0 }
+          : { type: 'spring', damping: 22, stiffness: 105, mass: 0.85, delay: i * 0.12 },
+        opacity: prefersReduced
+          ? { duration: 0 }
+          : { duration: 0.55, ease: [0.16, 1, 0.3, 1], delay: i * 0.12 },
+        filter: prefersReduced
+          ? { duration: 0 }
+          : { duration: 0.55, ease: [0.16, 1, 0.3, 1], delay: i * 0.12 },
+      },
+    }),
   };
 
-  const serviceCardVariants = {
+  // Variantes para os cartões de regras comerciais (service-card)
+  const commercialCardVariants: Variants = {
+    hidden: {
+      opacity: 0,
+      scale: prefersReduced ? 1 : 0.95,
+      y: prefersReduced ? 0 : 32,
+      filter: prefersReduced ? 'none' : 'blur(6px)',
+    },
+    visible: (i: number = 0) => ({
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      filter: 'blur(0px)',
+      transition: {
+        y: prefersReduced
+          ? { duration: 0 }
+          : { type: 'spring', damping: 24, stiffness: 110, mass: 0.8, delay: i * 0.09 },
+        scale: prefersReduced
+          ? { duration: 0 }
+          : { type: 'spring', damping: 24, stiffness: 110, mass: 0.8, delay: i * 0.09 },
+        opacity: prefersReduced
+          ? { duration: 0 }
+          : { duration: 0.45, ease: [0.16, 1, 0.3, 1], delay: i * 0.09 },
+        filter: prefersReduced
+          ? { duration: 0 }
+          : { duration: 0.45, ease: [0.16, 1, 0.3, 1], delay: i * 0.09 },
+      },
+    }),
+  };
+
+  // Variantes para o card do simulador interativo (service-card)
+  const simulatorCardVariants: Variants = {
     hidden: {
       opacity: 0,
       scale: prefersReduced ? 1 : 0.96,
-      y: prefersReduced ? 0 : 22,
+      y: prefersReduced ? 0 : 36,
+      filter: prefersReduced ? 'none' : 'blur(6px)',
     },
     visible: {
       opacity: 1,
       scale: 1,
       y: 0,
+      filter: 'blur(0px)',
       transition: {
-        duration: prefersReduced ? 0 : 0.45,
-        ease: [0.22, 1, 0.36, 1] as const,
+        y: prefersReduced ? { duration: 0 } : { type: 'spring', damping: 24, stiffness: 100, mass: 0.85 },
+        scale: prefersReduced ? { duration: 0 } : { type: 'spring', damping: 24, stiffness: 100, mass: 0.85 },
+        opacity: prefersReduced ? { duration: 0 } : { duration: 0.55, ease: [0.16, 1, 0.3, 1] },
+        filter: prefersReduced ? { duration: 0 } : { duration: 0.55, ease: [0.16, 1, 0.3, 1] },
       },
     },
   };
@@ -212,22 +265,22 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
             </p>
           </div>
 
-          {/* Grid dos 3 Serviços com staggered fade-in ao rolar — Subgrid no desktop para alinhamento uniforme das linhas e seções */}
-          <motion.div
-            variants={serviceContainerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.12 }}
+          {/* Grid dos 3 Serviços com transição de entrada dinâmica e fluida ao rolar — Subgrid no desktop para alinhamento uniforme das linhas e seções */}
+          <div
             className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-7 lg:gap-8 min-w-0 items-stretch lg:grid-rows-[repeat(5,auto)] service-list scroll-perf-list p-0.5 overflow-visible"
           >
-            {SERVICES.map((service) => {
+            {SERVICES.map((service, index) => {
               const Icon = service.icon;
               const ctaUrl = whatsappUrl(service.ctaMessage);
 
               return (
                 <motion.div
                   key={service.id}
+                  custom={index}
                   variants={serviceCardVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.12, margin: '0px 0px -40px 0px' }}
                   className="h-full w-full min-w-0 max-w-full lg:row-span-5 lg:grid lg:grid-rows-subgrid"
                 >
                   <Interactive3DCard maxTilt={5} className="h-full w-full min-w-0 max-w-full lg:row-span-5 lg:grid lg:grid-rows-subgrid">
@@ -328,7 +381,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                 </motion.div>
               );
             })}
-          </motion.div>
+          </div>
 
           {/* SEÇÃO DESTACADA: CONDIÇÕES DE PAGAMENTO ATUALIZADAS */}
           <div className="mt-14 sm:mt-20">
@@ -346,34 +399,17 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
               </p>
             </div>
 
-            {/* 4 Blocos de Regras Comerciais com staggered fade-in ao rolar */}
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.12 }}
-              variants={{
-                hidden: { opacity: 0 },
-                visible: {
-                  opacity: 1,
-                  transition: {
-                    staggerChildren: prefersReduced ? 0 : 0.08,
-                    delayChildren: prefersReduced ? 0 : 0.04,
-                  },
-                },
-              }}
+            {/* 4 Blocos de Regras Comerciais com transição de entrada dinâmica ao rolar */}
+            <div
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 service-list scroll-perf-list"
             >
               {/* Regra 1: 50% Entrada + 50% Final */}
               <motion.div
-                variants={{
-                  hidden: { opacity: 0, scale: prefersReduced ? 1 : 0.96, y: prefersReduced ? 0 : 16 },
-                  visible: {
-                    opacity: 1,
-                    scale: 1,
-                    y: 0,
-                    transition: { duration: prefersReduced ? 0 : 0.4, ease: [0.22, 1, 0.36, 1] },
-                  },
-                }}
+                custom={0}
+                variants={commercialCardVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.12, margin: '0px 0px -30px 0px' }}
                 className="h-full"
               >
                 <Interactive3DCard maxTilt={5} className="h-full">
@@ -398,15 +434,11 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
 
               {/* Regra 2: 20% de Desconto à Vista */}
               <motion.div
-                variants={{
-                  hidden: { opacity: 0, scale: prefersReduced ? 1 : 0.96, y: prefersReduced ? 0 : 16 },
-                  visible: {
-                    opacity: 1,
-                    scale: 1,
-                    y: 0,
-                    transition: { duration: prefersReduced ? 0 : 0.4, ease: [0.22, 1, 0.36, 1] },
-                  },
-                }}
+                custom={1}
+                variants={commercialCardVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.12, margin: '0px 0px -30px 0px' }}
                 className="h-full"
               >
                 <Interactive3DCard maxTilt={5} className="h-full">
@@ -436,15 +468,11 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
 
               {/* Regra 3: Cartão até 5x sem juros */}
               <motion.div
-                variants={{
-                  hidden: { opacity: 0, scale: prefersReduced ? 1 : 0.96, y: prefersReduced ? 0 : 16 },
-                  visible: {
-                    opacity: 1,
-                    scale: 1,
-                    y: 0,
-                    transition: { duration: prefersReduced ? 0 : 0.4, ease: [0.22, 1, 0.36, 1] },
-                  },
-                }}
+                custom={2}
+                variants={commercialCardVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.12, margin: '0px 0px -30px 0px' }}
                 className="h-full"
               >
                 <Interactive3DCard maxTilt={5} className="h-full">
@@ -469,15 +497,11 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
 
               {/* Regra 4: Cartão de 6x a 12x */}
               <motion.div
-                variants={{
-                  hidden: { opacity: 0, scale: prefersReduced ? 1 : 0.96, y: prefersReduced ? 0 : 16 },
-                  visible: {
-                    opacity: 1,
-                    scale: 1,
-                    y: 0,
-                    transition: { duration: prefersReduced ? 0 : 0.4, ease: [0.22, 1, 0.36, 1] },
-                  },
-                }}
+                custom={3}
+                variants={commercialCardVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.12, margin: '0px 0px -30px 0px' }}
                 className="h-full"
               >
                 <Interactive3DCard maxTilt={5} className="h-full">
@@ -499,142 +523,150 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                   </div>
                 </Interactive3DCard>
               </motion.div>
-            </motion.div>
+            </div>
 
             {/* SIMULADOR INTERATIVO DE CONDIÇÕES */}
-            <Interactive3DCard maxTilt={3} className="mt-8 w-full">
-              <div className="glass-card-interactive surface-card service-card scroll-perf-card relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/40 p-6 sm:p-8 shadow-2xl shadow-black/60 bracket-panel transition-colors">
-              <div className="flex flex-col lg:flex-row items-center justify-between gap-6 pb-6 border-b border-white/[0.08]">
-                <div className="space-y-1 text-center lg:text-left">
-                  <div className="inline-flex items-center gap-1.5 text-xs text-indigo-400 font-semibold uppercase">
-                    <Calculator className="w-4 h-4" />
-                    <span>Simulador de Condições de Pagamento</span>
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.1, margin: '0px 0px -30px 0px' }}
+              variants={simulatorCardVariants}
+              className="mt-8 w-full"
+            >
+              <Interactive3DCard maxTilt={3} className="w-full">
+                <div className="glass-card-interactive surface-card service-card scroll-perf-card relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/40 p-6 sm:p-8 shadow-2xl shadow-black/60 bracket-panel transition-colors">
+                <div className="flex flex-col lg:flex-row items-center justify-between gap-6 pb-6 border-b border-white/[0.08]">
+                  <div className="space-y-1 text-center lg:text-left">
+                    <div className="inline-flex items-center gap-1.5 text-xs text-indigo-400 font-semibold uppercase">
+                      <Calculator className="w-4 h-4" />
+                      <span>Simulador de Condições de Pagamento</span>
+                    </div>
+                    <h4 className="text-xl sm:text-2xl font-bold text-white">
+                      Simule as formas de pagamento com base no orçamento
+                    </h4>
+                    <p className="text-xs sm:text-sm text-slate-400">
+                      Arraste o controle ou escolha um valor de referência para visualizar a economia à vista e as parcelas.
+                    </p>
                   </div>
-                  <h4 className="text-xl sm:text-2xl font-bold text-white">
-                    Simule as formas de pagamento com base no orçamento
-                  </h4>
-                  <p className="text-xs sm:text-sm text-slate-400">
-                    Arraste o controle ou escolha um valor de referência para visualizar a economia à vista e as parcelas.
-                  </p>
+
+                  <div className="flex flex-wrap items-center gap-2 justify-center">
+                    {[650, 1000, 1500, 2200].map((preset) => (
+                      <button
+                        key={preset}
+                        type="button"
+                        onClick={() => setSimulatedValue(preset)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all ${
+                          simulatedValue === preset
+                            ? 'bg-indigo-600 text-white shadow'
+                            : 'bg-slate-900 text-slate-400 hover:text-white border border-white/[0.06]'
+                        }`}
+                      >
+                        R$ {preset.toLocaleString('pt-BR')}
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-2 justify-center">
-                  {[650, 1000, 1500, 2200].map((preset) => (
-                    <button
-                      key={preset}
-                      type="button"
-                      onClick={() => setSimulatedValue(preset)}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all ${
-                        simulatedValue === preset
-                          ? 'bg-indigo-600 text-white shadow'
-                          : 'bg-slate-900 text-slate-400 hover:text-white border border-white/[0.06]'
-                      }`}
-                    >
-                      R$ {preset.toLocaleString('pt-BR')}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Slider de Valor */}
-              <div className="py-6 space-y-2">
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-slate-400 font-medium">Valor orçado simulado:</span>
-                  <span className="text-xl sm:text-2xl font-bold font-mono text-indigo-300">
-                    R$ {simulatedValue.toLocaleString('pt-BR')},00
-                  </span>
-                </div>
-                <input
-                  type="range"
-                  min="600"
-                  max="3500"
-                  step="50"
-                  value={simulatedValue}
-                  onChange={(e) => setSimulatedValue(Number(e.target.value))}
-                  aria-label="Simular valor do orçamento"
-                  className="w-full accent-indigo-500 cursor-pointer h-2 bg-slate-800 rounded-lg"
-                />
-                <div className="flex justify-between text-[11px] text-slate-500 font-mono">
-                  <span>R$ 600</span>
-                  <span>R$ 2.000</span>
-                  <span>R$ 3.500</span>
-                </div>
-              </div>
-
-              {/* Grid de Resultados da Simulação */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
-                {/* Resultado À Vista */}
-                <div className="p-4 rounded-xl bg-emerald-950/25 border border-emerald-500/30 space-y-1">
-                  <span className="text-xs font-semibold text-emerald-400 uppercase">
-                    ⚡ À Vista (20% OFF)
-                  </span>
-                  <p className="text-2xl font-bold font-mono text-emerald-300">
-                    R$ {discountValue.toLocaleString('pt-BR')},00
-                  </p>
-                  <p className="text-[11px] text-slate-300">
-                    Economia imediata de <strong className="text-white">R$ {(simulatedValue - discountValue).toLocaleString('pt-BR')}</strong> via PIX
-                  </p>
+                {/* Slider de Valor */}
+                <div className="py-6 space-y-2">
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-slate-400 font-medium">Valor orçado simulado:</span>
+                    <span className="text-xl sm:text-2xl font-bold font-mono text-indigo-300">
+                      R$ {simulatedValue.toLocaleString('pt-BR')},00
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    min="600"
+                    max="3500"
+                    step="50"
+                    value={simulatedValue}
+                    onChange={(e) => setSimulatedValue(Number(e.target.value))}
+                    aria-label="Simular valor do orçamento"
+                    className="w-full accent-indigo-500 cursor-pointer h-2 bg-slate-800 rounded-lg"
+                  />
+                  <div className="flex justify-between text-[11px] text-slate-500 font-mono">
+                    <span>R$ 600</span>
+                    <span>R$ 2.000</span>
+                    <span>R$ 3.500</span>
+                  </div>
                 </div>
 
-                {/* Resultado 50% / 50% */}
-                <div className="p-4 rounded-xl bg-slate-900 border border-white/[0.08] space-y-1">
-                  <span className="text-xs font-semibold text-indigo-400 uppercase">
-                    💎 50% Início + 50% Entrega
-                  </span>
-                  <p className="text-2xl font-bold font-mono text-white">
-                    2x R$ {pixSplitFirst.toLocaleString('pt-BR')}
-                  </p>
-                  <p className="text-[11px] text-slate-400">
-                    1ª parcela na contratação e 2ª na entrega final (PIX)
-                  </p>
+                {/* Grid de Resultados da Simulação */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
+                  {/* Resultado À Vista */}
+                  <div className="p-4 rounded-xl bg-emerald-950/25 border border-emerald-500/30 space-y-1">
+                    <span className="text-xs font-semibold text-emerald-400 uppercase">
+                      ⚡ À Vista (20% OFF)
+                    </span>
+                    <p className="text-2xl font-bold font-mono text-emerald-300">
+                      R$ {discountValue.toLocaleString('pt-BR')},00
+                    </p>
+                    <p className="text-[11px] text-slate-300">
+                      Economia imediata de <strong className="text-white">R$ {(simulatedValue - discountValue).toLocaleString('pt-BR')}</strong> via PIX
+                    </p>
+                  </div>
+
+                  {/* Resultado 50% / 50% */}
+                  <div className="p-4 rounded-xl bg-slate-900 border border-white/[0.08] space-y-1">
+                    <span className="text-xs font-semibold text-indigo-400 uppercase">
+                      💎 50% Início + 50% Entrega
+                    </span>
+                    <p className="text-2xl font-bold font-mono text-white">
+                      2x R$ {pixSplitFirst.toLocaleString('pt-BR')}
+                    </p>
+                    <p className="text-[11px] text-slate-400">
+                      1ª parcela na contratação e 2ª na entrega final (PIX)
+                    </p>
+                  </div>
+
+                  {/* Resultado Cartão 5x */}
+                  <div className="p-4 rounded-xl bg-slate-900 border border-white/[0.08] space-y-1">
+                    <span className="text-xs font-semibold text-indigo-400 uppercase">
+                      💳 Cartão até 5x Sem Juros
+                    </span>
+                    <p className="text-2xl font-bold font-mono text-white">
+                      5x R$ {installment5x}
+                    </p>
+                    <p className="text-[11px] text-slate-400">
+                      1 entrada + 4 parcelas no cartão sem nenhum acréscimo
+                    </p>
+                  </div>
                 </div>
 
-                {/* Resultado Cartão 5x */}
-                <div className="p-4 rounded-xl bg-slate-900 border border-white/[0.08] space-y-1">
-                  <span className="text-xs font-semibold text-indigo-400 uppercase">
-                    💳 Cartão até 5x Sem Juros
-                  </span>
-                  <p className="text-2xl font-bold font-mono text-white">
-                    5x R$ {installment5x}
+                {/* Ação direta da simulação */}
+                <div className="mt-6 pt-5 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <p className="text-xs text-slate-400 text-center sm:text-left">
+                    * Valores calculados para fins de demonstração. Cada proposta oficial detalha prazos e entregáveis específicos.
                   </p>
-                  <p className="text-[11px] text-slate-400">
-                    1 entrada + 4 parcelas no cartão sem nenhum acréscimo
-                  </p>
-                </div>
-              </div>
 
-              {/* Ação direta da simulação */}
-              <div className="mt-6 pt-5 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4">
-                <p className="text-xs text-slate-400 text-center sm:text-left">
-                  * Valores calculados para fins de demonstração. Cada proposta oficial detalha prazos e entregáveis específicos.
-                </p>
-
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
-                  {onNavigateToOrcamento && (
-                    <button
-                      type="button"
-                      onClick={onNavigateToOrcamento}
-                      className="w-full sm:w-auto min-h-12 sm:min-h-0 inline-flex items-center justify-center text-center gap-2 px-5 py-3 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 border border-indigo-400/40 shadow-lg shadow-indigo-500/25 transition-all duration-200 hover:scale-105 focus:scale-105 hover:ring-2 hover:ring-indigo-500/50 focus:ring-2 focus:ring-indigo-500/50 focus:outline-none cursor-pointer"
-                    >
-                      <span className="text-center">Montar Briefing</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </button>
-                  )}
-                  <a
-                    href={whatsappUrl(
-                      `Olá! 💰 Simulei uma condição de pagamento no site da *ēloSites* (valor base estimado em *R$ ${simulatedValue.toLocaleString('pt-BR')},00*).\n\nGostaria de receber um orçamento oficial com o escopo detalhado para o meu projeto!`
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
+                    {onNavigateToOrcamento && (
+                      <button
+                        type="button"
+                        onClick={onNavigateToOrcamento}
+                        className="w-full sm:w-auto min-h-12 sm:min-h-0 inline-flex items-center justify-center text-center gap-2 px-5 py-3 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 border border-indigo-400/40 shadow-lg shadow-indigo-500/25 transition-all duration-200 hover:scale-105 focus:scale-105 hover:ring-2 hover:ring-indigo-500/50 focus:ring-2 focus:ring-indigo-500/50 focus:outline-none cursor-pointer"
+                      >
+                        <span className="text-center">Montar Briefing</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
                     )}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full sm:w-auto min-h-12 sm:min-h-0 inline-flex items-center justify-center text-center gap-2 px-5 py-3 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-400/30 transition-all duration-200 hover:scale-105 hover:shadow-lg focus:scale-105 focus:outline-none shadow-md shadow-emerald-950/40"
-                  >
-                    <WhatsAppIcon className="w-4 h-4 text-white" />
-                    <span className="text-center">Pedir Proposta com Esta Condição</span>
-                  </a>
+                    <a
+                      href={whatsappUrl(
+                        `Olá! 💰 Simulei uma condição de pagamento no site da *ēloSites* (valor base estimado em *R$ ${simulatedValue.toLocaleString('pt-BR')},00*).\n\nGostaria de receber um orçamento oficial com o escopo detalhado para o meu projeto!`
+                      )}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full sm:w-auto min-h-12 sm:min-h-0 inline-flex items-center justify-center text-center gap-2 px-5 py-3 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-400/30 transition-all duration-200 hover:scale-105 hover:shadow-lg focus:scale-105 focus:outline-none shadow-md shadow-emerald-950/40"
+                    >
+                      <WhatsAppIcon className="w-4 h-4 text-white" />
+                      <span className="text-center">Pedir Proposta com Esta Condição</span>
+                    </a>
+                  </div>
                 </div>
               </div>
-            </div>
-          </Interactive3DCard>
+            </Interactive3DCard>
+          </motion.div>
         </div>
         </div>
 
