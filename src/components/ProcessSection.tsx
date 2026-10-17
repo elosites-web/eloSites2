@@ -88,7 +88,7 @@ export const ProcessSection: React.FC = () => {
                         <span className="font-mono text-xs font-bold text-indigo-300 bg-indigo-950/80 border border-indigo-400/30 px-3 py-1 rounded-lg">
                           {step.number}
                         </span>
-                        <div className="w-11 h-11 rounded-xl bg-indigo-950/70 border border-indigo-500/30 flex items-center justify-center text-indigo-300 transition-all duration-300">
+                        <div className="w-11 h-11 rounded-xl bg-indigo-950/70 border border-indigo-500/30 flex items-center justify-center text-indigo-300 transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-300">
                           <Icon className="w-5 h-5" aria-hidden="true" />
                         </div>
                       </div>
@@ -141,7 +141,7 @@ export const ProcessSection: React.FC = () => {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Tirar dúvidas sobre o processo no WhatsApp"
-            className="cta-primary inline-flex items-center justify-center text-center gap-2.5 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl text-sm sm:text-base font-bold text-white shadow-lg shadow-indigo-600/30 transition-all cursor-pointer"
+            className="cta-primary inline-flex items-center justify-center text-center gap-2.5 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl text-sm sm:text-base font-bold text-white shadow-lg shadow-indigo-600/30 transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] cursor-pointer"
           >
             <WhatsAppIcon className="w-4 h-4 text-emerald-300" />
             <span>Tirar dúvidas sobre o processo</span>

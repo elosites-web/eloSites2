@@ -174,7 +174,7 @@ export const PaidTrafficPartnershipSection: React.FC<PaidTrafficPartnershipSecti
                     viewport={{ once: true, amount: 0.12, margin: '0px 0px -40px 0px' }}
                     className="h-full"
                   >
-                    <div className="glass-panel glass-card-interactive bracket-panel rounded-2xl p-6 sm:p-7 flex flex-col justify-between border border-white/[0.08] hover:border-purple-500/30 transition-all duration-300 group h-full">
+                    <div className="glass-panel glass-card-interactive bracket-panel rounded-2xl p-6 sm:p-7 flex flex-col justify-between border border-white/[0.08] hover:border-purple-500/30 transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-300 group h-full">
                       <div className="space-y-4">
                         <div className="flex items-center justify-between gap-3">
                           <div
@@ -300,7 +300,7 @@ export const PaidTrafficPartnershipSection: React.FC<PaidTrafficPartnershipSecti
                     href={partnershipWhatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-3 px-6 sm:px-8 py-4 sm:py-4.5 rounded-2xl text-base sm:text-lg font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-400/40 shadow-xl shadow-emerald-950/50 hover:shadow-[0_0_26px_rgba(37,211,102,0.65)] pressable min-h-12 transition-all cursor-pointer group select-none"
+                    className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-3 px-6 sm:px-8 py-4 sm:py-4.5 rounded-2xl text-base sm:text-lg font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-400/40 shadow-xl shadow-emerald-950/50 hover:shadow-[0_0_26px_rgba(37,211,102,0.65)] pressable min-h-12 transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] cursor-pointer group select-none"
                     aria-label="Quero conhecer a condição especial — Falar com a ēloSites pelo WhatsApp"
                   >
                     <WhatsAppIcon className="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:scale-110 transition-transform shrink-0" />

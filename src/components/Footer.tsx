@@ -136,7 +136,7 @@ export const Footer: React.FC<FooterProps> = ({
                           window.scrollTo({ top: 0, behavior: 'smooth' });
                         }
                       }}
-                      className={`text-left transition-all duration-200 relative flex items-center gap-2 py-0.5 cursor-pointer group hover:-translate-y-0.5 hover:translate-x-1 ${
+                      className={`text-left transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-200 relative flex items-center gap-2 py-0.5 cursor-pointer group hover:-translate-y-0.5 hover:translate-x-1 ${
                         isActive
                           ? 'text-cyan-300 font-semibold drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]'
                           : 'text-slate-400 hover:text-cyan-300 hover:drop-shadow-[0_0_10px_rgba(34,211,238,0.65)]'
@@ -234,7 +234,7 @@ export const Footer: React.FC<FooterProps> = ({
 
         {/* Espaço adicional dinâmico abaixo da frase quando o balão do WhatsApp surge, prevenindo sobreposição em qualquer tela */}
         <div
-          className={`transition-all duration-500 ease-out w-full pointer-events-none ${
+          className={`transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-500 ease-out w-full pointer-events-none ${
             bubbleOpen ? 'h-36 sm:h-44 md:h-48' : 'h-6 sm:h-8'
           }`}
           aria-hidden="true"

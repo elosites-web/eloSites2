@@ -98,7 +98,7 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="relative w-6 h-6 flex items-center justify-center pointer-events-none">
         {/* Traço superior: tom de roxo oficial da ēloSites. Desce ao centro e gira 45° para formar o X com o traço de baixo */}
         <span
-          className={`absolute left-1/2 -translate-x-1/2 top-[11px] h-[2px] rounded-full transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+          className={`absolute left-1/2 -translate-x-1/2 top-[11px] h-[2px] rounded-full transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] ${
             isMenuOpen
               ? 'w-5 translate-y-0 rotate-45 bg-gradient-to-r from-purple-400 via-violet-400 to-fuchsia-400 shadow-[0_0_12px_rgba(168,85,247,0.85)] group-hover:from-purple-300 group-hover:to-violet-300'
               : 'w-5 -translate-y-[6px] rotate-0 bg-gradient-to-r from-purple-500 via-violet-500 to-indigo-500 group-hover:from-purple-400 group-hover:to-violet-400 shadow-[0_0_8px_rgba(168,85,247,0.7)]'
@@ -106,7 +106,7 @@ export const Header: React.FC<HeaderProps> = ({
         />
         {/* Traço do meio: tom branco/cinza claro alinhado à esquerda dos outros traços */}
         <span
-          className={`absolute left-[2px] top-[11px] h-[2px] rounded-full bg-gradient-to-r from-slate-100 via-white to-slate-300 transition-all duration-200 ease-out shadow-[0_0_6px_rgba(255,255,255,0.4)] origin-left ${
+          className={`absolute left-[2px] top-[11px] h-[2px] rounded-full bg-gradient-to-r from-slate-100 via-white to-slate-300 transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-200 ease-out shadow-[0_0_6px_rgba(255,255,255,0.4)] origin-left ${
             isMenuOpen
               ? 'w-0 opacity-0 scale-x-0'
               : 'w-3.5 opacity-100 scale-x-100 translate-y-0 group-hover:w-5 group-hover:from-white group-hover:to-slate-200'
@@ -114,7 +114,7 @@ export const Header: React.FC<HeaderProps> = ({
         />
         {/* Traço inferior: tom de roxo oficial da ēloSites. Sobe ao centro e gira -45° para formar o X com o traço superior */}
         <span
-          className={`absolute left-1/2 -translate-x-1/2 top-[11px] h-[2px] rounded-full transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+          className={`absolute left-1/2 -translate-x-1/2 top-[11px] h-[2px] rounded-full transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] ${
             isMenuOpen
               ? 'w-5 translate-y-0 -rotate-45 bg-gradient-to-r from-indigo-400 via-violet-400 to-purple-400 shadow-[0_0_12px_rgba(168,85,247,0.85)] group-hover:from-indigo-300 group-hover:to-purple-300'
               : 'w-5 translate-y-[6px] rotate-0 group-hover:w-5 bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500 group-hover:from-indigo-400 group-hover:to-purple-400 shadow-[0_0_8px_rgba(168,85,247,0.7)]'
@@ -164,7 +164,7 @@ export const Header: React.FC<HeaderProps> = ({
       {!isHome && !isMenuOpen && (
         <header
           id="header-nav"
-          className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-gradient-to-r from-[#031d24]/90 via-[#062c36]/85 to-[#071c2b]/90 backdrop-blur-md border-b border-indigo-500/20 py-2 sm:py-2.5 shadow-xl shadow-[#020617]/50 pointer-events-auto"
+          className="fixed top-0 left-0 right-0 z-50 transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-300 bg-gradient-to-r from-[#031d24]/90 via-[#062c36]/85 to-[#071c2b]/90 backdrop-blur-md border-b border-indigo-500/20 py-2 sm:py-2.5 shadow-xl shadow-[#020617]/50 pointer-events-auto"
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             <div className="flex items-center justify-between gap-3 sm:gap-6 min-h-[44px]">

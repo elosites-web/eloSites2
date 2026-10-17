@@ -48,7 +48,7 @@ export const ContactCtaSection: React.FC<ContactCtaSectionProps> = ({ onNavigate
               href={mainWhatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-3 px-6 sm:px-8 py-5 rounded-2xl text-base sm:text-lg font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-400/30 shadow-lg shadow-emerald-950/40 group pressable min-h-12 transition-all"
+              className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-3 px-6 sm:px-8 py-5 rounded-2xl text-base sm:text-lg font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-400/30 shadow-lg shadow-emerald-950/40 group pressable min-h-12 transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops]"
             >
               <WhatsAppIcon className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
               <span className="text-center">Falar no WhatsApp</span>
@@ -64,7 +64,7 @@ export const ContactCtaSection: React.FC<ContactCtaSectionProps> = ({ onNavigate
                   window.location.hash = 'orcamento';
                 }
               }}
-              className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-2.5 px-6 py-5 rounded-2xl text-base font-bold text-white bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 border border-indigo-400/40 shadow-lg shadow-indigo-500/25 pressable min-h-12 transition-all cursor-pointer"
+              className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-2.5 px-6 py-5 rounded-2xl text-base font-bold text-white bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 border border-indigo-400/40 shadow-lg shadow-indigo-500/25 pressable min-h-12 transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] cursor-pointer"
             >
               <span className="text-center">Preencher Briefing ou Reunião 30 min</span>
             </button>

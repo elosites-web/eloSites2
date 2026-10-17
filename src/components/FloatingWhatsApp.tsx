@@ -492,7 +492,7 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ onBubbleStat
                     duration: prefersReduced ? 0.2 : 0.36,
                     ease: 'easeOut',
                   }}
-                  className={`relative group flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-xl transition-all duration-200 border-2 border-indigo-400/50 active:scale-95 hover:shadow-indigo-500/40 z-50 select-none ${
+                  className={`relative group flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-xl transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-200 border-2 border-indigo-400/50 active:scale-95 hover:shadow-indigo-500/40 z-50 select-none ${
                     isPulsing && !prefersReduced ? 'animate-gradient-pulse-button' : ''
                   }`}
                 >

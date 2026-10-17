@@ -307,7 +307,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                             setBriefingData({ ...briefingData, contactName: e.target.value })
                           }
                           placeholder="Ex: Carlos Eduardo"
-                          className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-white/[0.1] text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-all"
+                          className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-white/[0.1] text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops]"
                         />
                         {formErrors.contactName && (
                           <p className="mt-1 text-xs text-rose-400">{formErrors.contactName}</p>
@@ -326,7 +326,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                             setBriefingData({ ...briefingData, whatsappContact: e.target.value })
                           }
                           placeholder="Ex: (11) 99999-9999"
-                          className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-white/[0.1] text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-all"
+                          className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-white/[0.1] text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops]"
                         />
                         {formErrors.whatsappContact && (
                           <p className="mt-1 text-xs text-rose-400">{formErrors.whatsappContact}</p>
@@ -348,7 +348,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                             setBriefingData({ ...briefingData, businessName: e.target.value })
                           }
                           placeholder="Ex: Barbearia Navalha & Estilo"
-                          className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-white/[0.1] text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-all"
+                          className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-white/[0.1] text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops]"
                         />
                         {formErrors.businessName && (
                           <p className="mt-1 text-xs text-rose-400">{formErrors.businessName}</p>
@@ -365,7 +365,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                             onChange={(e) =>
                               setBriefingData({ ...briefingData, segment: e.target.value })
                             }
-                            className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-white/[0.1] text-white text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-all appearance-none cursor-pointer"
+                            className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-white/[0.1] text-white text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] appearance-none cursor-pointer"
                           >
                             {segmentsList.map((item) => (
                               <option key={item} value={item} className="bg-slate-900 text-white">
@@ -391,7 +391,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                           onChange={(e) =>
                             setBriefingData({ ...briefingData, projectType: e.target.value })
                           }
-                          className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-white/[0.1] text-white text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-all appearance-none cursor-pointer"
+                          className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-white/[0.1] text-white text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] appearance-none cursor-pointer"
                         >
                           {projectTypesList.map((item) => (
                             <option key={item} value={item} className="bg-slate-900 text-white">
@@ -417,7 +417,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                           setBriefingData({ ...briefingData, description: e.target.value })
                         }
                         placeholder="Ex: Quero que os clientes vejam meus serviços, valores e chamem direto no WhatsApp para agendar. Já tenho fotos do espaço e logotipo..."
-                        className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-white/[0.1] text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-all resize-y"
+                        className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-white/[0.1] text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] resize-y"
                       />
                     </div>
 
@@ -508,7 +508,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                             setBookingData({ ...bookingData, name: e.target.value })
                           }
                           placeholder="Ex: Juliana Mendes"
-                          className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-white/[0.1] text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-all"
+                          className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-white/[0.1] text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops]"
                         />
                         {formErrors.bookingName && (
                           <p className="mt-1 text-xs text-rose-400">{formErrors.bookingName}</p>
@@ -526,7 +526,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                             setBookingData({ ...bookingData, businessName: e.target.value })
                           }
                           placeholder="Ex: Studio Bella Estética"
-                          className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-white/[0.1] text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-all"
+                          className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-white/[0.1] text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops]"
                         />
                       </div>
                     </div>
@@ -544,7 +544,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                             setBookingData({ ...bookingData, whatsappOrEmail: e.target.value })
                           }
                           placeholder="(11) 98888-8888"
-                          className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-white/[0.1] text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-all"
+                          className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-white/[0.1] text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops]"
                         />
                         {formErrors.bookingContact && (
                           <p className="mt-1 text-xs text-rose-400">{formErrors.bookingContact}</p>
@@ -563,7 +563,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                           onChange={(e) =>
                             setBookingData({ ...bookingData, preferredDate: e.target.value })
                           }
-                          className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-white/[0.1] text-white text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-all cursor-pointer"
+                          className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-white/[0.1] text-white text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] cursor-pointer"
                         />
                         {formErrors.bookingDate && (
                           <p className="mt-1 text-xs text-rose-400">{formErrors.bookingDate}</p>
@@ -580,7 +580,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                             onChange={(e) =>
                               setBookingData({ ...bookingData, preferredTimeSlot: e.target.value })
                             }
-                            className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-white/[0.1] text-white text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-all appearance-none cursor-pointer"
+                            className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-white/[0.1] text-white text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] appearance-none cursor-pointer"
                           >
                             {timeSlotsList.map((slot) => (
                               <option key={slot} value={slot} className="bg-slate-900 text-white">
@@ -643,7 +643,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                             onChange={(e) =>
                               setBookingData({ ...bookingData, meetingTopic: e.target.value })
                             }
-                            className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-white/[0.1] text-white text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-all appearance-none cursor-pointer"
+                            className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-white/[0.1] text-white text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] appearance-none cursor-pointer"
                           >
                             {meetingTopicsList.map((topic) => (
                               <option key={topic} value={topic} className="bg-slate-900 text-white">
