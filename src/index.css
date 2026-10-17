@@ -38,7 +38,8 @@
 /* Otimização de renderização e economia de GPU/memória com content-visibility */
 .section-auto-contain {
   content-visibility: auto;
-  contain-intrinsic-size: 1px 750px;
+  contain-intrinsic-size: 750px;
+  contain-intrinsic-size: auto 750px;
 }
 
 /* Aplicação sutil da variável --accent-color em bordas, gradientes e brilhos */

@@ -432,7 +432,7 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ onBubbleStat
                 aria-hidden="true"
               >
                 <div
-                  className="h-full w-full bg-gradient-to-r from-indigo-500/50 to-purple-500/50 origin-left will-change-transform"
+                  className="h-full w-full bg-gradient-to-r from-indigo-500/50 to-purple-500/50"
                   style={{
                     animation: `shrinkProgress ${FLOATING_WHATSAPP_TIMINGS.BUBBLE_VISIBLE_DURATION_MS}ms linear forwards`,
                     animationPlayState: isPaused ? 'paused' : 'running',
