@@ -1,5 +1,5 @@
 // Service Worker básico para ēloSites — Caching e Suporte Offline
-const CACHE_NAME = 'elosites-cache-v2';
+const CACHE_NAME = 'elosites-cache-v3';
 
 // Recursos estáticos essenciais do shell
 const STATIC_ASSETS = [
@@ -11,7 +11,6 @@ const STATIC_ASSETS = [
   '/favicon-16x16.png',
   '/apple-touch-icon.png',
   '/logo-elosites-1360.png',
-  '/og-image.png',
 ];
 
 // Instalação do Service Worker e pré-cache do shell
