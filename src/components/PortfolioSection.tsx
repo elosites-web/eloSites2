@@ -391,7 +391,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             className="inline-flex items-center justify-center text-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-[#25D366] hover:bg-[#20bd5a] text-white border border-emerald-400/40 shadow-md shadow-emerald-950/40 hover:shadow-[0_0_20px_rgba(37,211,102,0.6)] active:shadow-[0_0_28px_rgba(37,211,102,0.8)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
           >
             <WhatsAppIcon className="w-3.5 h-3.5 text-white" />
-            <span className="text-white drop-shadow-sm text-center">Quero igual</span>
+            <span className="text-white drop-shadow-sm text-center">Quero similar</span>
           </a>
         </div>
       </div>

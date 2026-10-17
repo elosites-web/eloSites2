@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { EloLogo } from './EloLogo';
 import { ScreenId, SCREENS } from '../types';
-import { X } from 'lucide-react';
 
 interface HeaderProps {
   currentScreen: ScreenId;
@@ -57,6 +56,15 @@ export const Header: React.FC<HeaderProps> = ({
     window.scrollTo({ top: savedScrollPositionRef.current, behavior: 'instant' });
   };
 
+  // Alterna o estado de abertura do menu
+  const toggleMenu = () => {
+    if (isMenuOpen) {
+      handleCloseMenuWithoutNav();
+    } else {
+      handleOpenMenu();
+    }
+  };
+
   // Travar o scroll da página enquanto o menu de navegação estiver aberto
   useEffect(() => {
     if (isMenuOpen) {
@@ -74,22 +82,43 @@ export const Header: React.FC<HeaderProps> = ({
 
   const currentMeta = SCREENS.find((s) => s.id === currentScreen) || SCREENS[0];
 
-  // Componente do Botão Personalizado de Menu (Apenas as 3 linhas estilizadas, sem moldura ou fundo)
+  // Componente do Botão de Menu com 3 barras na identidade visual da ēloSites (roxo e cinza) que se transformam suavemente no 'X' de fechar
   const renderMenuButton = () => (
     <button
       id="menu-de-navegacao-btn"
       type="button"
-      onClick={handleOpenMenu}
+      onClick={toggleMenu}
       aria-expanded={isMenuOpen}
       aria-controls="multi-screen-navigation-modal"
-      aria-label="Abrir Menu de Navegação"
-      className="relative group w-11 h-11 flex items-center justify-center bg-transparent border-0 shadow-none active:scale-95 transition-transform duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded-lg p-0"
+      aria-label={isMenuOpen ? 'Fechar menu de navegação' : 'Abrir menu de navegação'}
+      className="relative group w-11 h-11 flex items-center justify-center bg-transparent border-0 shadow-none active:scale-95 transition-transform duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400/80 rounded-lg p-0"
     >
-      {/* Ícone futurista e estilizado: 3 barras dinâmicas em gradiente neon — SEM MOLDURA, BORDA OU FUNDO */}
-      <div className="relative flex flex-col justify-center items-center gap-[4.5px] w-5 h-5 pointer-events-none transition-transform duration-200 group-hover:scale-110">
-        <span className="w-5 h-[2px] rounded-full bg-gradient-to-r from-cyan-400 to-indigo-300 group-hover:from-cyan-300 group-hover:to-indigo-200 transition-all duration-200 shadow-[0_0_8px_rgba(34,211,238,0.7)]" />
-        <span className="w-3.5 h-[2px] rounded-full bg-gradient-to-r from-white to-cyan-200 group-hover:w-5 transition-all duration-200 self-start group-hover:self-center" />
-        <span className="w-4.5 h-[2px] rounded-full bg-gradient-to-r from-teal-400 to-indigo-400 group-hover:from-cyan-300 group-hover:to-indigo-300 transition-all duration-200 shadow-[0_0_8px_rgba(34,211,238,0.7)]" />
+      {/* Ícone com 3 traços que se transformam suavemente no X */}
+      <div className="relative w-6 h-6 flex items-center justify-center pointer-events-none">
+        {/* Traço superior: tom de roxo oficial da ēloSites. Desce ao centro e gira 45° para formar o X com o traço de baixo */}
+        <span
+          className={`absolute left-1/2 -translate-x-1/2 top-[11px] h-[2px] rounded-full transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+            isMenuOpen
+              ? 'w-5 translate-y-0 rotate-45 bg-gradient-to-r from-purple-400 via-violet-400 to-fuchsia-400 shadow-[0_0_12px_rgba(168,85,247,0.85)] group-hover:from-purple-300 group-hover:to-violet-300'
+              : 'w-5 -translate-y-[6px] rotate-0 bg-gradient-to-r from-purple-500 via-violet-500 to-indigo-500 group-hover:from-purple-400 group-hover:to-violet-400 shadow-[0_0_8px_rgba(168,85,247,0.7)]'
+          }`}
+        />
+        {/* Traço do meio: tom de cinza. Desaparece suavemente quando o menu é acionado */}
+        <span
+          className={`absolute left-1/2 -translate-x-1/2 top-[11px] h-[2px] rounded-full bg-gradient-to-r from-slate-300 via-gray-300 to-slate-400 transition-all duration-200 ease-out shadow-[0_0_6px_rgba(203,213,225,0.4)] ${
+            isMenuOpen
+              ? 'w-0 opacity-0 scale-x-0'
+              : 'w-3.5 opacity-100 scale-x-100 translate-y-0 group-hover:w-5 group-hover:from-slate-200 group-hover:to-gray-200'
+          }`}
+        />
+        {/* Traço inferior: tom de roxo oficial da ēloSites. Sobe ao centro e gira -45° para formar o X com o traço superior */}
+        <span
+          className={`absolute left-1/2 -translate-x-1/2 top-[11px] h-[2px] rounded-full transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+            isMenuOpen
+              ? 'w-5 translate-y-0 -rotate-45 bg-gradient-to-r from-indigo-400 via-violet-400 to-purple-400 shadow-[0_0_12px_rgba(168,85,247,0.85)] group-hover:from-indigo-300 group-hover:to-purple-300'
+              : 'w-4.5 translate-y-[6px] rotate-0 group-hover:w-5 bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500 group-hover:from-indigo-400 group-hover:to-purple-400 shadow-[0_0_8px_rgba(168,85,247,0.7)]'
+          }`}
+        />
       </div>
     </button>
   );
@@ -97,16 +126,20 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <>
       {/* 
-        CABEÇALHOS DO SITE (Apenas quando o menu está FECHADO):
-        - Com menu aberto: o cabeçalho original e sua logo no canto superior esquerdo são COMPLETAMENTE ocultados.
-        - Na Tela Home (com menu fechado): SEM faixa de cabeçalho, SEM logotipo no canto superior esquerdo,
-          apenas o botão do menu posicionado no centro horizontal superior.
-        - Nas demais telas (com menu fechado): Faixa de cabeçalho sutil de vidro preservada com logotipo à esquerda e botão do menu à direita.
+        POSICIONAMENTO DO CABEÇALHO E BOTÃO DE MENU:
+        1. QUANDO O MENU ESTÁ ABERTO (em TODAS as telas):
+           O 'X' fica posicionado centralizado no topo em todas as telas, exatamente igual à tela da Home.
+        2. QUANDO O MENU ESTÁ FECHADO:
+           - Na Home: Botão de 3 traços centralizado no topo (sem logotipo no canto).
+           - Nas demais telas (Início, Serviços, Portfólio, Planos, Sobre, Contato):
+             Logotipo na esquerda (com 'O MELHOR SITE PELO MELHOR PREÇO' abaixo) e botão de 3 traços na direita do cabeçalho.
       */}
-      {!isMenuOpen && isHome && (
+
+      {/* Menu Aberto em qualquer tela: 'X' posicionado centralizado no topo (igual à home) */}
+      {isMenuOpen && (
         <header
-          id="header-nav"
-          className="fixed top-4 sm:top-6 left-0 right-0 z-40 pointer-events-none flex justify-center items-center"
+          id="header-nav-active"
+          className="fixed top-4 sm:top-6 left-0 right-0 z-50 pointer-events-none flex justify-center items-center"
         >
           <div className="pointer-events-auto">
             {renderMenuButton()}
@@ -114,31 +147,44 @@ export const Header: React.FC<HeaderProps> = ({
         </header>
       )}
 
-      {!isMenuOpen && !isHome && (
+      {/* Menu Fechado na Home: 3 traços centralizados no topo */}
+      {isHome && !isMenuOpen && (
         <header
           id="header-nav"
-          className="fixed top-0 left-0 right-0 z-40 bg-gradient-to-r from-[#031d24]/90 via-[#062c36]/85 to-[#071c2b]/90 backdrop-blur-md border-b border-cyan-500/25 py-3 shadow-xl shadow-teal-950/40 transition-all duration-300"
+          className="fixed top-4 sm:top-6 left-0 right-0 z-50 pointer-events-none flex justify-center items-center"
+        >
+          <div className="pointer-events-auto">
+            {renderMenuButton()}
+          </div>
+        </header>
+      )}
+
+      {/* Menu Fechado nas demais telas: logotipo à esquerda e botão de 3 traços à direita do cabeçalho */}
+      {!isHome && !isMenuOpen && (
+        <header
+          id="header-nav"
+          className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-gradient-to-r from-[#031d24]/90 via-[#062c36]/85 to-[#071c2b]/90 backdrop-blur-md border-b border-indigo-500/20 py-2 sm:py-2.5 shadow-xl shadow-[#020617]/50 pointer-events-auto"
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             <div className="flex items-center justify-between gap-3 sm:gap-6 min-h-[44px]">
-              {/* Logo do Estúdio à esquerda */}
+              {/* Logo do Estúdio à esquerda com frase oficial abaixo */}
               <div className="flex items-center gap-2 sm:gap-3 shrink-0 z-10">
                 <button
                   type="button"
                   id="brand-logo-link"
                   onClick={() => {
-                    onSelectScreen('inicio');
+                    onSelectScreen('home');
                   }}
-                  className="group focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 rounded-lg p-1 -ml-1 transition-opacity hover:opacity-90 text-left flex items-center gap-2.5 shrink-0 cursor-pointer"
-                  aria-label="ēloSites — Ir para a Tela de Início"
+                  className="group focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-lg p-1 -ml-1 transition-opacity hover:opacity-90 text-left flex items-center gap-2.5 shrink-0 cursor-pointer"
+                  aria-label="ēloSites — Ir para a Página Inicial (Home)"
                 >
-                  <EloLogo size="md" />
+                  <EloLogo size="md" showTagline />
                 </button>
 
                 {/* Indicador sutil da tela ativa atual */}
                 <div className="hidden lg:flex items-center pl-3 border-l border-white/[0.08]">
-                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-cyan-950/60 border border-cyan-500/25">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />
+                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-indigo-950/60 border border-indigo-500/25">
+                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse shadow-[0_0_8px_#818cf8]" />
                     <span className="text-xs font-semibold text-slate-200">
                       {currentMeta.shortTitle}
                     </span>
@@ -147,7 +193,7 @@ export const Header: React.FC<HeaderProps> = ({
               </div>
 
               {/* Botão do Menu à direita nas telas internas */}
-              <div className="flex items-center ml-auto shrink-0 z-10">
+              <div className="flex items-center ml-auto shrink-0 z-10 pointer-events-auto">
                 {renderMenuButton()}
               </div>
             </div>
@@ -157,15 +203,9 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* 
         MODAL DO MENU DE NAVEGAÇÃO:
-        - O cabeçalho original e logo à esquerda são totalmente removidos.
-        - Fundo 3D da Home preenche 100% da viewport de forma visualmente contínua.
-        - No lugar exato do botão do menu (topo centro), aparece o logotipo pequeno da ēloSites.
-        - Abaixo dele, em cascata centrada, exatamente os 7 itens na ordem oficial:
-          1. Home, 2. Início, 3. Portfólio, 4. Serviços, 5. Como funciona, 6. Orçamento, 7. FAQ & Contato.
-        - Tamanho de fonte reduzido em exatamente 50%: 12px no mobile, 15px no tablet e 18px no desktop
-          (redução exata de 50% frente aos 24px, 30px e 36px anteriores).
-        - Abaixo de FAQ & Contato, um botãozinho discreto de 'X' com estilo índigo-neon para fechar.
-        - Sem moldura retangular, caixa ou card delimitador.
+        - O próprio botão de menu (no topo) se transforma no 'X' de fechar no centro do topo em todas as telas.
+        - No centro da viewport, a lista em cascata dos nomes das 7 seções perfeitamente centralizada.
+        - No pé da página, o logotipo ēloSites centralizado com a frase 'O MELHOR SITE PELO MELHOR PREÇO'.
       */}
       {isMenuOpen && (
         <div
@@ -173,28 +213,17 @@ export const Header: React.FC<HeaderProps> = ({
           role="dialog"
           aria-modal="true"
           aria-label="Menu de Navegação das Seções ēloSites"
-          className="nav-menu-modal-container fixed inset-0 z-50 flex flex-col items-center justify-center p-3 sm:p-6 bg-black/40 backdrop-blur-[2px] animate-in fade-in duration-200 select-none overflow-y-auto"
+          className="nav-menu-modal-container fixed inset-0 z-40 flex flex-col items-center justify-between pt-16 sm:pt-20 pb-6 sm:pb-8 px-4 bg-black/50 backdrop-blur-[2px] animate-in fade-in duration-200 select-none overflow-y-auto"
           onClick={handleCloseMenuWithoutNav}
         >
-          {/* Container centrado contendo o botão fechar no topo, os 7 links em cascata e o logotipo embaixo */}
+          {/* Espaçador flexível superior */}
+          <div className="shrink-0 h-2" aria-hidden="true" />
+
+          {/* Lista centralizada em cascata dos nomes das seções */}
           <div
             className="nav-menu-list-wrap relative w-full flex flex-col items-center justify-center text-center my-auto px-4 pointer-events-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* 1. Botão 'X' no topo (acima da lista de links) com área de toque mínima de 44x44px */}
-            <motion.button
-              type="button"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.05, duration: 0.25 }}
-              onClick={handleCloseMenuWithoutNav}
-              aria-label="Fechar menu"
-              className="nav-menu-close-btn rounded-full flex items-center justify-center text-indigo-300 hover:text-cyan-300 bg-indigo-950/40 hover:bg-indigo-900/60 border border-indigo-500/30 hover:border-cyan-400/60 shadow-[0_0_12px_rgba(99,102,241,0.25)] hover:shadow-[0_0_16px_rgba(34,211,238,0.5)] transition-all duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 group"
-            >
-              <X className="nav-menu-close-icon text-indigo-300 group-hover:text-cyan-300 transition-colors" />
-            </motion.button>
-
-            {/* 2. Somente os 7 nomes de seções em cascata — SEM QUADRO EM VOLTA */}
             <ul className="nav-menu-list flex flex-col items-center justify-center py-0.5 w-full">
               {SCREENS.map((screen, index) => {
                 const isActive = screen.id === currentScreen;
@@ -202,7 +231,7 @@ export const Header: React.FC<HeaderProps> = ({
                 return (
                   <motion.li
                     key={screen.id}
-                    initial={{ opacity: 0, y: 10 }}
+                    initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{
                       delay: 0.03 * index,
@@ -228,27 +257,34 @@ export const Header: React.FC<HeaderProps> = ({
                 );
               })}
             </ul>
+          </div>
 
-            {/* 3. Logotipo no rodapé do menu (abaixo da lista de links) */}
-            <div className="nav-menu-logo-wrap">
-              <button
-                type="button"
-                onClick={() => {
-                  onSelectScreen('home');
-                }}
-                className="group focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 rounded-lg p-1 transition-transform hover:scale-105 cursor-pointer flex items-center justify-center"
-                aria-label="ēloSites — Home"
-              >
-                <img
-                  src="/logo-elosites-final.png"
-                  alt="ēloSites"
-                  className="nav-menu-logo-img w-auto object-contain drop-shadow-[0_0_20px_rgba(34,211,238,0.55)]"
-                />
-              </button>
-            </div>
+          {/* Logotipo centralizado no pé da página com frase oficial */}
+          <div
+            className="nav-menu-logo-wrap shrink-0 flex flex-col items-center justify-center pointer-events-auto mt-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => {
+                onSelectScreen('home');
+              }}
+              className="group focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 rounded-lg p-1 transition-transform hover:scale-105 cursor-pointer flex flex-col items-center justify-center"
+              aria-label="ēloSites — Ir para a Página Inicial (Home)"
+            >
+              <img
+                src="/logo-elosites-final.png"
+                alt="ēloSites"
+                className="nav-menu-logo-img w-auto object-contain drop-shadow-[0_0_20px_rgba(168,85,247,0.35)]"
+              />
+              <span className="mt-1 text-[8.5px] min-[380px]:text-[9.5px] sm:text-[11px] font-semibold tracking-wider uppercase text-slate-400 select-none text-center">
+                O melhor site pelo melhor preço
+              </span>
+            </button>
           </div>
         </div>
       )}
     </>
   );
 };
+

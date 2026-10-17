@@ -34,7 +34,7 @@ export const SCREENS: ScreenMeta[] = [
     title: 'Home',
     shortTitle: 'Home',
     badge: 'Home',
-    description: 'Experiência imersiva com background 3D interativo e engenharia ēloSites.',
+    description: 'Apresentação institucional e engenharia ēloSites.',
     iconName: 'Sparkles',
   },
   {

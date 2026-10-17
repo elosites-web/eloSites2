@@ -1,8 +1,5 @@
-import { useState, useEffect, useCallback, useRef, lazy, Suspense } from 'react';
+import { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import { motion, AnimatePresence, useReducedMotion, type Variants } from 'motion/react';
-import { Persistent3DBackground } from './components/Persistent3DBackground';
-import { PointerSpotlight } from './components/PointerSpotlight';
-import { AnimatedBackdrop } from './components/AnimatedBackdrop';
 import { SectionErrorBoundary } from './components/SectionErrorBoundary';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
@@ -11,6 +8,7 @@ import { FaqSection } from './components/FaqSection';
 import { ContactCtaSection } from './components/ContactCtaSection';
 import { Footer } from './components/Footer';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
+import { ScrollToTop } from './components/ScrollToTop';
 import { LegalModals } from './components/LegalModals';
 import { SitemapModal } from './components/SitemapModal';
 import { ReadingProgressBar } from './components/ReadingProgressBar';
@@ -42,8 +40,6 @@ const ProjectBriefBookingSection = lazy(() =>
     default: mod.ProjectBriefBookingSection,
   }))
 );
-
-// Cena 3D persistente carregada de forma assíncrona
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<ScreenId>('home');
@@ -512,7 +508,7 @@ export default function App() {
   );
 
   return (
-    <div className={`min-h-screen bg-[#090D16] text-slate-100 flex flex-col selection:bg-indigo-500 selection:text-white relative ${isHighContrast ? 'high-contrast' : ''}`}>
+    <div className={`min-h-screen text-slate-100 flex flex-col selection:bg-indigo-500 selection:text-white relative ${isHighContrast ? 'high-contrast' : ''}`}>
       {/* Link de pular para o conteúdo (primeiro elemento focável) */}
       <a
         href="#main-content"
@@ -529,15 +525,6 @@ export default function App() {
       {/* Barra de Progresso de Leitura no Topo */}
       {!isMenuOpen && <ReadingProgressBar key={currentScreen} currentScreen={currentScreen} />}
 
-      {/* Fundo animado leve em CSS puro (substitui o vídeo global) */}
-      <AnimatedBackdrop />
-
-      {/* Cena 3D Persistente procedural no fundo (circuitos cibernéticos de construção de sites e pontos azuis) */}
-      <Persistent3DBackground isMenuOpen={isMenuOpen} currentScreen={currentScreen} />
-
-      {/* Efeitos exclusivos do tier 'full' (holofote, pausas) */}
-      <PointerSpotlight />
-
       {/* Header Fixo com Botão Único "MENU DE NAVEGAÇÃO" */}
       <Header
         currentScreen={currentScreen}
@@ -548,7 +535,7 @@ export default function App() {
         setIsMenuOpen={setIsMenuOpen}
       />
 
-      {/* Conteúdo Principal — Exibição Estratégica da Tela Ativa; quando o menu abre, o fundo 3D da Home se torna o cenário limpo */}
+      {/* Conteúdo Principal — Exibição Estratégica da Tela Ativa */}
       <main
         className={`flex-1 relative z-10 overflow-x-hidden transition-opacity duration-300 ${
           isMenuOpen ? 'opacity-0 pointer-events-none invisible' : 'opacity-100'
@@ -603,6 +590,13 @@ export default function App() {
           onBubbleStateChange={setIsWhatsAppBubbleOpen}
         />
       )}
+
+      {/* Botão Flutuante 'Scroll to Top' — Aparece após rolar mais de 400px com animação suave */}
+      <ScrollToTop
+        currentScreen={currentScreen}
+        isMenuOpen={isMenuOpen}
+        isWhatsAppBubbleOpen={isWhatsAppBubbleOpen}
+      />
 
       {/* Modais Legais (Política de Privacidade e Termos de Uso) */}
       <LegalModals

@@ -797,6 +797,8 @@ a[id*="whatsapp"]:hover > svg {
 .nav-menu-list-wrap {
   width: 100%;
   max-width: 92vw;
+  margin-top: auto;
+  margin-bottom: auto;
   padding-top: clamp(0.2rem, 1dvh, 0.65rem);
   padding-bottom: clamp(0.2rem, 1dvh, 0.65rem);
   box-sizing: border-box;
@@ -807,22 +809,7 @@ a[id*="whatsapp"]:hover > svg {
   --menu-outer-gap: calc(var(--menu-link-gap) * 2.2); /* no mínimo 2x o espaçamento entre links */
 }
 
-/* 1. Botão X acima da lista (diminuído em 3,5px) */
-.nav-menu-close-btn {
-  margin-top: 0;
-  margin-bottom: var(--menu-outer-gap);
-  width: 40.5px;
-  height: 40.5px;
-  min-width: 40.5px;
-  min-height: 40.5px;
-}
-
-.nav-menu-close-icon {
-  width: 1.25rem;
-  height: 1.25rem;
-}
-
-/* 2. Lista de links */
+/* Lista de links centralizada em cascata */
 .nav-menu-list {
   display: flex;
   flex-direction: column;
@@ -863,10 +850,16 @@ a[id*="whatsapp"]:hover > svg {
   white-space: nowrap;
 }
 
-/* 3. Logotipo abaixo da lista (aumentado em 2px) */
+/* Logotipo centralizado no pé da página */
 .nav-menu-logo-wrap {
-  margin-top: var(--menu-outer-gap);
+  margin-top: auto;
   margin-bottom: 0;
+  padding-bottom: clamp(0.5rem, 2dvh, 1.5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 
 .nav-menu-logo-img {
@@ -897,26 +890,14 @@ a[id*="whatsapp"]:hover > svg {
 @media (min-width: 768px) and (max-width: 1279.98px) {
   .nav-menu-list-wrap {
     max-width: min(90vw, 42rem);
+    margin-top: auto;
+    margin-bottom: auto;
     padding-top: clamp(0.35rem, 1.2vh, 1rem);
     padding-bottom: clamp(0.35rem, 1.2vh, 1rem);
     --menu-font-size: clamp(1.2rem, min(3vh, 2.6vw), 1.85rem);
     --menu-line-height: clamp(1.2, 2.4vh, 1.35);
     --menu-link-gap: clamp(0.5rem, 1.6vh, 1.15rem);
     --menu-outer-gap: calc(var(--menu-link-gap) * 2.2);
-  }
-
-  .nav-menu-close-btn {
-    margin-top: 0;
-    margin-bottom: var(--menu-outer-gap);
-    width: 44.5px;
-    height: 44.5px;
-    min-width: 44.5px;
-    min-height: 44.5px;
-  }
-
-  .nav-menu-close-icon {
-    width: 1.5rem;
-    height: 1.5rem;
   }
 
   .nav-menu-list {
@@ -933,8 +914,9 @@ a[id*="whatsapp"]:hover > svg {
   }
 
   .nav-menu-logo-wrap {
-    margin-top: var(--menu-outer-gap);
+    margin-top: auto;
     margin-bottom: 0;
+    padding-bottom: clamp(0.75rem, 2.5vh, 2rem);
   }
 
   /* Logotipo aumentado em 2px */
@@ -947,23 +929,11 @@ a[id*="whatsapp"]:hover > svg {
 @media (min-width: 1280px) {
   .nav-menu-list-wrap {
     max-width: 32rem; /* max-w-lg */
+    margin-top: auto;
+    margin-bottom: auto;
     --menu-font-size: 18px;
     --menu-link-gap: 0.625rem; /* 10px */
     --menu-outer-gap: calc(var(--menu-link-gap) * 2.2); /* 22px (>= 2x do gap entre links) */
-  }
-
-  .nav-menu-close-btn {
-    margin-top: 0;
-    margin-bottom: var(--menu-outer-gap);
-    width: 28.5px;
-    height: 28.5px;
-    min-width: 28.5px;
-    min-height: 28.5px;
-  }
-
-  .nav-menu-close-icon {
-    width: 1rem; /* 16px */
-    height: 1rem; /* 16px */
   }
 
   .nav-menu-list {
@@ -980,8 +950,9 @@ a[id*="whatsapp"]:hover > svg {
   }
 
   .nav-menu-logo-wrap {
-    margin-top: var(--menu-outer-gap);
+    margin-top: auto;
     margin-bottom: 0;
+    padding-bottom: 1.5rem;
   }
 
   /* Logotipo aumentado em 2px */
@@ -1013,21 +984,6 @@ a[id*="whatsapp"]:hover > svg {
     --menu-line-height: clamp(1.2, calc(1.1 + 0.3vh), 1.3);
     --menu-link-gap: clamp(0.25rem, 1.2vh, 0.5rem);
     --menu-outer-gap: calc(var(--menu-link-gap) * 2.2);
-  }
-
-  /* 1. Botão X acima da lista (diminuído em 3,5px) */
-  .nav-menu-close-btn {
-    margin-top: 0 !important;
-    margin-bottom: var(--menu-outer-gap) !important;
-    width: 40.5px !important;
-    height: 40.5px !important;
-    min-width: 40.5px !important;
-    min-height: 40.5px !important;
-  }
-
-  .nav-menu-close-icon {
-    width: 1.15rem !important;
-    height: 1.15rem !important;
   }
 
   /* 2. Lista de links em DUAS COLUNAS para legibilidade, área de toque e altura perfeita sem rolagem */
@@ -1064,10 +1020,11 @@ a[id*="whatsapp"]:hover > svg {
     letter-spacing: -0.015em;
   }
 
-  /* 3. Logotipo abaixo da lista (aumentado em 2px) */
+  /* Logotipo centralizado no pé da página */
   .nav-menu-logo-wrap {
-    margin-top: var(--menu-outer-gap) !important;
+    margin-top: auto !important;
     margin-bottom: 0 !important;
+    padding-bottom: 0.35rem !important;
   }
 
   .nav-menu-logo-img {
@@ -1160,32 +1117,7 @@ a[id*="whatsapp"]:hover > svg {
   }
 }
 
-/* Holofote que segue o ponteiro (classe aplicada pelo PointerSpotlight, tier full).
-   As variáveis --mx/--my são atualizadas via rAF; aqui só ligamos a opacidade. */
-.spotlight {
-  position: relative;
-}
 
-.spotlight::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  opacity: 0;
-  background: radial-gradient(
-    240px circle at var(--mx, 50%) var(--my, 50%),
-    rgba(129, 140, 248, 0.16),
-    rgba(129, 140, 248, 0) 65%
-  );
-  transition: opacity var(--dur-hover) var(--ease);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  html.motion-full .spotlight:hover::before {
-    opacity: 1;
-  }
-}
 
 /* Borda em gradiente girando lentamente — só um cartão em destaque, tier full.
    Usa máscara para manter apenas o anel de 1px (não cobre o conteúdo). */
@@ -1370,155 +1302,18 @@ a[id*="whatsapp"]:hover > svg {
   }
 }
 
-/* ===== Fundo animado global (CSS puro, alta visibilidade) ===== */
-.animated-backdrop {
-  background-color: #060912;
-}
-
-.ab-base {
-  background:
-    radial-gradient(120% 90% at 50% 0%, rgba(15, 23, 42, 0.45) 0%, rgba(7, 10, 18, 0.65) 55%, rgba(5, 7, 13, 0.8) 100%);
-}
-
-/* Grade nítida e visível que deriva lentamente */
-.ab-grid {
-  inset: -60%;
+/* ===== Fundo estático azul marinho (#080D1A) com grade tecnológica sutil ===== */
+html,
+body,
+#root {
+  min-height: 100%;
+  background-color: #080D1A;
   background-image:
-    linear-gradient(to right, rgba(99, 102, 241, 0.16) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(99, 102, 241, 0.16) 1px, transparent 1px);
-  background-size: 52px 52px;
-  opacity: 0.85;
-  animation: ab-grid-drift 50s linear infinite;
-  will-change: transform;
-}
-
-@keyframes ab-grid-drift {
-  from {
-    transform: translate3d(0, 0, 0);
-  }
-  to {
-    transform: translate3d(52px, 52px, 0);
-  }
-}
-
-/* Brilhos e nebulosas coloridas ampliadas para maior presença visual */
-.ab-blob {
-  position: absolute;
-  width: 65vmax;
-  height: 65vmax;
-  border-radius: 50%;
-  pointer-events: none;
-  animation: ab-float 36s ease-in-out infinite;
-  will-change: transform;
-}
-
-.ab-blob-cyan {
-  top: -20vmax;
-  left: -14vmax;
-  background: radial-gradient(circle at center, rgba(34, 211, 238, 0.28) 0%, rgba(34, 211, 238, 0) 68%);
-  animation-duration: 34s;
-}
-
-.ab-blob-indigo {
-  bottom: -24vmax;
-  right: -16vmax;
-  background: radial-gradient(circle at center, rgba(99, 102, 241, 0.32) 0%, rgba(99, 102, 241, 0) 68%);
-  animation-duration: 46s;
-  animation-delay: -8s;
-}
-
-.ab-blob-violet {
-  top: 14%;
-  right: 5%;
-  background: radial-gradient(circle at center, rgba(147, 51, 234, 0.25) 0%, rgba(147, 51, 234, 0) 70%);
-  animation-duration: 40s;
-  animation-delay: -16s;
-}
-
-@keyframes ab-float {
-  0% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  50% {
-    transform: translate3d(4vmax, -3vmax, 0) scale(1.08);
-  }
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-}
-
-/* Varredura horizontal com destaque */
-.ab-scan {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    transparent 42%,
-    rgba(129, 140, 248, 0.12) 50%,
-    transparent 58%,
-    transparent 100%
-  );
-  opacity: 0;
-  animation: ab-scan-sweep 24s linear infinite;
-  will-change: transform;
-}
-
-@keyframes ab-scan-sweep {
-  0% {
-    transform: translate3d(-30%, 0, 0);
-    opacity: 0;
-  }
-  12% {
-    opacity: 1;
-  }
-  88% {
-    opacity: 1;
-  }
-  100% {
-    transform: translate3d(30%, 0, 0);
-    opacity: 0;
-  }
-}
-
-/* Vinheta/overlay translúcida: preserva visibilidade dos elementos 3D */
-.ab-vignette {
-  background:
-    radial-gradient(150% 110% at 50% 0%, rgba(7, 10, 18, 0) 0%, rgba(7, 10, 18, 0.15) 68%, rgba(5, 7, 13, 0.45) 100%);
-}
-
-/* Pausa quando a aba está oculta. */
-.animated-backdrop.is-paused .ab-grid,
-.animated-backdrop.is-paused .ab-blob,
-.animated-backdrop.is-paused .ab-scan {
-  animation-play-state: paused;
-}
-
-/* Estático quando shouldReduceMedia() é true. */
-.animated-backdrop.is-static .ab-grid,
-.animated-backdrop.is-static .ab-blob,
-.animated-backdrop.is-static .ab-scan {
-  animation: none;
-  opacity: 0.5;
-  will-change: auto;
-}
-
-.animated-backdrop.is-static .ab-grid {
-  opacity: 0.35;
-}
-
-.animated-backdrop.is-static .ab-scan {
-  opacity: 0;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ab-grid,
-  .ab-blob,
-  .ab-scan {
-    animation: none !important;
-  }
-
-  .ab-scan {
-    opacity: 0 !important;
-  }
+    linear-gradient(to right, rgba(148, 163, 184, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 163, 184, 0.035) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: center top;
+  color: #f1f5f9;
 }
 
 

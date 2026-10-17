@@ -353,7 +353,16 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ onBubbleStat
             {/* 1. Header Row: Avatar com Logotipo Oficial, Nome ēloSites, Status com Dot e Botão Fechar */}
             <div className="flex items-center justify-between gap-1.5">
               <div className="flex items-center gap-2 min-w-0">
-                <div className="w-6 h-6 rounded-full bg-slate-900 border border-white/10 p-0.5 flex items-center justify-center shrink-0 overflow-hidden">
+                <a
+                  href="#home"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.location.hash = 'home';
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className="w-6 h-6 rounded-full bg-slate-900 border border-white/10 p-0.5 flex items-center justify-center shrink-0 overflow-hidden hover:scale-105 transition-transform cursor-pointer"
+                  aria-label="ēloSites — Ir para a Página Inicial (Home)"
+                >
                   <img
                     src="/favicon-32x32.png"
                     alt="ēloSites"
@@ -362,7 +371,7 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ onBubbleStat
                     height={24}
                     loading="lazy"
                   />
-                </div>
+                </a>
                 <div className="min-w-0 flex-1">
                   <div className="text-[12.5px] font-semibold text-white leading-none">
                     {SITE_CONFIG.name}

@@ -52,9 +52,17 @@ export const Footer: React.FC<FooterProps> = ({
 
   const footerWhatsappUrl = whatsappUrl(SITE_CONFIG.footerWhatsappMessage);
 
+  const handleNavigateHome = () => {
+    if (onSelectScreen) {
+      onSelectScreen('home');
+    } else {
+      window.location.hash = 'home';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    if (onSelectScreen) onSelectScreen('inicio');
   };
 
   return (
@@ -63,7 +71,15 @@ export const Footer: React.FC<FooterProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10">
           {/* Marca e Posicionamento */}
           <div className="md:col-span-5 space-y-4">
-            <EloLogo size="md" />
+            <button
+              type="button"
+              id="footer-brand-logo-link"
+              onClick={handleNavigateHome}
+              className="group focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-lg p-1 -ml-1 transition-opacity hover:opacity-90 text-left flex items-center shrink-0 cursor-pointer"
+              aria-label="ēloSites — Ir para a Página Inicial (Home)"
+            >
+              <EloLogo size="md" showTagline />
+            </button>
             <p className="text-slate-300 text-sm sm:text-base leading-relaxed max-w-sm">
               Criação de sites profissionais com SEO técnico e foco em conversão para pequenos negócios e profissionais liberais. Arquitetura moderna, código limpo e atendimento direto.
             </p>
@@ -208,11 +224,18 @@ export const Footer: React.FC<FooterProps> = ({
           <div className="flex flex-col md:flex-row md:flex-nowrap items-center justify-center gap-1.5 md:gap-2.5 text-[9px] min-[380px]:text-[10px] sm:text-[10.5px] font-semibold tracking-wide sm:tracking-wider uppercase text-slate-300 md:whitespace-nowrap">
             <div className="inline-flex items-center justify-center gap-1.5 sm:gap-2 shrink-0">
               <span>CRIADO E DESENVOLVIDO POR</span>
-              <img
-                src="/logo-elosites-final.png"
-                alt="ēloSites"
-                className="h-[14px] sm:h-[16px] w-auto shrink-0 inline-block align-middle object-contain"
-              />
+              <button
+                type="button"
+                onClick={handleNavigateHome}
+                className="group focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 rounded transition-transform hover:scale-105 active:scale-95 inline-flex items-center align-middle cursor-pointer"
+                aria-label="ēloSites — Ir para a Página Inicial (Home)"
+              >
+                <img
+                  src="/logo-elosites-final.png"
+                  alt="ēloSites"
+                  className="h-[14px] sm:h-[16px] w-auto shrink-0 inline-block align-middle object-contain"
+                />
+              </button>
             </div>
             <span className="hidden md:inline text-slate-500/80 mx-0.5 select-none" aria-hidden="true">•</span>
             <span className="text-slate-400 font-medium shrink-0">O MELHOR SITE PELO MELHOR PREÇO</span>
