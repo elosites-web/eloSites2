@@ -1338,6 +1338,11 @@ body,
   min-height: 100dvh;
 }
 
+.min-h-screen-dvh {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

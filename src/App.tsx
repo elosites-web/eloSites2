@@ -580,7 +580,7 @@ export default function App() {
   );
 
   return (
-    <div className={`min-h-screen text-slate-100 flex flex-col selection:bg-indigo-500 selection:text-white relative ${isHighContrast ? 'high-contrast' : ''}`}>
+    <div className={`min-h-screen-dvh text-slate-100 flex flex-col selection:bg-indigo-500 selection:text-white relative ${isHighContrast ? 'high-contrast' : ''}`}>
       {/* Link de pular para o conteúdo (primeiro elemento focável) */}
       <a
         href="#main-content"

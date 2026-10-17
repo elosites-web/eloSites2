@@ -51,7 +51,7 @@ export const DifferentialsSkeleton: React.FC = () => {
  */
 export const PortfolioSkeleton: React.FC = () => {
   return (
-    <section className="py-16 sm:py-24 bg-[#090D16] relative min-h-screen animate-pulse">
+    <section className="py-16 sm:py-24 bg-[#090D16] relative min-h-screen-dvh animate-pulse">
       <div className="page-shell page-x relative w-full">
         {/* Cabeçalho */}
         <div className="max-w-3xl mx-auto text-center space-y-4 mb-10 sm:mb-12">
