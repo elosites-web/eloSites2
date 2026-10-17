@@ -14,6 +14,7 @@ import { WhatsAppIcon } from './WhatsAppIcon';
 import { SplitLines } from './SplitLines';
 import { SITE_CONFIG, whatsappUrl } from '../types';
 import { Interactive3DCard } from './Interactive3DCard';
+import { getDynamicCardVariants } from '../motionVariants';
 
 interface DifferentialsSectionProps {
   onNavigateToPortfolio?: () => void;
@@ -69,34 +70,8 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
     },
   ];
 
-  // Variantes para efeito staggered fade-in com Framer Motion
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: prefersReduced ? 0 : 0.09,
-        delayChildren: prefersReduced ? 0 : 0.05,
-      },
-    },
-  };
-
-  const cardVariants = {
-    hidden: {
-      opacity: 0,
-      y: prefersReduced ? 0 : 24,
-      scale: prefersReduced ? 1 : 0.97,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        duration: prefersReduced ? 0 : 0.45,
-        ease: [0.22, 1, 0.36, 1] as const,
-      },
-    },
-  };
+  // Variantes dinâmicas dos cartões de serviço (service-card) com mola, blur progressivo e escala suave
+  const cardVariants = getDynamicCardVariants(prefersReduced);
 
   return (
     <section
@@ -126,20 +101,18 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
           </p>
         </div>
 
-        {/* Grade de 6 Cards de Diferenciais — Staggered fade-in ao rolar */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.12 }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 min-w-0"
-        >
+        {/* Grade de 6 Cards de Diferenciais com transição dinâmica idêntica aos cartões de serviço */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 min-w-0">
           {differentials.map((item, index) => {
             const Icon = item.icon;
             return (
               <motion.div
                 key={item.title}
+                custom={index}
                 variants={cardVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.12, margin: '0px 0px -40px 0px' }}
                 className="h-full"
               >
                 <Interactive3DCard maxTilt={5} className="h-full">
@@ -183,7 +156,7 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
               </motion.div>
             );
           })}
-        </motion.div>
+        </div>
 
         {/* Aviso de responsabilidade e alinhamento estratégico posicionado abaixo do último card */}
         <div className="mt-10 sm:mt-12 max-w-2xl mx-auto text-center px-4">

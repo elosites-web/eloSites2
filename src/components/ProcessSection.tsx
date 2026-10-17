@@ -1,11 +1,18 @@
 import React from 'react';
+import { motion, useReducedMotion } from 'motion/react';
 import { MessageSquare, Layers, Code2, Globe2, UserCheck, ShieldCheck } from 'lucide-react';
 import { WhatsAppIcon } from './WhatsAppIcon';
 import { SplitLines } from './SplitLines';
 import { SITE_CONFIG, whatsappUrl } from '../types';
+import { shouldReduceMedia } from '../mediaPrefs';
 import { Interactive3DCard } from './Interactive3DCard';
+import { getDynamicCardVariants } from '../motionVariants';
 
 export const ProcessSection: React.FC = () => {
+  const systemPrefersReduced = useReducedMotion();
+  const prefersReduced = Boolean(systemPrefersReduced || shouldReduceMedia());
+  const cardVariants = getDynamicCardVariants(prefersReduced);
+
   const steps = [
     {
       number: '01',
@@ -60,52 +67,71 @@ export const ProcessSection: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 relative min-w-0">
-          {steps.map((step) => {
+          {steps.map((step, index) => {
             const Icon = step.icon;
             return (
-              <Interactive3DCard key={step.number} maxTilt={5} className="h-full">
-                <article
-                  className="relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 h-full w-full p-5 sm:p-6 md:p-8 flex flex-col justify-between group shadow-2xl shadow-black/60 bracket-panel transition-colors"
-                >
-                  <div>
-                    <div className="flex items-center justify-between gap-2.5 mb-6">
-                      <span className="font-mono text-xs font-bold text-indigo-300 bg-indigo-950/80 border border-indigo-400/30 px-3 py-1 rounded-lg">
-                        {step.number}
-                      </span>
-                      <div className="w-11 h-11 rounded-xl bg-indigo-950/70 border border-indigo-500/30 flex items-center justify-center text-indigo-300 transition-all duration-300">
-                        <Icon className="w-5 h-5" aria-hidden="true" />
+              <motion.div
+                key={step.number}
+                custom={index}
+                variants={cardVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.12, margin: '0px 0px -40px 0px' }}
+                className="h-full"
+              >
+                <Interactive3DCard maxTilt={5} className="h-full">
+                  <article
+                    className="relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 h-full w-full p-5 sm:p-6 md:p-8 flex flex-col justify-between group shadow-2xl shadow-black/60 bracket-panel transition-colors"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between gap-2.5 mb-6">
+                        <span className="font-mono text-xs font-bold text-indigo-300 bg-indigo-950/80 border border-indigo-400/30 px-3 py-1 rounded-lg">
+                          {step.number}
+                        </span>
+                        <div className="w-11 h-11 rounded-xl bg-indigo-950/70 border border-indigo-500/30 flex items-center justify-center text-indigo-300 transition-all duration-300">
+                          <Icon className="w-5 h-5" aria-hidden="true" />
+                        </div>
                       </div>
+                      <h3 className="font-display text-xl font-bold tracking-tight text-white mb-3 group-hover:text-indigo-100 transition-colors">
+                        {step.title}
+                      </h3>
+                      <p className="text-sm text-slate-300 leading-relaxed font-normal">
+                        {step.description}
+                      </p>
                     </div>
-                    <h3 className="font-display text-xl font-bold tracking-tight text-white mb-3 group-hover:text-indigo-100 transition-colors">
-                      {step.title}
-                    </h3>
-                    <p className="text-sm text-slate-300 leading-relaxed font-normal">
-                      {step.description}
-                    </p>
-                  </div>
-                </article>
-              </Interactive3DCard>
+                  </article>
+                </Interactive3DCard>
+              </motion.div>
             );
           })}
         </div>
 
-        <Interactive3DCard maxTilt={3} className="mt-14 w-full">
-          <div className="relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/40 p-6 sm:p-8 flex flex-col md:flex-row items-center gap-6 shadow-2xl shadow-black/60 bracket-panel transition-colors">
-            <div className="w-12 h-12 rounded-xl bg-indigo-950/80 border border-indigo-400/20 flex items-center justify-center text-indigo-300 shrink-0">
-              <UserCheck className="w-6 h-6" aria-hidden="true" />
+        <motion.div
+          custom={4}
+          variants={cardVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.15, margin: '0px 0px -40px 0px' }}
+          className="mt-14 w-full"
+        >
+          <Interactive3DCard maxTilt={3} className="w-full">
+            <div className="relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/40 p-6 sm:p-8 flex flex-col md:flex-row items-center gap-6 shadow-2xl shadow-black/60 bracket-panel transition-colors">
+              <div className="w-12 h-12 rounded-xl bg-indigo-950/80 border border-indigo-400/20 flex items-center justify-center text-indigo-300 shrink-0">
+                <UserCheck className="w-6 h-6" aria-hidden="true" />
+              </div>
+              <div className="space-y-1 text-center md:text-left flex-1">
+                <h3 className="text-base sm:text-lg font-bold text-white flex items-center justify-center md:justify-start gap-2 flex-wrap">
+                  <span>Revisão humana em cada detalhe</span>
+                  <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" aria-hidden="true" />
+                </h3>
+                <p className="text-sm text-slate-300 leading-relaxed">
+                  A IA acelera o desenvolvimento. Quem decide o tom, a estrutura, o texto e
+                  o acabamento é uma pessoa — do primeiro rascunho até o site no ar.
+                </p>
+              </div>
             </div>
-            <div className="space-y-1 text-center md:text-left flex-1">
-              <h3 className="text-base sm:text-lg font-bold text-white flex items-center justify-center md:justify-start gap-2 flex-wrap">
-                <span>Revisão humana em cada detalhe</span>
-                <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" aria-hidden="true" />
-              </h3>
-              <p className="text-sm text-slate-300 leading-relaxed">
-                A IA acelera o desenvolvimento. Quem decide o tom, a estrutura, o texto e
-                o acabamento é uma pessoa — do primeiro rascunho até o site no ar.
-              </p>
-            </div>
-          </div>
-        </Interactive3DCard>
+          </Interactive3DCard>
+        </motion.div>
 
         {/* CTA Contextual do Processo */}
         <div className="mt-12 flex items-center justify-center">

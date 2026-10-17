@@ -78,7 +78,7 @@ export const Footer: React.FC<FooterProps> = ({
               className="group focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-lg p-1 -ml-1 transition-opacity hover:opacity-90 text-left flex items-center shrink-0 cursor-pointer"
               aria-label="ēloSites — Ir para a Página Inicial (Home)"
             >
-              <EloLogo size="md" showTagline />
+              <EloLogo size="md" isFooter />
             </button>
             <p className="text-slate-300 text-sm sm:text-base leading-relaxed max-w-sm">
               Criação de sites profissionais com SEO técnico e foco em conversão para pequenos negócios e profissionais liberais. Arquitetura moderna, código limpo e atendimento direto.
@@ -121,7 +121,7 @@ export const Footer: React.FC<FooterProps> = ({
                   if (href.includes('servico')) return 'servicos';
                   if (href.includes('processo') || href.includes('como-funciona') || href.includes('diferencia')) return 'processo';
                   if (href.includes('briefing') || href.includes('orcamento')) return 'orcamento';
-                  if (href.includes('faq') || href.includes('contato')) return 'faq';
+                  if (href.includes('faq') || href.includes('contato') || href.includes('parceria')) return 'faq';
                   if (href.includes('inicio')) return 'inicio';
                   return 'home';
                 };
@@ -136,7 +136,20 @@ export const Footer: React.FC<FooterProps> = ({
                       onClick={() => {
                         if (onSelectScreen) {
                           onSelectScreen(screenId);
-                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                          if (item.href === '#parceria-trafego') {
+                            window.location.hash = 'parceria-trafego';
+                            setTimeout(() => {
+                              const el = document.getElementById('parceria-trafego');
+                              if (el) {
+                                const headerOffset = 70;
+                                const elementPosition = el.getBoundingClientRect().top;
+                                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                                window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                              }
+                            }, 180);
+                          } else {
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                          }
                         }
                       }}
                       className={`text-left transition-all duration-200 relative flex items-center gap-2 py-0.5 cursor-pointer group hover:-translate-y-0.5 hover:translate-x-1 ${
@@ -197,15 +210,6 @@ export const Footer: React.FC<FooterProps> = ({
             >
               Termos de Uso
             </button>
-            {onOpenSitemap && (
-              <button
-                type="button"
-                onClick={onOpenSitemap}
-                className="text-slate-400 hover:text-indigo-300 transition-colors underline-offset-4 hover:underline cursor-pointer"
-              >
-                Mapa do Site (XML)
-              </button>
-            )}
           </div>
 
           <button

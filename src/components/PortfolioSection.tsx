@@ -18,6 +18,7 @@ import { ProjectModal } from './ProjectModal';
 import { SplitLines } from './SplitLines';
 import { Reveal } from './Reveal';
 import { Interactive3DCard } from './Interactive3DCard';
+import { getDynamicCardVariants } from '../motionVariants';
 
 export interface PortfolioProjectData {
   id: string;
@@ -495,22 +496,11 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
               return (
                 <motion.div
                   key={project.id}
-                  initial={
-                    prefersReduced
-                      ? { opacity: 1, scale: 1, y: 0 }
-                      : { opacity: 0, scale: 0.95, y: 22 }
-                  }
-                  whileInView={
-                    prefersReduced
-                      ? { opacity: 1, scale: 1, y: 0 }
-                      : { opacity: 1, scale: 1, y: 0 }
-                  }
-                  viewport={{ once: true, amount: 0.15 }}
-                  transition={{
-                    duration: prefersReduced ? 0 : 0.45,
-                    delay: prefersReduced ? 0 : index * 0.1,
-                    ease: [0.22, 1, 0.36, 1],
-                  }}
+                  custom={index}
+                  variants={getDynamicCardVariants(prefersReduced)}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.12, margin: '0px 0px -40px 0px' }}
                   className={`h-full lg:row-span-8 lg:grid lg:grid-rows-subgrid ${
                     isOddLastOnTwoCols
                       ? 'md:col-span-2 md:w-[calc(50%-0.5rem)] md:mx-auto lg:col-span-1 lg:w-full lg:mx-0'
@@ -531,42 +521,50 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
           </div>
         </div>
 
-        {/* Banner Inferior com Conversão Direta e 3D Tilt — Margem superior reduzida para equilibrar transição após a grade */}
-        <Interactive3DCard maxTilt={3} className="mt-4 sm:mt-5 w-full">
-          <div className="glass-card-interactive surface-card portfolio-card scroll-perf-card p-6 sm:p-7 md:p-8 rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 shadow-2xl shadow-black/60 bracket-panel transition-colors">
-            <div className="space-y-2 text-left w-full lg:max-w-xl">
-              <h3 className="text-xl sm:text-2xl font-bold text-white font-display">
-                Gostou do nível dos projetos da ēloSites?
-              </h3>
-              <p className="text-sm text-slate-300 leading-relaxed">
-                Cada projeto recebe um orçamento específico baseado no escopo. 50% de entrada no início + 50% na aprovação final (PIX), 20% de desconto à vista, até 5x sem juros ou de 6x a 12x no cartão.
-              </p>
-            </div>
+        {/* Banner Inferior com Conversão Direta e 3D Tilt com variantes dinâmicas */}
+        <motion.div
+          variants={getDynamicCardVariants(prefersReduced)}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.15, margin: '0px 0px -40px 0px' }}
+          className="mt-4 sm:mt-5 w-full"
+        >
+          <Interactive3DCard maxTilt={3} className="w-full">
+            <div className="glass-card-interactive surface-card portfolio-card scroll-perf-card p-6 sm:p-7 md:p-8 rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 shadow-2xl shadow-black/60 bracket-panel transition-colors">
+              <div className="space-y-2 text-left w-full lg:max-w-xl">
+                <h3 className="text-xl sm:text-2xl font-bold text-white font-display">
+                  Gostou do nível dos projetos da ēloSites?
+                </h3>
+                <p className="text-sm text-slate-300 leading-relaxed">
+                  Cada projeto recebe um orçamento específico baseado no escopo. 50% de entrada no início + 50% na aprovação final (PIX), 20% de desconto à vista, até 5x sem juros ou de 6x a 12x no cartão.
+                </p>
+              </div>
 
-            <div className="card-action-cluster flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto shrink-0 pt-2 lg:pt-0">
-              {onNavigateToServices && (
-                <button
-                  type="button"
-                  onClick={onNavigateToServices}
-                  className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-2 px-5 py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 border border-indigo-400/40 shadow-lg shadow-indigo-600/30 hover:shadow-[0_0_24px_rgba(99,102,241,0.55)] active:shadow-[0_0_32px_rgba(168,85,247,0.7)] hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+              <div className="card-action-cluster flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto shrink-0 pt-2 lg:pt-0">
+                {onNavigateToServices && (
+                  <button
+                    type="button"
+                    onClick={onNavigateToServices}
+                    className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-2 px-5 py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 border border-indigo-400/40 shadow-lg shadow-indigo-600/30 hover:shadow-[0_0_24px_rgba(99,102,241,0.55)] active:shadow-[0_0_32px_rgba(168,85,247,0.7)] hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+                  >
+                    <span className="text-center">Ver Formatos & Condições</span>
+                    <ArrowRight className="w-4 h-4 text-white" />
+                  </button>
+                )}
+                <a
+                  id="portfolio-cta-whatsapp"
+                  href={whatsappInquiryUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-2.5 px-6 py-3 rounded-xl text-sm font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-400/30 shadow-lg shadow-emerald-950/40 hover:shadow-[0_0_22px_rgba(37,211,102,0.65)] hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
                 >
-                  <span className="text-center">Ver Formatos & Condições</span>
-                  <ArrowRight className="w-4 h-4 text-white" />
-                </button>
-              )}
-              <a
-                id="portfolio-cta-whatsapp"
-                href={whatsappInquiryUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-2.5 px-6 py-3 rounded-xl text-sm font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-400/30 shadow-lg shadow-emerald-950/40 hover:shadow-[0_0_22px_rgba(37,211,102,0.65)] hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
-              >
-                <WhatsAppIcon className="w-4 h-4 text-white" />
-                <span className="text-center">Solicitar Orçamento</span>
-              </a>
+                  <WhatsAppIcon className="w-4 h-4 text-white" />
+                  <span className="text-center">Solicitar Orçamento</span>
+                </a>
+              </div>
             </div>
-          </div>
-        </Interactive3DCard>
+          </Interactive3DCard>
+        </motion.div>
     </div>
 
       {/* Modal de Detalhes do Projeto (Challenge, Solution, Results) */}

@@ -1,14 +1,20 @@
 import React from 'react';
+import { motion, useReducedMotion } from 'motion/react';
 import { WhatsAppIcon } from './WhatsAppIcon';
 import { SITE_CONFIG, whatsappUrl } from '../types';
 import { Mail } from 'lucide-react';
 import { SplitLines } from './SplitLines';
+import { shouldReduceMedia } from '../mediaPrefs';
+import { getDynamicCardVariants } from '../motionVariants';
 
 interface ContactCtaSectionProps {
   onNavigateToOrcamento?: () => void;
 }
 
 export const ContactCtaSection: React.FC<ContactCtaSectionProps> = ({ onNavigateToOrcamento }) => {
+  const systemPrefersReduced = useReducedMotion();
+  const prefersReduced = Boolean(systemPrefersReduced || shouldReduceMedia());
+  const cardVariants = getDynamicCardVariants(prefersReduced);
   const mainWhatsappUrl = whatsappUrl(SITE_CONFIG.finalCtaWhatsappMessage);
 
   return (
@@ -75,36 +81,54 @@ export const ContactCtaSection: React.FC<ContactCtaSectionProps> = ({ onNavigate
         </div>
 
         <div className="pt-8 border-t border-white/[0.08] grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-slate-300 max-w-xl mx-auto">
-          <a
-            href={mainWhatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-3.5 glass-panel glass-card-interactive p-4 rounded-2xl text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] bracket-panel relative"
+          <motion.div
+            custom={0}
+            variants={cardVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.12, margin: '0px 0px -40px 0px' }}
+            className="h-full"
           >
-            <div className="w-10 h-10 rounded-xl bg-emerald-950/70 border border-emerald-500/30 flex items-center justify-center shrink-0">
-              <WhatsAppIcon className="w-5 h-5 text-emerald-400" />
-            </div>
-            <div>
-              <span className="block text-[11px] text-slate-400 font-medium">Canal principal</span>
-              <span className="font-semibold text-white">WhatsApp</span>
-            </div>
-          </a>
+            <a
+              href={mainWhatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3.5 glass-panel glass-card-interactive p-4 rounded-2xl text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] bracket-panel relative h-full hover:border-emerald-500/40 transition-colors"
+            >
+              <div className="w-10 h-10 rounded-xl bg-emerald-950/70 border border-emerald-500/30 flex items-center justify-center shrink-0">
+                <WhatsAppIcon className="w-5 h-5 text-emerald-400" />
+              </div>
+              <div>
+                <span className="block text-[11px] text-slate-400 font-medium">Canal principal</span>
+                <span className="font-semibold text-white">WhatsApp</span>
+              </div>
+            </a>
+          </motion.div>
 
-          <div className="flex items-center gap-3.5 glass-panel p-4 rounded-2xl text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] bracket-panel relative">
-            <div className="w-10 h-10 rounded-xl bg-indigo-950/70 border border-indigo-500/30 flex items-center justify-center shrink-0">
-              <Mail className="w-5 h-5 text-indigo-400" aria-hidden="true" />
+          <motion.div
+            custom={1}
+            variants={cardVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.12, margin: '0px 0px -40px 0px' }}
+            className="h-full"
+          >
+            <div className="flex items-center gap-3.5 glass-panel p-4 rounded-2xl text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] bracket-panel relative h-full hover:border-indigo-500/40 transition-colors">
+              <div className="w-10 h-10 rounded-xl bg-indigo-950/70 border border-indigo-500/30 flex items-center justify-center shrink-0">
+                <Mail className="w-5 h-5 text-indigo-400" aria-hidden="true" />
+              </div>
+              <div>
+                <span className="block text-[11px] text-slate-400 font-medium">E-mail</span>
+                <a
+                  href={`mailto:${SITE_CONFIG.email}`}
+                  className="inline-flex items-center font-semibold text-white hover:text-indigo-300 transition-colors break-all"
+                  data-copy-allowed
+                >
+                  {SITE_CONFIG.email}
+                </a>
+              </div>
             </div>
-            <div>
-              <span className="block text-[11px] text-slate-400 font-medium">E-mail</span>
-              <a
-                href={`mailto:${SITE_CONFIG.email}`}
-                className="inline-flex items-center font-semibold text-white hover:text-indigo-300 transition-colors break-all"
-                data-copy-allowed
-              >
-                {SITE_CONFIG.email}
-              </a>
-            </div>
-          </div>
+          </motion.div>
         </div>
         </div>
       </div>

@@ -21,8 +21,11 @@ export const LegalModals: React.FC<LegalModalProps> = ({ isOpen, onClose, type }
 
     previousFocusRef.current = document.activeElement as HTMLElement | null;
 
-    const previousOverflow = document.body.style.overflow;
+    const previousBodyOverflow = document.body.style.overflow;
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+
     document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
 
     const dialog = dialogRef.current;
     const getFocusable = () =>
@@ -70,7 +73,8 @@ export const LegalModals: React.FC<LegalModalProps> = ({ isOpen, onClose, type }
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = previousOverflow;
+      document.body.style.overflow = previousBodyOverflow;
+      document.documentElement.style.overflow = previousHtmlOverflow;
       previousFocusRef.current?.focus?.();
     };
   }, [isOpen, type]);
@@ -81,8 +85,18 @@ export const LegalModals: React.FC<LegalModalProps> = ({ isOpen, onClose, type }
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in overscroll-none select-none"
       onClick={onClose}
+      onWheel={(e) => {
+        if (e.target === e.currentTarget) {
+          e.preventDefault();
+        }
+      }}
+      onTouchMove={(e) => {
+        if (e.target === e.currentTarget) {
+          e.preventDefault();
+        }
+      }}
     >
       <div
         ref={dialogRef}
@@ -90,7 +104,7 @@ export const LegalModals: React.FC<LegalModalProps> = ({ isOpen, onClose, type }
         aria-modal="true"
         aria-labelledby="legal-modal-title"
         tabIndex={-1}
-        className="glass-panel rounded-2xl w-full max-w-xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden text-slate-300"
+        className="glass-panel rounded-2xl w-full max-w-xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden text-slate-300 select-text"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
@@ -102,14 +116,14 @@ export const LegalModals: React.FC<LegalModalProps> = ({ isOpen, onClose, type }
             type="button"
             onClick={onClose}
             aria-label="Fechar janela"
-            className="w-8 h-8 rounded-lg bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition-colors"
+            className="w-8 h-8 rounded-lg bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Modal Body */}
-        <div className="p-5 sm:p-6 overflow-y-auto space-y-4 text-xs sm:text-sm leading-relaxed">
+        <div className="p-5 sm:p-6 overflow-y-auto overscroll-contain space-y-4 text-xs sm:text-sm leading-relaxed">
           {isPrivacy ? (
             <>
               <section className="space-y-1.5">

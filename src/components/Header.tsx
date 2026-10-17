@@ -2,10 +2,12 @@ import React, { useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { EloLogo } from './EloLogo';
 import { ScreenId, SCREENS } from '../types';
+import { useLogoTaglineWidth } from './useLogoTaglineWidth';
 
 interface HeaderProps {
   currentScreen: ScreenId;
   onSelectScreen: (screenId: ScreenId) => void;
+  onSelectPartnership?: () => void;
   onPreviousScreen?: () => void;
   onNextScreen?: () => void;
   isMenuOpen: boolean;
@@ -15,11 +17,17 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({
   currentScreen,
   onSelectScreen,
+  onSelectPartnership,
   isMenuOpen,
   setIsMenuOpen,
 }) => {
   const isHome = currentScreen === 'home';
   const savedScrollPositionRef = useRef<number>(0);
+  const {
+    logoRef: menuLogoRef,
+    logoWidth: menuLogoWidth,
+    handleImageLoad: handleMenuLogoLoad,
+  } = useLogoTaglineWidth<HTMLImageElement>();
 
   // Tecla de atalho: Escape para fechar o menu, 'm' ou 'M' para abrir/fechar o menu
   useEffect(() => {
@@ -178,7 +186,7 @@ export const Header: React.FC<HeaderProps> = ({
                   className="group focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-lg p-1 -ml-1 transition-opacity hover:opacity-90 text-left flex items-center gap-2.5 shrink-0 cursor-pointer"
                   aria-label="ēloSites — Ir para a Página Inicial (Home)"
                 >
-                  <EloLogo size="md" showTagline />
+                  <EloLogo size="md" />
                 </button>
 
                 {/* Indicador sutil da tela ativa atual */}
@@ -226,7 +234,7 @@ export const Header: React.FC<HeaderProps> = ({
           >
             <ul className="nav-menu-list flex flex-col items-center justify-center py-0.5 w-full">
               {SCREENS.map((screen, index) => {
-                const isActive = screen.id === currentScreen;
+                const isActive = screen.id === currentScreen && window.location.hash !== '#parceria-trafego';
 
                 return (
                   <motion.li
@@ -256,10 +264,54 @@ export const Header: React.FC<HeaderProps> = ({
                   </motion.li>
                 );
               })}
+
+              {/* Item de navegação: Parceria | Tráfego Pago imediatamente abaixo de FAQ & Contato */}
+              <motion.li
+                key="parceria-trafego"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  delay: 0.03 * SCREENS.length,
+                  duration: 0.28,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+                className="nav-menu-list-item w-full flex justify-center"
+              >
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    if (onSelectPartnership) {
+                      onSelectPartnership();
+                    } else {
+                      if (currentScreen !== 'faq') {
+                        onSelectScreen('faq');
+                      }
+                      window.location.hash = 'parceria-trafego';
+                      setTimeout(() => {
+                        const el = document.getElementById('parceria-trafego');
+                        if (el) {
+                          const headerOffset = 70;
+                          const elementPosition = el.getBoundingClientRect().top;
+                          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                          window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                        }
+                      }, currentScreen !== 'faq' ? 220 : 50);
+                    }
+                  }}
+                  className={`nav-menu-link-item group relative rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/70 flex items-center justify-center cursor-pointer ${
+                    window.location.hash === '#parceria-trafego' ? 'is-active scale-105' : 'hover:scale-105'
+                  }`}
+                >
+                  <span className="font-display nav-menu-link-text tracking-tight transition-transform duration-200 group-hover:-translate-y-0.5">
+                    Parceria | Tráfego Pago
+                  </span>
+                </button>
+              </motion.li>
             </ul>
           </div>
 
-          {/* Logotipo centralizado no pé da página com frase oficial */}
+          {/* Logotipo centralizado no pé da página com frase oficial vinculada à largura exata da logo */}
           <div
             className="nav-menu-logo-wrap shrink-0 flex flex-col items-center justify-center pointer-events-auto mt-auto"
             onClick={(e) => e.stopPropagation()}
@@ -273,13 +325,23 @@ export const Header: React.FC<HeaderProps> = ({
               aria-label="ēloSites — Ir para a Página Inicial (Home)"
             >
               <img
+                ref={menuLogoRef}
                 src="/logo-elosites-final.png"
                 alt="ēloSites"
+                onLoad={handleMenuLogoLoad}
                 className="nav-menu-logo-img w-auto object-contain drop-shadow-[0_0_20px_rgba(168,85,247,0.35)]"
               />
-              <span className="mt-1 text-[8.5px] min-[380px]:text-[9.5px] sm:text-[11px] font-semibold tracking-wider uppercase text-slate-400 select-none text-center">
-                O melhor site pelo melhor preço
-              </span>
+              <div
+                style={{
+                  width: menuLogoWidth ? `${menuLogoWidth}px` : undefined,
+                  maxWidth: menuLogoWidth ? `${menuLogoWidth}px` : '100%',
+                }}
+                className="flex flex-col items-center justify-center text-center overflow-hidden"
+              >
+                <span className="w-full text-center mt-1 text-[8px] min-[380px]:text-[9px] sm:text-[10.5px] font-semibold tracking-wider uppercase text-slate-400 select-none leading-tight">
+                  O melhor site pelo melhor preço
+                </span>
+              </div>
             </button>
           </div>
         </div>

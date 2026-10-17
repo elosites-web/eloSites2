@@ -25,6 +25,8 @@ import {
   Sparkles,
   ShieldCheck,
 } from 'lucide-react';
+import { shouldReduceMedia } from '../mediaPrefs';
+import { getDynamicCardVariants } from '../motionVariants';
 
 interface ProjectBriefBookingSectionProps {
   onOpenPrivacy?: () => void;
@@ -37,6 +39,8 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
   const [copied, setCopied] = useState(false);
   const { success, error } = useToast();
   const prefersReducedMotion = useReducedMotion();
+  const prefersReduced = Boolean(prefersReducedMotion || shouldReduceMedia());
+  const cardVariants = getDynamicCardVariants(prefersReduced);
 
   // Briefing form state
   const [briefingData, setBriefingData] = useState<ProjectBriefData>({
@@ -260,7 +264,14 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
           </div>
 
           {/* Tab Content */}
-          <div className="surface-card glass-panel rounded-3xl p-6 sm:p-10 relative overflow-hidden bracket-panel">
+          <motion.div
+            variants={cardVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.08, margin: '0px 0px -40px 0px' }}
+            className="w-full"
+          >
+            <div className="surface-card glass-panel rounded-3xl p-6 sm:p-10 relative overflow-hidden bracket-panel">
             <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-500/[0.04] blur-3xl pointer-events-none rounded-full" />
 
             <AnimatePresence mode="wait">
@@ -722,7 +733,8 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                 <span>Retorno em até 2 horas em horário comercial</span>
               </div>
             </div>
-          </div>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>

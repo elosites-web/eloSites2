@@ -251,6 +251,7 @@ export const NAVIGATION_ITEMS: NavItem[] = [
   { label: 'Como funciona', href: '#processo', id: 'nav-processo' },
   { label: 'Orçamento', href: '#orcamento', id: 'nav-orcamento' },
   { label: 'FAQ & Contato', href: '#faq', id: 'nav-faq' },
+  { label: 'Parceria | Tráfego Pago', href: '#parceria-trafego', id: 'nav-parceria-trafego' },
 ];
 
 export {

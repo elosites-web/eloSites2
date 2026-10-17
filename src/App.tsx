@@ -6,9 +6,9 @@ import { Hero } from './components/Hero';
 import { ProcessSection } from './components/ProcessSection';
 import { FaqSection } from './components/FaqSection';
 import { ContactCtaSection } from './components/ContactCtaSection';
+import { PaidTrafficPartnershipSection } from './components/PaidTrafficPartnershipSection';
 import { Footer } from './components/Footer';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
-import { ScrollToTop } from './components/ScrollToTop';
 import { LegalModals } from './components/LegalModals';
 import { SitemapModal } from './components/SitemapModal';
 import { ReadingProgressBar } from './components/ReadingProgressBar';
@@ -153,6 +153,26 @@ export default function App() {
           const el = document.getElementById('apresentacao');
           if (el) el.scrollIntoView({ behavior: 'smooth' });
         }, 150);
+      } else if (rawHash === 'parceria-trafego' || rawHash === 'parceria' || rawHash === 'trafego') {
+        setCurrentScreen((prev) => {
+          if (prev !== 'faq') {
+            const prevIdx = SCREENS.findIndex((s) => s.id === prev);
+            const nextIdx = SCREENS.findIndex((s) => s.id === 'faq');
+            if (nextIdx !== -1 && prevIdx !== -1) {
+              setDirection(nextIdx > prevIdx ? 1 : -1);
+            }
+          }
+          return 'faq';
+        });
+        setTimeout(() => {
+          const el = document.getElementById('parceria-trafego');
+          if (el) {
+            const headerOffset = 70;
+            const elementPosition = el.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+            window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+          }
+        }, 180);
       } else if (rawHash === 'sitemap' || rawHash === 'mapa-do-site') {
         setIsSitemapOpen(true);
       }
@@ -194,6 +214,23 @@ export default function App() {
       navigateToScreen(nextScreen.id);
     }
   }, [nextScreen, navigateToScreen]);
+
+  const handleSelectPartnership = useCallback(() => {
+    setIsMenuOpen(false);
+    if (currentScreen !== 'faq') {
+      navigateToScreen('faq');
+    }
+    window.location.hash = 'parceria-trafego';
+    setTimeout(() => {
+      const el = document.getElementById('parceria-trafego');
+      if (el) {
+        const headerOffset = 70;
+        const elementPosition = el.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+      }
+    }, currentScreen !== 'faq' ? 220 : 50);
+  }, [currentScreen, navigateToScreen]);
 
   // Suporte a navegação por setas do teclado (Esquerda e Direita)
   useEffect(() => {
@@ -497,11 +534,12 @@ export default function App() {
         </div>
       )}
 
-      {/* TELA 06: Perguntas Frequentes (FAQ) & Contato */}
+      {/* TELA 06: Perguntas Frequentes (FAQ) & Contato + Parceria Estratégica */}
       {currentScreen === 'faq' && (
         <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style] space-y-0">
           <FaqSection />
           <ContactCtaSection onNavigateToOrcamento={() => navigateToScreen('orcamento')} />
+          <PaidTrafficPartnershipSection />
         </div>
       )}
     </>
@@ -529,6 +567,7 @@ export default function App() {
       <Header
         currentScreen={currentScreen}
         onSelectScreen={navigateToScreen}
+        onSelectPartnership={handleSelectPartnership}
         onPreviousScreen={handlePrevious}
         onNextScreen={handleNext}
         isMenuOpen={isMenuOpen}
@@ -574,7 +613,6 @@ export default function App() {
         <Footer
           onOpenPrivacy={() => setLegalModal('privacy')}
           onOpenTerms={() => setLegalModal('terms')}
-          onOpenSitemap={() => setIsSitemapOpen(true)}
           onSelectScreen={navigateToScreen}
           currentScreen={currentScreen}
           isHighContrast={isHighContrast}
@@ -590,13 +628,6 @@ export default function App() {
           onBubbleStateChange={setIsWhatsAppBubbleOpen}
         />
       )}
-
-      {/* Botão Flutuante 'Scroll to Top' — Aparece após rolar mais de 400px com animação suave */}
-      <ScrollToTop
-        currentScreen={currentScreen}
-        isMenuOpen={isMenuOpen}
-        isWhatsAppBubbleOpen={isWhatsAppBubbleOpen}
-      />
 
       {/* Modais Legais (Política de Privacidade e Termos de Uso) */}
       <LegalModals

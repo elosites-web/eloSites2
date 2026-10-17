@@ -22,9 +22,7 @@ export default defineConfig(() => {
         'react/jsx-runtime',
         'react/jsx-dev-runtime',
         'motion/react',
-        'framer-motion',
         'lucide-react',
-        'three',
       ],
     },
     server: {

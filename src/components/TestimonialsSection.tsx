@@ -19,6 +19,7 @@ import { WhatsAppIcon } from './WhatsAppIcon';
 import { SplitLines } from './SplitLines';
 import { SITE_CONFIG, whatsappUrl } from '../types';
 import { shouldReduceMedia } from '../mediaPrefs';
+import { getDynamicCardVariants } from '../motionVariants';
 
 export interface TestimonialItem {
   id: string;
@@ -30,6 +31,15 @@ export interface TestimonialItem {
   quote: string;
   rating: number;
 }
+
+export type TestimonialCategoryTag = 'all' | 'landing' | 'institutional' | 'app';
+
+export const TESTIMONIAL_TAGS: { id: TestimonialCategoryTag; label: string }[] = [
+  { id: 'all', label: 'Todos os formatos' },
+  { id: 'landing', label: 'Landing Page' },
+  { id: 'institutional', label: 'Site Institucional' },
+  { id: 'app', label: 'Aplicação Web' },
+];
 
 // Avaliações autênticas dos clientes reais da ēloSites (dados estritamente preservados)
 export const CLIENT_TESTIMONIALS: TestimonialItem[] = [
@@ -87,13 +97,22 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const [selectedTag, setSelectedTag] = useState<TestimonialCategoryTag>('all');
   const carouselContainerRef = useRef<HTMLDivElement>(null);
 
   // Detecção de preferências de acessibilidade e redução de movimento
   const systemPrefersReduced = useReducedMotion();
   const prefersReduced = Boolean(systemPrefersReduced || shouldReduceMedia());
 
-  const testimonials = CLIENT_TESTIMONIALS;
+  const cardVariants = getDynamicCardVariants(prefersReduced);
+
+  const testimonials = CLIENT_TESTIMONIALS.filter((item) => {
+    if (selectedTag === 'all') return true;
+    if (selectedTag === 'landing') return item.category.toLowerCase().includes('landing');
+    if (selectedTag === 'institutional') return item.category.toLowerCase().includes('institucional');
+    if (selectedTag === 'app') return item.category.toLowerCase().includes('aplica');
+    return true;
+  });
   const total = testimonials.length;
 
   // Instanciação do plugin Autoplay do Embla (5 segundos de intervalo, pausa suave em hover/interação)
@@ -105,16 +124,27 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
     })
   );
 
-  // Configuração do Embla Carousel com loop infinito e aceleração suave
+  // Configuração do Embla Carousel com loop adaptativo e aceleração suave
   const [emblaRef, emblaApi] = useEmblaCarousel(
     {
-      loop: true,
+      loop: total > 1,
       align: 'center',
       skipSnaps: false,
       duration: 35,
     },
     prefersReduced ? [] : [autoplayPlugin.current]
   );
+
+  // Ao alternar a tag de filtro, reinicia para o primeiro depoimento
+  useEffect(() => {
+    setSelectedIndex(0);
+    if (emblaApi) {
+      requestAnimationFrame(() => {
+        emblaApi.reInit();
+        emblaApi.scrollTo(0, true);
+      });
+    }
+  }, [selectedTag, emblaApi, total]);
 
   // Detecção de viewport para calibrar ângulos da perspectiva 3D
   useEffect(() => {
@@ -164,12 +194,12 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
 
   // Controles manuais de navegação
   const scrollPrev = useCallback(() => {
-    if (emblaApi) emblaApi.scrollPrev();
-  }, [emblaApi]);
+    if (emblaApi && total > 1) emblaApi.scrollPrev();
+  }, [emblaApi, total]);
 
   const scrollNext = useCallback(() => {
-    if (emblaApi) emblaApi.scrollNext();
-  }, [emblaApi]);
+    if (emblaApi && total > 1) emblaApi.scrollNext();
+  }, [emblaApi, total]);
 
   const scrollTo = useCallback(
     (index: number) => {
@@ -232,7 +262,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
   // Suporte a teclado acessível (setas direcionais esquerda e direita)
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
-      if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+      if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey || total <= 1) return;
 
       const activeElement = document.activeElement;
       const isInput =
@@ -250,11 +280,12 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
         scrollNext();
       }
     },
-    [scrollPrev, scrollNext]
+    [scrollPrev, scrollNext, total]
   );
 
   // Cálculo da distância relativa no carrossel circular (-1, 0, 1)
   const getRelativeOffset = (idx: number) => {
+    if (total <= 1) return 0;
     let diff = (idx - selectedIndex) % total;
     if (diff > total / 2) diff -= total;
     if (diff < -total / 2) diff += total;
@@ -325,21 +356,63 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
           </div>
         </motion.div>
 
+        {/* Filtro por Formato de Serviço */}
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 mb-8 px-2">
+          {TESTIMONIAL_TAGS.map((tag) => {
+            const isTagActive = selectedTag === tag.id;
+            const count =
+              tag.id === 'all'
+                ? CLIENT_TESTIMONIALS.length
+                : CLIENT_TESTIMONIALS.filter((t) => {
+                    if (tag.id === 'landing') return t.category.toLowerCase().includes('landing');
+                    if (tag.id === 'institutional') return t.category.toLowerCase().includes('institucional');
+                    if (tag.id === 'app') return t.category.toLowerCase().includes('aplica');
+                    return true;
+                  }).length;
+
+            return (
+              <button
+                key={tag.id}
+                type="button"
+                onClick={() => setSelectedTag(tag.id)}
+                className={`relative px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/60 ${
+                  isTagActive
+                    ? 'bg-gradient-to-r from-cyan-500/25 via-indigo-500/30 to-purple-500/25 text-cyan-200 border border-cyan-400/50 shadow-[0_0_16px_rgba(6,182,212,0.3)]'
+                    : 'bg-slate-900/80 text-slate-400 hover:text-white border border-white/[0.08] hover:border-white/20'
+                }`}
+                aria-pressed={isTagActive}
+              >
+                <span>{tag.label}</span>
+                <span className="ml-1.5 text-[10px] opacity-75 font-mono">
+                  ({count})
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
         {/* =========================================================================
             ESTÁGIO EMBLA CAROUSEL COM ROTAÇÃO 3D E ACELERAÇÃO POR GPU
            ========================================================================= */}
-        <div
-          ref={carouselContainerRef}
-          data-testimonials-carousel
-          role="region"
-          aria-roledescription="carousel"
-          aria-label="Carrossel Giratório de Depoimentos"
-          tabIndex={0}
-          onKeyDown={handleKeyDown}
-          onFocusCapture={handleFocusCapture}
-          onBlurCapture={handleBlurCapture}
-          className="relative max-w-5xl mx-auto focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/50 rounded-2xl"
+        <motion.div
+          variants={cardVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.12, margin: '0px 0px -40px 0px' }}
+          className="w-full"
         >
+          <div
+            ref={carouselContainerRef}
+            data-testimonials-carousel
+            role="region"
+            aria-roledescription="carousel"
+            aria-label="Carrossel Giratório de Depoimentos"
+            tabIndex={0}
+            onKeyDown={handleKeyDown}
+            onFocusCapture={handleFocusCapture}
+            onBlurCapture={handleBlurCapture}
+            className="relative max-w-5xl mx-auto focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/50 rounded-2xl"
+          >
           {/* Viewport do Embla Carousel com suporte nativo a toque/swipe */}
           <div
             className="overflow-hidden py-4 cursor-grab active:cursor-grabbing"
@@ -543,17 +616,22 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
             <button
               type="button"
               onClick={scrollPrev}
+              disabled={total <= 1}
               aria-label="Ver depoimento anterior"
-              className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white border border-purple-500/20 hover:border-purple-400/50 shadow-sm hover:shadow-[0_0_15px_rgba(168,85,247,0.25)] transition-all cursor-pointer group focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400"
+              className={`inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium border shadow-sm transition-all group focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 ${
+                total <= 1
+                  ? 'opacity-30 cursor-not-allowed border-slate-800 text-slate-500'
+                  : 'bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white border-purple-500/20 hover:border-purple-400/50 hover:shadow-[0_0_15px_rgba(168,85,247,0.25)] cursor-pointer'
+              }`}
             >
-              <ChevronLeft className="w-4 h-4 text-purple-400 group-hover:text-purple-300 group-hover:-translate-x-0.5 transition-transform" />
+              <ChevronLeft className={`w-4 h-4 ${total <= 1 ? 'text-slate-600' : 'text-purple-400 group-hover:text-purple-300 group-hover:-translate-x-0.5'} transition-transform`} />
               <span className="hidden xs:inline text-center">Anterior</span>
             </button>
 
             {/* Indicadores de Paginação e Status de Auto-Rotação */}
             <div className="flex items-center gap-2.5 sm:gap-3">
               {/* Botão de pausa/reprodução da rotação automática */}
-              {!prefersReduced && (
+              {!prefersReduced && total > 1 && (
                 <button
                   type="button"
                   onClick={toggleAutoplay}
@@ -586,10 +664,13 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
                       aria-label={`Depoimento ${idx + 1} de ${total}: ${t.name}`}
                       title={`Depoimento ${idx + 1} de ${total}: ${t.name}`}
                       onClick={() => scrollTo(idx)}
-                      className={`h-2 rounded-full transition-all duration-300 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 ${
-                        isCurrent
-                          ? 'w-6 bg-gradient-to-r from-purple-500 to-indigo-500 shadow-[0_0_12px_rgba(168,85,247,0.7)]'
-                          : 'w-2 bg-slate-700/80 hover:bg-slate-500 hover:border-purple-400/40'
+                      disabled={total <= 1}
+                      className={`h-2 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 ${
+                        total <= 1
+                          ? 'w-6 bg-gradient-to-r from-purple-500 to-indigo-500 shadow-[0_0_12px_rgba(168,85,247,0.7)] cursor-default'
+                          : isCurrent
+                          ? 'w-6 bg-gradient-to-r from-purple-500 to-indigo-500 shadow-[0_0_12px_rgba(168,85,247,0.7)] cursor-pointer'
+                          : 'w-2 bg-slate-700/80 hover:bg-slate-500 hover:border-purple-400/40 cursor-pointer'
                       }`}
                     />
                   );
@@ -597,42 +678,38 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
               </div>
 
               {/* Rótulo de auxílio de teclado */}
-              <span className="hidden md:inline text-[11px] font-mono text-slate-400">
-                ← / → navegue pelas setas
-              </span>
+              {total > 1 && (
+                <span className="hidden md:inline text-[11px] font-mono text-slate-400">
+                  ← / → navegue pelas setas
+                </span>
+              )}
             </div>
 
             {/* Botão Próximo */}
             <button
               type="button"
               onClick={scrollNext}
+              disabled={total <= 1}
               aria-label="Ver próximo depoimento"
-              className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white border border-purple-500/20 hover:border-purple-400/50 shadow-sm hover:shadow-[0_0_15px_rgba(168,85,247,0.25)] transition-all cursor-pointer group focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400"
+              className={`inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium border shadow-sm transition-all group focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 ${
+                total <= 1
+                  ? 'opacity-30 cursor-not-allowed border-slate-800 text-slate-500'
+                  : 'bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white border-purple-500/20 hover:border-purple-400/50 hover:shadow-[0_0_15px_rgba(168,85,247,0.25)] cursor-pointer'
+              }`}
             >
               <span className="hidden xs:inline text-center">Próximo</span>
-              <ChevronRight className="w-4 h-4 text-purple-400 group-hover:text-purple-300 group-hover:translate-x-0.5 transition-transform" />
+              <ChevronRight className={`w-4 h-4 ${total <= 1 ? 'text-slate-600' : 'text-purple-400 group-hover:text-purple-300 group-hover:translate-x-0.5'} transition-transform`} />
             </button>
           </div>
         </div>
+      </motion.div>
 
         {/* Bloco de Ação Rápida no Rodapé dos Testemunhos */}
         <motion.div
-          initial={
-            prefersReduced
-              ? { opacity: 1, y: 0 }
-              : { opacity: 0, y: 18 }
-          }
-          whileInView={
-            prefersReduced
-              ? { opacity: 1, y: 0 }
-              : { opacity: 1, y: 0 }
-          }
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{
-            duration: prefersReduced ? 0 : 0.45,
-            delay: prefersReduced ? 0 : 0.2,
-            ease: [0.22, 1, 0.36, 1],
-          }}
+          variants={cardVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2, margin: '0px 0px -40px 0px' }}
           className="glass-card-interactive surface-card mt-10 p-6 sm:p-7 md:p-8 rounded-2xl bg-gradient-to-r from-indigo-950/40 via-slate-900/60 to-cyan-950/40 border border-white/[0.08] flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 max-w-4xl mx-auto shadow-2xl shadow-black/60 bracket-panel"
         >
           <div className="space-y-2 text-left w-full lg:max-w-xl">
