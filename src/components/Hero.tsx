@@ -144,8 +144,8 @@ export const Hero: React.FC<HeroProps> = ({
                 }}
                 className="relative flex flex-col items-center justify-center pointer-events-auto"
               >
-                {/* Brilho decorativo suave e discreto */}
-                <div className="absolute -inset-4 sm:-inset-6 bg-gradient-to-r from-teal-500/5 via-cyan-500/8 to-indigo-500/5 blur-xl rounded-full pointer-events-none" />
+                {/* Brilho decorativo minimalista e suave de acordo com as cores do logo e botão de menu */}
+                <div className="absolute -inset-6 sm:-inset-8 bg-gradient-to-r from-purple-500/[0.07] via-violet-500/[0.09] to-indigo-500/[0.07] blur-2xl rounded-full pointer-events-none" />
 
                 <a
                   href="#home"
@@ -160,7 +160,7 @@ export const Hero: React.FC<HeroProps> = ({
                   <img
                     src="/logo-elosites-final.png"
                     alt="ēloSites"
-                    className="hero-home-logo w-auto object-contain drop-shadow-[0_0_20px_rgba(168,85,247,0.3)] relative z-10"
+                    className="hero-home-logo w-auto object-contain relative z-10"
                   />
                 </a>
               </motion.div>

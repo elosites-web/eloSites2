@@ -1072,6 +1072,13 @@ a[id*="whatsapp"]:hover > svg {
   max-width: min(85vw, 320px);
   max-height: 18vh;
   object-fit: contain;
+  /* Glow minimalista e refinado alinhado às cores do logo e botão de menu (roxo e índigo) */
+  filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.22)) drop-shadow(0 0 22px rgba(99, 102, 241, 0.15));
+  transition: filter 0.35s ease;
+}
+
+.group:hover .hero-home-logo {
+  filter: drop-shadow(0 0 14px rgba(168, 85, 247, 0.35)) drop-shadow(0 0 28px rgba(99, 102, 241, 0.22));
 }
 
 /* Tablet (768px a 1279px): reduzido em 8px (112px -> 104px) */

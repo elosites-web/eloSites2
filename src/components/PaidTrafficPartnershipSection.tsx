@@ -283,12 +283,12 @@ export const PaidTrafficPartnershipSection: React.FC<PaidTrafficPartnershipSecti
                 </div>
 
                 {/* Aviso do Investimento em Anúncios separado da gestão */}
-                <div className="rounded-xl p-4 bg-slate-950/80 border border-amber-400/25 text-xs text-slate-300 space-y-1">
-                  <div className="flex items-center gap-2 text-amber-300 font-semibold uppercase tracking-wider text-[11px] font-mono">
+                <div className="rounded-xl p-4 bg-slate-950/80 border border-amber-400/25 text-xs text-slate-300 space-y-1 lg:space-y-0 lg:flex lg:items-center lg:gap-2.5">
+                  <div className="flex items-center gap-2 text-amber-300 font-semibold uppercase tracking-wider text-[11px] font-mono shrink-0">
                     <Info className="w-4 h-4 shrink-0 text-amber-400" />
-                    <span>Investimento em mídia</span>
+                    <span>Investimento em mídia<span className="hidden lg:inline">:</span></span>
                   </div>
-                  <p className="leading-relaxed pl-6">
+                  <p className="leading-relaxed pl-6 lg:pl-0">
                     O investimento em anúncios é separado da mensalidade do serviço e é pago pelo próprio cliente diretamente à Meta.
                   </p>
                 </div>
