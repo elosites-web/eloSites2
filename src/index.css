@@ -777,31 +777,43 @@ a[id*="whatsapp"]:hover > svg {
 }
 
 /* Tipografia e cores responsivas dos itens do Menu de Navegação:
-   - Mobile: clamp(14px, 4vw, 16px) com line-height: 1.25 para legibilidade nítida
-   - Tablet (sm >= 640px): 15px
-   - Desktop (md >= 768px): 18px (redução de 50% preservada para telas maiores)
-   - Tom azul-lilás / púrpura oficial do logotipo ēloSites (#818cf8 / rgb(129, 140, 248)):
-     aplicado com fidelidade ao hover, foco de teclado e item ativo com transição suave */
-.nav-menu-link-text {
-  font-size: clamp(14px, 4vw, 16px);
-  line-height: 1.25;
+/* ============================================================
+   ITEM 1 — MENU EM TELA CHEIA (Home, Início, Portfólio, Serviços, Como funciona, Orçamento, FAQ & Contato)
+   Faixas de tela:
+   - Celular: largura < 768px
+   - Tablet: 768px a 1279px
+   - Desktop: >= 1280px (mantido EXATAMENTE como referência)
+   ============================================================ */
+
+/* --- Celular (< 768px): conjunto ampliado proporcionalmente com tipografia fluida --- */
+.nav-menu-list-wrap {
+  width: 100%;
+  max-width: 92vw;
 }
 
-@media (min-width: 640px) {
-  .nav-menu-link-text {
-    font-size: 15px;
-    line-height: 1.4;
-  }
+.nav-menu-logo-wrap {
+  margin-bottom: clamp(0.85rem, 2.2vh, 1.35rem);
 }
 
-@media (min-width: 768px) {
-  .nav-menu-link-text {
-    font-size: 18px;
-    line-height: 1.5;
-  }
+.nav-menu-logo-img {
+  height: clamp(1.85rem, 4.4vh, 2.35rem);
+  width: auto;
+  object-fit: contain;
+}
+
+.nav-menu-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.45rem, 1.5vh, 0.85rem);
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
+  width: 100%;
 }
 
 .nav-menu-link-item {
+  padding: clamp(0.2rem, 0.7vh, 0.45rem) 1rem;
   color: #e2e8f0;
   transition: color 280ms cubic-bezier(0.23, 1, 0.32, 1),
               filter 280ms cubic-bezier(0.23, 1, 0.32, 1),
@@ -821,11 +833,111 @@ a[id*="whatsapp"]:hover > svg {
   filter: drop-shadow(0 0 16px rgba(129, 140, 248, 0.85));
 }
 
-/* Layout compacto exclusivo para dispositivos móveis em modo paisagem (Mobile Landscape: altura <= 500px) */
-@media (orientation: landscape) and (max-height: 500px) {
+.nav-menu-link-text {
+  font-size: clamp(1.15rem, 4.8vw, 1.45rem);
+  line-height: 1.25;
+}
+
+.nav-menu-close-btn {
+  margin-top: clamp(0.75rem, 1.8vh, 1.25rem);
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.nav-menu-close-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* --- Tablet (768px a 1279px): conjunto ampliado proporcionalmente para ocupar tela --- */
+@media (min-width: 768px) and (max-width: 1279.98px) {
+  .nav-menu-list-wrap {
+    max-width: min(90vw, 42rem);
+  }
+
+  .nav-menu-logo-wrap {
+    margin-bottom: clamp(1.25rem, 2.6vh, 2rem);
+  }
+
+  .nav-menu-logo-img {
+    height: clamp(2.5rem, 4.8vh, 3.25rem);
+  }
+
+  .nav-menu-list {
+    gap: clamp(0.75rem, 1.8vh, 1.25rem);
+  }
+
+  .nav-menu-link-item {
+    padding: clamp(0.35rem, 0.9vh, 0.6rem) 1.5rem;
+  }
+
+  .nav-menu-link-text {
+    font-size: clamp(1.5rem, 2.8vw, 2.1rem);
+    line-height: 1.35;
+  }
+
+  .nav-menu-close-btn {
+    margin-top: clamp(1.25rem, 2.4vh, 1.85rem);
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
+  }
+
+  .nav-menu-close-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
+
+/* --- Desktop (>= 1280px): MANTIDO EXATAMENTE COMO ESTAVA NO CÓDIGO ORIGINAL --- */
+@media (min-width: 1280px) {
+  .nav-menu-list-wrap {
+    max-width: 32rem; /* max-w-lg */
+  }
+
+  .nav-menu-logo-wrap {
+    margin-bottom: 1.25rem; /* sm:mb-5 */
+  }
+
+  .nav-menu-logo-img {
+    height: 2rem; /* md:h-8 (32px) */
+  }
+
+  .nav-menu-list {
+    gap: 0.625rem; /* md:gap-2.5 (10px) */
+  }
+
+  .nav-menu-link-item {
+    padding: 0.375rem 1rem; /* sm:py-1.5 sm:px-4 */
+  }
+
+  .nav-menu-link-text {
+    font-size: 18px; /* tamanho exato de referência */
+    line-height: 1.5;
+  }
+
+  .nav-menu-close-btn {
+    margin-top: 1rem; /* sm:mt-4 */
+    width: 2rem; /* sm:w-8 (32px) */
+    height: 2rem; /* sm:h-8 (32px) */
+    min-width: 2rem;
+    min-height: 2rem;
+  }
+
+  .nav-menu-close-icon {
+    width: 1rem; /* sm:w-4 (16px) */
+    height: 1rem; /* sm:h-4 (16px) */
+  }
+}
+
+/* Telas de pouca altura (ex.: celular deitado / landscape <= 540px): cabe tudo sem rolagem */
+@media (max-height: 540px) {
   .nav-menu-modal-container {
-    padding-top: 0.35rem !important;
-    padding-bottom: 0.35rem !important;
+    padding-top: 0.25rem !important;
+    padding-bottom: 0.25rem !important;
     padding-left: 0.75rem !important;
     padding-right: 0.75rem !important;
     justify-content: center !important;
@@ -851,7 +963,7 @@ a[id*="whatsapp"]:hover > svg {
   }
 
   .nav-menu-link-text {
-    font-size: clamp(12px, 3.2vh, 14px) !important;
+    font-size: clamp(12px, 3.2vh, 14.5px) !important;
     line-height: 1.15 !important;
   }
 
@@ -864,8 +976,58 @@ a[id*="whatsapp"]:hover > svg {
 
   .nav-menu-close-btn {
     margin-top: 0.25rem !important;
-    width: 1.625rem !important;
-    height: 1.625rem !important;
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+
+  .nav-menu-close-icon {
+    width: 1rem !important;
+    height: 1rem !important;
+  }
+}
+
+/* ============================================================
+   ITEM 2 — LOGOTIPO DA PÁGINA INICIAL (HERO)
+   Tamanhos base no código original e multiplicadores exatos:
+   - Celular (< 768px): base h-6 (24px) -> Multiplicador 3x = 72px
+   - Tablet (768px a 1279px): base md:h-8 (32px) -> Multiplicador 3,5x = 112px
+   - Desktop (>= 1280px): base md:h-8 (32px) -> Multiplicador 5x = 160px
+   ============================================================ */
+
+/* Celular (< 768px): 3x o tamanho atual */
+.hero-home-logo {
+  height: 72px;
+  width: auto;
+  max-width: min(85vw, 320px);
+  max-height: 18vh;
+  object-fit: contain;
+}
+
+/* Tablet (768px a 1279px): 3,5x o tamanho atual */
+@media (min-width: 768px) and (max-width: 1279.98px) {
+  .hero-home-logo {
+    height: 112px;
+    max-width: min(80vw, 520px);
+    max-height: 22vh;
+  }
+}
+
+/* Desktop (>= 1280px): 5x o tamanho atual */
+@media (min-width: 1280px) {
+  .hero-home-logo {
+    height: 160px;
+    max-width: min(70vw, 680px);
+    max-height: 28vh;
+  }
+}
+
+/* Celulares pequenos ou no modo paisagem (pouca altura) */
+@media (max-height: 540px) {
+  .hero-home-logo {
+    height: clamp(40px, 16vh, 60px);
+    max-width: 75vw;
   }
 }
 

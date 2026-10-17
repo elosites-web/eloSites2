@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect, useCallback, useRef, lazy, Suspense } from 'react';
 import { motion, AnimatePresence, useReducedMotion, type Variants } from 'motion/react';
 import { Persistent3DBackground } from './components/Persistent3DBackground';
 import { PointerSpotlight } from './components/PointerSpotlight';
@@ -170,7 +170,7 @@ export default function App() {
   }, []);
 
   // Ao trocar de tela, atualiza o hash, a direção do slide lateral e rola para o topo
-  const navigateToScreen = (screenId: ScreenId) => {
+  const navigateToScreen = useCallback((screenId: ScreenId) => {
     setIsMenuOpen(false);
     const prevIdx = SCREENS.findIndex((s) => s.id === currentScreen);
     const nextIdx = SCREENS.findIndex((s) => s.id === screenId);
@@ -181,23 +181,23 @@ export default function App() {
     });
     window.location.hash = screenId;
     window.scrollTo({ top: 0, behavior: 'instant' });
-  };
+  }, [currentScreen, direction]);
 
   const currentIndex = SCREENS.findIndex((s) => s.id === currentScreen);
   const previousScreen = currentIndex > 0 ? SCREENS[currentIndex - 1] : null;
   const nextScreen = currentIndex < SCREENS.length - 1 ? SCREENS[currentIndex + 1] : null;
 
-  const handlePrevious = () => {
+  const handlePrevious = useCallback(() => {
     if (previousScreen) {
       navigateToScreen(previousScreen.id);
     }
-  };
+  }, [previousScreen, navigateToScreen]);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (nextScreen) {
       navigateToScreen(nextScreen.id);
     }
-  };
+  }, [nextScreen, navigateToScreen]);
 
   // Suporte a navegação por setas do teclado (Esquerda e Direita)
   useEffect(() => {
@@ -228,7 +228,86 @@ export default function App() {
 
     window.addEventListener('keydown', handleKeyNav);
     return () => window.removeEventListener('keydown', handleKeyNav);
-  }, [previousScreen, nextScreen]);
+  }, [previousScreen, nextScreen, handlePrevious, handleNext]);
+
+  // Suporte a gestos de swipe em dispositivos móveis (Swipe-to-navigate entre seções)
+  useEffect(() => {
+    // Detecta dispositivos com capacidade de toque
+    const hasTouch = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+    if (!hasTouch) return;
+
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchStartTime = 0;
+    let isSwipingIgnored = false;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      // Ignora gestos multi-toque (ex.: pinça/zoom)
+      if (e.touches.length !== 1) {
+        isSwipingIgnored = true;
+        return;
+      }
+
+      // Ignora se o menu ou algum modal/diálogo estiver aberto
+      if (isMenuOpen || legalModal !== null || isSitemapOpen || document.querySelector('[role="dialog"][aria-modal="true"]')) {
+        isSwipingIgnored = true;
+        return;
+      }
+
+      const target = e.target as HTMLElement | null;
+      if (target) {
+        const targetTag = target.tagName?.toLowerCase();
+        // Não interfere em formulários ou elementos editáveis
+        if (targetTag === 'input' || targetTag === 'textarea' || targetTag === 'select' || target.isContentEditable) {
+          isSwipingIgnored = true;
+          return;
+        }
+        // Não interfere em elementos horizontais dedicados (ex.: carrossel de depoimentos Embla)
+        if (target.closest('[data-testimonials-carousel]') || target.closest('[data-no-swipe]')) {
+          isSwipingIgnored = true;
+          return;
+        }
+      }
+
+      const touch = e.touches[0];
+      touchStartX = touch.clientX;
+      touchStartY = touch.clientY;
+      touchStartTime = Date.now();
+      isSwipingIgnored = false;
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      if (isSwipingIgnored) return;
+      if (e.changedTouches.length !== 1) return;
+
+      const touch = e.changedTouches[0];
+      const deltaX = touch.clientX - touchStartX;
+      const deltaY = touch.clientY - touchStartY;
+      const deltaTime = Date.now() - touchStartTime;
+
+      // Critérios rigorosos para disparo de swipe horizontal intencional:
+      // 1. Duração <= 650ms (gesto rápido e deliberado, não toque demorado)
+      // 2. Deslocamento horizontal >= 50px
+      // 3. Predominância horizontal (Math.abs(deltaX) > Math.abs(deltaY) * 1.5) para não colidir com a rolagem vertical de leitura
+      if (deltaTime <= 650 && Math.abs(deltaX) >= 50 && Math.abs(deltaX) > Math.abs(deltaY) * 1.5) {
+        if (deltaX < 0 && nextScreen) {
+          // Deslizar para a esquerda -> avança para a próxima tela
+          handleNext();
+        } else if (deltaX > 0 && previousScreen) {
+          // Deslizar para a direita -> volta para a tela anterior
+          handlePrevious();
+        }
+      }
+    };
+
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+    return () => {
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, [isMenuOpen, legalModal, isSitemapOpen, nextScreen, previousScreen, handleNext, handlePrevious]);
 
   // Sincronização dinâmica de meta tags OpenGraph, Twitter Cards, Canonical e Title para cada seção/tela
   useEffect(() => {
@@ -503,8 +582,8 @@ export default function App() {
         )}
       </main>
 
-      {/* Rodapé Institucional com Links de Telas e Termos Legais */}
-      {!isMenuOpen && (
+      {/* Rodapé Institucional com Links de Telas e Termos Legais — Oculto exclusivamente na tela inicial (Home) */}
+      {!isMenuOpen && currentScreen !== 'home' && (
         <Footer
           onOpenPrivacy={() => setLegalModal('privacy')}
           onOpenTerms={() => setLegalModal('terms')}

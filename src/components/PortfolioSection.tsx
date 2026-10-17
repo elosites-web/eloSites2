@@ -426,7 +426,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
   return (
     <section
       id="portfolio"
-      className="section-auto-contain pt-24 pb-6 sm:pt-28 sm:pb-7 lg:pt-32 lg:pb-8 bg-[#090D16]/30 backdrop-blur-[0.5px] relative"
+      className="section-auto-contain pt-24 pb-3 sm:pt-28 sm:pb-4 lg:pt-32 lg:pb-5 bg-[#090D16]/30 backdrop-blur-[0.5px] relative"
     >
       {/* Luz ambiente de fundo */}
       <div className="absolute top-1/4 left-0 w-96 h-96 bg-indigo-500/[0.08] blur-[140px] rounded-full pointer-events-none" />
@@ -531,8 +531,8 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
           </div>
         </div>
 
-        {/* Banner Inferior com Conversão Direta e 3D Tilt — Espaçamento superior reduzido em exatamente 50% (de mt-12/sm:mt-16 para mt-6/sm:mt-8) */}
-        <Interactive3DCard maxTilt={3} className="mt-6 sm:mt-8 w-full">
+        {/* Banner Inferior com Conversão Direta e 3D Tilt — Margem superior reduzida para equilibrar transição após a grade */}
+        <Interactive3DCard maxTilt={3} className="mt-4 sm:mt-5 w-full">
           <div className="glass-card-interactive surface-card portfolio-card scroll-perf-card p-6 sm:p-7 md:p-8 rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 shadow-2xl shadow-black/60 bracket-panel transition-colors">
             <div className="space-y-2 text-left w-full lg:max-w-xl">
               <h3 className="text-xl sm:text-2xl font-bold text-white font-display">

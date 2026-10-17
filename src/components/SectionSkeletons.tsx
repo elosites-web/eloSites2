@@ -66,8 +66,8 @@ export const PortfolioSkeleton: React.FC = () => {
           </div>
         </div>
 
-        {/* Grade de 3 Cards de Projetos */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch">
+        {/* Grade de 3 Cards de Projetos — Espaçamento reduzido em 50% */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 items-stretch">
           {[1, 2, 3].map((i) => (
             <div
               key={i}

@@ -177,12 +177,13 @@ export const Header: React.FC<HeaderProps> = ({
           onClick={handleCloseMenuWithoutNav}
         >
           {/* Container centrado contendo o logotipo no topo, os 7 links em cascata e o botão fechar */}
+          {/* Container centrado contendo o logotipo no topo, os 7 links em cascata e o botão fechar */}
           <div
-            className="nav-menu-list-wrap relative w-full max-w-lg flex flex-col items-center justify-center text-center my-auto px-4 pt-3 pb-5 sm:pt-4 sm:pb-6 pointer-events-auto"
+            className="nav-menu-list-wrap relative w-full flex flex-col items-center justify-center text-center my-auto px-4 pt-3 pb-5 sm:pt-4 sm:pb-6 pointer-events-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Logotipo pequeno no topo com separação garantida em relação ao item Home (sem sobreposição) */}
-            <div className="nav-menu-logo-wrap mb-3.5 sm:mb-5">
+            {/* Logotipo no topo do menu */}
+            <div className="nav-menu-logo-wrap">
               <button
                 type="button"
                 onClick={() => {
@@ -194,13 +195,13 @@ export const Header: React.FC<HeaderProps> = ({
                 <img
                   src="/logo-elosites-final.png"
                   alt="ēloSites"
-                  className="nav-menu-logo-img h-6 sm:h-7 md:h-8 w-auto object-contain drop-shadow-[0_0_20px_rgba(34,211,238,0.55)]"
+                  className="nav-menu-logo-img w-auto object-contain drop-shadow-[0_0_20px_rgba(34,211,238,0.55)]"
                 />
               </button>
             </div>
 
             {/* Somente os 7 nomes de seções em cascata — SEM QUADRO EM VOLTA */}
-            <ul className="nav-menu-list flex flex-col items-center justify-center gap-1 sm:gap-2 md:gap-2.5 py-0.5 w-full">
+            <ul className="nav-menu-list flex flex-col items-center justify-center py-0.5 w-full">
               {SCREENS.map((screen, index) => {
                 const isActive = screen.id === currentScreen;
 
@@ -221,18 +222,10 @@ export const Header: React.FC<HeaderProps> = ({
                       onClick={() => {
                         onSelectScreen(screen.id);
                       }}
-                      className={`nav-menu-link-item group relative py-1 px-3 sm:py-1.5 sm:px-4 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/70 flex items-center justify-center cursor-pointer ${
+                      className={`nav-menu-link-item group relative rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/70 flex items-center justify-center cursor-pointer ${
                         isActive ? 'is-active scale-105' : 'hover:scale-105'
                       }`}
                     >
-                      {/*
-                        Tipografia responsiva dos itens de menu:
-                        - Mobile retrato: clamp(14px, 4vw, 16px) com line-height: 1.25 (legibilidade ideal)
-                        - Mobile paisagem: clamp(12.5px, 3.4vh, 14.5px) com line-height: 1.15
-                        - Tablet (sm): 15px
-                        - Desktop (md): 18px (redução de 50% preservada em telas maiores)
-                        - Hover / Ativo: Tom azul-lilás (#818cf8) do logotipo oficial
-                      */}
                       <span className="font-display nav-menu-link-text tracking-tight transition-transform duration-200 group-hover:-translate-y-0.5">
                         {screen.shortTitle}
                       </span>
@@ -242,7 +235,7 @@ export const Header: React.FC<HeaderProps> = ({
               })}
             </ul>
 
-            {/* Botãozinho discreto abaixo de FAQ & Contato do 'X' para fechar com estilo indigo-neon */}
+            {/* Botão discreto abaixo de FAQ & Contato do 'X' para fechar (área de toque mínima de 44x44px em mobile e tablet) */}
             <motion.button
               type="button"
               initial={{ opacity: 0, scale: 0.8 }}
@@ -250,9 +243,9 @@ export const Header: React.FC<HeaderProps> = ({
               transition={{ delay: 0.24, duration: 0.25 }}
               onClick={handleCloseMenuWithoutNav}
               aria-label="Fechar menu de navegação"
-              className="nav-menu-close-btn mt-3 sm:mt-4 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-indigo-300 hover:text-cyan-300 bg-indigo-950/40 hover:bg-indigo-900/60 border border-indigo-500/30 hover:border-cyan-400/60 shadow-[0_0_12px_rgba(99,102,241,0.25)] hover:shadow-[0_0_16px_rgba(34,211,238,0.5)] transition-all duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 group"
+              className="nav-menu-close-btn rounded-full flex items-center justify-center text-indigo-300 hover:text-cyan-300 bg-indigo-950/40 hover:bg-indigo-900/60 border border-indigo-500/30 hover:border-cyan-400/60 shadow-[0_0_12px_rgba(99,102,241,0.25)] hover:shadow-[0_0_16px_rgba(34,211,238,0.5)] transition-all duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 group"
             >
-              <X className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-300 group-hover:text-cyan-300 transition-colors" />
+              <X className="nav-menu-close-icon text-indigo-300 group-hover:text-cyan-300 transition-colors" />
             </motion.button>
           </div>
         </div>

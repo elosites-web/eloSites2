@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
-import { isInAppBrowser, getOptimalDpr, shouldReduceMedia } from '../mediaPrefs';
+import { isInAppBrowser, getOptimalDpr, prefersReducedMotion } from '../mediaPrefs';
 
 /**
  * Gera textura procedural 2D de alta definição contendo o blueprint cibernético
@@ -267,7 +267,7 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted,
     const container = containerRef.current;
     if (!container) return;
 
-    const prefersReduced = shouldReduceMedia();
+    const prefersReduced = prefersReducedMotion();
     const isMobile = window.innerWidth < 768;
     const inApp = isInAppBrowser();
 
@@ -525,11 +525,13 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted,
       }
 
       // Fases uniformemente espaçadas e velocidades cadenciadas para animação natural sem aglomeração
+      const baseSpeed = isMobile ? 0.09 : 0.13;
+      const speedVariation = isMobile ? 0.015 : 0.022;
       traces.push({
         points: tracePoints,
         totalLen,
-        progress: t / TRACE_COUNT,
-        speed: (0.09 + (t % 3) * 0.015) * (prefersReduced ? 0.3 : 1.0),
+        progress: (t / TRACE_COUNT + t * 0.07) % 1,
+        speed: (baseSpeed + (t % 3) * speedVariation) * (prefersReduced ? 0.3 : 1.0),
       });
     }
 
@@ -726,6 +728,9 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted,
     window.addEventListener('resize', handleResize);
     handleScroll();
 
+    // Controle de tempo robusto e autônomo baseado em delta independente
+    let elapsedTime = 0;
+
     // Loop de renderização com Zero GC (reaproveita arrays pré-alocados)
     const animate = (timestamp = 0) => {
       if (!running) return;
@@ -740,8 +745,9 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted,
       lastFrameTime = timestamp;
       frameCounter++;
 
-      const delta = Math.min(clock.getDelta(), 0.05);
-      const elapsedTime = clock.getElapsedTime();
+      const rawDelta = clock.getDelta();
+      const delta = Math.min(Math.max(rawDelta, 0.001), 0.05);
+      elapsedTime += delta;
 
       // =======================================================================
       // MONITOR DE PERFORMANCE EM TEMPO REAL (FPS MONITOR)
@@ -804,10 +810,14 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted,
       // Deslocamento contínuo da grade de perspectiva infinita no solo (gliding perspective)
       groundGridMesh.position.z = (elapsedTime * 0.8) % gridSpacing;
 
-      // Inclinação holográfica 3D interativa da grade e circuitos na direção do cursor/toque
-      gridInteractiveGroup.rotation.z = -currentPointerX * 0.045;
-      gridInteractiveGroup.rotation.x = currentPointerY * 0.04;
-      gridInteractiveGroup.position.x = currentPointerX * 0.25;
+      // Movimento autônomo sutil e contínuo do circuito e perspectiva (ativa mesmo com mouse estático)
+      const autoTiltZ = Math.sin(elapsedTime * 0.35) * 0.02;
+      const autoTiltX = Math.cos(elapsedTime * 0.28) * 0.016;
+      const autoGridX = Math.sin(elapsedTime * 0.3) * 0.08;
+
+      gridInteractiveGroup.rotation.z = -currentPointerX * 0.045 + autoTiltZ;
+      gridInteractiveGroup.rotation.x = currentPointerY * 0.04 + autoTiltX;
+      gridInteractiveGroup.position.x = currentPointerX * 0.25 + autoGridX;
 
       // =======================================================================
       // ILUMINAÇÃO GLOBAL E RESPOSTA EMISSIVA HOLOGRÁFICA CIANO-VIOLETA
@@ -864,8 +874,8 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted,
 
         for (let p = 0; p < trace.points.length - 1; p++) {
           const segLen = trace.points[p].distanceTo(trace.points[p + 1]);
-          if (accum + segLen >= targetDist) {
-            const segRatio = segLen > 0 ? (targetDist - accum) / segLen : 0;
+          if (accum + segLen >= targetDist || p === trace.points.length - 2) {
+            const segRatio = segLen > 0 ? Math.min(Math.max((targetDist - accum) / segLen, 0), 1) : 0;
             pX = trace.points[p].x + (trace.points[p + 1].x - trace.points[p].x) * segRatio;
             pY = trace.points[p].y + (trace.points[p + 1].y - trace.points[p].y) * segRatio;
             pZ = trace.points[p].z + (trace.points[p + 1].z - trace.points[p].z) * segRatio;
@@ -879,6 +889,7 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted,
         pulseArr[t * 3 + 2] = pZ;
       }
       pulseGeo.attributes.position.needsUpdate = true;
+      pulseMat.opacity = (inApp ? 0.32 : isMobile ? 0.42 : 0.46) + Math.sin(elapsedTime * 2.2) * 0.06;
 
       // Atualização contínua e suave da chuva digital no horizonte
       const streamArr = streamGeo.attributes.position.array as Float32Array;
@@ -899,7 +910,10 @@ export const Persistent3DScene: React.FC<Persistent3DSceneProps> = ({ onMounted,
       if (!running) {
         running = true;
         clock.start();
-        animate(performance.now());
+        lastFrameTime = performance.now();
+        if (!animationFrameId) {
+          animationFrameId = requestAnimationFrame(animate);
+        }
       }
     };
 

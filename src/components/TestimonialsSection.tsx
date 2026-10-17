@@ -266,7 +266,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
     <section
       id="testemunhos"
       aria-label="Avaliações de Clientes e Prova Social"
-      className="section-auto-contain pt-12 pb-16 sm:pt-16 sm:pb-20 lg:pt-20 lg:pb-24 bg-[#070A12]/40 backdrop-blur-[0.5px] relative border-t border-white/[0.08] overflow-hidden"
+      className="section-auto-contain pt-8 pb-14 sm:pt-10 sm:pb-16 lg:pt-12 lg:pb-20 bg-[#070A12]/40 backdrop-blur-[0.5px] relative border-t border-white/[0.08] overflow-hidden"
     >
       {/* Luzes ambiente de fundo ciano e violeta */}
       <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-96 h-96 bg-cyan-600/[0.05] blur-[150px] rounded-full pointer-events-none" />
