@@ -64,6 +64,12 @@ export const generateSitemapXml = (baseUrl: string): string => {
       changefreq: 'monthly',
       comment: 'Tela 06: Perguntas Frequentes & Contato',
     },
+    {
+      loc: `${cleanBase}/#parceria-trafego`,
+      priority: '0.8',
+      changefreq: 'monthly',
+      comment: 'Tela 07: Parceria Estratégica | Tráfego Pago',
+    },
   ];
 
   const urlsBlock = entries

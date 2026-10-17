@@ -15,7 +15,8 @@ export type ScreenId =
   | 'servicos'
   | 'processo'
   | 'orcamento'
-  | 'faq';
+  | 'faq'
+  | 'parceria-trafego';
 
 export interface ScreenMeta {
   id: ScreenId;
@@ -90,6 +91,15 @@ export const SCREENS: ScreenMeta[] = [
     badge: 'Dúvidas & Contato',
     description: 'Respostas diretas sobre prazos, domínio, hospedagem, pagamentos e canais de atendimento.',
     iconName: 'HelpCircle',
+  },
+  {
+    id: 'parceria-trafego',
+    number: '08',
+    title: 'Parceria Estratégica | Tráfego Pago & Gestão de Leads',
+    shortTitle: 'Parceria | Tráfego Pago',
+    badge: 'Tráfego Pago',
+    description: 'Parceria recomendada com Thomaz (TrueThomaz.BM) para Meta Ads, geração de leads e consultoria comercial.',
+    iconName: 'TrendingUp',
   },
 ];
 
@@ -237,6 +247,10 @@ export const SITE_CONFIG = {
   // 13) Rodapé
   footerWhatsappMessage:
     'Olá! 👋 Conheci o trabalho da *ēloSites* pelo rodapé do site.\n\nGostaria de solicitar uma análise e um orçamento personalizado para o meu projeto!',
+
+  // 14) Parceria | Tráfego Pago
+  partnershipWhatsappMessage:
+    'Olá! Vim pelo site da ēloSites e gostaria de conhecer a condição especial da parceria de tráfego pago. Gostaria de receber mais informações.',
 
   // Padrão Geral
   defaultWhatsappMessage:

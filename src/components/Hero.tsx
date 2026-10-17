@@ -5,7 +5,6 @@ import { SITE_CONFIG, whatsappUrl } from '../types';
 import { shouldReduceMedia, getMotionTier } from '../mediaPrefs';
 import { ArrowDown, CheckCircle2, Code2, Smartphone } from 'lucide-react';
 import { Interactive3DCard } from './Interactive3DCard';
-import { useLogoTaglineWidth } from './useLogoTaglineWidth';
 
 interface HeroProps {
   mode?: 'home' | 'inicio' | 'all';
@@ -20,11 +19,6 @@ export const Hero: React.FC<HeroProps> = ({
   onNavigateToServices,
   isMenuOpen = false,
 }) => {
-  const {
-    logoRef: heroLogoRef,
-    logoWidth: heroLogoWidth,
-    handleImageLoad: handleHeroLogoLoad,
-  } = useLogoTaglineWidth<HTMLImageElement>();
   const heroWhatsappUrl = whatsappUrl(SITE_CONFIG.heroWhatsappMessage);
 
   const handleScrollToPortfolio = (e: React.MouseEvent) => {
@@ -164,25 +158,10 @@ export const Hero: React.FC<HeroProps> = ({
                   aria-label="ēloSites — Página Inicial (Home)"
                 >
                   <img
-                    ref={heroLogoRef}
                     src="/logo-elosites-final.png"
                     alt="ēloSites"
-                    onLoad={handleHeroLogoLoad}
                     className="hero-home-logo w-auto object-contain drop-shadow-[0_0_20px_rgba(168,85,247,0.3)] relative z-10"
                   />
-
-                  {/* Frase oficial abaixo do logotipo com largura sincronizada com o logo e perfeitamente centralizada */}
-                  <div
-                    style={{
-                      width: heroLogoWidth ? `${heroLogoWidth}px` : undefined,
-                      maxWidth: heroLogoWidth ? `${heroLogoWidth}px` : '100%',
-                    }}
-                    className="flex flex-col items-center justify-center text-center overflow-hidden relative z-10"
-                  >
-                    <span className="w-full text-center mt-2.5 sm:mt-3.5 text-[10px] min-[380px]:text-xs sm:text-sm font-semibold tracking-wider sm:tracking-widest uppercase text-slate-300/90 select-none">
-                      O melhor site pelo melhor preço
-                    </span>
-                  </div>
                 </a>
               </motion.div>
             )}

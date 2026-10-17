@@ -121,7 +121,8 @@ export const Footer: React.FC<FooterProps> = ({
                   if (href.includes('servico')) return 'servicos';
                   if (href.includes('processo') || href.includes('como-funciona') || href.includes('diferencia')) return 'processo';
                   if (href.includes('briefing') || href.includes('orcamento')) return 'orcamento';
-                  if (href.includes('faq') || href.includes('contato') || href.includes('parceria')) return 'faq';
+                  if (href.includes('parceria') || href.includes('trafego')) return 'parceria-trafego';
+                  if (href.includes('faq') || href.includes('contato')) return 'faq';
                   if (href.includes('inicio')) return 'inicio';
                   return 'home';
                 };
@@ -136,20 +137,9 @@ export const Footer: React.FC<FooterProps> = ({
                       onClick={() => {
                         if (onSelectScreen) {
                           onSelectScreen(screenId);
-                          if (item.href === '#parceria-trafego') {
-                            window.location.hash = 'parceria-trafego';
-                            setTimeout(() => {
-                              const el = document.getElementById('parceria-trafego');
-                              if (el) {
-                                const headerOffset = 70;
-                                const elementPosition = el.getBoundingClientRect().top;
-                                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                                window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-                              }
-                            }, 180);
-                          } else {
-                            window.scrollTo({ top: 0, behavior: 'smooth' });
-                          }
+                        } else {
+                          window.location.hash = screenId;
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
                         }
                       }}
                       className={`text-left transition-all duration-200 relative flex items-center gap-2 py-0.5 cursor-pointer group hover:-translate-y-0.5 hover:translate-x-1 ${

@@ -86,6 +86,7 @@ export default function App() {
       'processo',
       'orcamento',
       'faq',
+      'parceria-trafego',
     ];
 
     const handleHashChange = () => {
@@ -153,26 +154,18 @@ export default function App() {
           const el = document.getElementById('apresentacao');
           if (el) el.scrollIntoView({ behavior: 'smooth' });
         }, 150);
-      } else if (rawHash === 'parceria-trafego' || rawHash === 'parceria' || rawHash === 'trafego') {
+      } else if (rawHash === 'parceria' || rawHash === 'trafego') {
         setCurrentScreen((prev) => {
-          if (prev !== 'faq') {
+          if (prev !== 'parceria-trafego') {
             const prevIdx = SCREENS.findIndex((s) => s.id === prev);
-            const nextIdx = SCREENS.findIndex((s) => s.id === 'faq');
+            const nextIdx = SCREENS.findIndex((s) => s.id === 'parceria-trafego');
             if (nextIdx !== -1 && prevIdx !== -1) {
               setDirection(nextIdx > prevIdx ? 1 : -1);
             }
           }
-          return 'faq';
+          return 'parceria-trafego';
         });
-        setTimeout(() => {
-          const el = document.getElementById('parceria-trafego');
-          if (el) {
-            const headerOffset = 70;
-            const elementPosition = el.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-            window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-          }
-        }, 180);
+        window.scrollTo({ top: 0, behavior: 'instant' });
       } else if (rawHash === 'sitemap' || rawHash === 'mapa-do-site') {
         setIsSitemapOpen(true);
       }
@@ -216,21 +209,8 @@ export default function App() {
   }, [nextScreen, navigateToScreen]);
 
   const handleSelectPartnership = useCallback(() => {
-    setIsMenuOpen(false);
-    if (currentScreen !== 'faq') {
-      navigateToScreen('faq');
-    }
-    window.location.hash = 'parceria-trafego';
-    setTimeout(() => {
-      const el = document.getElementById('parceria-trafego');
-      if (el) {
-        const headerOffset = 70;
-        const elementPosition = el.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-      }
-    }, currentScreen !== 'faq' ? 220 : 50);
-  }, [currentScreen, navigateToScreen]);
+    navigateToScreen('parceria-trafego');
+  }, [navigateToScreen]);
 
   // Suporte a navegação por setas do teclado (Esquerda e Direita)
   useEffect(() => {
@@ -534,11 +514,17 @@ export default function App() {
         </div>
       )}
 
-      {/* TELA 06: Perguntas Frequentes (FAQ) & Contato + Parceria Estratégica */}
+      {/* TELA 06: Perguntas Frequentes (FAQ) & Contato */}
       {currentScreen === 'faq' && (
         <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style] space-y-0">
           <FaqSection />
           <ContactCtaSection onNavigateToOrcamento={() => navigateToScreen('orcamento')} />
+        </div>
+      )}
+
+      {/* TELA 07: Parceria Estratégica | Tráfego Pago */}
+      {currentScreen === 'parceria-trafego' && (
+        <div style={{ willChange: 'transform', contain: 'layout style' }} className="w-full will-change-transform [contain:layout_style] space-y-0">
           <PaidTrafficPartnershipSection />
         </div>
       )}

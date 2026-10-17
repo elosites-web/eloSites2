@@ -45,4 +45,11 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  <!-- Tela 07: Parceria Estratégica | Tráfego Pago -->
+  <url>
+    <loc>https://elosites.ia.br/#parceria-trafego</loc>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>

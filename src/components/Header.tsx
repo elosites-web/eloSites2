@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { EloLogo } from './EloLogo';
 import { ScreenId, SCREENS } from '../types';
-import { useLogoTaglineWidth } from './useLogoTaglineWidth';
 
 interface HeaderProps {
   currentScreen: ScreenId;
@@ -23,11 +22,6 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   const isHome = currentScreen === 'home';
   const savedScrollPositionRef = useRef<number>(0);
-  const {
-    logoRef: menuLogoRef,
-    logoWidth: menuLogoWidth,
-    handleImageLoad: handleMenuLogoLoad,
-  } = useLogoTaglineWidth<HTMLImageElement>();
 
   // Tecla de atalho: Escape para fechar o menu, 'm' ou 'M' para abrir/fechar o menu
   useEffect(() => {
@@ -111,12 +105,12 @@ export const Header: React.FC<HeaderProps> = ({
               : 'w-5 -translate-y-[6px] rotate-0 bg-gradient-to-r from-purple-500 via-violet-500 to-indigo-500 group-hover:from-purple-400 group-hover:to-violet-400 shadow-[0_0_8px_rgba(168,85,247,0.7)]'
           }`}
         />
-        {/* Traço do meio: tom de cinza. Desaparece suavemente quando o menu é acionado */}
+        {/* Traço do meio: tom branco/cinza claro alinhado à esquerda dos outros traços */}
         <span
-          className={`absolute left-1/2 -translate-x-1/2 top-[11px] h-[2px] rounded-full bg-gradient-to-r from-slate-300 via-gray-300 to-slate-400 transition-all duration-200 ease-out shadow-[0_0_6px_rgba(203,213,225,0.4)] ${
+          className={`absolute left-[2px] top-[11px] h-[2px] rounded-full bg-gradient-to-r from-slate-100 via-white to-slate-300 transition-all duration-200 ease-out shadow-[0_0_6px_rgba(255,255,255,0.4)] origin-left ${
             isMenuOpen
               ? 'w-0 opacity-0 scale-x-0'
-              : 'w-3.5 opacity-100 scale-x-100 translate-y-0 group-hover:w-5 group-hover:from-slate-200 group-hover:to-gray-200'
+              : 'w-3.5 opacity-100 scale-x-100 translate-y-0 group-hover:w-5 group-hover:from-white group-hover:to-slate-200'
           }`}
         />
         {/* Traço inferior: tom de roxo oficial da ēloSites. Sobe ao centro e gira -45° para formar o X com o traço superior */}
@@ -124,7 +118,7 @@ export const Header: React.FC<HeaderProps> = ({
           className={`absolute left-1/2 -translate-x-1/2 top-[11px] h-[2px] rounded-full transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] ${
             isMenuOpen
               ? 'w-5 translate-y-0 -rotate-45 bg-gradient-to-r from-indigo-400 via-violet-400 to-purple-400 shadow-[0_0_12px_rgba(168,85,247,0.85)] group-hover:from-indigo-300 group-hover:to-purple-300'
-              : 'w-4.5 translate-y-[6px] rotate-0 group-hover:w-5 bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500 group-hover:from-indigo-400 group-hover:to-purple-400 shadow-[0_0_8px_rgba(168,85,247,0.7)]'
+              : 'w-5 translate-y-[6px] rotate-0 group-hover:w-5 bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500 group-hover:from-indigo-400 group-hover:to-purple-400 shadow-[0_0_8px_rgba(168,85,247,0.7)]'
           }`}
         />
       </div>
@@ -234,7 +228,7 @@ export const Header: React.FC<HeaderProps> = ({
           >
             <ul className="nav-menu-list flex flex-col items-center justify-center py-0.5 w-full">
               {SCREENS.map((screen, index) => {
-                const isActive = screen.id === currentScreen && window.location.hash !== '#parceria-trafego';
+                const isActive = screen.id === currentScreen;
 
                 return (
                   <motion.li
@@ -264,50 +258,6 @@ export const Header: React.FC<HeaderProps> = ({
                   </motion.li>
                 );
               })}
-
-              {/* Item de navegação: Parceria | Tráfego Pago imediatamente abaixo de FAQ & Contato */}
-              <motion.li
-                key="parceria-trafego"
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  delay: 0.03 * SCREENS.length,
-                  duration: 0.28,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-                className="nav-menu-list-item w-full flex justify-center"
-              >
-                <button
-                  type="button"
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                    if (onSelectPartnership) {
-                      onSelectPartnership();
-                    } else {
-                      if (currentScreen !== 'faq') {
-                        onSelectScreen('faq');
-                      }
-                      window.location.hash = 'parceria-trafego';
-                      setTimeout(() => {
-                        const el = document.getElementById('parceria-trafego');
-                        if (el) {
-                          const headerOffset = 70;
-                          const elementPosition = el.getBoundingClientRect().top;
-                          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                          window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-                        }
-                      }, currentScreen !== 'faq' ? 220 : 50);
-                    }
-                  }}
-                  className={`nav-menu-link-item group relative rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/70 flex items-center justify-center cursor-pointer ${
-                    window.location.hash === '#parceria-trafego' ? 'is-active scale-105' : 'hover:scale-105'
-                  }`}
-                >
-                  <span className="font-display nav-menu-link-text tracking-tight transition-transform duration-200 group-hover:-translate-y-0.5">
-                    Parceria | Tráfego Pago
-                  </span>
-                </button>
-              </motion.li>
             </ul>
           </div>
 
@@ -325,20 +275,12 @@ export const Header: React.FC<HeaderProps> = ({
               aria-label="ēloSites — Ir para a Página Inicial (Home)"
             >
               <img
-                ref={menuLogoRef}
                 src="/logo-elosites-final.png"
                 alt="ēloSites"
-                onLoad={handleMenuLogoLoad}
                 className="nav-menu-logo-img w-auto object-contain drop-shadow-[0_0_20px_rgba(168,85,247,0.35)]"
               />
-              <div
-                style={{
-                  width: menuLogoWidth ? `${menuLogoWidth}px` : undefined,
-                  maxWidth: menuLogoWidth ? `${menuLogoWidth}px` : '100%',
-                }}
-                className="flex flex-col items-center justify-center text-center overflow-hidden"
-              >
-                <span className="w-full text-center mt-1 text-[8px] min-[380px]:text-[9px] sm:text-[10.5px] font-semibold tracking-wider uppercase text-slate-400 select-none leading-tight">
+              <div className="flex flex-col items-center justify-center text-center">
+                <span className="w-full text-center mt-1 text-[7px] min-[380px]:text-[8px] sm:text-[9.5px] font-semibold tracking-wider uppercase text-slate-400 select-none leading-tight whitespace-nowrap">
                   O melhor site pelo melhor preço
                 </span>
               </div>

@@ -28,6 +28,8 @@ export type WhatsAppLocation =
   | 'booking'
   | 'faq'
   | 'contact'
+  | 'parceria-trafego'
+  | 'partnership'
   | 'floating'
   | 'menu-modal'
   | 'footer';
@@ -121,6 +123,10 @@ export function formatWhatsAppMessage(params?: WhatsAppContextParams | string): 
     return 'Olá! 👋 Conheci o trabalho da *ēloSites* pelo rodapé do site.\n\nGostaria de solicitar uma análise e um orçamento personalizado para o meu projeto!';
   }
 
+  if (params.location === 'partnership' || params.location === 'parceria-trafego') {
+    return 'Olá! Vim pelo site da ēloSites e gostaria de conhecer a condição especial da parceria de tráfego pago. Gostaria de receber mais informações.';
+  }
+
   // 2) Mensagens pelo ID da tela ativa caso location não tenha sido especificado
   switch (params.screenId) {
     case 'inicio':
@@ -139,6 +145,8 @@ export function formatWhatsAppMessage(params?: WhatsAppContextParams | string): 
       return 'Olá! 💡 Estive lendo a seção de *Perguntas Frequentes (FAQ)* no site da *ēloSites*.\n\nAinda fiquei com algumas dúvidas sobre domínio, hospedagem ou prazos e gostaria de falar diretamente com o desenvolvedor.';
     case 'contato':
       return 'Olá! 💬 Gostaria de dar o próximo passo e iniciar o projeto do meu *site profissional* com a *ēloSites*.\n\nPodemos conversar sobre o escopo, formato e orçamento?';
+    case 'parceria-trafego':
+      return 'Olá! Vim pelo site da ēloSites e gostaria de conhecer a condição especial da parceria de tráfego pago. Gostaria de receber mais informações.';
     default:
       return 'Olá! 👋 Gostaria de saber mais sobre a criação de sites profissionais da *ēloSites*.';
   }

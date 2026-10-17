@@ -862,8 +862,9 @@ a[id*="whatsapp"]:hover > svg {
   width: 100%;
 }
 
+/* Logotipo aumentado em 3px adicionais (anterior +6px, total +9px) */
 .nav-menu-logo-img {
-  height: calc(clamp(1.23rem, 2.9vh, 1.56rem) + 2px);
+  height: calc(clamp(1.23rem, 2.9vh, 1.56rem) + 9px);
   width: auto;
   object-fit: contain;
 }
@@ -919,9 +920,9 @@ a[id*="whatsapp"]:hover > svg {
     padding-bottom: clamp(0.75rem, 2.5vh, 2rem);
   }
 
-  /* Logotipo aumentado em 2px */
+  /* Logotipo aumentado em 3px adicionais (+9px total) */
   .nav-menu-logo-img {
-    height: calc(clamp(1.67rem, 3.2vh, 2.17rem) + 2px);
+    height: calc(clamp(1.67rem, 3.2vh, 2.17rem) + 9px);
   }
 }
 
@@ -955,9 +956,9 @@ a[id*="whatsapp"]:hover > svg {
     padding-bottom: 1.5rem;
   }
 
-  /* Logotipo aumentado em 2px */
+  /* Logotipo aumentado em 3px adicionais (+9px total) */
   .nav-menu-logo-img {
-    height: calc(1.333rem + 2px);
+    height: calc(1.333rem + 9px);
   }
 }
 
@@ -1028,7 +1029,7 @@ a[id*="whatsapp"]:hover > svg {
   }
 
   .nav-menu-logo-img {
-    height: calc(0.9rem + 2px) !important;
+    height: calc(0.9rem + 9px) !important;
   }
 }
 
@@ -1064,37 +1065,37 @@ a[id*="whatsapp"]:hover > svg {
    - Desktop (>= 1280px): base md:h-8 (32px) -> Multiplicador 5x = 160px
    ============================================================ */
 
-/* Celular (< 768px): 3x o tamanho atual */
+/* Celular (< 768px): reduzido em 8px (72px -> 64px) */
 .hero-home-logo {
-  height: 72px;
+  height: 64px;
   width: auto;
   max-width: min(85vw, 320px);
   max-height: 18vh;
   object-fit: contain;
 }
 
-/* Tablet (768px a 1279px): 3,5x o tamanho atual */
+/* Tablet (768px a 1279px): reduzido em 8px (112px -> 104px) */
 @media (min-width: 768px) and (max-width: 1279.98px) {
   .hero-home-logo {
-    height: 112px;
+    height: 104px;
     max-width: min(80vw, 520px);
     max-height: 22vh;
   }
 }
 
-/* Desktop (>= 1280px): 5x o tamanho atual */
+/* Desktop (>= 1280px): reduzido em 8px (160px -> 152px) */
 @media (min-width: 1280px) {
   .hero-home-logo {
-    height: 160px;
+    height: 152px;
     max-width: min(70vw, 680px);
     max-height: 28vh;
   }
 }
 
-/* Celulares pequenos ou no modo paisagem (pouca altura) */
+/* Celulares pequenos ou no modo paisagem (pouca altura): reduzido em 8px */
 @media (max-height: 540px) {
   .hero-home-logo {
-    height: clamp(40px, 16vh, 60px);
+    height: clamp(32px, 16vh, 52px);
     max-width: 75vw;
   }
 }

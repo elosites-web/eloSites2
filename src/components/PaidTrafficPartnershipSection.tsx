@@ -2,6 +2,7 @@ import React from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { WhatsAppIcon } from './WhatsAppIcon';
 import { SplitLines } from './SplitLines';
+import { whatsappUrl } from '../types';
 import { shouldReduceMedia } from '../mediaPrefs';
 import { getDynamicCardVariants } from '../motionVariants';
 import {
@@ -27,12 +28,9 @@ export const PaidTrafficPartnershipSection: React.FC<PaidTrafficPartnershipSecti
   const prefersReduced = Boolean(systemPrefersReduced || shouldReduceMedia());
   const cardVariants = getDynamicCardVariants(prefersReduced);
 
-  const PARTNER_WHATSAPP_NUMBER = '5551991496865';
-  const PARTNER_PREFILLED_MESSAGE =
-    'Olá, Thomaz! Cheguei pela ēloSites e gostaria de conhecer a condição especial para clientes indicados pela ēloSites.';
-  const partnerWhatsappUrl = `https://wa.me/${PARTNER_WHATSAPP_NUMBER}?text=${encodeURIComponent(
-    PARTNER_PREFILLED_MESSAGE
-  )}`;
+  const PARTNERSHIP_PREFILLED_MESSAGE =
+    'Olá! Vim pelo site da ēloSites e gostaria de conhecer a condição especial da parceria de tráfego pago. Gostaria de receber mais informações.';
+  const partnershipWhatsappUrl = whatsappUrl(PARTNERSHIP_PREFILLED_MESSAGE);
 
   const benefits = [
     {
@@ -81,19 +79,19 @@ export const PaidTrafficPartnershipSection: React.FC<PaidTrafficPartnershipSecti
     <section
       id={id}
       tabIndex={-1}
-      className="section-auto-contain pt-16 pb-20 sm:pt-20 sm:pb-24 lg:pt-24 lg:pb-28 bg-[#080D1A] relative border-t border-white/[0.06] overflow-x-clip scroll-mt-20 sm:scroll-mt-24 focus:outline-none"
+      className="section-auto-contain pt-24 pb-20 sm:pt-28 sm:pb-24 lg:pt-32 lg:pb-28 bg-[#080D1A] relative border-t border-white/[0.06] overflow-x-clip scroll-mt-20 sm:scroll-mt-24 focus:outline-none"
     >
       {/* Elementos visuais sutis de fundo */}
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-purple-500/30 to-transparent pointer-events-none" />
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(700px,100%)] h-[400px] bg-purple-600/[0.08] blur-[150px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-1/3 right-10 w-96 h-96 bg-indigo-600/[0.06] blur-[140px] rounded-full pointer-events-none" />
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent pointer-events-none" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(700px,100%)] h-[400px] bg-cyan-600/[0.06] blur-[150px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-1/3 right-10 w-96 h-96 bg-blue-600/[0.06] blur-[140px] rounded-full pointer-events-none" />
 
       <div className="page-shell page-x relative z-10">
         <div className="max-w-5xl mx-auto space-y-12 sm:space-y-16">
           {/* Cabeçalho da Seção */}
           <div className="text-center space-y-5 max-w-3xl mx-auto">
-            <div className="section-kicker inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-purple-500/30 text-purple-300 text-xs sm:text-sm font-semibold uppercase tracking-wider shadow-sm">
-              <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse shadow-[0_0_8px_#c084fc]" />
+            <div className="section-kicker inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-950/60 border border-blue-500/35 text-blue-300 text-xs sm:text-sm font-semibold uppercase tracking-wider shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#22d3ee]" />
               <span>PARCERIA ESTRATÉGICA</span>
             </div>
 
@@ -119,11 +117,11 @@ export const PaidTrafficPartnershipSection: React.FC<PaidTrafficPartnershipSecti
             viewport={{ once: true, amount: 0.12, margin: '0px 0px -40px 0px' }}
             className="w-full"
           >
-            <div className="glass-panel bracket-panel rounded-3xl p-6 sm:p-8 lg:p-10 border border-indigo-500/25 bg-gradient-to-br from-[#0c1326]/90 via-[#0a0f1e]/95 to-[#120f26]/80 relative shadow-2xl">
+            <div className="glass-panel bracket-panel rounded-2xl p-6 sm:p-8 lg:p-10 border border-white/[0.08] bg-gradient-to-br from-[#081820]/90 via-[#07151c]/95 to-[#091f24]/80 relative shadow-2xl">
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 lg:gap-10">
                 <div className="space-y-3.5 max-w-2xl">
-                  <div className="inline-flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-wider text-purple-300">
-                    <Sparkles className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+                  <div className="inline-flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-wider text-emerald-300">
+                    <Sparkles className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
                     <span>Condição especial para clientes ēloSites</span>
                   </div>
                   <h3 className="font-display text-xl sm:text-2xl font-bold text-white tracking-tight">
@@ -139,7 +137,7 @@ export const PaidTrafficPartnershipSection: React.FC<PaidTrafficPartnershipSecti
 
                 <div className="shrink-0 flex flex-col items-start lg:items-end justify-center pt-2 lg:pt-0 border-t lg:border-t-0 lg:border-l border-white/[0.08] lg:pl-8">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-600/30 to-indigo-600/30 border border-purple-500/40 flex items-center justify-center font-display font-bold text-lg text-purple-300 shadow-inner">
+                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-600/30 via-teal-600/25 to-cyan-600/30 border border-emerald-500/40 flex items-center justify-center font-display font-bold text-lg text-emerald-300 shadow-inner">
                       TT
                     </div>
                     <div className="text-left">
@@ -147,7 +145,7 @@ export const PaidTrafficPartnershipSection: React.FC<PaidTrafficPartnershipSecti
                       <span className="block text-xs text-slate-400">TrueThomaz.BM</span>
                     </div>
                   </div>
-                  <span className="mt-3 text-[11px] font-mono text-purple-300/80 bg-purple-950/60 px-2.5 py-1 rounded-md border border-purple-500/20">
+                  <span className="mt-3 text-[11px] font-mono text-cyan-300/90 bg-emerald-950/60 px-2.5 py-1 rounded-md border border-emerald-500/25">
                     Parceiro Homologado
                   </span>
                 </div>
@@ -295,27 +293,20 @@ export const PaidTrafficPartnershipSection: React.FC<PaidTrafficPartnershipSecti
                   </p>
                 </div>
 
-                {/* Chamada para Ação Principal (CTA WhatsApp) */}
-                <div className="pt-3 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-5 border-t border-white/[0.08]">
+                {/* Chamada para Ação Principal (CTA WhatsApp com a ēloSites) */}
+                <div className="pt-3 flex flex-col items-center justify-center border-t border-white/[0.08]">
                   <a
                     id="cta-parceria-trafego-whatsapp"
-                    href={partnerWhatsappUrl}
+                    href={partnershipWhatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center text-center gap-3 px-6 sm:px-8 py-4 sm:py-4.5 rounded-2xl text-base sm:text-lg font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-400/40 shadow-xl shadow-emerald-950/50 hover:shadow-[0_0_26px_rgba(37,211,102,0.65)] pressable min-h-12 transition-all cursor-pointer group select-none"
-                    aria-label="Quero conhecer a condição especial — Falar com Thomaz pelo WhatsApp"
+                    className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-3 px-6 sm:px-8 py-4 sm:py-4.5 rounded-2xl text-base sm:text-lg font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-400/40 shadow-xl shadow-emerald-950/50 hover:shadow-[0_0_26px_rgba(37,211,102,0.65)] pressable min-h-12 transition-all cursor-pointer group select-none"
+                    aria-label="Quero conhecer a condição especial — Falar com a ēloSites pelo WhatsApp"
                   >
                     <WhatsAppIcon className="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:scale-110 transition-transform shrink-0" />
                     <span>Quero conhecer a condição especial</span>
                     <ArrowRight className="w-4 h-4 text-white/90 group-hover:translate-x-1 transition-transform shrink-0" />
                   </a>
-
-                  <div className="text-xs text-slate-400 space-y-1 sm:text-right">
-                    <p className="text-slate-300 font-medium">Contato direto com o especialista:</p>
-                    <p className="font-mono text-purple-300 select-all font-semibold">
-                      +55 (51) 99149-6865
-                    </p>
-                  </div>
                 </div>
 
                 {/* Nota de Confiança e Transparência */}
