@@ -193,7 +193,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               type="button"
               onClick={() => setViewMode('composite')}
               aria-label="Ver mockup composto sobreposto"
-              className={`flex items-center justify-center text-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] ${
+              className={`flex items-center justify-center text-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] ${
                 viewMode === 'composite'
                   ? 'bg-indigo-600 text-white font-semibold shadow-sm'
                   : 'text-slate-400 hover:text-white'
@@ -206,7 +206,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               type="button"
               onClick={() => setViewMode('desktop')}
               aria-label="Ver imagem desktop"
-              className={`flex items-center justify-center text-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] ${
+              className={`flex items-center justify-center text-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] ${
                 viewMode === 'desktop'
                   ? 'bg-indigo-600 text-white font-semibold shadow-sm'
                   : 'text-slate-400 hover:text-white'
@@ -219,7 +219,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               type="button"
               onClick={() => setViewMode('mobile')}
               aria-label="Ver imagem mobile"
-              className={`flex items-center justify-center text-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] ${
+              className={`flex items-center justify-center text-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] ${
                 viewMode === 'mobile'
                   ? 'bg-indigo-600 text-white font-semibold shadow-sm'
                   : 'text-slate-400 hover:text-white'
@@ -387,7 +387,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             )}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center text-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-[#25D366] hover:bg-[#20bd5a] text-white border border-emerald-400/40 shadow-md shadow-emerald-950/40 hover:shadow-[0_0_20px_rgba(37,211,102,0.6)] active:shadow-[0_0_28px_rgba(37,211,102,0.8)] hover:-translate-y-0.5 active:translate-y-0 transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-200"
+            className="inline-flex items-center justify-center text-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-[#25D366] hover:bg-[#20bd5a] text-white border border-emerald-400/40 shadow-md shadow-emerald-950/40 hover:shadow-[0_0_20px_rgba(37,211,102,0.6)] active:shadow-[0_0_28px_rgba(37,211,102,0.8)] hover:-translate-y-0.5 active:translate-y-0 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-200"
           >
             <WhatsAppIcon className="w-3.5 h-3.5 text-white" />
             <span className="text-white drop-shadow-sm text-center">Quero similar</span>
@@ -451,7 +451,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
               <button
                 type="button"
                 onClick={() => setFilter('all')}
-                className={`inline-flex items-center justify-center text-center px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] ${
+                className={`inline-flex items-center justify-center text-center px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] ${
                   filter === 'all'
                     ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
                     : 'bg-slate-900/80 text-slate-400 hover:text-white border border-white/[0.06]'
@@ -462,7 +462,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
               <button
                 type="button"
                 onClick={() => setFilter('landing')}
-                className={`inline-flex items-center justify-center text-center px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] ${
+                className={`inline-flex items-center justify-center text-center px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] ${
                   filter === 'landing'
                     ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
                     : 'bg-slate-900/80 text-slate-400 hover:text-white border border-white/[0.06]'
@@ -473,7 +473,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
               <button
                 type="button"
                 onClick={() => setFilter('institutional')}
-                className={`inline-flex items-center justify-center text-center px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] ${
+                className={`inline-flex items-center justify-center text-center px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] ${
                   filter === 'institutional'
                     ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
                     : 'bg-slate-900/80 text-slate-400 hover:text-white border border-white/[0.06]'
@@ -540,7 +540,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
                   <button
                     type="button"
                     onClick={onNavigateToServices}
-                    className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-2 px-5 py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 border border-indigo-400/40 shadow-lg shadow-indigo-600/30 hover:shadow-[0_0_24px_rgba(99,102,241,0.55)] active:shadow-[0_0_32px_rgba(168,85,247,0.7)] hover:-translate-y-0.5 active:translate-y-0 transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+                    className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-2 px-5 py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 border border-indigo-400/40 shadow-lg shadow-indigo-600/30 hover:shadow-[0_0_24px_rgba(99,102,241,0.55)] active:shadow-[0_0_32px_rgba(168,85,247,0.7)] hover:-translate-y-0.5 active:translate-y-0 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
                   >
                     <span className="text-center">Ver Formatos & Condições</span>
                     <ArrowRight className="w-4 h-4 text-white" />
@@ -551,7 +551,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
                   href={whatsappInquiryUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-2.5 px-6 py-3 rounded-xl text-sm font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-400/30 shadow-lg shadow-emerald-950/40 hover:shadow-[0_0_22px_rgba(37,211,102,0.65)] hover:-translate-y-0.5 active:translate-y-0 transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
+                  className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-2.5 px-6 py-3 rounded-xl text-sm font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-400/30 shadow-lg shadow-emerald-950/40 hover:shadow-[0_0_22px_rgba(37,211,102,0.65)] hover:-translate-y-0.5 active:translate-y-0 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
                 >
                   <WhatsAppIcon className="w-4 h-4 text-white" />
                   <span className="text-center">Solicitar Orçamento</span>

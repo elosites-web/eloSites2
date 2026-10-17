@@ -368,7 +368,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                           href={ctaUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="cta-primary w-full inline-flex items-center justify-center text-center gap-1.5 sm:gap-2 py-3.5 px-3 sm:px-4 rounded-xl text-xs sm:text-[13px] md:text-sm font-semibold text-white transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] shadow-lg shadow-indigo-600/25 min-h-12"
+                          className="cta-primary w-full inline-flex items-center justify-center text-center gap-1.5 sm:gap-2 py-3.5 px-3 sm:px-4 rounded-xl text-xs sm:text-[13px] md:text-sm font-semibold text-white transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] shadow-lg shadow-indigo-600/25 min-h-12"
                         >
                           <WhatsAppIcon className="w-4 h-4 text-emerald-300 shrink-0" />
                           <span className="text-center">{service.ctaLabel}</span>
@@ -553,7 +553,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                         key={preset}
                         type="button"
                         onClick={() => setSimulatedValue(preset)}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] ${
+                        className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] ${
                           simulatedValue === preset
                             ? 'bg-indigo-600 text-white shadow'
                             : 'bg-slate-900 text-slate-400 hover:text-white border border-white/[0.06]'
@@ -643,7 +643,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                       <button
                         type="button"
                         onClick={onNavigateToOrcamento}
-                        className="w-full sm:w-auto min-h-12 sm:min-h-0 inline-flex items-center justify-center text-center gap-2 px-5 py-3 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 border border-indigo-400/40 shadow-lg shadow-indigo-500/25 transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-200 hover:scale-105 focus:scale-105 hover:ring-2 hover:ring-indigo-500/50 focus:ring-2 focus:ring-indigo-500/50 focus:outline-none cursor-pointer"
+                        className="w-full sm:w-auto min-h-12 sm:min-h-0 inline-flex items-center justify-center text-center gap-2 px-5 py-3 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 border border-indigo-400/40 shadow-lg shadow-indigo-500/25 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-200 hover:scale-105 focus:scale-105 hover:ring-2 hover:ring-indigo-500/50 focus:ring-2 focus:ring-indigo-500/50 focus:outline-none cursor-pointer"
                       >
                         <span className="text-center">Montar Briefing</span>
                         <ArrowRight className="w-3.5 h-3.5" />
@@ -655,7 +655,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                       )}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full sm:w-auto min-h-12 sm:min-h-0 inline-flex items-center justify-center text-center gap-2 px-5 py-3 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-400/30 transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-200 hover:scale-105 hover:shadow-lg focus:scale-105 focus:outline-none shadow-md shadow-emerald-950/40"
+                      className="w-full sm:w-auto min-h-12 sm:min-h-0 inline-flex items-center justify-center text-center gap-2 px-5 py-3 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-400/30 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-200 hover:scale-105 hover:shadow-lg focus:scale-105 focus:outline-none shadow-md shadow-emerald-950/40"
                     >
                       <WhatsAppIcon className="w-4 h-4 text-white" />
                       <span className="text-center">Pedir Proposta com Esta Condição</span>

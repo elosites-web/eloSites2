@@ -122,7 +122,7 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
                     <div>
                       <div className="flex items-center justify-between gap-2.5 mb-5">
                         <div
-                          className={`w-11 h-11 rounded-xl flex items-center justify-center transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-300 ${
+                          className={`w-11 h-11 rounded-xl flex items-center justify-center transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-300 ${
                             item.isWhatsApp
                               ? 'bg-[#25D366] text-white shadow-md shadow-emerald-950/40'
                               : 'bg-indigo-950/80 border border-indigo-500/30 text-indigo-300'
@@ -178,7 +178,7 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
             href={whatsappUrl(SITE_CONFIG.diferenciaisWhatsappMessage)}
             target="_blank"
             rel="noopener noreferrer"
-            className="cta-primary inline-flex items-center justify-center text-center gap-2.5 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl text-sm sm:text-base font-bold text-white shadow-lg shadow-indigo-600/30 transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] cursor-pointer whitespace-nowrap"
+            className="cta-primary inline-flex items-center justify-center text-center gap-2.5 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl text-sm sm:text-base font-bold text-white shadow-lg shadow-indigo-600/30 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] cursor-pointer whitespace-nowrap"
           >
             <WhatsAppIcon className="w-4 h-4 text-emerald-300 shrink-0" />
             <span className="whitespace-nowrap">Falar sobre um site para meu negócio</span>

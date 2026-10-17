@@ -375,7 +375,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
                 key={tag.id}
                 type="button"
                 onClick={() => setSelectedTag(tag.id)}
-                className={`relative px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/60 ${
+                className={`relative px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/60 ${
                   isTagActive
                     ? 'bg-gradient-to-r from-cyan-500/25 via-indigo-500/30 to-purple-500/25 text-cyan-200 border border-cyan-400/50 shadow-[0_0_16px_rgba(6,182,212,0.3)]'
                     : 'bg-slate-900/80 text-slate-400 hover:text-white border border-white/[0.08] hover:border-white/20'
@@ -617,7 +617,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
               onClick={scrollPrev}
               disabled={total <= 1}
               aria-label="Ver depoimento anterior"
-              className={`inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium border shadow-sm transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] group focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 ${
+              className={`inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium border shadow-sm transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] group focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 ${
                 total <= 1
                   ? 'opacity-30 cursor-not-allowed border-slate-800 text-slate-500'
                   : 'bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white border-purple-500/20 hover:border-purple-400/50 hover:shadow-[0_0_15px_rgba(168,85,247,0.25)] cursor-pointer'
@@ -664,7 +664,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
                       title={`Depoimento ${idx + 1} de ${total}: ${t.name}`}
                       onClick={() => scrollTo(idx)}
                       disabled={total <= 1}
-                      className={`h-2 rounded-full transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 ${
+                      className={`h-2 rounded-full transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,width,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 ${
                         total <= 1
                           ? 'w-6 bg-gradient-to-r from-purple-500 to-indigo-500 shadow-[0_0_12px_rgba(168,85,247,0.7)] cursor-default'
                           : isCurrent
@@ -690,7 +690,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
               onClick={scrollNext}
               disabled={total <= 1}
               aria-label="Ver próximo depoimento"
-              className={`inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium border shadow-sm transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] group focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 ${
+              className={`inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium border shadow-sm transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] group focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 ${
                 total <= 1
                   ? 'opacity-30 cursor-not-allowed border-slate-800 text-slate-500'
                   : 'bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white border-purple-500/20 hover:border-purple-400/50 hover:shadow-[0_0_15px_rgba(168,85,247,0.25)] cursor-pointer'
@@ -725,7 +725,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
               <button
                 type="button"
                 onClick={onNavigateToServices}
-                className="inline-flex items-center justify-center text-center gap-2 px-5 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-200 bg-slate-800/80 hover:bg-slate-700/80 border border-white/[0.08] transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] cursor-pointer"
+                className="inline-flex items-center justify-center text-center gap-2 px-5 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-200 bg-slate-800/80 hover:bg-slate-700/80 border border-white/[0.08] transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] cursor-pointer"
               >
                 <span className="text-center">Ver Serviços & Condições</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -735,7 +735,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
               href={whatsappUrl(SITE_CONFIG.portfolioWhatsappMessage)}
               target="_blank"
               rel="noopener noreferrer"
-              className="cta-primary inline-flex items-center justify-center text-center gap-2 px-5 py-3 rounded-xl text-xs sm:text-sm font-semibold text-white transition-[color,background-color,border-color,box-shadow,opacity,transform,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] shadow-lg shadow-cyan-600/20 cursor-pointer"
+              className="cta-primary inline-flex items-center justify-center text-center gap-2 px-5 py-3 rounded-xl text-xs sm:text-sm font-semibold text-white transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] shadow-lg shadow-cyan-600/20 cursor-pointer"
             >
               <WhatsAppIcon className="w-4 h-4 text-emerald-300" />
               <span className="text-center">Conversar no WhatsApp</span>
