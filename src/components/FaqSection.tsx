@@ -185,7 +185,7 @@ export const FaqSection: React.FC = () => {
                               height: 0,
                               transition: {
                                 height: { duration: 0.3, ease: [0.16, 1, 0.3, 1] },
-                                opacity: { duration: 0.18, ease: 'easeIn' },
+                                opacity: { duration: 0.18, ease: [0.32,0.72,0,1] },
                               },
                             }
                       }
