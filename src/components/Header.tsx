@@ -178,7 +178,7 @@ export const Header: React.FC<HeaderProps> = ({
         >
           {/* Container centrado contendo o botão fechar no topo, os 7 links em cascata e o logotipo embaixo */}
           <div
-            className="nav-menu-list-wrap relative w-full flex flex-col items-center justify-center text-center my-auto px-4 pt-3 pb-5 sm:pt-4 sm:pb-6 pointer-events-auto"
+            className="nav-menu-list-wrap relative w-full flex flex-col items-center justify-center text-center my-auto px-4 pointer-events-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {/* 1. Botão 'X' no topo (acima da lista de links) com área de toque mínima de 44x44px */}
