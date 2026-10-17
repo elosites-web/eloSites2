@@ -176,31 +176,25 @@ export const Header: React.FC<HeaderProps> = ({
           className="nav-menu-modal-container fixed inset-0 z-50 flex flex-col items-center justify-center p-3 sm:p-6 bg-black/40 backdrop-blur-[2px] animate-in fade-in duration-200 select-none overflow-y-auto"
           onClick={handleCloseMenuWithoutNav}
         >
-          {/* Container centrado contendo o logotipo no topo, os 7 links em cascata e o botão fechar */}
-          {/* Container centrado contendo o logotipo no topo, os 7 links em cascata e o botão fechar */}
+          {/* Container centrado contendo o botão fechar no topo, os 7 links em cascata e o logotipo embaixo */}
           <div
             className="nav-menu-list-wrap relative w-full flex flex-col items-center justify-center text-center my-auto px-4 pt-3 pb-5 sm:pt-4 sm:pb-6 pointer-events-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Logotipo no topo do menu */}
-            <div className="nav-menu-logo-wrap">
-              <button
-                type="button"
-                onClick={() => {
-                  onSelectScreen('home');
-                }}
-                className="group focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 rounded-lg p-1 transition-transform hover:scale-105 cursor-pointer flex items-center justify-center"
-                aria-label="ēloSites — Home"
-              >
-                <img
-                  src="/logo-elosites-final.png"
-                  alt="ēloSites"
-                  className="nav-menu-logo-img w-auto object-contain drop-shadow-[0_0_20px_rgba(34,211,238,0.55)]"
-                />
-              </button>
-            </div>
+            {/* 1. Botão 'X' no topo (acima da lista de links) com área de toque mínima de 44x44px */}
+            <motion.button
+              type="button"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.05, duration: 0.25 }}
+              onClick={handleCloseMenuWithoutNav}
+              aria-label="Fechar menu"
+              className="nav-menu-close-btn rounded-full flex items-center justify-center text-indigo-300 hover:text-cyan-300 bg-indigo-950/40 hover:bg-indigo-900/60 border border-indigo-500/30 hover:border-cyan-400/60 shadow-[0_0_12px_rgba(99,102,241,0.25)] hover:shadow-[0_0_16px_rgba(34,211,238,0.5)] transition-all duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 group"
+            >
+              <X className="nav-menu-close-icon text-indigo-300 group-hover:text-cyan-300 transition-colors" />
+            </motion.button>
 
-            {/* Somente os 7 nomes de seções em cascata — SEM QUADRO EM VOLTA */}
+            {/* 2. Somente os 7 nomes de seções em cascata — SEM QUADRO EM VOLTA */}
             <ul className="nav-menu-list flex flex-col items-center justify-center py-0.5 w-full">
               {SCREENS.map((screen, index) => {
                 const isActive = screen.id === currentScreen;
@@ -215,7 +209,7 @@ export const Header: React.FC<HeaderProps> = ({
                       duration: 0.28,
                       ease: [0.16, 1, 0.3, 1],
                     }}
-                    className="w-full flex justify-center"
+                    className="nav-menu-list-item w-full flex justify-center"
                   >
                     <button
                       type="button"
@@ -235,18 +229,23 @@ export const Header: React.FC<HeaderProps> = ({
               })}
             </ul>
 
-            {/* Botão discreto abaixo de FAQ & Contato do 'X' para fechar (área de toque mínima de 44x44px em mobile e tablet) */}
-            <motion.button
-              type="button"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.24, duration: 0.25 }}
-              onClick={handleCloseMenuWithoutNav}
-              aria-label="Fechar menu de navegação"
-              className="nav-menu-close-btn rounded-full flex items-center justify-center text-indigo-300 hover:text-cyan-300 bg-indigo-950/40 hover:bg-indigo-900/60 border border-indigo-500/30 hover:border-cyan-400/60 shadow-[0_0_12px_rgba(99,102,241,0.25)] hover:shadow-[0_0_16px_rgba(34,211,238,0.5)] transition-all duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 group"
-            >
-              <X className="nav-menu-close-icon text-indigo-300 group-hover:text-cyan-300 transition-colors" />
-            </motion.button>
+            {/* 3. Logotipo no rodapé do menu (abaixo da lista de links) */}
+            <div className="nav-menu-logo-wrap">
+              <button
+                type="button"
+                onClick={() => {
+                  onSelectScreen('home');
+                }}
+                className="group focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 rounded-lg p-1 transition-transform hover:scale-105 cursor-pointer flex items-center justify-center"
+                aria-label="ēloSites — Home"
+              >
+                <img
+                  src="/logo-elosites-final.png"
+                  alt="ēloSites"
+                  className="nav-menu-logo-img w-auto object-contain drop-shadow-[0_0_20px_rgba(34,211,238,0.55)]"
+                />
+              </button>
+            </div>
           </div>
         </div>
       )}
