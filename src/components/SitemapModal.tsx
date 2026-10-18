@@ -341,8 +341,8 @@ export const SitemapModal: React.FC<SitemapModalProps> = ({
           </div>
         </div>
 
-        {/* Modal Body */}
-        <div className="p-4 sm:p-6 overflow-y-auto max-h-[60vh] space-y-4">
+        {/* Modal Body com overscroll-contain */}
+        <div className="p-4 sm:p-6 overflow-y-auto overscroll-contain max-h-[60vh] space-y-4">
           {activeTab === 'xml' && (
             <div className="space-y-3">
               <div className="flex items-center justify-between text-xs text-slate-400">

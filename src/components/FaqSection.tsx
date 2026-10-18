@@ -116,7 +116,11 @@ export const FaqSection: React.FC = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
-          className="space-y-4"
+          className="space-y-4 faq-list scroll-perf-list scroll-snap-y-container card-list-container"
+          style={{
+            scrollSnapType: 'y mandatory',
+            scrollPaddingTop: 'clamp(4.5rem, 12vh, 6.5rem)',
+          }}
         >
           {faqs.map((faq, index) => {
             const isOpen = openIndex === index;
@@ -126,11 +130,16 @@ export const FaqSection: React.FC = () => {
               <motion.div
                 key={faq.id}
                 variants={itemVariants}
-                className={`card-solid rounded-2xl overflow-hidden transition-colors duration-300 border bracket-panel relative ${
+                className={`card-solid rounded-2xl overflow-hidden transition-colors duration-300 border bracket-panel relative scroll-snap-card card-snap-item ${
                   isOpen
                     ? 'border-indigo-400/45'
                     : 'border-white/[0.08] hover:border-indigo-400/30'
                 }`}
+                style={{
+                  scrollSnapAlign: 'start',
+                  scrollSnapStop: 'normal',
+                  scrollMarginTop: 'clamp(4.5rem, 12vh, 6.5rem)',
+                }}
               >
                 <h3>
                   <button

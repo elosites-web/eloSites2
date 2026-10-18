@@ -66,7 +66,13 @@ export const ProcessSection: React.FC = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 relative min-w-0">
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 relative min-w-0 process-list scroll-perf-list scroll-snap-y-container card-list-container"
+          style={{
+            scrollSnapType: 'y mandatory',
+            scrollPaddingTop: 'clamp(4.5rem, 12vh, 6.5rem)',
+          }}
+        >
           {steps.map((step, index) => {
             const Icon = step.icon;
             return (
@@ -77,11 +83,16 @@ export const ProcessSection: React.FC = () => {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.12, margin: '0px 0px -40px 0px' }}
-                className="h-full"
+                className="h-full scroll-snap-card card-snap-item"
+                style={{
+                  scrollSnapAlign: 'start',
+                  scrollSnapStop: 'normal',
+                  scrollMarginTop: 'clamp(4.5rem, 12vh, 6.5rem)',
+                }}
               >
                 <Interactive3DCard maxTilt={5} className="h-full">
                   <article
-                    className="relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 h-full w-full p-5 sm:p-6 md:p-8 flex flex-col justify-between group shadow-2xl shadow-black/60 bracket-panel transition-colors"
+                    className="relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 h-full w-full p-5 sm:p-6 md:p-8 flex flex-col justify-between group shadow-2xl shadow-black/60 bracket-panel transition-colors process-card scroll-perf-card scroll-snap-card card-snap-item"
                   >
                     <div>
                       <div className="flex items-center justify-between gap-2.5 mb-6">

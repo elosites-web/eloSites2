@@ -6,6 +6,7 @@ import { Hero } from './components/Hero';
 import { Footer } from './components/Footer';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { ReadingProgressBar } from './components/ReadingProgressBar';
+import { FluidRippleBackground } from './components/FluidRippleBackground';
 import {
   DifferentialsSkeleton,
   PortfolioSkeleton,
@@ -581,6 +582,9 @@ export default function App() {
 
   return (
     <div className={`min-h-screen-dvh text-slate-100 flex flex-col selection:bg-indigo-500 selection:text-white relative ${isHighContrast ? 'high-contrast' : ''}`}>
+      {/* Fundo WebGL com Orbes Fluidos e Ripples Interativos */}
+      <FluidRippleBackground />
+
       {/* Link de pular para o conteúdo (primeiro elemento focável) */}
       <a
         href="#main-content"

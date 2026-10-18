@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 import { shouldReduceMedia } from '../mediaPrefs';
 import { getDynamicCardVariants } from '../motionVariants';
+import confetti from 'canvas-confetti';
 
 interface ProjectBriefBookingSectionProps {
   onOpenPrivacy?: () => void;
@@ -125,6 +126,15 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
     const message = formatBriefingWhatsappMessage(briefingData);
     const targetUrl = whatsappUrl(message);
 
+    try {
+      confetti({
+        particleCount: 65,
+        spread: 60,
+        origin: { y: 0.7 },
+        colors: ['#06b6d4', '#6366f1', '#a855f7', '#10b981'],
+      });
+    } catch {}
+
     success('Briefing formatado com sucesso!', 'Abrindo seu WhatsApp com o resumo pronto para envio.');
     window.open(targetUrl, '_blank', 'noopener,noreferrer');
   };
@@ -164,6 +174,15 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
     setFormErrors({});
     const message = formatBookingWhatsappMessage(bookingData);
     const targetUrl = whatsappUrl(message);
+
+    try {
+      confetti({
+        particleCount: 55,
+        spread: 50,
+        origin: { y: 0.7 },
+        colors: ['#06b6d4', '#6366f1', '#a855f7', '#10b981'],
+      });
+    } catch {}
 
     success('Agendamento preparado!', 'Abrindo seu WhatsApp para confirmação do horário.');
     window.open(targetUrl, '_blank', 'noopener,noreferrer');

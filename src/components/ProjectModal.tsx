@@ -104,7 +104,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
         </div>
 
         {/* Conteúdo rolável com as seções estruturadas: Challenge, Solution, Results */}
-        <div className="flex-1 overflow-y-auto p-5 sm:p-7 space-y-6 sm:space-y-8 text-slate-300">
+        <div className="flex-1 overflow-y-auto overscroll-contain p-5 sm:p-7 space-y-6 sm:space-y-8 text-slate-300">
           {/* Banner de Preview do Projeto */}
           <div className="relative rounded-xl overflow-hidden border border-white/[0.08] bg-slate-950/70 p-2 sm:p-3">
             <div className="rounded-lg overflow-hidden aspect-[16/9] sm:aspect-[21/9] bg-slate-900">

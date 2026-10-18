@@ -7,15 +7,18 @@ interface Interactive3DCardProps {
   className?: string;
   maxTilt?: number;
   glare?: boolean;
+  animatedBorder?: boolean; // Borda animada em conic gradient
   style?: React.CSSProperties;
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
+  allowDrag?: boolean; // Mantido para compatibilidade de tipos, sem captura de toque para não bloquear o scroll
 }
 
 export const Interactive3DCard: React.FC<Interactive3DCardProps> = ({
   children,
   className = '',
-  maxTilt = 2.5,
+  maxTilt = 4.5,
   glare = true,
+  animatedBorder = false,
   style = {},
   onClick,
 }) => {
@@ -26,7 +29,8 @@ export const Interactive3DCard: React.FC<Interactive3DCardProps> = ({
 
   const systemPrefersReduced = useReducedMotion();
   const prefersReduced = Boolean(systemPrefersReduced || shouldReduceMedia());
-  const tiltEnabled = !prefersReduced && getMotionTier() === 'full';
+  const tier = getMotionTier();
+  const tiltEnabled = !prefersReduced && tier === 'full';
 
   useEffect(() => {
     return () => {
@@ -36,7 +40,9 @@ export const Interactive3DCard: React.FC<Interactive3DCardProps> = ({
   }, []);
 
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    // Tilt 3D só no tier completo (desktop capaz). Toque e aparelhos leves não pagam o custo.
+    // IMPORTANTE: Tilt 3D ativado ESTRITAMENTE para mouse de desktop.
+    // Toques de dedo (touch) NUNCA são capturados nem processados aqui,
+    // garantindo que o scroll vertical nativo da página seja 100% fluido e livre.
     if (!tiltEnabled || e.pointerType !== 'mouse') return;
     const card = cardRef.current;
     if (!card) return;
@@ -55,24 +61,21 @@ export const Interactive3DCard: React.FC<Interactive3DCardProps> = ({
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
 
-      // Movimento suave com ângulo reduzido para evitar tremores e sensibilidade a labirintite
       const rotateX = Number((((y - centerY) / centerY) * -maxTilt).toFixed(2));
       const rotateY = Number((((x - centerX) / centerX) * maxTilt).toFixed(2));
 
-      // Atualiza o DOM diretamente: nenhum re-render do conteúdo interno a cada frame.
-      // Sem transição durante o arrasto do mouse: o tilt acompanha o cursor sem atraso.
       if (settleTimerRef.current) {
         window.clearTimeout(settleTimerRef.current);
         settleTimerRef.current = null;
       }
       el.style.transition = 'none';
       el.style.willChange = 'transform';
-      el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      el.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
 
       if (glare && glareRef.current) {
         const gx = Math.round((x / rect.width) * 100);
         const gy = Math.round((y / rect.height) * 100);
-        glareRef.current.style.background = `radial-gradient(circle 260px at ${gx}% ${gy}%, rgba(129, 140, 248, 0.14), transparent 75%)`;
+        glareRef.current.style.background = `radial-gradient(circle 320px at ${gx}% ${gy}%, rgba(6, 182, 212, 0.18), transparent 75%)`;
         glareRef.current.style.opacity = '1';
       }
     });
@@ -82,14 +85,14 @@ export const Interactive3DCard: React.FC<Interactive3DCardProps> = ({
     if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
     const card = cardRef.current;
     if (card) {
-      card.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
-      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+      card.style.transition = 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+      card.style.transform = 'perspective(1200px) rotateX(0deg) rotateY(0deg)';
       if (settleTimerRef.current) window.clearTimeout(settleTimerRef.current);
       settleTimerRef.current = window.setTimeout(() => {
         if (!cardRef.current) return;
         cardRef.current.style.willChange = 'auto';
         cardRef.current.style.transition = '';
-      }, 520);
+      }, 620);
     }
     if (glareRef.current) glareRef.current.style.opacity = '0';
   };
@@ -100,15 +103,21 @@ export const Interactive3DCard: React.FC<Interactive3DCardProps> = ({
       onClick={onClick}
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
-      className={`relative rounded-2xl ${className}`}
+      className={`interactive-3d-card-root scroll-snap-card card-snap-item relative rounded-2xl ${animatedBorder ? 'glow-border-animated' : ''} ${className}`}
       style={{
         transformStyle: tiltEnabled ? 'preserve-3d' : undefined,
+        touchAction: 'pan-y',
+        overscrollBehaviorY: 'contain',
+        scrollSnapAlign: 'start',
+        scrollSnapStop: 'normal',
+        scrollMarginTop: 'clamp(4.5rem, 12vh, 6.5rem)',
+        WebkitUserSelect: 'none',
         ...style,
       }}
     >
       {children}
 
-      {/* Brilho especular suave acompanhando o cursor */}
+      {/* Brilho especular dinâmico no mouse — pointer-events-none para nunca interceptar cliques/scroll */}
       {glare && tiltEnabled && (
         <div
           ref={glareRef}

@@ -102,7 +102,13 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
         </div>
 
         {/* Grade de 6 Cards de Diferenciais com transição dinâmica idêntica aos cartões de serviço */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 min-w-0">
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 min-w-0 differentials-list scroll-perf-list scroll-snap-y-container card-list-container"
+          style={{
+            scrollSnapType: 'y mandatory',
+            scrollPaddingTop: 'clamp(4.5rem, 12vh, 6.5rem)',
+          }}
+        >
           {differentials.map((item, index) => {
             const Icon = item.icon;
             return (
@@ -113,11 +119,16 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.12, margin: '0px 0px -40px 0px' }}
-                className="h-full"
+                className="h-full scroll-snap-card card-snap-item"
+                style={{
+                  scrollSnapAlign: 'start',
+                  scrollSnapStop: 'normal',
+                  scrollMarginTop: 'clamp(4.5rem, 12vh, 6.5rem)',
+                }}
               >
                 <Interactive3DCard maxTilt={5} className="h-full">
                   <article
-                    className="glass-card-interactive surface-card accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 h-full w-full p-5 sm:p-6 md:p-8 flex flex-col justify-between group shadow-2xl shadow-black/60 bracket-panel transition-colors"
+                    className="glass-card-interactive surface-card differential-card scroll-perf-card scroll-snap-card card-snap-item accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 h-full w-full p-5 sm:p-6 md:p-8 flex flex-col justify-between group shadow-2xl shadow-black/60 bracket-panel transition-colors"
                   >
                     <div>
                       <div className="flex items-center justify-between gap-2.5 mb-5">

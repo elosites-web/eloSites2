@@ -18,6 +18,7 @@ import { ProjectModal } from './ProjectModal';
 import { SplitLines } from './SplitLines';
 import { Reveal } from './Reveal';
 import { Interactive3DCard } from './Interactive3DCard';
+import { MagneticButton } from './MagneticButton';
 import { getDynamicCardVariants } from '../motionVariants';
 
 export interface PortfolioProjectData {
@@ -122,9 +123,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   const [viewMode, setViewMode] = useState<ViewMode>('composite');
 
   return (
-    <article className="glass-card-interactive surface-card portfolio-card scroll-perf-card relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 flex flex-col h-full overflow-hidden group lg:row-span-8 lg:grid lg:grid-rows-subgrid shadow-2xl shadow-black/60 bracket-panel transition-colors">
-      {/* Top Header / Informações */}
-      <div className="p-6 sm:p-7 border-b border-white/[0.06] bg-slate-950/60 space-y-4 lg:row-span-5 lg:grid lg:grid-rows-subgrid">
+    <Interactive3DCard maxTilt={3.5} animatedBorder={true} className="h-full">
+      <article className="glass-card-interactive surface-card portfolio-card scroll-perf-card relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 flex flex-col h-full overflow-hidden group lg:row-span-8 lg:grid lg:grid-rows-subgrid shadow-2xl shadow-black/60 bracket-panel transition-colors">
+        {/* Top Header / Informações */}
+        <div className="p-6 sm:p-7 border-b border-white/[0.06] bg-slate-950/60 space-y-4 lg:row-span-5 lg:grid lg:grid-rows-subgrid">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <span className="text-[11px] font-mono uppercase bg-indigo-950/80 text-indigo-300 border border-indigo-500/30 px-3 py-1 rounded-full font-semibold">
             {project.badge}
@@ -282,9 +284,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                 </div>
               </div>
 
-              {/* Mobile Phone Mockup Sobreposto (com largura ampliada para exibir a captura com clareza) */}
+              {/* Mobile Phone Mockup Sobreposto com 3D Breakout de Profundidade */}
               <div
-                className="absolute right-1 sm:right-2 -bottom-1 sm:bottom-0 w-[36%] sm:w-[33%] max-w-[155px] sm:max-w-[170px] rounded-[20px] p-1.5 sm:p-2 bg-[#090d16] border-2 border-indigo-400/50 shadow-[0_20px_50px_rgba(0,0,0,0.95)] shadow-indigo-950/60 transform translate-y-0 hover:-translate-y-1 transition-transform duration-300 cursor-zoom-in z-10"
+                className="absolute right-1 sm:right-2 -bottom-1 sm:bottom-0 w-[36%] sm:w-[33%] max-w-[155px] sm:max-w-[170px] rounded-[20px] p-1.5 sm:p-2 bg-[#090d16] border-2 border-indigo-400/50 shadow-[0_20px_50px_rgba(0,0,0,0.95)] shadow-indigo-950/60 breakout-layer-front cursor-zoom-in z-20 hover:scale-105 transition-all duration-300"
+                style={{ transform: 'translateZ(38px)' }}
                 onClick={() => onOpenZoom(project.mobileImage, `${project.title} - Mobile`)}
                 title="Clique para ampliar versão mobile"
               >
@@ -395,6 +398,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         </div>
       </div>
     </article>
+    </Interactive3DCard>
   );
 };
 
@@ -485,7 +489,13 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
           </div>
 
           {/* Grade de Projetos Reais — Espaçamento entre cards reduzido em exatamente 50% (de gap-6/sm:gap-8 para gap-3/sm:gap-4) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 items-stretch lg:grid-rows-[repeat(8,auto)] portfolio-list scroll-perf-list">
+          <div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 items-stretch lg:grid-rows-[repeat(8,auto)] portfolio-list scroll-perf-list scroll-snap-y-container card-list-container"
+            style={{
+              scrollSnapType: 'y mandatory',
+              scrollPaddingTop: 'clamp(4.5rem, 12vh, 6.5rem)',
+            }}
+          >
             {filteredProjects.map((project, index) => {
               const isOddLastOnTwoCols =
                 filteredProjects.length === 3 && index === 2;
@@ -497,11 +507,16 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: true, amount: 0.12, margin: '0px 0px -40px 0px' }}
-                  className={`h-full lg:row-span-8 lg:grid lg:grid-rows-subgrid ${
+                  className={`h-full lg:row-span-8 lg:grid lg:grid-rows-subgrid scroll-snap-card card-snap-item ${
                     isOddLastOnTwoCols
                       ? 'md:col-span-2 md:w-[calc(50%-0.5rem)] md:mx-auto lg:col-span-1 lg:w-full lg:mx-0'
                       : ''
                   }`}
+                  style={{
+                    scrollSnapAlign: 'start',
+                    scrollSnapStop: 'normal',
+                    scrollMarginTop: 'clamp(4.5rem, 12vh, 6.5rem)',
+                  }}
                 >
                   <Interactive3DCard maxTilt={5} className="h-full w-full">
                     <ProjectCard
@@ -546,16 +561,18 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
                     <ArrowRight className="w-4 h-4 text-white" />
                   </button>
                 )}
-                <a
-                  id="portfolio-cta-whatsapp"
+                <MagneticButton
                   href={whatsappInquiryUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-2.5 px-6 py-3 rounded-xl text-sm font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-400/30 shadow-lg shadow-emerald-950/40 hover:shadow-[0_0_22px_rgba(37,211,102,0.65)] hover:-translate-y-0.5 active:translate-y-0 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
+                  strength={12}
+                  glowColor="rgba(37, 211, 102, 0.45)"
+                  className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-2.5 px-6 py-3 rounded-xl text-sm font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-400/40 shadow-lg shadow-emerald-950/40 hover:shadow-[0_0_24px_rgba(37,211,102,0.65)] hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
+                  ariaLabel="Solicitar Orçamento no WhatsApp"
                 >
                   <WhatsAppIcon className="w-4 h-4 text-white" />
                   <span className="text-center">Solicitar Orçamento</span>
-                </a>
+                </MagneticButton>
               </div>
             </div>
           </Interactive3DCard>

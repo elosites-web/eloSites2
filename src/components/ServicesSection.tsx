@@ -20,6 +20,7 @@ import { WhatsAppIcon } from './WhatsAppIcon';
 import { SplitLines } from './SplitLines';
 import { SITE_CONFIG, PAYMENT_CONDITIONS, whatsappUrl } from '../types';
 import { Interactive3DCard } from './Interactive3DCard';
+import { MagneticButton } from './MagneticButton';
 
 interface ServiceCategory {
   id: string;
@@ -265,7 +266,11 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
 
           {/* Grid dos 3 Serviços com transição de entrada dinâmica e fluida ao rolar — Subgrid no desktop para alinhamento uniforme das linhas e seções */}
           <div
-            className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-7 lg:gap-8 min-w-0 items-stretch lg:grid-rows-[repeat(5,auto)] service-list scroll-perf-list p-0.5 overflow-visible"
+            className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-7 lg:gap-8 min-w-0 items-stretch lg:grid-rows-[repeat(5,auto)] service-list scroll-perf-list scroll-snap-y-container card-list-container p-0.5 overflow-visible"
+            style={{
+              scrollSnapType: 'y mandatory',
+              scrollPaddingTop: 'clamp(4.5rem, 12vh, 6.5rem)',
+            }}
           >
             {SERVICES.map((service, index) => {
               const Icon = service.icon;
@@ -279,11 +284,16 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: true, amount: 0.12, margin: '0px 0px -40px 0px' }}
-                  className="h-full w-full min-w-0 max-w-full lg:row-span-5 lg:grid lg:grid-rows-subgrid"
+                  className="h-full w-full min-w-0 max-w-full lg:row-span-5 lg:grid lg:grid-rows-subgrid scroll-snap-card card-snap-item"
+                  style={{
+                    scrollSnapAlign: 'start',
+                    scrollSnapStop: 'normal',
+                    scrollMarginTop: 'clamp(4.5rem, 12vh, 6.5rem)',
+                  }}
                 >
-                  <Interactive3DCard maxTilt={5} className="h-full w-full min-w-0 max-w-full lg:row-span-5 lg:grid lg:grid-rows-subgrid">
+                  <Interactive3DCard maxTilt={5} allowDrag={true} animatedBorder={index === 0} className="h-full w-full min-w-0 max-w-full lg:row-span-5 lg:grid lg:grid-rows-subgrid">
                     <article
-                      className="glass-card-interactive surface-card service-card scroll-perf-card accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 md:p-8 flex flex-col space-y-5 lg:space-y-0 lg:row-span-5 lg:grid lg:grid-rows-subgrid shadow-2xl shadow-black/60 bracket-panel transition-colors h-full w-full min-w-0 max-w-full box-border"
+                      className="glass-card-interactive surface-card service-card scroll-perf-card scroll-snap-card card-snap-item accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 md:p-8 flex flex-col space-y-5 lg:space-y-0 lg:row-span-5 lg:grid lg:grid-rows-subgrid shadow-2xl shadow-black/60 bracket-panel transition-colors h-full w-full min-w-0 max-w-full box-border"
                     >
                       {/* Linha 1: Topo do card + Título + Descrição */}
                       <div className="space-y-4 lg:pb-4">
@@ -363,16 +373,18 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                           </p>
                         </div>
 
-                        <a
-                          id={service.ctaId}
+                        <MagneticButton
                           href={ctaUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="cta-primary w-full inline-flex items-center justify-center text-center gap-1.5 sm:gap-2 py-3.5 px-3 sm:px-4 rounded-xl text-xs sm:text-[13px] md:text-sm font-semibold text-white transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] shadow-lg shadow-indigo-600/25 min-h-12"
+                          strength={10}
+                          glowColor="rgba(99, 102, 241, 0.4)"
+                          className="cta-primary w-full inline-flex items-center justify-center text-center gap-1.5 sm:gap-2 py-3.5 px-3 sm:px-4 rounded-xl text-xs sm:text-[13px] md:text-sm font-semibold text-white transition-all shadow-lg shadow-indigo-600/25 min-h-12"
+                          ariaLabel={service.ctaLabel}
                         >
                           <WhatsAppIcon className="w-4 h-4 text-emerald-300 shrink-0" />
                           <span className="text-center">{service.ctaLabel}</span>
-                        </a>
+                        </MagneticButton>
                       </div>
                     </article>
                   </Interactive3DCard>
@@ -399,7 +411,11 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
 
             {/* 4 Blocos de Regras Comerciais com transição de entrada dinâmica ao rolar */}
             <div
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 service-list scroll-perf-list"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 service-list scroll-perf-list scroll-snap-y-container card-list-container"
+              style={{
+                scrollSnapType: 'y mandatory',
+                scrollPaddingTop: 'clamp(4.5rem, 12vh, 6.5rem)',
+              }}
             >
               {/* Regra 1: 50% Entrada + 50% Final */}
               <motion.div
@@ -408,10 +424,15 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.12, margin: '0px 0px -30px 0px' }}
-                className="h-full"
+                className="h-full scroll-snap-card card-snap-item"
+                style={{
+                  scrollSnapAlign: 'start',
+                  scrollSnapStop: 'normal',
+                  scrollMarginTop: 'clamp(4.5rem, 12vh, 6.5rem)',
+                }}
               >
                 <Interactive3DCard maxTilt={5} className="h-full">
-                  <div className="glass-card-interactive surface-card service-card scroll-perf-card accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors">
+                  <div className="glass-card-interactive surface-card service-card scroll-perf-card scroll-snap-card card-snap-item accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors">
                     <div className="space-y-3">
                       <div className="w-10 h-10 rounded-xl bg-indigo-950/90 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
                         <Split className="w-5 h-5" />
@@ -437,10 +458,15 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.12, margin: '0px 0px -30px 0px' }}
-                className="h-full"
+                className="h-full scroll-snap-card card-snap-item"
+                style={{
+                  scrollSnapAlign: 'start',
+                  scrollSnapStop: 'normal',
+                  scrollMarginTop: 'clamp(4.5rem, 12vh, 6.5rem)',
+                }}
               >
                 <Interactive3DCard maxTilt={5} className="h-full">
-                  <div className="glass-card-interactive surface-card service-card scroll-perf-card accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-emerald-500/40 hover:border-emerald-400/70 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors bg-gradient-to-b from-emerald-950/20 to-[#0B101D]">
+                  <div className="glass-card-interactive surface-card service-card scroll-perf-card scroll-snap-card card-snap-item accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-emerald-500/40 hover:border-emerald-400/70 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors bg-gradient-to-b from-emerald-950/20 to-[#0B101D]">
                     <div className="space-y-3">
                       <div className="w-10 h-10 rounded-xl bg-emerald-950/90 border border-emerald-500/40 flex items-center justify-center text-emerald-300">
                         <Percent className="w-5 h-5" />
@@ -471,10 +497,15 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.12, margin: '0px 0px -30px 0px' }}
-                className="h-full"
+                className="h-full scroll-snap-card card-snap-item"
+                style={{
+                  scrollSnapAlign: 'start',
+                  scrollSnapStop: 'normal',
+                  scrollMarginTop: 'clamp(4.5rem, 12vh, 6.5rem)',
+                }}
               >
                 <Interactive3DCard maxTilt={5} className="h-full">
-                  <div className="glass-card-interactive surface-card service-card scroll-perf-card accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors">
+                  <div className="glass-card-interactive surface-card service-card scroll-perf-card scroll-snap-card card-snap-item accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors">
                     <div className="space-y-3">
                       <div className="w-10 h-10 rounded-xl bg-indigo-950/90 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
                         <CreditCard className="w-5 h-5" />
@@ -500,10 +531,15 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.12, margin: '0px 0px -30px 0px' }}
-                className="h-full"
+                className="h-full scroll-snap-card card-snap-item"
+                style={{
+                  scrollSnapAlign: 'start',
+                  scrollSnapStop: 'normal',
+                  scrollMarginTop: 'clamp(4.5rem, 12vh, 6.5rem)',
+                }}
               >
                 <Interactive3DCard maxTilt={5} className="h-full">
-                  <div className="glass-card-interactive surface-card service-card scroll-perf-card accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors">
+                  <div className="glass-card-interactive surface-card service-card scroll-perf-card scroll-snap-card card-snap-item accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors">
                     <div className="space-y-3">
                       <div className="w-10 h-10 rounded-xl bg-indigo-950/90 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
                         <Calendar className="w-5 h-5" />

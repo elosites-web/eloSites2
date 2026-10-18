@@ -161,7 +161,13 @@ export const PaidTrafficPartnershipSection: React.FC<PaidTrafficPartnershipSecti
               </span>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+            <div
+              className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 benefits-list scroll-perf-list scroll-snap-y-container card-list-container"
+              style={{
+                scrollSnapType: 'y mandatory',
+                scrollPaddingTop: 'clamp(4.5rem, 12vh, 6.5rem)',
+              }}
+            >
               {benefits.map((item, index) => {
                 const IconComponent = item.icon;
                 return (
@@ -172,9 +178,14 @@ export const PaidTrafficPartnershipSection: React.FC<PaidTrafficPartnershipSecti
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.12, margin: '0px 0px -40px 0px' }}
-                    className="h-full"
+                    className="h-full scroll-snap-card card-snap-item"
+                    style={{
+                      scrollSnapAlign: 'start',
+                      scrollSnapStop: 'normal',
+                      scrollMarginTop: 'clamp(4.5rem, 12vh, 6.5rem)',
+                    }}
                   >
-                    <div className="glass-panel glass-card-interactive bracket-panel rounded-2xl p-6 sm:p-7 flex flex-col justify-between border border-white/[0.08] hover:border-purple-500/30 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-300 group h-full">
+                    <div className="glass-panel glass-card-interactive benefit-card scroll-perf-card scroll-snap-card card-snap-item bracket-panel rounded-2xl p-6 sm:p-7 flex flex-col justify-between border border-white/[0.08] hover:border-purple-500/30 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-300 group h-full">
                       <div className="space-y-4">
                         <div className="flex items-center justify-between gap-3">
                           <div

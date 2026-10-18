@@ -3,8 +3,11 @@ import { motion, AnimatePresence, useReducedMotion, type Variants } from 'motion
 import { WhatsAppIcon } from './WhatsAppIcon';
 import { SITE_CONFIG, whatsappUrl } from '../types';
 import { shouldReduceMedia, getMotionTier } from '../mediaPrefs';
-import { ArrowDown, CheckCircle2, Code2, Smartphone } from 'lucide-react';
+import { ArrowDown, CheckCircle2, Code2, Smartphone, Zap, Shield, Sparkles } from 'lucide-react';
 import { Interactive3DCard } from './Interactive3DCard';
+import { MagneticButton } from './MagneticButton';
+import { AnimatedCounter } from './AnimatedCounter';
+import { InfiniteMarquee } from './InfiniteMarquee';
 
 interface HeroProps {
   mode?: 'home' | 'inicio' | 'all';
@@ -248,8 +251,14 @@ export const Hero: React.FC<HeroProps> = ({
                 </span>
               </div>
 
-              {/* Marquee Contínuo de Nichos — Rotação 85s linear infinite da direita para a esquerda */}
-              <div className="relative overflow-hidden w-full py-1 [mask-image:linear-gradient(to_right,transparent,#000_5%,#000_95%,transparent)] [-webkit-mask-image:linear-gradient(to_right,transparent,#000_5%,#000_95%,transparent)]">
+              {/* Marquee Contínuo de Nichos com Desvanecimento Suave nas Extremidades (10% a 90%) */}
+              <div
+                className="relative overflow-hidden w-full py-1 touch-pan-y"
+                style={{
+                  maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
+                  WebkitMaskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
+                }}
+              >
                 <div className="niche-marquee">
                   {[0, 1].map((group) => (
                     <div
@@ -277,68 +286,89 @@ export const Hero: React.FC<HeroProps> = ({
               </div>
             </motion.div>
 
-            {/* Ações / CTAs */}
+            {/* Ações / CTAs com Efeito Magnético */}
             <motion.div variants={itemVariants} className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 w-full sm:w-auto">
-              <a
-                id="hero-cta-whatsapp"
+              <MagneticButton
                 href={heroWhatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="cta-primary w-full sm:w-auto inline-flex items-center justify-center text-center gap-3 px-6 py-4 rounded-xl text-base font-semibold text-white shadow-lg shadow-indigo-600/30 border border-indigo-400/30 group bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500"
+                strength={12}
+                glowColor="rgba(37, 211, 102, 0.4)"
+                className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-3 px-7 py-4 rounded-xl text-base font-semibold text-white shadow-xl shadow-indigo-600/30 border border-indigo-400/40 bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 hover:shadow-[0_0_28px_rgba(99,102,241,0.5)] transition-all"
+                ariaLabel="Solicitar Orçamento no WhatsApp"
               >
                 <WhatsAppIcon className="w-5 h-5 text-emerald-300 group-hover:scale-110 transition-transform" />
-                <span className="text-center">Solicitar Orçamento</span>
-              </a>
+                <span className="text-center font-bold">Solicitar Orçamento</span>
+              </MagneticButton>
 
-              <a
-                id="hero-cta-portfolio"
+              <MagneticButton
                 href="#portfolio"
                 onClick={handleScrollToPortfolio}
-                className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-2 px-6 py-4 rounded-xl text-base font-semibold bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 text-slate-200 hover:text-white transition-colors active:scale-[0.97]"
+                strength={10}
+                glowColor="rgba(99, 102, 241, 0.3)"
+                className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-2 px-6 py-4 rounded-xl text-base font-semibold bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 text-slate-200 hover:text-white transition-all active:scale-[0.97]"
+                ariaLabel="Ver Modelos no Ar"
               >
                 <span className="text-center">Ver Modelos no Ar</span>
                 <ArrowDown className="w-4 h-4 text-indigo-400" />
-              </a>
+              </MagneticButton>
             </motion.div>
 
-            {/* Micro-credenciais de confiabilidade */}
+            {/* Micro-credenciais de confiabilidade com contadores dinâmicos */}
             <motion.div variants={itemVariants} className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs text-slate-400 text-center lg:text-left">
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1.5 bg-slate-900/60 px-2.5 py-1 rounded-lg border border-white/[0.06]">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                <span>Arquitetura de alta conversão & código limpo</span>
+                <span><AnimatedCounter to={100} suffix="%" /> SEO técnico & Schema.org</span>
               </div>
-              <div className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-[#a855f7]" />
-                <span>
-                  <strong className="text-[#a855f7] font-medium">SEO técnico</strong> e Schema.org inclusos
-                </span>
+              <div className="flex items-center gap-1.5 bg-slate-900/60 px-2.5 py-1 rounded-lg border border-white/[0.06]">
+                <CheckCircle2 className="w-4 h-4 text-cyan-400" />
+                <span>Performance &lt; <AnimatedCounter to={1.2} decimals={1} suffix="s" /> LCP</span>
               </div>
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1.5 bg-slate-900/60 px-2.5 py-1 rounded-lg border border-white/[0.06]">
                 <CheckCircle2 className="w-4 h-4 text-indigo-400" />
-                <span>Design exclusivo sem templates genéricos</span>
+                <span><AnimatedCounter to={14} prefix="+" /> nichos especializados</span>
               </div>
             </motion.div>
           </motion.div>
 
-          {/* Coluna Visual: Painel Estrutural do Processo com Interação 3D */}
+          {/* Coluna Visual: Painel Estrutural do Processo com Interação 3D e Camadas Breakout */}
           <motion.div
             initial={playSequence ? { opacity: 0, y: 16 } : false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: playSequence ? 0.5 : 0, delay: playSequence ? 0.08 : 0, ease: [0.23, 1, 0.32, 1] }}
-            className="lg:col-span-5"
+            className="lg:col-span-5 breakout-perspective relative"
           >
-            <Interactive3DCard maxTilt={2.5}>
-              <div className="relative rounded-2xl glass-panel bg-[#0B101D]/75 backdrop-blur-xl border border-white/10 p-1 shadow-2xl shadow-black/60 bracket-panel">
+            {/* Breakout floating chip superior (projetando-se em 3D, reposicionado de forma segura em tablets) */}
+            <div
+              className="hidden sm:flex absolute -top-3.5 right-1 sm:right-2 md:right-0 lg:-right-3 z-30 items-center gap-2 px-3 py-1.5 rounded-xl bg-[#090E1D] border border-cyan-500/40 shadow-xl shadow-cyan-950/60 text-xs font-mono text-cyan-300 pointer-events-none breakout-layer-front backdrop-blur-md max-w-[calc(100%-1rem)]"
+              style={{ transform: 'translateZ(36px)' }}
+            >
+              <Zap className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
+              <span>Core Web Vitals 100/100</span>
+            </div>
+
+            {/* Breakout floating chip inferior esquerdo (reposicionado de forma segura em tablets) */}
+            <div
+              className="hidden sm:flex absolute -bottom-3 left-1 sm:left-2 md:left-0 lg:-left-3 z-30 items-center gap-2 px-3 py-1.5 rounded-xl bg-[#090E1D] border border-emerald-500/40 shadow-xl shadow-emerald-950/60 text-xs font-mono text-emerald-300 pointer-events-none breakout-layer-front backdrop-blur-md max-w-[calc(100%-1rem)]"
+              style={{ transform: 'translateZ(32px)' }}
+            >
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Indexado com Sucesso</span>
+            </div>
+
+            <Interactive3DCard maxTilt={4} animatedBorder={true}>
+              <div className="relative rounded-2xl glass-panel bg-[#0B101D]/85 backdrop-blur-xl border border-white/10 p-1 shadow-2xl shadow-black/80 bracket-panel">
                 {/* Barra de título do terminal */}
-                <div className="flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 border-b border-white/10 bg-slate-950/40 backdrop-blur-md rounded-t-xl gap-2">
+                <div className="flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 border-b border-white/10 bg-slate-950/60 backdrop-blur-md rounded-t-xl gap-2">
                   <div className="flex items-center gap-1.5 sm:gap-2">
                     <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-rose-500/80 inline-block shadow-sm shadow-rose-500/50" />
                     <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-amber-500/80 inline-block shadow-sm shadow-amber-500/50" />
                     <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-emerald-500/80 inline-block shadow-sm shadow-emerald-500/50" />
                   </div>
 
-                  <span className="text-[10px] text-emerald-400 font-mono bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-500/40 inline-block">
-                    ONLINE
+                  <span className="text-[10px] text-emerald-400 font-mono bg-emerald-950/80 px-2.5 py-0.5 rounded-full border border-emerald-500/40 inline-flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                    ONLINE &bull; PRONTO
                   </span>
                 </div>
 
@@ -388,21 +418,21 @@ export const Hero: React.FC<HeroProps> = ({
 
                     {/* Destaques estruturais */}
                     <div className="grid grid-cols-3 gap-2 pt-2 border-t border-white/10">
-                      <div className="bg-slate-900/60 backdrop-blur-md rounded-lg p-2.5 border border-white/[0.08] text-center">
+                      <div className="bg-slate-900/60 backdrop-blur-md rounded-lg p-2.5 border border-white/[0.08] text-center hover:border-cyan-500/40 transition-colors">
                         <div className="flex justify-center mb-1 text-emerald-400">
                           <Code2 className="w-4 h-4" />
                         </div>
                         <span className="block text-white font-bold text-xs sm:text-sm">Moderna</span>
                         <span className="text-[10px] text-slate-400">Tecnologia</span>
                       </div>
-                      <div className="bg-slate-900/60 backdrop-blur-md rounded-lg p-2.5 border border-white/[0.08] text-center">
+                      <div className="bg-slate-900/60 backdrop-blur-md rounded-lg p-2.5 border border-white/[0.08] text-center hover:border-indigo-500/40 transition-colors">
                         <div className="flex justify-center mb-1 text-indigo-400">
                           <Smartphone className="w-4 h-4" />
                         </div>
                         <span className="block text-white font-bold text-xs sm:text-sm">Responsivo</span>
                         <span className="text-[10px] text-slate-400">Mobile First</span>
                       </div>
-                      <div className="bg-slate-900/60 backdrop-blur-md rounded-lg p-1.5 sm:p-2.5 border border-white/[0.08] text-center">
+                      <div className="bg-slate-900/60 backdrop-blur-md rounded-lg p-1.5 sm:p-2.5 border border-white/[0.08] text-center hover:border-emerald-500/40 transition-colors">
                         <div className="flex justify-center mb-1 text-emerald-400">
                           <WhatsAppIcon className="w-4 h-4 text-emerald-400" />
                         </div>
@@ -414,6 +444,23 @@ export const Hero: React.FC<HeroProps> = ({
               </div>
             </Interactive3DCard>
           </motion.div>
+        </div>
+
+        {/* Faixa Marquee de Engenharia & Tecnologias */}
+        <div className="mt-14 pt-8 border-t border-white/[0.06]">
+          <InfiniteMarquee
+            items={[
+              { text: 'React 19 & TypeScript', icon: <Code2 className="w-3.5 h-3.5" />, badge: 'Core' },
+              { text: 'Vite & Tailwind CSS', icon: <Zap className="w-3.5 h-3.5" />, badge: 'High Perf' },
+              { text: 'SEO Técnico & Schema.org', icon: <Sparkles className="w-3.5 h-3.5" />, badge: 'Rank 1' },
+              { text: 'Google Analytics 4 & GTM', icon: <Shield className="w-3.5 h-3.5" />, badge: 'Tracking' },
+              { text: '100/100 Core Web Vitals', icon: <Zap className="w-3.5 h-3.5" />, badge: 'PageSpeed' },
+              { text: 'Arquitetura Semântica', icon: <Code2 className="w-3.5 h-3.5" />, badge: 'Clean Code' },
+              { text: 'Mobile-First Responsivo', icon: <Smartphone className="w-3.5 h-3.5" />, badge: '360px-4K' },
+              { text: 'Canal Direto no WhatsApp', icon: <WhatsAppIcon className="w-3.5 h-3.5 text-emerald-400" />, badge: 'Leads' },
+            ]}
+            speed={28}
+          />
         </div>
       </div>
     </section>
