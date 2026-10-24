@@ -32,13 +32,13 @@ export const generateSitemapXml = (baseUrl: string): string => {
       loc: `${cleanBase}/`,
       priority: '1.0',
       changefreq: 'weekly',
-      comment: 'Tela 01: Início & Apresentação',
+      comment: 'Tela 01: Home',
     },
     {
-      loc: `${cleanBase}/#portfolio`,
-      priority: '0.9',
+      loc: `${cleanBase}/#inicio`,
+      priority: '1.0',
       changefreq: 'weekly',
-      comment: 'Tela 02: Portfólio de Projetos Reais',
+      comment: 'Tela 02: Sobre a ēloSites (Apresentação, Especialidades & Fundador)',
     },
     {
       loc: `${cleanBase}/#servicos`,
@@ -47,28 +47,40 @@ export const generateSitemapXml = (baseUrl: string): string => {
       comment: 'Tela 03: Serviços & Condições Comerciais',
     },
     {
+      loc: `${cleanBase}/#portfolio`,
+      priority: '0.9',
+      changefreq: 'weekly',
+      comment: 'Tela 04: Portfólio de Projetos Reais',
+    },
+    {
+      loc: `${cleanBase}/#avaliacoes`,
+      priority: '0.8',
+      changefreq: 'monthly',
+      comment: 'Tela 05: Avaliações de Clientes Reais',
+    },
+    {
       loc: `${cleanBase}/#processo`,
       priority: '0.8',
       changefreq: 'monthly',
-      comment: 'Tela 04: Processo Ágil & Diferenciais',
+      comment: 'Tela 06: Processo Ágil & Diferenciais',
     },
     {
       loc: `${cleanBase}/#orcamento`,
       priority: '0.9',
       changefreq: 'weekly',
-      comment: 'Tela 05: Orçamento & Agendamento de Reunião',
-    },
-    {
-      loc: `${cleanBase}/#faq`,
-      priority: '0.8',
-      changefreq: 'monthly',
-      comment: 'Tela 06: Perguntas Frequentes & Contato',
+      comment: 'Tela 07: Orçamento & Agendamento de Reunião',
     },
     {
       loc: `${cleanBase}/#parceria-trafego`,
       priority: '0.8',
       changefreq: 'monthly',
-      comment: 'Tela 07: Parceria Estratégica | Tráfego Pago',
+      comment: 'Tela 08: Parceria Estratégica | Tráfego Pago',
+    },
+    {
+      loc: `${cleanBase}/#faq`,
+      priority: '0.8',
+      changefreq: 'monthly',
+      comment: 'Tela 09: Perguntas Frequentes & Contato',
     },
   ];
 
@@ -121,14 +133,14 @@ export const SitemapModal: React.FC<SitemapModalProps> = ({
     const today = new Date().toISOString().split('T')[0];
     const cleanBase = baseUrl.replace(/\/+$/, '');
     return SCREENS.map((s) => {
-      const isHome = s.id === 'inicio';
+      const isHome = s.id === 'home';
       return {
         path: isHome ? '/' : `/#${s.id}`,
         url: isHome ? `${cleanBase}/` : `${cleanBase}/#${s.id}`,
         screenId: s.id,
         title: s.title,
-        priority: isHome ? '1.0' : s.id === 'portfolio' || s.id === 'servicos' || s.id === 'orcamento' ? '0.9' : '0.8',
-        changefreq: isHome || s.id === 'portfolio' || s.id === 'servicos' || s.id === 'orcamento' ? 'weekly' : 'monthly',
+        priority: isHome || s.id === 'inicio' ? '1.0' : s.id === 'portfolio' || s.id === 'servicos' || s.id === 'orcamento' ? '0.9' : '0.8',
+        changefreq: isHome || s.id === 'inicio' || s.id === 'portfolio' || s.id === 'servicos' || s.id === 'orcamento' ? 'weekly' : 'monthly',
         lastmod: today,
       };
     });
@@ -236,14 +248,14 @@ export const SitemapModal: React.FC<SitemapModalProps> = ({
         aria-modal="true"
         aria-labelledby="sitemap-modal-title"
         tabIndex={-1}
-        className="glass-panel rounded-2xl w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden text-slate-300 border border-indigo-500/30"
+        className="glass-panel rounded-2xl w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden text-slate-300 border border-blue-500/30 bg-[#090E23]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
         <div className="flex items-start justify-between p-4 sm:p-5 border-b border-slate-800 bg-slate-950/70">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-blue-500/20 text-blue-300 border border-blue-500/30">
                 <Globe className="w-3 h-3" />
                 XML Sitemaps 0.9
               </span>

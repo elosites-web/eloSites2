@@ -6,7 +6,6 @@ import { Hero } from './components/Hero';
 import { Footer } from './components/Footer';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { ReadingProgressBar } from './components/ReadingProgressBar';
-import { FluidRippleBackground } from './components/FluidRippleBackground';
 import {
   DifferentialsSkeleton,
   PortfolioSkeleton,
@@ -29,6 +28,9 @@ const TestimonialsSection = lazy(() =>
 const ServicesSection = lazy(() =>
   import('./components/ServicesSection').then((mod) => ({ default: mod.ServicesSection }))
 );
+const SpecialtiesSection = lazy(() =>
+  import('./components/SpecialtiesSection').then((mod) => ({ default: mod.SpecialtiesSection }))
+);
 const DifferentialsSection = lazy(() =>
   import('./components/DifferentialsSection').then((mod) => ({ default: mod.DifferentialsSection }))
 );
@@ -46,6 +48,11 @@ const FaqSection = lazy(() =>
 const ContactCtaSection = lazy(() =>
   import('./components/ContactCtaSection').then((mod) => ({
     default: mod.ContactCtaSection,
+  }))
+);
+const DigitalCardSection = lazy(() =>
+  import('./components/DigitalCardSection').then((mod) => ({
+    default: mod.DigitalCardSection,
   }))
 );
 const PaidTrafficPartnershipSection = lazy(() =>
@@ -121,22 +128,75 @@ export default function App() {
     };
   }, []);
 
-  // Sincronização inicial e bidirecional com a hash da URL (7 telas oficiais)
+  // Sincronização inicial e bidirecional com a hash da URL (9 telas oficiais)
   useEffect(() => {
     const validIds: ScreenId[] = [
       'home',
       'inicio',
-      'portfolio',
       'servicos',
+      'portfolio',
+      'avaliacoes',
       'processo',
       'orcamento',
-      'faq',
       'parceria-trafego',
+      'trafego-pago',
+      'faq',
     ];
 
     const handleHashChange = () => {
       const rawHash = window.location.hash.replace('#', '');
-      if (validIds.includes(rawHash as ScreenId)) {
+      if (rawHash === 'sobre') {
+        setCurrentScreen((prev) => {
+          if (prev !== 'inicio') {
+            const prevIdx = SCREENS.findIndex((s) => s.id === prev);
+            const nextIdx = SCREENS.findIndex((s) => s.id === 'inicio');
+            if (nextIdx !== -1 && prevIdx !== -1) {
+              setDirection(nextIdx > prevIdx ? 1 : -1);
+            }
+          }
+          return 'inicio';
+        });
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      } else if (rawHash === 'solucoes-web' || rawHash === 'solucoes' || rawHash === 'especialidades') {
+        setCurrentScreen((prev) => {
+          if (prev !== 'inicio') {
+            const prevIdx = SCREENS.findIndex((s) => s.id === prev);
+            const nextIdx = SCREENS.findIndex((s) => s.id === 'inicio');
+            if (nextIdx !== -1 && prevIdx !== -1) {
+              setDirection(nextIdx > prevIdx ? 1 : -1);
+            }
+          }
+          return 'inicio';
+        });
+        setTimeout(() => {
+          const el = document.getElementById('solucoes-web');
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }, 150);
+      } else if (rawHash === 'testemunhos' || rawHash === 'depoimentos' || rawHash === 'social-proof' || rawHash === 'avaliacoes') {
+        setCurrentScreen((prev) => {
+          if (prev !== 'avaliacoes') {
+            const prevIdx = SCREENS.findIndex((s) => s.id === prev);
+            const nextIdx = SCREENS.findIndex((s) => s.id === 'avaliacoes');
+            if (nextIdx !== -1 && prevIdx !== -1) {
+              setDirection(nextIdx > prevIdx ? 1 : -1);
+            }
+          }
+          return 'avaliacoes';
+        });
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      } else if (rawHash === 'parceria' || rawHash === 'trafego' || rawHash === 'trafego-pago') {
+        setCurrentScreen((prev) => {
+          if (prev !== 'parceria-trafego') {
+            const prevIdx = SCREENS.findIndex((s) => s.id === prev);
+            const nextIdx = SCREENS.findIndex((s) => s.id === 'parceria-trafego');
+            if (nextIdx !== -1 && prevIdx !== -1) {
+              setDirection(nextIdx > prevIdx ? 1 : -1);
+            }
+          }
+          return 'parceria-trafego';
+        });
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      } else if (validIds.includes(rawHash as ScreenId)) {
         const targetScreen = rawHash as ScreenId;
         setCurrentScreen((prev) => {
           if (prev !== targetScreen) {
@@ -178,38 +238,39 @@ export default function App() {
           const el = document.getElementById('contato');
           if (el) el.scrollIntoView({ behavior: 'smooth' });
         }, 150);
-      } else if (rawHash === 'testemunhos' || rawHash === 'depoimentos' || rawHash === 'social-proof') {
+      } else if (
+        rawHash === 'cartao-digital' ||
+        rawHash === 'cartao' ||
+        rawHash === 'cartao-visitas' ||
+        rawHash === 'cartao-de-visitas'
+      ) {
         setCurrentScreen((prev) => {
-          if (prev !== 'portfolio') {
+          if (prev !== 'faq') {
             const prevIdx = SCREENS.findIndex((s) => s.id === prev);
-            const nextIdx = SCREENS.findIndex((s) => s.id === 'portfolio');
+            const nextIdx = SCREENS.findIndex((s) => s.id === 'faq');
             if (nextIdx !== -1 && prevIdx !== -1) {
               setDirection(nextIdx > prevIdx ? 1 : -1);
             }
           }
-          return 'portfolio';
+          return 'faq';
         });
-        setTimeout(() => {
-          const el = document.getElementById('testemunhos');
-          if (el) el.scrollIntoView({ behavior: 'smooth' });
-        }, 150);
+        const scrollToCartao = () => {
+          const el = document.getElementById('cartao-de-visitas') || document.getElementById('cartao-digital');
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return true;
+          }
+          return false;
+        };
+        let attempts = 0;
+        const intervalId = window.setInterval(() => {
+          attempts++;
+          if (scrollToCartao() || attempts >= 30) {
+            window.clearInterval(intervalId);
+          }
+        }, 50);
       } else if (rawHash === 'apresentacao') {
-        setCurrentScreen('inicio');
-        setTimeout(() => {
-          const el = document.getElementById('apresentacao');
-          if (el) el.scrollIntoView({ behavior: 'smooth' });
-        }, 150);
-      } else if (rawHash === 'parceria' || rawHash === 'trafego') {
-        setCurrentScreen((prev) => {
-          if (prev !== 'parceria-trafego') {
-            const prevIdx = SCREENS.findIndex((s) => s.id === prev);
-            const nextIdx = SCREENS.findIndex((s) => s.id === 'parceria-trafego');
-            if (nextIdx !== -1 && prevIdx !== -1) {
-              setDirection(nextIdx > prevIdx ? 1 : -1);
-            }
-          }
-          return 'parceria-trafego';
-        });
+        setCurrentScreen('home');
         window.scrollTo({ top: 0, behavior: 'instant' });
       } else if (rawHash === 'sitemap' || rawHash === 'mapa-do-site') {
         setIsSitemapOpen(true);
@@ -485,7 +546,7 @@ export default function App() {
     <>
       {/* TELA 01: Home (Background-only Hero com Menu Centralizado e Logo Flutuante) */}
       {currentScreen === 'home' && (
-        <div style={{ contain: 'layout style' }} className="w-full [contain:layout_style]">
+        <div className="w-full">
           <Hero
             mode="home"
             isMenuOpen={isMenuOpen}
@@ -493,60 +554,99 @@ export default function App() {
         </div>
       )}
 
-      {/* TELA 02: Início (Apresentação Completa, Marquee 90s, CTAs e Terminal 3D) */}
+      {/* TELA 02: Sobre (Apresentação Completa, Especialidades & Soluções Web e Card Oficial do Fundador) */}
       {currentScreen === 'inicio' && (
-        <div style={{ contain: 'layout style' }} className="w-full [contain:layout_style]">
+        <div className="w-full space-y-0">
           <Hero
             mode="inicio"
-            onNavigateToPortfolio={() => navigateToScreen('portfolio')}
+            onNavigateToPortfolio={() => {
+              const el = document.getElementById('solucoes-web');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
           />
+          <SectionErrorBoundary>
+            <Suspense fallback={<ServicesSkeleton />}>
+              <SpecialtiesSection
+                onNavigateToContact={() => navigateToScreen('servicos')}
+                onNavigateToCartao={() => {
+                  navigateToScreen('faq');
+                  window.location.hash = 'cartao-digital';
+                  const scrollToCartao = () => {
+                    const el = document.getElementById('cartao-de-visitas') || document.getElementById('cartao-digital');
+                    if (el) {
+                      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      return true;
+                    }
+                    return false;
+                  };
+                  let attempts = 0;
+                  const intervalId = window.setInterval(() => {
+                    attempts++;
+                    if (scrollToCartao() || attempts >= 30) {
+                      window.clearInterval(intervalId);
+                    }
+                  }, 50);
+                }}
+              />
+            </Suspense>
+          </SectionErrorBoundary>
         </div>
       )}
 
-      {/* TELA 02: Portfólio de Projetos Reais & Depoimentos (Social Proof) */}
+      {/* TELA 04: Serviços & Condições Comerciais */}
+      {currentScreen === 'servicos' && (
+        <div className="w-full">
+          <SectionErrorBoundary>
+            <Suspense fallback={<ServicesSkeleton />}>
+              <ServicesSection onNavigateToOrcamento={() => navigateToScreen('portfolio')} />
+            </Suspense>
+          </SectionErrorBoundary>
+        </div>
+      )}
+
+      {/* TELA 05: Portfólio de Projetos Reais */}
       {currentScreen === 'portfolio' && (
-        <div style={{ contain: 'layout style' }} className="w-full [contain:layout_style]">
+        <div className="w-full">
           <SectionErrorBoundary>
             <Suspense fallback={<PortfolioSkeleton />}>
               <PortfolioSection
-                onNavigateToServices={() => navigateToScreen('servicos')}
-              />
-              <TestimonialsSection
-                onNavigateToServices={() => navigateToScreen('servicos')}
+                onNavigateToServices={() => navigateToScreen('avaliacoes')}
               />
             </Suspense>
           </SectionErrorBoundary>
         </div>
       )}
 
-      {/* TELA 03: Serviços & Condições Comerciais */}
-      {currentScreen === 'servicos' && (
-        <div style={{ contain: 'layout style' }} className="w-full [contain:layout_style]">
+      {/* TELA 06: Avaliações de Clientes Reais (Social Proof & Carrossel Cilíndrico) */}
+      {currentScreen === 'avaliacoes' && (
+        <div className="w-full">
           <SectionErrorBoundary>
-            <Suspense fallback={<ServicesSkeleton />}>
-              <ServicesSection onNavigateToOrcamento={() => navigateToScreen('orcamento')} />
+            <Suspense fallback={<PortfolioSkeleton />}>
+              <TestimonialsSection
+                onNavigateToServices={() => navigateToScreen('processo')}
+              />
             </Suspense>
           </SectionErrorBoundary>
         </div>
       )}
 
-      {/* TELA 04: Processo em 4 Etapas & Diferenciais como continuidade */}
+      {/* TELA 07: Processo em 4 Etapas & Diferenciais como continuidade */}
       {currentScreen === 'processo' && (
-        <div style={{ contain: 'layout style' }} className="w-full [contain:layout_style] space-y-0">
+        <div className="w-full space-y-0">
           <SectionErrorBoundary>
             <Suspense fallback={<DifferentialsSkeleton />}>
               <ProcessSection />
               <Suspense fallback={<DifferentialsSkeleton />}>
-                <DifferentialsSection onNavigateToPortfolio={() => navigateToScreen('portfolio')} />
+                <DifferentialsSection onNavigateToPortfolio={() => navigateToScreen('orcamento')} />
               </Suspense>
             </Suspense>
           </SectionErrorBoundary>
         </div>
       )}
 
-      {/* TELA 05: Briefing & Agendamento */}
+      {/* TELA 08: Briefing & Agendamento */}
       {currentScreen === 'orcamento' && (
-        <div style={{ contain: 'layout style' }} className="w-full [contain:layout_style]">
+        <div className="w-full">
           <SectionErrorBoundary>
             <Suspense fallback={<BookingSkeleton />}>
               <ProjectBriefBookingSection onOpenPrivacy={() => setLegalModal('privacy')} />
@@ -555,24 +655,25 @@ export default function App() {
         </div>
       )}
 
-      {/* TELA 06: Perguntas Frequentes (FAQ) & Contato */}
-      {currentScreen === 'faq' && (
-        <div style={{ contain: 'layout style' }} className="w-full [contain:layout_style] space-y-0">
+      {/* TELA 09: Tráfego Pago & Gestão de Leads */}
+      {(currentScreen === 'parceria-trafego' || currentScreen === 'trafego-pago') && (
+        <div className="w-full space-y-0">
           <SectionErrorBoundary>
             <Suspense fallback={<SimpleSectionSkeleton />}>
-              <FaqSection />
-              <ContactCtaSection onNavigateToOrcamento={() => navigateToScreen('orcamento')} />
+              <PaidTrafficPartnershipSection />
             </Suspense>
           </SectionErrorBoundary>
         </div>
       )}
 
-      {/* TELA 07: Parceria Estratégica | Tráfego Pago */}
-      {currentScreen === 'parceria-trafego' && (
-        <div style={{ contain: 'layout style' }} className="w-full [contain:layout_style] space-y-0">
+      {/* TELA 10: Perguntas Frequentes (FAQ) & Contato */}
+      {currentScreen === 'faq' && (
+        <div className="w-full space-y-0">
           <SectionErrorBoundary>
             <Suspense fallback={<SimpleSectionSkeleton />}>
-              <PaidTrafficPartnershipSection />
+              <FaqSection />
+              <ContactCtaSection onNavigateToOrcamento={() => navigateToScreen('orcamento')} />
+              <DigitalCardSection onNavigateHome={() => navigateToScreen('home')} />
             </Suspense>
           </SectionErrorBoundary>
         </div>
@@ -581,14 +682,11 @@ export default function App() {
   );
 
   return (
-    <div className={`min-h-screen-dvh text-slate-100 flex flex-col selection:bg-indigo-500 selection:text-white relative ${isHighContrast ? 'high-contrast' : ''}`}>
-      {/* Fundo WebGL com Orbes Fluidos e Ripples Interativos */}
-      <FluidRippleBackground />
-
+    <div className={`min-h-screen-dvh text-slate-100 flex flex-col selection:bg-blue-600 selection:text-white relative ${isHighContrast ? 'high-contrast' : ''}`}>
       {/* Link de pular para o conteúdo (primeiro elemento focável) */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-indigo-600 focus:text-white focus:text-sm focus:font-semibold focus:shadow-lg"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-blue-600 focus:text-white focus:text-sm focus:font-semibold focus:shadow-lg"
       >
         Pular para o conteúdo
       </a>

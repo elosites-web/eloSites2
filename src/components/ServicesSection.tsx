@@ -5,8 +5,9 @@ import {
   Target,
   Building2,
   Sparkles,
-  Check,
-  X,
+  CheckCircle2,
+  XCircle,
+  Info,
   CreditCard,
   Percent,
   Split,
@@ -21,6 +22,45 @@ import { SplitLines } from './SplitLines';
 import { SITE_CONFIG, PAYMENT_CONDITIONS, whatsappUrl } from '../types';
 import { Interactive3DCard } from './Interactive3DCard';
 import { MagneticButton } from './MagneticButton';
+import { BiReveal } from './BiReveal';
+
+interface FadeInBlockProps {
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
+  yOffset?: number;
+}
+
+// Transição de desvanecimento suave (fade-in) nos blocos de texto conforme o usuário faz a rolagem vertical
+const FadeInBlock: React.FC<FadeInBlockProps> = ({
+  children,
+  delay = 0,
+  className = '',
+  yOffset = 12,
+}) => {
+  const systemPrefersReduced = useReducedMotion();
+  const prefersReduced = Boolean(systemPrefersReduced || shouldReduceMedia());
+
+  if (prefersReduced) {
+    return <div className={className}>{children}</div>;
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: yOffset }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-24px' }}
+      transition={{
+        duration: 0.48,
+        delay: delay * 0.001,
+        ease: [0.23, 1, 0.32, 1],
+      }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+};
 
 interface ServiceCategory {
   id: string;
@@ -110,42 +150,63 @@ const SERVICES: ServiceCategory[] = [
     badge: 'Solução Sob Medida',
     title: 'Projeto Personalizado',
     description:
-      'Para projetos que não se encaixam exatamente nos dois formatos anteriores. Combinamos o que faz sentido para o seu caso, com escopo definido junto com você.',
+      'Desenvolvimento frontend sob medida para requisitos específicos. Estruturação exclusiva de páginas, componentes interativos, formulários personalizados e integrações aprovadas em escopo.',
     icon: Sparkles,
     includes: [
-      'Estrutura sob medida, combinando elementos de landing page e site institucional',
-      'Navegação por abas, múltiplas telas ou página única — conforme o que fizer mais sentido para o projeto',
-      'Funcionalidades específicas combinadas com você durante o orçamento',
-      'Seções, integrações e fluxos personalizados para o seu caso',
-      'Depoimentos, prova social e galeria quando fornecidos',
-      'Formulários quando incluídos no escopo',
-      'Integração com WhatsApp e informações de contato',
-      'Links para redes sociais',
-      'Layout responsivo para celular, tablet e desktop',
-      'SEO técnico básico, metadados e favicon',
-      'Publicação e revisão final de funcionamento',
+      'Estruturas de páginas e seções personalizadas para o seu modelo de negócio',
+      'Interfaces responsivas e fluxos de navegação fluidos (abas, telas ou página única)',
+      'Componentes interativos e recursos dinâmicos executados no navegador',
+      'Formulários customizados, galerias, modais e calculadoras quando previstos no escopo',
+      'Integrações com WhatsApp e ferramentas de mensuração previstas no escopo',
+      'Depoimentos, prova social e apresentação institucional sob medida',
+      'SEO técnico básico, metadados semânticos e otimização de imagens',
+      'Layout responsivo adaptado com precisão para celular, tablet e desktop',
+      'Publicação e revisão técnica final de funcionamento',
     ],
     scopeNote:
-      'Preço, escopo e prazo são definidos conforme a complexidade e os requisitos do projeto.',
+      'Preço, escopo e prazo são definidos conforme a complexidade e os requisitos de frontend aprovados na proposta.',
     excluded: [
       'Domínio próprio',
       'Hospedagem em outro provedor',
       'Criação de identidade visual (logo) do zero',
-      'Funcionalidades fora do escopo combinado no orçamento',
+      'Funcionalidades fora do escopo aprovado no orçamento',
     ],
-    ctaLabel: 'Pedir proposta de Projeto Personalizado',
+    ctaLabel: 'Solicitar proposta personalizada',
     ctaId: 'service-cta-personalizado',
     ctaMessage: SITE_CONFIG.personalizadoWhatsappMessage,
   },
 ];
+
+interface BudgetRangePreset {
+  label: string;
+  value: number;
+  min: number;
+  max: number;
+}
+
+const BUDGET_SIMULATOR_RANGES: BudgetRangePreset[] = [
+  { label: 'De R$ 500 a R$ 700', value: 700, min: 500, max: 700 },
+  { label: 'De R$ 700 a R$ 900', value: 900, min: 701, max: 900 },
+  { label: 'De R$ 900 a R$ 1.200', value: 1200, min: 901, max: 1200 },
+  { label: 'De R$ 1.200 a R$ 2.000', value: 2000, min: 1201, max: 2000 },
+  { label: 'Acima de R$ 2.000', value: 3000, min: 2001, max: 3000 },
+];
+
+const getCurrentRangeLabel = (val: number): string => {
+  if (val <= 700) return 'De R$ 500 a R$ 700';
+  if (val <= 900) return 'De R$ 700 a R$ 900';
+  if (val <= 1200) return 'De R$ 900 a R$ 1.200';
+  if (val <= 2000) return 'De R$ 1.200 a R$ 2.000';
+  return 'Acima de R$ 2.000';
+};
 
 interface ServicesSectionProps {
   onNavigateToOrcamento?: () => void;
 }
 
 export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOrcamento }) => {
-  // Simulador interativo de pagamento (iniciando em R$ 650 conforme solicitado)
-  const [simulatedValue, setSimulatedValue] = useState<number>(650);
+  // Simulador interativo de pagamento (iniciando em R$ 700, na primeira faixa de R$ 500 a R$ 700)
+  const [simulatedValue, setSimulatedValue] = useState<number>(700);
 
   // Detecção de preferências de acessibilidade e redução de movimento
   const systemPrefersReduced = useReducedMotion();
@@ -252,7 +313,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
           <div className="max-w-3xl mx-auto text-center space-y-4 mb-12 sm:mb-16">
             <div className="section-kicker inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-white/[0.08] text-indigo-300 text-xs sm:text-sm font-semibold uppercase">
               <Sparkles className="w-3.5 h-3.5" aria-hidden="true" />
-              <span>Formatos de Serviços & Condições Comerciais</span>
+              <span>Serviços & Condições Comerciais</span>
             </div>
             <SplitLines
               as="h2"
@@ -260,106 +321,103 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
               className="font-display text-3xl sm:text-4xl lg:text-[2.75rem] font-bold tracking-[-0.03em] text-white text-balance leading-tight"
             />
             <p className="text-base sm:text-lg text-slate-300/95 leading-relaxed">
-              Cada projeto recebe um <strong>orçamento personalizado</strong> considerando escopo, seções e conteúdo necessário. Sem mensalidades surpresa e com opções de parcelamento no cartão ou desconto à vista no PIX.
+              Cada projeto recebe um <strong className="text-transparent bg-clip-text bg-gradient-to-r from-[#38bdf8] via-[#818cf8] to-[#a855f7] font-bold">orçamento personalizado</strong> considerando escopo, seções e conteúdo necessário. Sem mensalidades surpresa e com opções de parcelamento no cartão ou desconto à vista no PIX.
             </p>
           </div>
 
-          {/* Grid dos 3 Serviços com transição de entrada dinâmica e fluida ao rolar — Subgrid no desktop para alinhamento uniforme das linhas e seções */}
+          {/* Grid dos 3 Serviços */}
           <div
-            className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-7 lg:gap-8 min-w-0 items-stretch lg:grid-rows-[repeat(5,auto)] service-list scroll-perf-list scroll-snap-y-container card-list-container p-0.5 overflow-visible"
-            style={{
-              scrollSnapType: 'y mandatory',
-              scrollPaddingTop: 'clamp(4.5rem, 12vh, 6.5rem)',
-            }}
+            className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-7 lg:gap-8 min-w-0 items-stretch lg:grid-rows-[repeat(5,auto)] service-list p-0.5 overflow-visible"
           >
             {SERVICES.map((service, index) => {
               const Icon = service.icon;
               const ctaUrl = whatsappUrl(service.ctaMessage);
 
               return (
-                <motion.div
+                <BiReveal
                   key={service.id}
-                  custom={index}
-                  variants={serviceCardVariants}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, amount: 0.12, margin: '0px 0px -40px 0px' }}
+                  direction={index === 0 ? 'left' : index === 1 ? 'right' : 'up'}
+                  index={index}
                   className="h-full w-full min-w-0 max-w-full lg:row-span-5 lg:grid lg:grid-rows-subgrid scroll-snap-card card-snap-item"
-                  style={{
-                    scrollSnapAlign: 'start',
-                    scrollSnapStop: 'normal',
-                    scrollMarginTop: 'clamp(4.5rem, 12vh, 6.5rem)',
-                  }}
                 >
-                  <Interactive3DCard maxTilt={5} allowDrag={true} animatedBorder={index === 0} className="h-full w-full min-w-0 max-w-full lg:row-span-5 lg:grid lg:grid-rows-subgrid">
+                  <Interactive3DCard maxTilt={1.2} allowDrag={true} animatedBorder={index === 0} className="h-full w-full min-w-0 max-w-full lg:row-span-5 lg:grid lg:grid-rows-subgrid">
                     <article
-                      className="glass-card-interactive surface-card service-card scroll-perf-card scroll-snap-card card-snap-item accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 md:p-8 flex flex-col space-y-5 lg:space-y-0 lg:row-span-5 lg:grid lg:grid-rows-subgrid shadow-2xl shadow-black/60 bracket-panel transition-colors h-full w-full min-w-0 max-w-full box-border"
+                      className="glass-card-interactive surface-card service-card scroll-perf-card scroll-snap-card card-snap-item relative rounded-2xl bg-[#090E23] border border-blue-500/20 hover:border-blue-400/50 p-5 sm:p-6 md:p-8 flex flex-col space-y-5 lg:space-y-0 lg:row-span-5 lg:grid lg:grid-rows-subgrid shadow-2xl shadow-black/80 bracket-panel transition-all h-full w-full min-w-0 max-w-full box-border"
                     >
-                      {/* Linha 1: Topo do card + Título + Descrição */}
+                      {/* Linha 1: Topo do card + Título + Descrição com Fade-In suave */}
                       <div className="space-y-4 lg:pb-4">
                         <div className="flex items-center justify-between gap-2.5 min-w-0">
-                          <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-indigo-950/80 border border-indigo-500/30 flex items-center justify-center text-indigo-300 shrink-0">
+                          <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-blue-950/80 border border-blue-500/30 flex items-center justify-center text-blue-400 shrink-0 shadow-[0_0_12px_rgba(59,130,246,0.25)]">
                             <Icon className="w-5 h-5 sm:w-6 sm:h-6" aria-hidden="true" />
                           </div>
-                          <span className="text-[10px] min-[380px]:text-xs font-mono text-indigo-300 bg-indigo-950/90 px-2.5 min-[380px]:px-3 py-1 rounded-full border border-indigo-700/60 font-medium whitespace-nowrap shrink-0">
+                          <span className="text-[10px] min-[380px]:text-xs font-mono text-blue-300 bg-blue-950/90 px-2.5 min-[380px]:px-3 py-1 rounded-full border border-blue-500/40 font-medium whitespace-nowrap shrink-0">
                             {service.badge}
                           </span>
                         </div>
 
-                        <div>
+                        <FadeInBlock delay={40}>
                           <h3 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-white mb-2">
                             {service.title}
                           </h3>
                           <p className="text-sm text-slate-300 leading-relaxed font-normal">
                             {service.description}
                           </p>
-                        </div>
+                        </FadeInBlock>
                       </div>
 
-                      {/* Linha 2: Bloco INCLUI */}
-                      <div className="space-y-2.5 pt-4 border-t border-white/[0.06] lg:pb-4">
-                        <span className="text-xs font-bold uppercase tracking-wider text-slate-300 block">
+                      {/* Linha 2: Bloco INCLUI com Fade-In suave */}
+                      <FadeInBlock delay={80} className="space-y-2.5 pt-4 border-t border-white/[0.06] lg:pb-4">
+                        <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400 font-semibold block">
                           INCLUI:
                         </span>
                         <div className="grid grid-cols-1 gap-2 text-sm text-slate-300 service-list scroll-perf-list">
                           {service.includes.map((item) => (
                             <div key={item} className="flex items-start gap-2">
-                              <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" aria-hidden="true" />
+                              <CheckCircle2
+                                className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"
+                                aria-hidden="true"
+                              />
                               <span className="text-xs sm:text-sm leading-snug">{item}</span>
                             </div>
                           ))}
                         </div>
-                      </div>
+                      </FadeInBlock>
 
-                      {/* Linha 3: Caixa de Nota Sutil */}
-                      <div className="lg:py-3">
-                        <p className="text-xs text-slate-400 leading-relaxed rounded-lg border border-white/[0.08] bg-slate-950/70 p-3">
-                          ℹ️ {service.scopeNote}
-                        </p>
-                      </div>
+                      {/* Linha 3: Caixa de Nota Sutil com Fade-In suave */}
+                      <FadeInBlock delay={110} className="lg:py-3">
+                        <div className="rounded-xl border border-white/[0.06] bg-slate-950/70 p-3">
+                          <div className="flex items-start gap-2 text-[11px] sm:text-xs text-slate-400 leading-relaxed">
+                            <Info className="w-3.5 h-3.5 text-blue-400 shrink-0 mt-0.5" aria-hidden="true" />
+                            <span>{service.scopeNote}</span>
+                          </div>
+                        </div>
+                      </FadeInBlock>
 
-                      {/* Linha 4: Bloco NÃO INCLUSO */}
-                      <div className="space-y-2 pt-4 border-t border-white/[0.06] lg:pb-4">
+                      {/* Linha 4: Bloco NÃO INCLUSO com Fade-In suave */}
+                      <FadeInBlock delay={130} className="space-y-2 pt-4 border-t border-white/[0.06] lg:pb-4">
                         {service.excluded && (
                           <>
-                            <span className="text-xs font-bold uppercase tracking-wider text-slate-400 block">
+                            <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400 font-semibold block">
                               NÃO INCLUSO:
                             </span>
                             <div className="grid grid-cols-1 gap-1.5 text-xs text-slate-400 service-list scroll-perf-list">
                               {service.excluded.map((item) => (
                                 <div key={item} className="flex items-start gap-2">
-                                  <X className="w-3.5 h-3.5 text-slate-500 shrink-0 mt-0.5" aria-hidden="true" />
+                                  <XCircle
+                                    className="w-4 h-4 text-slate-500 shrink-0 mt-0.5"
+                                    aria-hidden="true"
+                                  />
                                   <span className="leading-snug">{item}</span>
                                 </div>
                               ))}
                             </div>
                           </>
                         )}
-                      </div>
+                      </FadeInBlock>
 
                       {/* Linha 5: Orçamento Personalizado & CTA (inicia na mesma posição vertical) */}
                       <div className="pt-4 border-t border-white/[0.08] space-y-4 flex flex-col justify-end">
-                        <div className="p-3.5 rounded-xl bg-slate-950/70 border border-white/[0.06] space-y-1">
+                        <FadeInBlock delay={150} className="p-3.5 rounded-xl bg-slate-950/70 border border-white/[0.06] space-y-1">
                           <div className="flex items-center justify-between">
                             <span className="text-xs font-semibold text-indigo-300 uppercase tracking-wide">
                               Proposta Comercial
@@ -371,13 +429,13 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                           <p className="text-xs text-slate-300 leading-relaxed">
                             Definido por escopo, páginas e urgência. Pagamento facilitado em até 5x sem juros ou desconto no PIX.
                           </p>
-                        </div>
+                        </FadeInBlock>
 
                         <MagneticButton
                           href={ctaUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          strength={10}
+                          strength={3}
                           glowColor="rgba(99, 102, 241, 0.4)"
                           className="cta-primary w-full inline-flex items-center justify-center text-center gap-1.5 sm:gap-2 py-3.5 px-3 sm:px-4 rounded-xl text-xs sm:text-[13px] md:text-sm font-semibold text-white transition-all shadow-lg shadow-indigo-600/25 min-h-12"
                           ariaLabel={service.ctaLabel}
@@ -388,9 +446,29 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                       </div>
                     </article>
                   </Interactive3DCard>
-                </motion.div>
+                </BiReveal>
               );
             })}
+          </div>
+
+          {/* Navegação para a Seção Sobre / Soluções Web */}
+          <div className="mt-8 sm:mt-10 text-center">
+            <button
+              type="button"
+              onClick={() => {
+                if (window.location.hash === '#solucoes-web') {
+                  const el = document.getElementById('solucoes-web');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                  window.location.hash = 'solucoes-web';
+                }
+              }}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-cyan-300 bg-cyan-950/40 hover:bg-cyan-950/70 border border-cyan-500/30 hover:border-cyan-400 transition-all cursor-pointer shadow-sm hover:shadow-[0_0_18px_rgba(34,211,238,0.35)] hover:scale-102 active:scale-98"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+              <span>CONHECER NOSSAS ESPECIALIDADES NA SEÇÃO &apos;SOBRE&apos;</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
           </div>
 
           {/* SEÇÃO DESTACADA: CONDIÇÕES DE PAGAMENTO ATUALIZADAS */}
@@ -412,63 +490,43 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
             {/* 4 Blocos de Regras Comerciais com transição de entrada dinâmica ao rolar */}
             <div
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 service-list scroll-perf-list scroll-snap-y-container card-list-container"
-              style={{
-                scrollSnapType: 'y mandatory',
-                scrollPaddingTop: 'clamp(4.5rem, 12vh, 6.5rem)',
-              }}
             >
               {/* Regra 1: 50% Entrada + 50% Final */}
-              <motion.div
-                custom={0}
-                variants={commercialCardVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.12, margin: '0px 0px -30px 0px' }}
+              <BiReveal
+                direction="left"
+                index={0}
                 className="h-full scroll-snap-card card-snap-item"
-                style={{
-                  scrollSnapAlign: 'start',
-                  scrollSnapStop: 'normal',
-                  scrollMarginTop: 'clamp(4.5rem, 12vh, 6.5rem)',
-                }}
               >
-                <Interactive3DCard maxTilt={5} className="h-full">
-                  <div className="glass-card-interactive surface-card service-card scroll-perf-card scroll-snap-card card-snap-item accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors">
-                    <div className="space-y-3">
-                      <div className="w-10 h-10 rounded-xl bg-indigo-950/90 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
+                <Interactive3DCard maxTilt={1.0} className="h-full">
+                  <div className="glass-card-interactive surface-card service-card scroll-perf-card scroll-snap-card card-snap-item relative rounded-2xl bg-[#090E23] border border-blue-500/20 hover:border-blue-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/80 bracket-panel transition-all">
+                    <FadeInBlock delay={40} className="space-y-3">
+                      <div className="w-10 h-10 rounded-xl bg-blue-950/80 border border-blue-500/30 flex items-center justify-center text-blue-400 shadow-[0_0_10px_rgba(59,130,246,0.2)]">
                         <Split className="w-5 h-5" />
                       </div>
                       <h4 className="text-base font-bold text-white">50% Início + 50% Entrega</h4>
                       <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
                         50% no momento da contratação para iniciar imediatamente o desenvolvimento e 50% restante após a entrega e aprovação final (via PIX).
                       </p>
-                    </div>
+                    </FadeInBlock>
                     <div className="mt-auto pt-4">
-                      <div className="text-[11px] font-mono text-indigo-400 bg-indigo-950/40 px-2.5 py-1 rounded border border-indigo-500/20 text-center">
+                      <div className="text-[11px] font-mono text-blue-300 bg-blue-950/40 px-2.5 py-1 rounded border border-blue-500/20 text-center">
                         Ideal para fluxo de caixa
                       </div>
                     </div>
                   </div>
                 </Interactive3DCard>
-              </motion.div>
+              </BiReveal>
 
               {/* Regra 2: 20% de Desconto à Vista */}
-              <motion.div
-                custom={1}
-                variants={commercialCardVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.12, margin: '0px 0px -30px 0px' }}
+              <BiReveal
+                direction="right"
+                index={1}
                 className="h-full scroll-snap-card card-snap-item"
-                style={{
-                  scrollSnapAlign: 'start',
-                  scrollSnapStop: 'normal',
-                  scrollMarginTop: 'clamp(4.5rem, 12vh, 6.5rem)',
-                }}
               >
-                <Interactive3DCard maxTilt={5} className="h-full">
-                  <div className="glass-card-interactive surface-card service-card scroll-perf-card scroll-snap-card card-snap-item accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-emerald-500/40 hover:border-emerald-400/70 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors bg-gradient-to-b from-emerald-950/20 to-[#0B101D]">
-                    <div className="space-y-3">
-                      <div className="w-10 h-10 rounded-xl bg-emerald-950/90 border border-emerald-500/40 flex items-center justify-center text-emerald-300">
+                <Interactive3DCard maxTilt={1.0} className="h-full">
+                  <div className="glass-card-interactive surface-card service-card scroll-perf-card scroll-snap-card card-snap-item relative rounded-2xl bg-[#090E23] border border-emerald-500/40 hover:border-emerald-400/70 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/80 bracket-panel transition-all bg-gradient-to-b from-emerald-950/20 to-[#090E23]">
+                    <FadeInBlock delay={60} className="space-y-3">
+                      <div className="w-10 h-10 rounded-xl bg-emerald-950/90 border border-emerald-500/40 flex items-center justify-center text-emerald-300 shadow-[0_0_10px_rgba(16,185,129,0.2)]">
                         <Percent className="w-5 h-5" />
                       </div>
                       <div className="flex items-center justify-between gap-1.5 flex-wrap">
@@ -480,7 +538,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                       <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
                         Pagamento integral à vista no momento do fechamento garante 20% de desconto direto sobre o valor total do projeto orçado.
                       </p>
-                    </div>
+                    </FadeInBlock>
                     <div className="mt-auto pt-4">
                       <div className="text-[11px] font-mono text-emerald-300 bg-emerald-950/40 px-2.5 py-1 rounded border border-emerald-500/20 text-center">
                         Economize 1/5 do investimento
@@ -488,67 +546,51 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                     </div>
                   </div>
                 </Interactive3DCard>
-              </motion.div>
+              </BiReveal>
 
               {/* Regra 3: Cartão até 5x sem juros */}
-              <motion.div
-                custom={2}
-                variants={commercialCardVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.12, margin: '0px 0px -30px 0px' }}
+              <BiReveal
+                direction="left"
+                index={2}
                 className="h-full scroll-snap-card card-snap-item"
-                style={{
-                  scrollSnapAlign: 'start',
-                  scrollSnapStop: 'normal',
-                  scrollMarginTop: 'clamp(4.5rem, 12vh, 6.5rem)',
-                }}
               >
-                <Interactive3DCard maxTilt={5} className="h-full">
-                  <div className="glass-card-interactive surface-card service-card scroll-perf-card scroll-snap-card card-snap-item accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors">
-                    <div className="space-y-3">
-                      <div className="w-10 h-10 rounded-xl bg-indigo-950/90 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
+                <Interactive3DCard maxTilt={1.0} className="h-full">
+                  <div className="glass-card-interactive surface-card service-card scroll-perf-card scroll-snap-card card-snap-item relative rounded-2xl bg-[#090E23] border border-blue-500/20 hover:border-blue-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/80 bracket-panel transition-all">
+                    <FadeInBlock delay={80} className="space-y-3">
+                      <div className="w-10 h-10 rounded-xl bg-blue-950/80 border border-blue-500/30 flex items-center justify-center text-blue-400 shadow-[0_0_10px_rgba(59,130,246,0.2)]">
                         <CreditCard className="w-5 h-5" />
                       </div>
                       <h4 className="text-base font-bold text-white">Até 5x Sem Juros no Cartão</h4>
                       <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
                         Aceitamos cartão de crédito em até 5 vezes sem nenhum juro para você (sendo 1 entrada + 4 parcelas mensais fixas).
                       </p>
-                    </div>
+                    </FadeInBlock>
                     <div className="mt-auto pt-4">
-                      <div className="text-[11px] font-mono text-indigo-400 bg-indigo-950/40 px-2.5 py-1 rounded border border-indigo-500/20 text-center">
+                      <div className="text-[11px] font-mono text-blue-300 bg-blue-950/40 px-2.5 py-1 rounded border border-blue-500/20 text-center">
                         1 Entrada + 4 Parcelas Fixas
                       </div>
                     </div>
                   </div>
                 </Interactive3DCard>
-              </motion.div>
+              </BiReveal>
 
               {/* Regra 4: Cartão de 6x a 12x */}
-              <motion.div
-                custom={3}
-                variants={commercialCardVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.12, margin: '0px 0px -30px 0px' }}
+              <BiReveal
+                direction="right"
+                index={3}
                 className="h-full scroll-snap-card card-snap-item"
-                style={{
-                  scrollSnapAlign: 'start',
-                  scrollSnapStop: 'normal',
-                  scrollMarginTop: 'clamp(4.5rem, 12vh, 6.5rem)',
-                }}
               >
-                <Interactive3DCard maxTilt={5} className="h-full">
-                  <div className="glass-card-interactive surface-card service-card scroll-perf-card scroll-snap-card card-snap-item accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/60 bracket-panel transition-colors">
-                    <div className="space-y-3">
-                      <div className="w-10 h-10 rounded-xl bg-indigo-950/90 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
+                <Interactive3DCard maxTilt={1.0} className="h-full">
+                  <div className="glass-card-interactive surface-card service-card scroll-perf-card scroll-snap-card card-snap-item relative rounded-2xl bg-[#090E23] border border-blue-500/20 hover:border-blue-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/80 bracket-panel transition-all">
+                    <FadeInBlock delay={100} className="space-y-3">
+                      <div className="w-10 h-10 rounded-xl bg-blue-950/80 border border-blue-500/30 flex items-center justify-center text-blue-400 shadow-[0_0_10px_rgba(59,130,246,0.2)]">
                         <Calendar className="w-5 h-5" />
                       </div>
                       <h4 className="text-base font-bold text-white">De 6x até 12x no Cartão</h4>
                       <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
                         Para parcelamentos mais longos, viabilizamos de 6x até 12x no cartão de crédito, com repasse das taxas de juros da operadora para o cliente.
                       </p>
-                    </div>
+                    </FadeInBlock>
                     <div className="mt-auto pt-4">
                       <div className="text-[11px] font-mono text-slate-400 bg-slate-900 px-2.5 py-1 rounded border border-white/[0.05] text-center">
                         Parcelas mínimas mensais
@@ -556,21 +598,15 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                     </div>
                   </div>
                 </Interactive3DCard>
-              </motion.div>
+              </BiReveal>
             </div>
 
-            {/* SIMULADOR INTERATIVO DE CONDIÇÕES */}
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.1, margin: '0px 0px -30px 0px' }}
-              variants={simulatorCardVariants}
-              className="mt-8 w-full"
-            >
-              <Interactive3DCard maxTilt={3} className="w-full">
-                <div className="glass-card-interactive surface-card service-card scroll-perf-card relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/40 p-6 sm:p-8 shadow-2xl shadow-black/60 bracket-panel transition-colors">
+            {/* SIMULADOR INTERATIVO DE CONDIÇÕES (100% estável para cliques e slider) */}
+            <BiReveal direction="up" delay={150} className="mt-8 w-full">
+              <Interactive3DCard maxTilt={0} className="w-full">
+                <div className="glass-card-interactive surface-card service-card scroll-perf-card relative rounded-2xl bg-[#090E23] border border-blue-500/25 hover:border-blue-400/50 p-6 sm:p-8 shadow-2xl shadow-black/80 bracket-panel transition-all">
                 <div className="flex flex-col lg:flex-row items-center justify-between gap-6 pb-6 border-b border-white/[0.08]">
-                  <div className="space-y-1 text-center lg:text-left">
+                  <FadeInBlock delay={30} className="space-y-1 text-center lg:text-left">
                     <div className="inline-flex items-center gap-1.5 text-xs text-indigo-400 font-semibold uppercase">
                       <Calculator className="w-4 h-4" />
                       <span>Simulador de Condições de Pagamento</span>
@@ -581,38 +617,46 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                     <p className="text-xs sm:text-sm text-slate-400">
                       Arraste o controle ou escolha um valor de referência para visualizar a economia à vista e as parcelas.
                     </p>
-                  </div>
+                  </FadeInBlock>
 
                   <div className="flex flex-wrap items-center gap-2 justify-center">
-                    {[650, 1000, 1500, 2200].map((preset) => (
-                      <button
-                        key={preset}
-                        type="button"
-                        onClick={() => setSimulatedValue(preset)}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] ${
-                          simulatedValue === preset
-                            ? 'bg-indigo-600 text-white shadow'
-                            : 'bg-slate-900 text-slate-400 hover:text-white border border-white/[0.06]'
-                        }`}
-                      >
-                        R$ {preset.toLocaleString('pt-BR')}
-                      </button>
-                    ))}
+                    {BUDGET_SIMULATOR_RANGES.map((preset) => {
+                      const isActive = simulatedValue >= preset.min && simulatedValue <= preset.max;
+                      return (
+                        <button
+                          key={preset.label}
+                          type="button"
+                          onClick={() => setSimulatedValue(preset.value)}
+                          className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] cursor-pointer ${
+                            isActive
+                              ? 'bg-indigo-600 text-white shadow shadow-indigo-500/30 border border-indigo-400/40'
+                              : 'bg-slate-900 text-slate-400 hover:text-white border border-white/[0.06]'
+                          }`}
+                        >
+                          {preset.label}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
 
                 {/* Slider de Valor */}
                 <div className="py-6 space-y-2">
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-slate-400 font-medium">Valor orçado simulado:</span>
+                  <div className="flex flex-wrap justify-between items-center gap-2 text-sm">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="text-slate-400 font-medium">Valor orçado simulado:</span>
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-950/80 border border-indigo-500/30 text-indigo-300">
+                        {getCurrentRangeLabel(simulatedValue)}
+                      </span>
+                    </div>
                     <span className="text-xl sm:text-2xl font-bold font-mono text-indigo-300">
                       R$ {simulatedValue.toLocaleString('pt-BR')},00
                     </span>
                   </div>
                   <input
                     type="range"
-                    min="600"
-                    max="3500"
+                    min="500"
+                    max="3000"
                     step="50"
                     value={simulatedValue}
                     onChange={(e) => setSimulatedValue(Number(e.target.value))}
@@ -620,9 +664,12 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                     className="w-full accent-indigo-500 cursor-pointer h-2 bg-slate-800 rounded-lg"
                   />
                   <div className="flex justify-between text-[11px] text-slate-500 font-mono">
-                    <span>R$ 600</span>
+                    <span>R$ 500</span>
+                    <span>R$ 700</span>
+                    <span>R$ 900</span>
+                    <span>R$ 1.200</span>
                     <span>R$ 2.000</span>
-                    <span>R$ 3.500</span>
+                    <span>R$ 3.000</span>
                   </div>
                 </div>
 
@@ -679,7 +726,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                       <button
                         type="button"
                         onClick={onNavigateToOrcamento}
-                        className="w-full sm:w-auto min-h-12 sm:min-h-0 inline-flex items-center justify-center text-center gap-2 px-5 py-3 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 border border-indigo-400/40 shadow-lg shadow-indigo-500/25 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-200 hover:scale-105 focus:scale-105 hover:ring-2 hover:ring-indigo-500/50 focus:ring-2 focus:ring-indigo-500/50 focus:outline-none cursor-pointer"
+                        className="w-full sm:w-auto min-h-12 sm:min-h-0 inline-flex items-center justify-center text-center gap-2 px-5 py-3 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-blue-600 via-sky-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 border border-blue-400/40 shadow-lg shadow-blue-500/25 transition-all duration-200 hover:scale-105 cursor-pointer"
                       >
                         <span className="text-center">Montar Briefing</span>
                         <ArrowRight className="w-3.5 h-3.5" />
@@ -687,11 +734,11 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                     )}
                     <a
                       href={whatsappUrl(
-                        `Olá! 💰 Simulei uma condição de pagamento no site da *ēloSites* (valor base estimado em *R$ ${simulatedValue.toLocaleString('pt-BR')},00*).\n\nGostaria de receber um orçamento oficial com o escopo detalhado para o meu projeto!`
+                        `Olá! 💰 Simulei uma condição de pagamento no site da *ēloSites* (valor base estimado em *R$ ${simulatedValue.toLocaleString('pt-BR')},00* — *${getCurrentRangeLabel(simulatedValue)}*).\n\nGostaria de receber um orçamento oficial com o escopo detalhado para o meu projeto!`
                       )}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full sm:w-auto min-h-12 sm:min-h-0 inline-flex items-center justify-center text-center gap-2 px-5 py-3 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-400/30 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-200 hover:scale-105 hover:shadow-lg focus:scale-105 focus:outline-none shadow-md shadow-emerald-950/40"
+                      className="w-full sm:w-auto min-h-12 sm:min-h-0 inline-flex items-center justify-center text-center gap-2 px-5 py-3 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-400/30 transition-all duration-200 hover:scale-105 shadow-md shadow-emerald-950/40"
                     >
                       <WhatsAppIcon className="w-4 h-4 text-white" />
                       <span className="text-center">Pedir Proposta com Esta Condição</span>
@@ -700,7 +747,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                 </div>
               </div>
             </Interactive3DCard>
-          </motion.div>
+          </BiReveal>
         </div>
         </div>
 

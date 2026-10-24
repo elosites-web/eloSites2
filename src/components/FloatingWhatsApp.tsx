@@ -48,7 +48,7 @@ export const SkeletonFloatingWhatsApp: React.FC<{ className?: string }> = ({ cla
     <div
       role="status"
       aria-label="Carregando botão de atendimento via WhatsApp"
-      className={`relative w-14 h-14 rounded-full bg-[#0B101D]/90 border border-white/10 shadow-xl flex items-center justify-center overflow-hidden select-none pointer-events-none animate-pulse ${className}`}
+      className={`relative w-14 h-14 rounded-full bg-[#090E23]/95 border border-blue-500/30 shadow-xl flex items-center justify-center overflow-hidden select-none pointer-events-none animate-pulse ${className}`}
     >
       {/* Linha de shimmer suave */}
       <div
@@ -57,7 +57,7 @@ export const SkeletonFloatingWhatsApp: React.FC<{ className?: string }> = ({ cla
       />
       {/* Placeholder da bolinha de status */}
       <span
-        className="absolute -top-0.5 -right-0.5 flex h-3.5 w-3.5 rounded-full bg-slate-700/80 border-2 border-[#090D16]"
+        className="absolute -top-0.5 -right-0.5 flex h-3.5 w-3.5 rounded-full bg-slate-700/80 border-2 border-[#050814]"
         aria-hidden="true"
       />
       {/* Placeholder central do ícone */}
@@ -348,7 +348,7 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ onBubbleStat
                   }
             }
             style={{ transformOrigin: 'bottom right' }}
-            className="whatsapp-bubble-interactive pointer-events-auto relative mb-2 w-[calc(100vw-32px)] max-w-[240px] rounded-[14px] bg-[#0B101D]/95 border border-indigo-400/60 shadow-2xl shadow-black/80 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_0_20px_rgba(99,102,241,0.15)] backdrop-blur-md px-3 py-2.5 space-y-2 z-50"
+            className="whatsapp-bubble-interactive pointer-events-auto relative mb-2 w-[calc(100vw-32px)] max-w-[240px] rounded-[14px] bg-[#090E23]/95 border border-blue-500/40 shadow-2xl shadow-black/80 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_0_24px_rgba(59,130,246,0.25)] backdrop-blur-md px-3 py-2.5 space-y-2 z-50"
           >
             {/* 1. Header Row: Avatar com Logotipo Oficial, Nome ēloSites, Status com Dot e Botão Fechar */}
             <div className="flex items-center justify-between gap-1.5">
@@ -360,7 +360,7 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ onBubbleStat
                     window.location.hash = 'home';
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
-                  className="w-6 h-6 rounded-full bg-slate-900 border border-white/10 p-0.5 flex items-center justify-center shrink-0 overflow-hidden hover:scale-105 transition-transform cursor-pointer"
+                  className="w-6 h-6 rounded-full bg-slate-900 border border-blue-500/30 p-0.5 flex items-center justify-center shrink-0 overflow-hidden hover:scale-105 transition-transform cursor-pointer"
                   aria-label="ēloSites — Ir para a Página Inicial (Home)"
                 >
                   <img
@@ -394,7 +394,7 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ onBubbleStat
               <button
                 type="button"
                 onClick={handleManualClose}
-                className="w-6 h-6 rounded-md flex items-center justify-center text-slate-400 hover:text-white transition-colors cursor-pointer shrink-0 -mr-0.5 -mt-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+                className="w-6 h-6 rounded-md flex items-center justify-center text-slate-400 hover:text-white transition-colors cursor-pointer shrink-0 -mr-0.5 -mt-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
                 aria-label="Fechar mensagem"
               >
                 <X className="w-3.5 h-3.5" />
@@ -404,7 +404,7 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ onBubbleStat
             {/* 2. Message Body: Texto centralizado com quebra de linha harmônica, abaixado em 0.7px */}
             <p
               style={{ transform: 'translateY(0.7px)' }}
-              className="text-[12.5px] leading-snug text-slate-100 selection:bg-indigo-500 text-center px-1 py-0.5 font-normal translate-y-[0.7px]"
+              className="text-[12.5px] leading-snug text-slate-100 selection:bg-blue-600 text-center px-1 py-0.5 font-normal translate-y-[0.7px]"
             >
               Olá! Precisa de um site?
               <br />
@@ -418,10 +418,10 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ onBubbleStat
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={handleButtonClick}
-                className="w-full inline-flex items-center justify-center gap-1 text-[11px] font-semibold text-indigo-400 hover:text-indigo-300 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 rounded py-0.5 group/action"
+                className="w-full inline-flex items-center justify-center gap-1 text-[11px] font-semibold text-blue-400 hover:text-blue-300 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded py-0.5 group/action"
               >
                 <span>Responder no WhatsApp</span>
-                <ArrowRight className="w-3 h-3 text-indigo-400 group-hover/action:translate-x-0.5 transition-transform" />
+                <ArrowRight className="w-3 h-3 text-blue-400 group-hover/action:translate-x-0.5 transition-transform" />
               </a>
             </div>
 

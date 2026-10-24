@@ -5,7 +5,21 @@ import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
-    plugins: [react(), tailwindcss()],
+    plugins: [
+      react(),
+      tailwindcss(),
+      {
+        name: 'serve-cartao-html',
+        configureServer(server) {
+          server.middlewares.use((req, _res, next) => {
+            if (req.url === '/cartao' || req.url === '/cartao/') {
+              req.url = '/cartao/index.html';
+            }
+            next();
+          });
+        },
+      },
+    ],
     build: {
       target: 'es2019',
     },
@@ -31,6 +45,7 @@ export default defineConfig(() => {
     server: {
       host: '0.0.0.0',
       port: 3000,
+      strictPort: true,
       allowedHosts: true as const,
       // HMR is disabled in AI Studio via DISABLE_HMR env var.
       // Do not modify - file watching is disabled to prevent flickering during agent edits.

@@ -3,6 +3,7 @@ import {StrictMode} from 'react';
 import {createRoot} from 'react-dom/client';
 import App from './App.tsx';
 import { ToastProvider } from './components/Toast';
+import { ScrollDirectionProvider } from './useScrollDirection';
 import { getMotionTier, isInAppBrowser } from './mediaPrefs';
 import './index.css';
 
@@ -15,9 +16,11 @@ if (typeof document !== 'undefined') {
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ToastProvider>
-      <App />
-    </ToastProvider>
+    <ScrollDirectionProvider>
+      <ToastProvider>
+        <App />
+      </ToastProvider>
+    </ScrollDirectionProvider>
   </StrictMode>,
 );
 

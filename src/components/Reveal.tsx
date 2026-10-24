@@ -1,5 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { getMotionTier } from '../mediaPrefs';
+import { getMotionTier, shouldReduceMedia } from '../mediaPrefs';
+import { useScrollDirection } from '../useScrollDirection';
+import { useReducedMotion } from 'motion/react';
+
+export { BiReveal } from './BiReveal';
 
 interface UseRevealOptions {
   once?: boolean;
@@ -7,14 +11,8 @@ interface UseRevealOptions {
   rootMargin?: string;
 }
 
-/**
- * Revela um elemento uma única vez ao entrar na viewport.
- * - Lê o tier via getMotionTier(): em 'none' nada é escondido nem animado.
- * - Usa apenas IntersectionObserver + transição CSS de opacity/transform.
- * - Desconecta o observer ao sair e no unmount (sem leaks/frames).
- */
 export function useReveal<T extends HTMLElement = HTMLDivElement>(options: UseRevealOptions = {}) {
-  const { once = true, threshold = 0.15, rootMargin = '0px 0px -8% 0px' } = options;
+  const { once = false, threshold = 0.12, rootMargin = '0px 0px -50px 0px' } = options;
   const ref = useRef<T | null>(null);
   const [visible, setVisible] = useState(false);
   const enabled = useRef(getMotionTier() !== 'none');
@@ -32,9 +30,9 @@ export function useReveal<T extends HTMLElement = HTMLDivElement>(options: UseRe
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setVisible(true);
-            if (once) observer.disconnect();
+          setVisible(entry.isIntersecting);
+          if (entry.isIntersecting && once) {
+            observer.disconnect();
           }
         }
       },
@@ -49,51 +47,95 @@ export function useReveal<T extends HTMLElement = HTMLDivElement>(options: UseRe
 
 interface RevealProps {
   children: React.ReactNode;
-  /** Elemento HTML a renderizar (padrão: div). */
   as?: React.ElementType;
   className?: string;
-  /** Atraso em ms aplicado via token, útil para sequências (ex.: hero). */
   delay?: number;
-  /** Distância inicial em px (padrão 14). Ignorado no tier 'none'. */
   y?: number;
-  /** 'fade' (translate+opacity) ou 'mask' (clip-path + opacity). */
+  direction?: 'left' | 'right' | 'up' | 'down' | 'auto';
+  index?: number;
   variant?: 'fade' | 'mask';
   once?: boolean;
   id?: string;
   style?: React.CSSProperties;
 }
 
-/**
- * Wrapper de revelação compartilhado (entrada de blocos).
- * Não altera texto nem semântica: apenas aplica classes de transição.
- */
 export const Reveal: React.FC<RevealProps> = ({
   children,
   as,
   className = '',
-  delay,
+  delay = 0,
   y,
-  variant = 'fade',
-  once,
+  direction = 'up',
+  index,
+  once = false,
   id,
   style,
 }) => {
   const Tag = (as ?? 'div') as React.ElementType;
   const { ref, visible, enabled } = useReveal<HTMLElement>({ once });
+  const { direction: scrollDir } = useScrollDirection();
+  const systemPrefersReduced = useReducedMotion();
+  const isReduced = Boolean(systemPrefersReduced || shouldReduceMedia() || !enabled);
+
+  const effectiveDirection =
+    direction === 'auto'
+      ? index !== undefined
+        ? index % 2 === 0
+          ? 'left'
+          : 'right'
+        : 'up'
+      : direction;
+
+  const dist = y ?? (effectiveDirection === 'up' || effectiveDirection === 'down' ? 28 : 48);
+
+  let transformHidden = 'none';
+  if (!isReduced) {
+    if (scrollDir === 'down') {
+      switch (effectiveDirection) {
+        case 'left':
+          transformHidden = `translate3d(-${dist}px, 0, 0)`;
+          break;
+        case 'right':
+          transformHidden = `translate3d(${dist}px, 0, 0)`;
+          break;
+        case 'up':
+          transformHidden = `translate3d(0, ${dist}px, 0)`;
+          break;
+        case 'down':
+          transformHidden = `translate3d(0, -${dist}px, 0)`;
+          break;
+      }
+    } else {
+      // Reversão bidirecional ao rolar para cima
+      switch (effectiveDirection) {
+        case 'left':
+          transformHidden = `translate3d(${dist}px, 0, 0)`;
+          break;
+        case 'right':
+          transformHidden = `translate3d(-${dist}px, 0, 0)`;
+          break;
+        case 'up':
+          transformHidden = `translate3d(0, -${dist}px, 0)`;
+          break;
+        case 'down':
+          transformHidden = `translate3d(0, ${dist}px, 0)`;
+          break;
+      }
+    }
+  }
 
   const mergedStyle: React.CSSProperties = {
-    ...(y !== undefined ? { ['--reveal-y' as string]: `${y}px` } : null),
-    ...(delay ? { ['--reveal-delay' as string]: `${delay}ms` } : null),
     ...style,
+    opacity: visible || isReduced ? 1 : 0,
+    transform: visible || isReduced ? 'translate3d(0, 0, 0)' : transformHidden,
+    willChange: !visible && !isReduced ? 'transform, opacity' : 'auto',
+    transition: isReduced
+      ? 'opacity 0.2s ease-out'
+      : `opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms`,
   };
 
-  const base = variant === 'mask' ? 'mask-reveal' : 'reveal';
-  const classes = enabled
-    ? `${base}${visible ? ' is-visible' : ''} ${className}`.trim()
-    : className;
-
   return (
-    <Tag ref={ref} id={id} className={classes} style={mergedStyle}>
+    <Tag ref={ref} id={id} className={className} style={mergedStyle}>
       {children}
     </Tag>
   );

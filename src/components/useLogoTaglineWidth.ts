@@ -22,8 +22,9 @@ export function useLogoTaglineWidth<T extends HTMLElement = HTMLImageElement>() 
     // Atualização imediata
     updateWidth();
 
-    // Pequeno atraso para garantir que layouts animados ou modais montados tenham dimensões calculadas
+    // Timers para garantir que layouts animados ou modais montados tenham dimensões calculadas
     const timer = setTimeout(updateWidth, 40);
+    const timer2 = setTimeout(updateWidth, 120);
 
     let ro: ResizeObserver | null = null;
     if (typeof ResizeObserver !== 'undefined' && logoRef.current) {
@@ -31,9 +32,10 @@ export function useLogoTaglineWidth<T extends HTMLElement = HTMLImageElement>() 
       ro.observe(logoRef.current);
     }
 
-    window.addEventListener('resize', updateWidth);
+    window.addEventListener('resize', updateWidth, { passive: true });
     return () => {
       clearTimeout(timer);
+      clearTimeout(timer2);
       if (ro) ro.disconnect();
       window.removeEventListener('resize', updateWidth);
     };

@@ -26,13 +26,27 @@
   /* Ritmo de revelações (usado por Reveal e SplitLines) */
   --reveal-y: 14px;
   --reveal-delay: 0ms;
-  --stagger: 70ms;
+  --stagger: 45ms;
+
+  /* Design Tokens Oficiais — Identidade Visual og-image.png & tokens.css */
+  --cor-fundo: #050814;
+  --cor-fundo-rgb: 5, 8, 20;
+  --cor-superficie: #090e23;
+  --cor-superficie-hover: #0e1738;
+  --cor-superficie-elevada: #111a3e;
+  --cor-primaria: #3b82f6;
+  --cor-primaria-hover: #2563eb;
+  --cor-acento: #6366f1;
+  --cor-acento-violet: #7c3aed;
+  --cor-glow: rgba(59, 130, 246, 0.4);
+  --cor-borda: rgba(59, 130, 246, 0.2);
+  --cor-borda-hover: rgba(59, 130, 246, 0.45);
 
   /* Cor de destaque dinâmica e adaptativa por seção */
-  --accent-color: #06b6d4;
-  --accent-color-rgb: 6, 182, 212;
-  --accent-glow: rgba(6, 182, 212, 0.25);
-  --accent-border: rgba(6, 182, 212, 0.35);
+  --accent-color: #3b82f6;
+  --accent-color-rgb: 59, 130, 246;
+  --accent-glow: rgba(59, 130, 246, 0.35);
+  --accent-border: rgba(59, 130, 246, 0.3);
 }
 
 /* Otimização de renderização e economia de GPU/memória com content-visibility */
@@ -121,7 +135,7 @@ summary,
   touch-action: manipulation;
 }
 
-/* Garante rolagem vertical nativa livre com overscroll-behavior-y: contain em todos os cards e containers */
+/* Garante rolagem vertical nativa livre e fluida sem retenção indesejada de overscroll */
 .glass-card-interactive,
 .surface-card,
 .portfolio-card,
@@ -129,22 +143,23 @@ summary,
 .interactive-3d-card-root,
 .card-solid,
 .scroll-perf-card,
-article,
+article {
+  touch-action: pan-y !important;
+  overscroll-behavior-y: auto !important;
+}
+
 .nav-menu-modal-container,
-[role="dialog"],
-.overflow-y-auto,
-.overflow-auto {
+[role="dialog"] {
   touch-action: pan-y !important;
   overscroll-behavior-y: contain;
 }
 
-/* Scroll snap vertical ancorado e fluido nos containers de cards */
+/* Rolagem livre e natural nos containers de cards */
 .card-snap-container,
 .portfolio-list,
 .service-list,
 .differentials-list,
 .process-list {
-  scroll-snap-type: y mandatory;
   scroll-padding-top: clamp(68px, 11vh, 96px);
 }
 
@@ -169,21 +184,31 @@ article,
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* Glass panel floating aesthetic com aceleração por hardware e amortecimento de blur em telas móveis */
+/* Glass panel floating aesthetic com aceleração por hardware e estética obsidian profunda */
 .glass-panel {
-  background-color: rgba(11, 16, 29, 0.88);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: rgba(9, 14, 35, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(59, 130, 246, 0.16);
   box-shadow:
-    0 10px 30px -10px rgba(0, 0, 0, 0.6),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    0 12px 32px -10px rgba(0, 0, 0, 0.7),
+    0 0 20px -8px rgba(59, 130, 246, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
-/* Superfície de vidro mais "premium": realce interno no topo e brilho sutil
-   de borda. Não usa blur extra para não pesar em celulares modestos. */
+/* Superfície de vidro e obsidian "premium": realce superior, bordas finas com brilho elétrico e transições rápidas */
 .surface-card {
   position: relative;
+  background-color: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  transition: border-color 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+}
+
+.surface-card:hover {
+  border-color: var(--cor-borda-hover);
+  box-shadow:
+    0 14px 40px -12px rgba(0, 0, 0, 0.8),
+    0 0 28px -6px rgba(59, 130, 246, 0.3);
 }
 
 .surface-card::after {
@@ -192,23 +217,67 @@ article,
   inset: 0;
   border-radius: inherit;
   pointer-events: none;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 22%);
-  opacity: 0.9;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07) 0%, rgba(59, 130, 246, 0.04) 20%, transparent 60%);
+  opacity: 0.95;
 }
 
-/* Superfície sólida (sem vidro/blur), mesma identidade escura dos cartões de
-   Serviços porém sem transparência. Reutilizada pelos cartões do FAQ. */
+/* Superfície sólida (sem vidro/blur), identidade escura dos cartões de Serviços com fundo obsidian puro */
 .card-solid {
-  background-color: #0b101d;
+  background-color: #090e23;
+  border: 1px solid rgba(59, 130, 246, 0.16);
   box-shadow:
-    0 10px 30px -10px rgba(0, 0, 0, 0.6),
+    0 10px 30px -10px rgba(0, 0, 0, 0.7),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
-/* Micro-etiqueta monoespaçada (usa apenas o texto já existente). */
+/* Animação suave e orgânica de levitação/flutuação com oscilação sutil de opacidade (0.9 a 1.0) */
+@keyframes floatingSoft {
+  0%, 100% {
+    transform: translate3d(0, -3.5px, 0) rotate(-0.25deg);
+    opacity: 1;
+  }
+  50% {
+    transform: translate3d(1.5px, 3.5px, 0) rotate(0.25deg);
+    opacity: 0.9;
+  }
+}
+
+.floating-badge,
+.section-kicker,
+.founder-badge,
+.elo-logo-floating {
+  animation: floatingSoft 6.5s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
 .section-kicker {
   font-family: 'JetBrains Mono', monospace;
   letter-spacing: 0.14em;
+  animation-duration: 6.8s;
+}
+
+.founder-badge {
+  animation-duration: 6.2s;
+  animation-delay: -1.2s;
+}
+
+.floating-badge {
+  animation-duration: 7.1s;
+  animation-delay: -2.4s;
+}
+
+.elo-logo-floating {
+  animation-duration: 7.4s;
+  animation-delay: -3.5s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floating-badge,
+  .section-kicker,
+  .founder-badge,
+  .elo-logo-floating {
+    animation: none !important;
+  }
 }
 
 /* Fio técnico de 1px. */
@@ -508,6 +577,27 @@ article,
   }
 }
 
+/* Cursor de digitação (Typewriter) com pulsação neon */
+@keyframes typewriterCursorBlink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.animate-typewriter-cursor {
+  animation: typewriterCursorBlink 0.8s steps(2, start) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-typewriter-cursor {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+}
+
 /* Centralização de texto dos botões de ação (exceto botões com alinhamento explícito à esquerda) */
 button:not(.text-left):not([class*="text-left"]),
 a[role="button"]:not(.text-left):not([class*="text-left"]),
@@ -537,13 +627,13 @@ button:not(.text-left):not([class*="text-left"]) > span:not(.text-left):not([cla
   text-align: center;
 }
 
-/* Botões de CTA Principal - Gradiente MENU com efeito Neon Glow Premium */
+/* Botões de CTA Principal - Gradiente Elétrico Cobalto & Azul com efeito Neon Glow Premium */
 .cta-primary {
-  background-image: linear-gradient(to right, #4f46e5, #6366f1, #9333ea) !important;
-  background-color: #4f46e5 !important;
+  background-image: linear-gradient(135deg, #2563eb 0%, #3b82f6 50%, #6366f1 100%) !important;
+  background-color: #2563eb !important;
   color: #ffffff !important;
-  border: 1px solid rgba(165, 180, 252, 0.45) !important;
-  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35), 0 0 16px rgba(99, 102, 241, 0.3), 0 0 2px rgba(168, 85, 247, 0.25) !important;
+  border: 1px solid rgba(147, 197, 253, 0.5) !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4), 0 0 20px rgba(59, 130, 246, 0.35), 0 0 2px rgba(99, 102, 241, 0.3) !important;
   letter-spacing: 0.015em;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   transition: transform var(--dur-press) var(--ease-out),
@@ -553,16 +643,16 @@ button:not(.text-left):not([class*="text-left"]) > span:not(.text-left):not([cla
 
 @media (hover: hover) and (pointer: fine) {
   .cta-primary:hover {
-    background-image: linear-gradient(to right, #6366f1, #7c3aed, #a855f7) !important;
-    border-color: rgba(199, 210, 254, 0.8) !important;
-    box-shadow: 0 6px 24px rgba(99, 102, 241, 0.5), 0 0 28px rgba(147, 51, 234, 0.65), 0 0 48px rgba(99, 102, 241, 0.4), 0 0 2px rgba(255, 255, 255, 0.5) !important;
+    background-image: linear-gradient(135deg, #1d4ed8 0%, #2563eb 50%, #4f46e5 100%) !important;
+    border-color: rgba(191, 219, 254, 0.9) !important;
+    box-shadow: 0 6px 24px rgba(37, 99, 235, 0.6), 0 0 32px rgba(59, 130, 246, 0.7), 0 0 50px rgba(99, 102, 241, 0.45), 0 0 2px rgba(255, 255, 255, 0.6) !important;
     transform: translateY(-2px);
   }
 }
 
 .cta-primary:active {
   transform: translateY(0) scale(0.97) !important;
-  box-shadow: 0 2px 10px rgba(99, 102, 241, 0.5), 0 0 36px rgba(168, 85, 247, 0.9), 0 0 54px rgba(99, 102, 241, 0.55) !important;
+  box-shadow: 0 2px 10px rgba(37, 99, 235, 0.5), 0 0 36px rgba(59, 130, 246, 0.9), 0 0 54px rgba(99, 102, 241, 0.6) !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -635,8 +725,9 @@ a[id*="whatsapp"] {
 .high-contrast p,
 .high-contrast span,
 .high-contrast li,
-.high-contrast label {
-  color: #f1f5f9 !important;
+.high-contrast label,
+.high-contrast small {
+  color: #f1f5f9 !important; /* Contraste 18.9:1 contra #000000 (WCAG AAA >= 7:1) */
 }
 
 .high-contrast h1,
@@ -644,14 +735,30 @@ a[id*="whatsapp"] {
 .high-contrast h3,
 .high-contrast h4,
 .high-contrast h5,
-.high-contrast strong {
-  color: #ffffff !important;
+.high-contrast strong,
+.high-contrast b {
+  color: #ffffff !important; /* Contraste 21:1 contra #000000 (WCAG AAA >= 7:1) */
 }
 
+/* Textos secundários, legendas e rótulos auxiliares com garantia de contraste >= 7:1 (WCAG AAA) contra #000000 */
 .high-contrast .text-slate-400,
 .high-contrast .text-slate-500,
-.high-contrast .text-slate-300 {
-  color: #e2e8f0 !important;
+.high-contrast .text-slate-600,
+.high-contrast .text-slate-300,
+.high-contrast .text-slate-200,
+.high-contrast .text-gray-400,
+.high-contrast .text-gray-500,
+.high-contrast .text-gray-600,
+.high-contrast .text-zinc-400,
+.high-contrast .text-zinc-500,
+.high-contrast [class*="text-slate-"],
+.high-contrast [class*="text-gray-"],
+.high-contrast [class*="text-zinc-"],
+.high-contrast .hero-home-subtitle,
+.high-contrast [class*="text-muted"],
+.high-contrast caption,
+.high-contrast figcaption {
+  color: #e2e8f0 !important; /* Contraste 16.9:1 contra fundo #000000 (supera com folga o critério 7:1 do WCAG AAA) */
 }
 
 .high-contrast button:not([class*="bg-"]):not([class*="cta-"]),
@@ -752,7 +859,7 @@ a[id*="whatsapp"] {
 
 /* Títulos com revelação linha a linha: cada palavra sobe de dentro da máscara. */
 .split-lines {
-  --stagger: 70ms;
+  --stagger: 45ms;
 }
 
 .sl-mask {
@@ -857,29 +964,25 @@ a[id*="whatsapp"] {
 
 .nav-menu-link-item {
   padding: clamp(0.15rem, 0.6dvh, 0.38rem) clamp(0.75rem, 2.5vw, 1.25rem);
-  color: #e2e8f0;
-  transition: color 280ms cubic-bezier(0.23, 1, 0.32, 1),
-              filter 280ms cubic-bezier(0.23, 1, 0.32, 1),
-              transform 280ms cubic-bezier(0.23, 1, 0.32, 1);
+  color: #cbd5e1;
+  transition: color 200ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .nav-menu-link-item:focus-visible,
 .nav-menu-link-item:active {
-  color: #818cf8;
-  filter: drop-shadow(0 0 14px rgba(129, 140, 248, 0.65));
+  color: #ffffff;
+  outline: none;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .nav-menu-link-item:hover {
-    color: #818cf8;
-    filter: drop-shadow(0 0 14px rgba(129, 140, 248, 0.65));
+    color: #ffffff;
   }
 }
 
 .nav-menu-link-item.is-active {
-  color: #818cf8;
+  color: #ffffff;
   font-weight: 700;
-  filter: drop-shadow(0 0 16px rgba(129, 140, 248, 0.85));
 }
 
 .nav-menu-link-text {
@@ -894,17 +997,20 @@ a[id*="whatsapp"] {
 .nav-menu-logo-wrap {
   margin-top: auto;
   margin-bottom: 0;
+  padding-top: clamp(0.5rem, 1.5dvh, 1.25rem);
   padding-bottom: clamp(0.5rem, 2dvh, 1.5rem);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
+  flex-shrink: 0;
+  min-height: clamp(52px, 8dvh, 72px);
 }
 
-/* Logotipo aumentado em 3px adicionais (anterior +6px, total +9px) */
+/* Logotipo aumentado em 2px adicionais (+13px total) para comportar a frase oficial */
 .nav-menu-logo-img {
-  height: calc(clamp(1.23rem, 2.9vh, 1.56rem) + 9px);
+  height: calc(clamp(1.23rem, 2.9vh, 1.56rem) + 13px);
   width: auto;
   object-fit: contain;
 }
@@ -960,9 +1066,9 @@ a[id*="whatsapp"] {
     padding-bottom: clamp(0.75rem, 2.5vh, 2rem);
   }
 
-  /* Logotipo aumentado em 3px adicionais (+9px total) */
+  /* Logotipo aumentado em 2px adicionais (+13px total) */
   .nav-menu-logo-img {
-    height: calc(clamp(1.67rem, 3.2vh, 2.17rem) + 9px);
+    height: calc(clamp(1.67rem, 3.2vh, 2.17rem) + 13px);
   }
 }
 
@@ -996,17 +1102,19 @@ a[id*="whatsapp"] {
     padding-bottom: 1.5rem;
   }
 
-  /* Logotipo aumentado em 3px adicionais (+9px total) */
+  /* Logotipo aumentado em 2px adicionais (+13px total) */
   .nav-menu-logo-img {
-    height: calc(1.333rem + 9px);
+    height: calc(1.333rem + 13px);
   }
 }
 
 /* ============================================================
-   ITEM 3 — CELULAR NA HORIZONTAL (Modo Paisagem com altura <= 500px)
-   Identificado exclusivamente por ALTURA para evitar conflito com tablets
+   ITEM 3 — CELULAR NA HORIZONTAL (Exclusivo para mobile em modo paisagem)
+   Restrito a dispositivos móveis com tela touch (pointer: coarse / hover: none)
+   virados na horizontal com altura <= 540px.
+   Em desktops (mouse / pointer: fine), o layout permanece em coluna única vertical.
    ============================================================ */
-@media (orientation: landscape) and (max-height: 500px) {
+@media (pointer: coarse) and (orientation: landscape) and (max-height: 540px) {
   .nav-menu-modal-container {
     padding-top: 0.35rem !important;
     padding-bottom: 0.35rem !important;
@@ -1021,17 +1129,17 @@ a[id*="whatsapp"] {
     padding-bottom: 0.15rem !important;
     margin-top: auto !important;
     margin-bottom: auto !important;
-    --menu-font-size: clamp(0.925rem, calc(0.55rem + 2vh), 1.15rem);
+    --menu-font-size: calc(clamp(0.925rem, calc(0.55rem + 2vh), 1.15rem) - 1px);
     --menu-line-height: clamp(1.2, calc(1.1 + 0.3vh), 1.3);
-    --menu-link-gap: clamp(0.25rem, 1.2vh, 0.5rem);
+    --menu-link-gap: calc(clamp(0.25rem, 1.2vh, 0.45rem) - 1px);
     --menu-outer-gap: calc(var(--menu-link-gap) * 2.2);
   }
 
-  /* 2. Lista de links em DUAS COLUNAS para legibilidade, área de toque e altura perfeita sem rolagem */
+  /* Lista de links em DUAS COLUNAS para mobile horizontal */
   .nav-menu-list {
     display: grid !important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    column-gap: 1.25rem !important;
+    column-gap: 1.5rem !important;
     row-gap: var(--menu-link-gap) !important;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
@@ -1039,20 +1147,35 @@ a[id*="whatsapp"] {
     max-width: 32rem !important;
   }
 
-  /* Grade equilibrada de 8 itens em 2 colunas */
+  /* Cada item ocupa exatamente 1 coluna: Coluna 1 (5 itens) e Coluna 2 (5 itens) */
   .nav-menu-list-item {
     grid-column: span 1 !important;
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  /* O 10º item (FAQ & Contato) fica na Coluna 2, diretamente abaixo de 'Orçamento' */
+  .nav-menu-list-item:last-child {
+    grid-column: span 1 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
   }
 
   .nav-menu-link-item {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    padding-top: clamp(0.2rem, 1vh, 0.35rem) !important;
-    padding-bottom: clamp(0.2rem, 1vh, 0.35rem) !important;
+    padding-top: clamp(0.18rem, 0.8vh, 0.3rem) !important;
+    padding-bottom: clamp(0.18rem, 0.8vh, 0.3rem) !important;
     padding-left: 0.75rem !important;
     padding-right: 0.75rem !important;
-    min-height: clamp(36px, calc(28px + 2vh), 40px) !important;
+    min-height: clamp(32px, calc(24px + 2vh), 36px) !important;
   }
 
   .nav-menu-link-text {
@@ -1065,35 +1188,11 @@ a[id*="whatsapp"] {
   .nav-menu-logo-wrap {
     margin-top: auto !important;
     margin-bottom: 0 !important;
-    padding-bottom: 0.35rem !important;
+    padding-bottom: 0.25rem !important;
   }
 
   .nav-menu-logo-img {
-    height: calc(0.9rem + 9px) !important;
-  }
-}
-
-/* Otimização refinada de clamp() e área de toque consistente para celulares em modo paisagem com altura entre 350px e 500px */
-@media (orientation: landscape) and (min-height: 350px) and (max-height: 500px) {
-  .nav-menu-list-wrap {
-    --menu-font-size: clamp(0.95rem, calc(0.55rem + 2vh), 1.15rem);
-    --menu-line-height: 1.25;
-    --menu-link-gap: clamp(0.28rem, 1.2vh, 0.48rem);
-    --menu-outer-gap: calc(var(--menu-link-gap) * 2.2);
-  }
-
-  .nav-menu-link-item {
-    min-height: clamp(36px, calc(28px + 2vh), 40px) !important;
-    padding-top: clamp(0.22rem, 0.9vh, 0.36rem) !important;
-    padding-bottom: clamp(0.22rem, 0.9vh, 0.36rem) !important;
-    padding-left: clamp(0.6rem, 2vw, 1rem) !important;
-    padding-right: clamp(0.6rem, 2vw, 1rem) !important;
-  }
-
-  .nav-menu-link-text {
-    font-size: var(--menu-font-size, clamp(0.95rem, calc(0.55rem + 2vh), 1.15rem)) !important;
-    line-height: 1.25 !important;
-    letter-spacing: -0.015em;
+    height: calc(0.9rem + 11px) !important;
   }
 }
 
@@ -1105,9 +1204,9 @@ a[id*="whatsapp"] {
    - Desktop (>= 1280px): base md:h-8 (32px) -> Multiplicador 5x = 160px
    ============================================================ */
 
-/* Celular (< 768px): reduzido em 8px (72px -> 64px) */
+/* Celular (< 768px): reduzido em 4px (64px -> 60px) */
 .hero-home-logo {
-  height: 64px;
+  height: 60px;
   width: auto;
   max-width: min(85vw, 320px);
   max-height: 18vh;
@@ -1123,29 +1222,62 @@ a[id*="whatsapp"] {
   }
 }
 
-/* Tablet (768px a 1279px): reduzido em 8px (112px -> 104px) */
+/* Tablet (768px a 1279px): reduzido em 4px (104px -> 100px) */
 @media (min-width: 768px) and (max-width: 1279.98px) {
   .hero-home-logo {
-    height: 104px;
+    height: 100px;
     max-width: min(80vw, 520px);
     max-height: 22vh;
   }
 }
 
-/* Desktop (>= 1280px): reduzido em 8px (160px -> 152px) */
+/* Desktop (>= 1280px): reduzido em 3px adicionais (148px -> 145px) apenas no modo desktop */
 @media (min-width: 1280px) {
   .hero-home-logo {
-    height: 152px;
+    height: 145px;
     max-width: min(70vw, 680px);
     max-height: 28vh;
   }
 }
 
-/* Celulares pequenos ou no modo paisagem (pouca altura): reduzido em 8px */
+/* Celulares pequenos ou no modo paisagem (pouca altura): reduzido em 4px */
 @media (max-height: 540px) {
   .hero-home-logo {
-    height: clamp(32px, 16vh, 52px);
+    height: clamp(28px, 16vh, 48px);
     max-width: 75vw;
+  }
+}
+
+/* Subtítulo minimalista abaixo do logotipo na Home ("Web Development Studio")
+   Ajustado proporcionalmente ao tamanho do espaço e do logotipo em cada tela */
+.hero-home-subtitle {
+  display: block;
+  text-transform: uppercase;
+  text-align: center;
+  user-select: none;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
+  font-weight: 500;
+  /* Celular (< 768px): proporcional ao logo de 60px */
+  font-size: clamp(9.5px, 2.7vw, 11px);
+  letter-spacing: clamp(0.18em, 0.5vw, 0.24em);
+  margin-top: 8px;
+}
+
+/* Tablet (768px a 1279px): proporcional ao logo de 100px */
+@media (min-width: 768px) and (max-width: 1279.98px) {
+  .hero-home-subtitle {
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    margin-top: 10px;
+  }
+}
+
+/* Desktop (>= 1280px): proporcional ao logo de 145px e ao espaço nobre do desktop */
+@media (min-width: 1280px) {
+  .hero-home-subtitle {
+    font-size: 15px;
+    letter-spacing: 0.44em;
+    margin-top: 12px;
   }
 }
 
@@ -1260,11 +1392,11 @@ a[id*="whatsapp"] {
   contain: content;
   touch-action: pan-y;
   animation-name: niche-marquee;
-  animation-duration: 48s;
+  animation-duration: 85s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
   -webkit-animation-name: niche-marquee;
-  -webkit-animation-duration: 48s;
+  -webkit-animation-duration: 85s;
   -webkit-animation-timing-function: linear;
   -webkit-animation-iteration-count: infinite;
 }
@@ -1283,11 +1415,11 @@ a[id*="whatsapp"] {
   contain: content;
   touch-action: pan-y;
   animation-name: niche-marquee;
-  animation-duration: 48s;
+  animation-duration: 85s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
   -webkit-animation-name: niche-marquee;
-  -webkit-animation-duration: 48s;
+  -webkit-animation-duration: 85s;
   -webkit-animation-timing-function: linear;
   -webkit-animation-iteration-count: infinite;
 }
@@ -1536,12 +1668,12 @@ html[data-in-app="true"] .glass-panel[class*="backdrop-blur"] {
 .process-list,
 .benefits-list,
 .faq-list {
-  scroll-snap-type: y mandatory;
-  -webkit-scroll-snap-type: y mandatory;
+  scroll-snap-type: y proximity;
+  -webkit-scroll-snap-type: y proximity;
   scroll-padding-top: clamp(4.5rem, 12vh, 6.5rem);
 }
 
-/* Cards individuais com alinhamento ao topo ancorado */
+/* Cards individuais no desktop: alinhamento ao topo com margem de segurança */
 .scroll-snap-card,
 .card-snap-item,
 .service-card,
@@ -1554,8 +1686,128 @@ html[data-in-app="true"] .glass-panel[class*="backdrop-blur"] {
   -webkit-scroll-snap-align: start;
   scroll-snap-stop: normal;
   scroll-margin-top: clamp(4.5rem, 12vh, 6.5rem);
-  overscroll-behavior-y: contain;
+  overscroll-behavior-y: auto;
   touch-action: pan-y;
+}
+
+/* ============================================================
+   OTIMIZAÇÃO ESPECÍFICA PARA DISPOSITIVOS MÓVEIS (<= 1024px)
+   Garante que os cards de 'Serviços' e 'Processo' fiquem rigorosamente
+   centralizados na viewport móvel, compensando o cabeçalho fixo
+   e o safe-area inferior para eliminar qualquer corte de conteúdo.
+   ============================================================ */
+@media (max-width: 1024px) {
+  html {
+    scroll-snap-type: y proximity;
+    -webkit-scroll-snap-type: y proximity;
+    scroll-padding-top: calc(4.5rem + env(safe-area-inset-top, 0px));
+    scroll-padding-bottom: calc(2.75rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* Seções e listas de cards com rolagem vertical ancorada no centro */
+  #servicos,
+  #como-funciona,
+  .service-list,
+  .process-list,
+  .scroll-snap-y-container,
+  .card-list-container {
+    scroll-snap-type: y proximity !important;
+    -webkit-scroll-snap-type: y proximity !important;
+    scroll-padding-top: calc(4.5rem + env(safe-area-inset-top, 0px)) !important;
+    scroll-padding-bottom: calc(2.75rem + env(safe-area-inset-bottom, 0px)) !important;
+  }
+  /* Eliminação total de scroll interno e de limites de altura nos cards:
+     Garante que todos os cards expandam naturalmente com seu conteúdo completo,
+     sem criar rolagem separada dentro do card. */
+  .service-card,
+  .process-card,
+  .portfolio-card,
+  .differential-card,
+  .benefit-card,
+  .surface-card {
+    max-height: none !important;
+    overflow-y: visible !important;
+    overflow-x: visible !important;
+    scroll-snap-align: none !important;
+    -webkit-scroll-snap-align: none !important;
+  }
+}
+
+/* Celulares compactos (<= 640px): refinamento de espaçamento interno para respiração total */
+@media (max-width: 640px) {
+  .service-card {
+    padding: clamp(1.15rem, 4vw, 1.5rem) !important;
+  }
+
+  .process-card {
+    padding: clamp(1.25rem, 4.5vw, 1.65rem) !important;
+  }
+}
+
+/* ============================================================
+   EFEITO DE FADE-IN PROGRESSIVO AO ROLAR A PÁGINA
+   (Scroll-Driven Animations Nativas + Transição Orgânica em Cards e Textos)
+   ============================================================ */
+
+@keyframes scrollProgressiveFadeInCard {
+  0% {
+    opacity: 0.15;
+    transform: translate3d(0, 24px, 0) scale(0.985);
+    filter: blur(2.5px);
+  }
+  65% {
+    opacity: 0.88;
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0px);
+  }
+}
+
+@keyframes scrollProgressiveFadeInText {
+  0% {
+    opacity: 0.18;
+    transform: translate3d(0, 16px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Suporte nativo à rolagem progressiva via CSS Scroll-Driven Animations */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* Cards com desvanecimento progressivo na rolagem */
+    .scroll-fade-card,
+    article.surface-card,
+    .glass-card-interactive:not(.hero-home-logo):not([role="dialog"] *),
+    .service-card:not([role="dialog"] *),
+    .process-card:not([role="dialog"] *),
+    .portfolio-card:not([role="dialog"] *),
+    .differential-card:not([role="dialog"] *),
+    .benefit-card:not([role="dialog"] *),
+    .tech-stack-card {
+      animation: scrollProgressiveFadeInCard linear both;
+      animation-timeline: view();
+      animation-range: entry 4% cover 28%;
+      will-change: transform, opacity, filter;
+    }
+
+    /* Elementos de texto e títulos com revelação progressiva suave */
+    .scroll-fade-text,
+    .page-shell .section-kicker:not(.floating-badge):not(.founder-badge),
+    .page-shell h2:not([role="dialog"] *),
+    .page-shell h3:not([role="dialog"] *),
+    .page-shell p.leading-relaxed:not([role="dialog"] *) {
+      animation: scrollProgressiveFadeInText linear both;
+      animation-timeline: view();
+      animation-range: entry 6% cover 25%;
+      will-change: transform, opacity;
+    }
+  }
 }
 
 

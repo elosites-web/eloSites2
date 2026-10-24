@@ -1,0 +1,33 @@
+# ēloSites — Estúdio de Desenvolvimento Web
+
+> Resumo informativo em texto simples sobre o estúdio ēloSites para consulta e contextualização por modelos de linguagem e assistentes digitais.
+
+## Sobre a ēloSites
+A ēloSites é um estúdio brasileiro de desenvolvimento web fundado por Everton Lopes, focado na criação de landing pages e sites institucionais responsivos para pequenos negócios, prestadores de serviços e profissionais liberais.
+
+- **Website oficial:** https://elosites.ia.br/
+- **Contato principal (WhatsApp):** +55 (11) 99572-2584
+- **E-mail de contato:** contato@elosites.ia.br
+
+## Serviços e Escopo de Atuação
+- **Landing Pages de Conversão:** Páginas objetivas com foco em apresentar serviços e direcionar o visitante para atendimento direto via WhatsApp.
+- **Sites Institucionais:** Páginas estruturadas para apresentação da marca, história, serviços, localização, avaliações e canais de contato.
+- **Desenvolvimento Frontend Sob Medida:** Interfaces construídas com React, TypeScript, Tailwind CSS e Vite, com código autoral sem dependência de temas prontos engessados.
+- **SEO Técnico e Boas Práticas:** Semântica HTML5, dados estruturados Schema.org, metadados Open Graph e otimização para carregamento ágil.
+- **Parceria Recomendada em Tráfego Pago:** Parceria técnica e comercial com Thomaz (TrueThomaz.BM) para campanhas de Meta Ads e gestão de leads.
+
+## Condições Comerciais e Operacionais
+- **Orçamentos:** Cada projeto possui escopo personalizado, com proposta comercial formulada sob medida.
+- **Formas de Pagamento:** Opções flexíveis incluindo 50% de entrada e 50% na aprovação final (PIX), desconto de 20% para pagamento integral à vista, até 5x sem juros no cartão de crédito, ou parcelamento em até 12x com repasse das taxas da operadora.
+- **Domínio e Hospedagem:** Contratados e mantidos diretamente pelo cliente em provedores de sua escolha; a ēloSites auxilia na configuração técnica e apontamento, mas não revende serviços de infraestrutura de terceiros.
+- **Manutenção Mensal:** Modalidade opcional voltada a pequenas atualizações de texto, contatos e imagens (alterações estruturais e novas páginas são orçadas separadamente).
+
+## Estrutura do Site Público
+- **Início / Sobre (`/#inicio`):** Apresentação institucional, diferenciais técnicos e perfil do fundador.
+- **Serviços (`/#servicos`):** Modelos de projetos e opções de pagamento.
+- **Portfólio (`/#portfolio`):** Demonstrações de sites reais desenvolvidos.
+- **Avaliações (`/#avaliacoes`):** Depoimentos de clientes atendidos.
+- **Processo (`/#processo`):** As quatro etapas de desenvolvimento e entrega.
+- **Orçamento & Reunião (`/#orcamento`):** Formulário de briefing e agendamento de conversa.
+- **Tráfego Pago (`/#parceria-trafego`):** Apresentação da parceria com Thomaz para gestão de anúncios.
+- **FAQ & Contato (`/#faq`):** Dúvidas comuns, dados de contato e cartão de visitas digital.

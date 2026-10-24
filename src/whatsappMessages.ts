@@ -174,8 +174,10 @@ export function formatBriefingWhatsappMessage(data: ProjectBriefData): string {
     `*🏢 Negócio:* ${data.businessName.trim()}`,
     `*🏷️ Segmento:* ${data.segment}`,
     `*💻 Tipo de Projeto:* ${data.projectType}`,
+    data.budgetRange?.trim() ? `*💰 Faixa de Investimento:* ${data.budgetRange.trim()}` : '',
     `*📱 WhatsApp do Cliente:* ${data.whatsappContact.trim()}`,
-    data.description.trim() ? `*📝 Detalhes e Objetivos:*\n${data.description.trim()}` : '',
+    data.idea?.trim() ? `*💡 Ideia do Projeto:*\n${data.idea.trim()}` : '',
+    data.projectDetails?.trim() ? `*📝 Detalhes Adicionais:*\n${data.projectDetails.trim()}` : '',
     ``,
     `Gostaria de receber uma proposta comercial personalizada considerando as opções de pagamento (PIX 50/50, 20% à vista ou cartão em até 5x sem juros).`,
   ]

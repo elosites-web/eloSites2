@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { EloLogo } from './EloLogo';
 import { WhatsAppIcon } from './WhatsAppIcon';
+import { FluidRippleBackground } from './FluidRippleBackground';
 import { NAVIGATION_ITEMS, SITE_CONFIG, whatsappUrl } from '../types';
 import { Mail, ArrowUp } from 'lucide-react';
 
@@ -10,7 +11,7 @@ import { ScreenId } from '../types';
 interface FooterProps {
   onOpenPrivacy: () => void;
   onOpenTerms: () => void;
-  onSelectScreen?: (screen: ScreenId) => void;
+  onSelectScreen?: (screenId: ScreenId) => void;
   currentScreen?: ScreenId;
   isWhatsAppBubbleOpen?: boolean;
 }
@@ -60,8 +61,11 @@ export const Footer: React.FC<FooterProps> = ({
   };
 
   return (
-    <footer className="bg-[#060912]/85 backdrop-blur-[4px] border-t border-slate-800/90 text-slate-400 text-sm pb-[3px]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-16 pb-16 sm:pb-20">
+    <footer className="relative bg-gradient-to-b from-[#0e1b48] via-[#0b163b] to-[#08112e] border-t border-blue-400/30 text-slate-300 text-sm pb-[3px] overflow-hidden">
+      {/* Fundo de grade azul de espaço-tempo com curvatura e distorção contínua */}
+      <FluidRippleBackground variant="contained" className="absolute inset-0 z-0 opacity-50 pointer-events-none" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-16 pb-16 sm:pb-20">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10">
           {/* Marca e Posicionamento */}
           <div className="md:col-span-5 space-y-4">
@@ -69,13 +73,13 @@ export const Footer: React.FC<FooterProps> = ({
               type="button"
               id="footer-brand-logo-link"
               onClick={handleNavigateHome}
-              className="group focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-lg p-1 -ml-1 transition-opacity hover:opacity-90 text-left flex items-center shrink-0 cursor-pointer"
+              className="group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg p-1 -ml-1 transition-opacity hover:opacity-90 text-left flex items-center shrink-0 cursor-pointer"
               aria-label="ēloSites — Ir para a Página Inicial (Home)"
             >
               <EloLogo size="md" isFooter />
             </button>
             <p className="text-slate-300 text-sm sm:text-base leading-relaxed max-w-sm">
-              Criação de sites profissionais com SEO técnico e foco em conversão para pequenos negócios e profissionais liberais. Arquitetura moderna, código limpo e atendimento direto.
+              A ēloSites é um estúdio de desenvolvimento web especializado em landing pages e sites institucionais responsivos. Criamos interfaces personalizadas com tecnologias modernas, funcionalidades interativas, integração com WhatsApp e SEO técnico, com foco em clareza, experiência de navegação e objetivos comerciais.
             </p>
             <div className="flex flex-row flex-nowrap items-center gap-2 sm:gap-3 pt-2 w-full max-w-md">
               <a
@@ -93,31 +97,33 @@ export const Footer: React.FC<FooterProps> = ({
                 <a
                   id="footer-email-link"
                   href={`mailto:${SITE_CONFIG.email}`}
-                  className="flex-1 min-w-0 inline-flex items-center justify-center text-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-2.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-indigo-500/50 hover:shadow-[0_0_15px_rgba(99,102,241,0.35)] transition-colors text-[11px] sm:text-xs font-medium"
+                  className="flex-1 min-w-0 inline-flex items-center justify-center text-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-2.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-blue-500/50 hover:shadow-[0_0_15px_rgba(59,130,246,0.35)] transition-colors text-[11px] sm:text-xs font-medium"
                 >
-                  <Mail className="w-4 h-4 text-indigo-400 shrink-0" />
+                  <Mail className="w-4 h-4 text-blue-400 shrink-0" />
                   <span className="text-center truncate sm:whitespace-normal">{SITE_CONFIG.email}</span>
                 </a>
               )}
             </div>
           </div>
 
-          {/* Links Rápidos */}
+          {/* Links Rápidos com efeito de textos flutuantes */}
           <div className="md:col-span-3 space-y-3">
             <h4 className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-200">
               Navegação
             </h4>
             <ul className="space-y-2 text-xs sm:text-sm">
-              {NAVIGATION_ITEMS.map((item) => {
+              {NAVIGATION_ITEMS.map((item, index) => {
                 const getScreenFromHref = (href: string): ScreenId => {
-                  if (href === '#home') return 'home';
-                  if (href.includes('portfolio')) return 'portfolio';
-                  if (href.includes('servico')) return 'servicos';
-                  if (href.includes('processo') || href.includes('como-funciona') || href.includes('diferencia')) return 'processo';
-                  if (href.includes('briefing') || href.includes('orcamento')) return 'orcamento';
-                  if (href.includes('parceria') || href.includes('trafego')) return 'parceria-trafego';
-                  if (href.includes('faq') || href.includes('contato')) return 'faq';
-                  if (href.includes('inicio')) return 'inicio';
+                  const clean = href.replace('#', '').toLowerCase().trim();
+                  if (clean === 'avaliacoes' || clean.includes('avalia') || clean.includes('depoimento') || clean.includes('testemunho')) return 'avaliacoes';
+                  if (clean === 'home') return 'home';
+                  if (clean === 'inicio' || clean === 'sobre') return 'inicio';
+                  if (clean === 'servicos' || clean.includes('servico')) return 'servicos';
+                  if (clean === 'portfolio' || clean.includes('portfolio')) return 'portfolio';
+                  if (clean === 'processo' || clean.includes('processo') || clean.includes('como-funciona') || clean.includes('diferencia')) return 'processo';
+                  if (clean === 'orcamento' || clean.includes('orcamento') || clean.includes('briefing')) return 'orcamento';
+                  if (clean === 'parceria-trafego' || clean.includes('parceria') || clean.includes('trafego')) return 'parceria-trafego';
+                  if (clean === 'faq' || clean.includes('faq') || clean.includes('contato')) return 'faq';
                   return 'home';
                 };
 
@@ -125,7 +131,34 @@ export const Footer: React.FC<FooterProps> = ({
                 const isActive = currentScreen === screenId;
 
                 return (
-                  <li key={`footer-${item.id}`}>
+                  <motion.li
+                    key={`footer-${item.id}`}
+                    animate={{
+                      y: [-2.5, 2.5, -2.5],
+                      x: [1.2, -1.2, 1.2],
+                      rotate: [-0.18, 0.18, -0.18],
+                    }}
+                    transition={{
+                      y: {
+                        duration: 6.2 + (index % 3) * 0.7,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                        delay: index * 0.12,
+                      },
+                      x: {
+                        duration: 7.0 + (index % 2) * 0.8,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                        delay: index * 0.12,
+                      },
+                      rotate: {
+                        duration: 7.8,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                        delay: index * 0.1,
+                      },
+                    }}
+                  >
                     <button
                       type="button"
                       onClick={() => {
@@ -151,27 +184,42 @@ export const Footer: React.FC<FooterProps> = ({
                       )}
                       <span className="transition-transform duration-200">{item.label}</span>
                     </button>
-                  </li>
+                  </motion.li>
                 );
               })}
             </ul>
           </div>
 
-          {/* Segmentos e Foco */}
+          {/* Especialidades e Foco Técnico */}
           <div className="md:col-span-4 space-y-3">
-            <h4 className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-200">
-              Especialidades
-            </h4>
+            <button
+              type="button"
+              onClick={() => {
+                if (onSelectScreen) {
+                  onSelectScreen('inicio');
+                  setTimeout(() => {
+                    const el = document.getElementById('solucoes-web');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  }, 120);
+                } else {
+                  window.location.hash = 'inicio';
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+              }}
+              className="text-left text-xs font-mono font-semibold uppercase tracking-wider text-slate-200 hover:text-cyan-300 transition-colors cursor-pointer group flex items-center gap-1.5"
+            >
+              <span>Especialidades & Soluções Web</span>
+              <span className="text-cyan-400 group-hover:translate-x-1 transition-transform">→</span>
+            </button>
             <p className="text-[13px] text-slate-300/90 leading-relaxed">
-              Sites institucionais e landing pages desenvolvidos especificamente para prestadores de serviços:
-              Personal trainers, advogados, salões de beleza, barbearias, clínicas e profissionais autônomos.
+              Desenvolvimento de landing pages focadas em conversão, sites institucionais responsivos, componentes interativos de frontend, SEO técnico e integrações com WhatsApp e ferramentas de mensuração.
             </p>
             <div className="pt-2 text-[11px] text-slate-400 flex items-center gap-2">
               <span className="relative flex h-2 w-2 shrink-0">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-400 animate-pulse shadow-[0_0_8px_#22d3ee]" />
               </span>
-              <span>Código limpo • Sem templates prontos genéricos</span>
+              <span>Engenharia frontend moderna • Código limpo e sob medida</span>
             </div>
           </div>
         </div>

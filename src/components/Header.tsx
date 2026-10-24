@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { EloLogo } from './EloLogo';
+import { FluidRippleBackground } from './FluidRippleBackground';
 import { ScreenId, SCREENS } from '../types';
 import { preloadScreen } from '../preloadScreens';
 
@@ -83,7 +84,9 @@ export const Header: React.FC<HeaderProps> = ({
 
   const currentMeta = SCREENS.find((s) => s.id === currentScreen) || SCREENS[0];
 
-  // Componente do Botão de Menu com 3 barras na identidade visual da ēloSites (roxo e cinza) que se transformam suavemente no 'X' de fechar
+  // Componente do Botão de Menu com a identidade visual do logotipo ēloSites
+  // Traço superior e inferior com degradê de "ēlo" (púrpura ao azul elétrico)
+  // Traço do meio alinhado à esquerda com degradê de "Sites" (branco prateado puro)
   const renderMenuButton = () => (
     <button
       id="menu-de-navegacao-btn"
@@ -92,32 +95,32 @@ export const Header: React.FC<HeaderProps> = ({
       aria-expanded={isMenuOpen}
       aria-controls="multi-screen-navigation-modal"
       aria-label={isMenuOpen ? 'Fechar menu de navegação' : 'Abrir menu de navegação'}
-      className="relative group w-11 h-11 flex items-center justify-center bg-transparent border-0 shadow-none active:scale-95 transition-transform duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400/80 rounded-lg p-0"
+      className="relative group p-2.5 flex items-center justify-center bg-transparent border-0 shadow-none cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/60 rounded-lg transition-transform duration-200 hover:scale-108 active:scale-95"
     >
-      {/* Ícone com 3 traços que se transformam suavemente no X */}
-      <div className="relative w-6 h-6 flex items-center justify-center pointer-events-none">
-        {/* Traço superior: tom de roxo oficial da ēloSites. Desce ao centro e gira 45° para formar o X com o traço de baixo */}
+      {/* Container com largura exata dos traços oficiais */}
+      <div className="relative w-7 h-5 flex items-center pointer-events-none">
+        {/* Traço superior (degradê púrpura para azul de 'ēlo') / Diagonal 1 do X */}
         <span
-          className={`absolute left-1/2 -translate-x-1/2 top-[11px] h-[2px] rounded-full transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+          className={`absolute left-0 top-1/2 w-full h-[3px] rounded-full origin-center transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] ${
             isMenuOpen
-              ? 'w-5 translate-y-0 rotate-45 bg-gradient-to-r from-purple-400 via-violet-400 to-fuchsia-400 shadow-[0_0_12px_rgba(168,85,247,0.85)] group-hover:from-purple-300 group-hover:to-violet-300'
-              : 'w-5 -translate-y-[6px] rotate-0 bg-gradient-to-r from-purple-500 via-violet-500 to-indigo-500 group-hover:from-purple-400 group-hover:to-violet-400 shadow-[0_0_8px_rgba(168,85,247,0.7)]'
+              ? '-translate-y-1/2 rotate-45 bg-gradient-to-r from-[#a855f7] via-[#818cf8] to-[#3b82f6] shadow-[0_0_8px_rgba(168,85,247,0.5)]'
+              : '-translate-y-[8.5px] rotate-0 bg-gradient-to-r from-[#a855f7] via-[#818cf8] to-[#3b82f6] shadow-[0_0_8px_rgba(168,85,247,0.4)]'
           }`}
         />
-        {/* Traço do meio: tom branco/cinza claro alinhado à esquerda dos outros traços */}
+
+        {/* Traço do meio (degradê branco de 'Sites', alinhado estritamente à esquerda) */}
         <span
-          className={`absolute left-[2px] top-[11px] h-[2px] rounded-full bg-gradient-to-r from-slate-100 via-white to-slate-300 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,width,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-200 ease-out shadow-[0_0_6px_rgba(255,255,255,0.4)] origin-left ${
-            isMenuOpen
-              ? 'w-0 opacity-0 scale-x-0'
-              : 'w-3.5 opacity-100 scale-x-100 translate-y-0 group-hover:w-5 group-hover:from-white group-hover:to-slate-200'
+          className={`absolute left-0 top-1/2 -translate-y-1/2 h-[3px] rounded-full origin-left bg-gradient-to-r from-white via-slate-100 to-slate-200 shadow-[0_0_8px_rgba(255,255,255,0.6)] transition-all duration-200 ease-out ${
+            isMenuOpen ? 'w-0 opacity-0 scale-x-0' : 'w-[17px] opacity-100 scale-x-100 group-hover:w-[20px]'
           }`}
         />
-        {/* Traço inferior: tom de roxo oficial da ēloSites. Sobe ao centro e gira -45° para formar o X com o traço superior */}
+
+        {/* Traço inferior (degradê azul para púrpura de 'ēlo') / Diagonal 2 do X */}
         <span
-          className={`absolute left-1/2 -translate-x-1/2 top-[11px] h-[2px] rounded-full transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+          className={`absolute left-0 top-1/2 w-full h-[3px] rounded-full origin-center transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] ${
             isMenuOpen
-              ? 'w-5 translate-y-0 -rotate-45 bg-gradient-to-r from-indigo-400 via-violet-400 to-purple-400 shadow-[0_0_12px_rgba(168,85,247,0.85)] group-hover:from-indigo-300 group-hover:to-purple-300'
-              : 'w-5 translate-y-[6px] rotate-0 group-hover:w-5 bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500 group-hover:from-indigo-400 group-hover:to-purple-400 shadow-[0_0_8px_rgba(168,85,247,0.7)]'
+              ? '-translate-y-1/2 -rotate-45 bg-gradient-to-r from-[#3b82f6] via-[#818cf8] to-[#a855f7] shadow-[0_0_8px_rgba(59,130,246,0.5)]'
+              : 'translate-y-[5.5px] rotate-0 bg-gradient-to-r from-[#3b82f6] via-[#818cf8] to-[#a855f7] shadow-[0_0_8px_rgba(59,130,246,0.4)]'
           }`}
         />
       </div>
@@ -126,74 +129,40 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <>
-      {/* 
-        POSICIONAMENTO DO CABEÇALHO E BOTÃO DE MENU:
-        1. QUANDO O MENU ESTÁ ABERTO (em TODAS as telas):
-           O 'X' fica posicionado centralizado no topo em todas as telas, exatamente igual à tela da Home.
-        2. QUANDO O MENU ESTÁ FECHADO:
-           - Na Home: Botão de 3 traços centralizado no topo (sem logotipo no canto).
-           - Nas demais telas (Início, Serviços, Portfólio, Planos, Sobre, Contato):
-             Logotipo na esquerda (com 'O MELHOR SITE PELO MELHOR PREÇO' abaixo) e botão de 3 traços na direita do cabeçalho.
-      */}
-
-      {/* Menu Aberto em qualquer tela: 'X' posicionado centralizado no topo (igual à home) */}
-      {isMenuOpen && (
-        <header
-          id="header-nav-active"
-          className="fixed top-4 sm:top-6 left-0 right-0 z-50 pointer-events-none flex justify-center items-center"
-        >
-          <div className="pointer-events-auto">
-            {renderMenuButton()}
-          </div>
-        </header>
-      )}
-
-      {/* Menu Fechado na Home: 3 traços centralizados no topo */}
+      {/* Menu Fechado na Home: Botão de menu flutuante rigorosamente centralizado no topo */}
       {isHome && !isMenuOpen && (
         <header
           id="header-nav"
-          className="fixed top-4 sm:top-6 left-0 right-0 z-50 pointer-events-none flex justify-center items-center"
+          className="fixed top-5 sm:top-7 left-0 right-0 z-50 pointer-events-none flex justify-center items-center"
         >
-          <div className="pointer-events-auto">
+          <div className="pointer-events-auto flex items-center justify-center">
             {renderMenuButton()}
           </div>
         </header>
       )}
 
-      {/* Menu Fechado nas demais telas: logotipo à esquerda e botão de 3 traços à direita do cabeçalho */}
+      {/* Menu Fechado nas demais telas: Cabeçalho minimalista (apenas Logo e Menu Hambúrguer) */}
       {!isHome && !isMenuOpen && (
         <header
           id="header-nav"
-          className="fixed top-0 left-0 right-0 z-50 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-300 bg-gradient-to-r from-[#031d24]/90 via-[#062c36]/85 to-[#071c2b]/90 backdrop-blur-md border-b border-indigo-500/20 py-2 sm:py-2.5 shadow-xl shadow-[#020617]/50 pointer-events-auto"
+          className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-[#050814]/90 backdrop-blur-md border-b border-blue-500/20 py-2 sm:py-2.5 shadow-xl shadow-black/60 pointer-events-auto"
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-            <div className="flex items-center justify-between gap-3 sm:gap-6 min-h-[44px]">
-              {/* Logo do Estúdio à esquerda com frase oficial abaixo */}
+            <div className="flex items-center justify-between gap-4 sm:gap-6 min-h-[46px]">
+              {/* Logo Wordmark oficial */}
               <div className="flex items-center gap-2 sm:gap-3 shrink-0 z-10">
                 <button
                   type="button"
                   id="brand-logo-link"
-                  onClick={() => {
-                    onSelectScreen('home');
-                  }}
-                  className="group focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-lg p-1 -ml-1 transition-opacity hover:opacity-90 text-left flex items-center gap-2.5 shrink-0 cursor-pointer"
+                  onClick={() => onSelectScreen('home')}
+                  className="group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg p-1 -ml-1 transition-opacity hover:opacity-90 text-left flex items-center gap-2.5 shrink-0 cursor-pointer"
                   aria-label="ēloSites — Ir para a Página Inicial (Home)"
                 >
                   <EloLogo size="md" />
                 </button>
-
-                {/* Indicador sutil da tela ativa atual */}
-                <div className="hidden lg:flex items-center pl-3 border-l border-white/[0.08]">
-                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-indigo-950/60 border border-indigo-500/25">
-                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse shadow-[0_0_8px_#818cf8]" />
-                    <span className="text-xs font-semibold text-slate-200">
-                      {currentMeta.shortTitle}
-                    </span>
-                  </div>
-                </div>
               </div>
 
-              {/* Botão do Menu à direita nas telas internas */}
+              {/* Apenas o Botão do Menu Hambúrguer */}
               <div className="flex items-center ml-auto shrink-0 z-10 pointer-events-auto">
                 {renderMenuButton()}
               </div>
@@ -202,58 +171,94 @@ export const Header: React.FC<HeaderProps> = ({
         </header>
       )}
 
-      {/* 
-        MODAL DO MENU DE NAVEGAÇÃO:
-        - O próprio botão de menu (no topo) se transforma no 'X' de fechar no centro do topo em todas as telas.
-        - No centro da viewport, a lista em cascata dos nomes das 7 seções perfeitamente centralizada.
-        - No pé da página, o logotipo ēloSites centralizado com a frase 'O MELHOR SITE PELO MELHOR PREÇO'.
-      */}
+      {/* MODAL DO MENU DE NAVEGAÇÃO COMPLETO COM BACKGROUND DE ESPAÇO-TEMPO E MOVIMENTO FLUTUANTE */}
       {isMenuOpen && (
         <div
           id="multi-screen-navigation-modal"
           role="dialog"
           aria-modal="true"
           aria-label="Menu de Navegação das Seções ēloSites"
-          className="nav-menu-modal-container fixed inset-0 z-40 flex flex-col items-center justify-between pt-16 sm:pt-20 pb-6 sm:pb-8 px-4 bg-black/50 backdrop-blur-[2px] animate-in fade-in duration-200 select-none overflow-y-auto"
+          className="nav-menu-modal-container fixed inset-0 z-[100] flex flex-col items-center justify-between pt-4 sm:pt-6 pb-6 sm:pb-8 px-4 bg-[#050814]/92 backdrop-blur-xl animate-in fade-in duration-200 select-none overflow-y-auto overscroll-contain"
           onClick={handleCloseMenuWithoutNav}
         >
-          {/* Espaçador flexível superior */}
-          <div className="shrink-0 h-2" aria-hidden="true" />
+          {/* Fundo de grade azul de espaço-tempo com bolha em movimento contínuo e aleatório */}
+          <FluidRippleBackground variant="contained" className="absolute inset-0 z-0 opacity-70 pointer-events-none" />
 
-          {/* Lista centralizada em cascata dos nomes das seções */}
-          <div
-            className="nav-menu-list-wrap relative w-full flex flex-col items-center justify-center text-center my-auto px-4 pointer-events-auto"
+          {/* Botão de Fechar ('X') que sobe e desce junto com o scroll das seções */}
+          <header
+            id="header-nav-active"
+            className="w-full shrink-0 relative z-20 flex justify-center items-center pt-2 sm:pt-3 pb-2 sm:pb-3 pointer-events-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            <ul className="nav-menu-list flex flex-col items-center justify-center py-0.5 w-full">
+            <div className="flex items-center justify-center">
+              {renderMenuButton()}
+            </div>
+          </header>
+
+          {/* Lista de seções minimalista com movimento flutuante suave */}
+          <div
+            className="nav-menu-list-wrap relative z-20 w-full flex flex-col items-center justify-center text-center my-auto px-4 pointer-events-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <ul className="nav-menu-list flex flex-col items-center justify-center py-1 w-full gap-[1px] sm:gap-[3px]">
               {SCREENS.map((screen, index) => {
                 const isActive = screen.id === currentScreen;
 
                 return (
                   <motion.li
                     key={screen.id}
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{
-                      delay: 0.03 * index,
-                      duration: 0.28,
-                      ease: [0.16, 1, 0.3, 1],
+                    animate={{
+                      y: [-4, 4, -4],
+                      x: [2, -2, 2],
+                      rotate: [-0.25, 0.25, -0.25],
                     }}
-                    className="nav-menu-list-item w-full flex justify-center"
+                    transition={{
+                      y: {
+                        duration: 6.5 + (index % 3) * 0.8,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                        delay: index * 0.12,
+                      },
+                      x: {
+                        duration: 7.2 + (index % 2) * 0.9,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                        delay: index * 0.12,
+                      },
+                      rotate: {
+                        duration: 8.0,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                        delay: index * 0.1,
+                      },
+                    }}
+                    className="nav-menu-list-item w-full flex justify-center py-[1px]"
                   >
                     <button
                       type="button"
                       onClick={() => {
+                        setIsMenuOpen(false);
                         onSelectScreen(screen.id);
                       }}
                       onPointerEnter={() => preloadScreen(screen.id)}
                       onFocus={() => preloadScreen(screen.id)}
                       onTouchStart={() => preloadScreen(screen.id)}
-                      className={`nav-menu-link-item group relative rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/70 flex items-center justify-center cursor-pointer ${
-                        isActive ? 'is-active scale-105' : 'hover:scale-105'
+                      className={`nav-menu-link-item group relative px-4 py-1 sm:py-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/80 rounded-lg flex items-center justify-center gap-2.5 cursor-pointer transition-colors duration-200 ${
+                        isActive
+                          ? 'text-white'
+                          : 'text-slate-400 hover:text-white'
                       }`}
                     >
-                      <span className="font-display nav-menu-link-text tracking-tight transition-transform duration-200 group-hover:-translate-y-0.5">
+                      {isActive && (
+                        <span className="w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0 shadow-[0_0_8px_#3b82f6]" />
+                      )}
+                      <span
+                        className={`font-display text-[17px] sm:text-[19px] md:text-[22px] tracking-tight transition-colors duration-200 ${
+                          isActive
+                            ? 'text-white font-bold'
+                            : 'font-medium text-slate-300 group-hover:text-white'
+                        }`}
+                      >
                         {screen.shortTitle}
                       </span>
                     </button>
@@ -263,32 +268,20 @@ export const Header: React.FC<HeaderProps> = ({
             </ul>
           </div>
 
-          {/* Logotipo centralizado no pé da página com frase oficial vinculada à largura exata da logo */}
+          {/* Logotipo oficial centralizado no rodapé do modal sem sobreposição */}
           <div
-            className="nav-menu-logo-wrap shrink-0 flex flex-col items-center justify-center pointer-events-auto mt-auto"
+            className="nav-menu-logo-wrap shrink-0 flex flex-col items-center justify-center pointer-events-auto mt-auto pt-4 pb-4 sm:pb-6 relative z-20 min-h-[56px] overflow-visible"
             onClick={(e) => e.stopPropagation()}
           >
-            <button
-              type="button"
+            <EloLogo
+              size="menu"
+              showTagline={true}
+              taglineClassName="whitespace-nowrap"
               onClick={() => {
+                setIsMenuOpen(false);
                 onSelectScreen('home');
               }}
-              className="group focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 rounded-lg p-1 transition-transform hover:scale-105 cursor-pointer flex flex-col items-center justify-center"
-              aria-label="ēloSites — Ir para a Página Inicial (Home)"
-            >
-              <img
-                src="/logo-elosites-1360.png"
-                alt="ēloSites"
-                width={1360}
-                height={337}
-                className="nav-menu-logo-img w-auto object-contain drop-shadow-[0_0_20px_rgba(168,85,247,0.35)]"
-              />
-              <div className="flex flex-col items-center justify-center text-center">
-                <span className="w-full text-center mt-1 text-[7px] min-[380px]:text-[8px] sm:text-[9.5px] font-semibold tracking-wider uppercase text-slate-400 select-none leading-tight whitespace-nowrap">
-                  O melhor site pelo melhor preço
-                </span>
-              </div>
-            </button>
+            />
           </div>
         </div>
       )}

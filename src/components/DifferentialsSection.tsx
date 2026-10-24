@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion, useReducedMotion } from 'motion/react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useReducedMotion } from 'motion/react';
 import { shouldReduceMedia } from '../mediaPrefs';
 import {
   Zap,
@@ -14,16 +14,64 @@ import { WhatsAppIcon } from './WhatsAppIcon';
 import { SplitLines } from './SplitLines';
 import { SITE_CONFIG, whatsappUrl } from '../types';
 import { Interactive3DCard } from './Interactive3DCard';
-import { getDynamicCardVariants } from '../motionVariants';
+import { BiReveal } from './BiReveal';
 
 interface DifferentialsSectionProps {
   onNavigateToPortfolio?: () => void;
 }
 
 export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
-  // Preferência de redução de movimento e media prefs
-  const systemPrefersReduced = useReducedMotion();
-  const prefersReduced = Boolean(systemPrefersReduced || shouldReduceMedia());
+  const [isInViewport, setIsInViewport] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const hasPrefetchedRef = useRef(false);
+
+  // Lazy loading dos componentes da seção e prefetch inteligente de mídias de alta resolução
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') {
+      setIsInViewport(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setIsInViewport(true);
+
+            // Prefetch inteligente em momento ocioso do navegador para otimizar TTI da próxima navegação
+            if (!hasPrefetchedRef.current) {
+              hasPrefetchedRef.current = true;
+              const prefetchNextMedia = () => {
+                const targetImages = [
+                  '/portifolio-jvsalvaia-mobile.webp',
+                  '/portifolio-toledoseguranca-mobile.webp',
+                ];
+                targetImages.forEach((src) => {
+                  const img = new Image();
+                  img.decoding = 'async';
+                  img.src = src;
+                });
+              };
+
+              if (typeof window.requestIdleCallback === 'function') {
+                window.requestIdleCallback(prefetchNextMedia, { timeout: 3000 });
+              } else {
+                window.setTimeout(prefetchNextMedia, 1500);
+              }
+            }
+          }
+        }
+      },
+      {
+        rootMargin: '180px 0px 180px 0px',
+        threshold: 0.05,
+      }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   const differentials: {
     title: string;
@@ -70,40 +118,40 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
     },
   ];
 
-  // Variantes dinâmicas dos cartões de serviço (service-card) com mola, blur progressivo e escala suave
-  const cardVariants = getDynamicCardVariants(prefersReduced);
-
   return (
     <section
+      ref={sectionRef}
       id="diferenciais"
-      className="section-auto-contain pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32 lg:pb-20 bg-[#090D16]/30 backdrop-blur-[0.5px] relative border-t border-white/[0.05] overflow-x-clip"
+      className="section-auto-contain pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32 lg:pb-20 bg-[#050814] relative border-t border-blue-500/15 overflow-x-clip"
     >
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-indigo-400/20 to-transparent pointer-events-none" />
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-400/20 to-transparent pointer-events-none" />
 
-      {/* Luz ambiente de fundo */}
-      <div className="absolute top-1/3 right-0 w-96 h-96 bg-indigo-500/[0.06] blur-[150px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-purple-600/[0.06] blur-[150px] rounded-full pointer-events-none" />
+      {/* Luz ambiente de fundo azul elétrico */}
+      <div className="absolute top-1/3 right-0 w-96 h-96 bg-blue-600/[0.08] blur-[150px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-indigo-600/[0.08] blur-[150px] rounded-full pointer-events-none" />
 
-      <div className="page-shell page-x">
+      <div className="page-shell page-x max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Cabeçalho da Seção de Diferenciais */}
-        <div className="max-w-3xl mx-auto text-center space-y-4 mb-16 sm:mb-20">
-          <div className="section-kicker inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-white/[0.08] text-indigo-300 text-xs sm:text-sm font-semibold uppercase">
-            <Sparkles className="w-3.5 h-3.5" aria-hidden="true" />
-            <span>Diferenciais Estratégicos</span>
+        <BiReveal direction="up">
+          <div className="max-w-3xl mx-auto text-center space-y-4 mb-16 sm:mb-20">
+            <div className="section-kicker inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-950/70 border border-blue-500/30 text-blue-300 text-xs sm:text-sm font-semibold uppercase shadow-[0_0_15px_rgba(59,130,246,0.25)]">
+              <Sparkles className="w-3.5 h-3.5 text-blue-400" aria-hidden="true" />
+              <span>Diferenciais Estratégicos</span>
+            </div>
+            <SplitLines
+              as="h2"
+              text="O que muda quando o site é feito para o seu negócio"
+              className="font-display text-3xl sm:text-4xl lg:text-[2.75rem] font-bold tracking-[-0.03em] text-white text-balance leading-tight"
+            />
+            <p className="text-base sm:text-lg text-slate-300/95 leading-relaxed">
+              Menos agência genérica. Mais presença profissional, conversa direta e resultado.
+            </p>
           </div>
-          <SplitLines
-            as="h2"
-            text="O que muda quando o site é feito para o seu negócio"
-            className="font-display text-3xl sm:text-4xl lg:text-[2.75rem] font-bold tracking-[-0.03em] text-white text-balance leading-tight"
-          />
-          <p className="text-base sm:text-lg text-slate-300/95 leading-relaxed">
-            Menos agência genérica. Mais presença profissional, conversa direta e resultado.
-          </p>
-        </div>
+        </BiReveal>
 
-        {/* Grade de 6 Cards de Diferenciais com transição dinâmica idêntica aos cartões de serviço */}
+        {/* Grade 3 Colunas dos Diferenciais com BiReveal alternado */}
         <div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 min-w-0 differentials-list scroll-perf-list scroll-snap-y-container card-list-container"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 relative min-w-0 differentials-list scroll-perf-list scroll-snap-y-container card-list-container"
           style={{
             scrollSnapType: 'y mandatory',
             scrollPaddingTop: 'clamp(4.5rem, 12vh, 6.5rem)',
@@ -112,13 +160,10 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
           {differentials.map((item, index) => {
             const Icon = item.icon;
             return (
-              <motion.div
+              <BiReveal
                 key={item.title}
-                custom={index}
-                variants={cardVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.12, margin: '0px 0px -40px 0px' }}
+                direction={index % 2 === 0 ? 'left' : 'right'}
+                index={index}
                 className="h-full scroll-snap-card card-snap-item"
                 style={{
                   scrollSnapAlign: 'start',
@@ -126,17 +171,17 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
                   scrollMarginTop: 'clamp(4.5rem, 12vh, 6.5rem)',
                 }}
               >
-                <Interactive3DCard maxTilt={5} className="h-full">
+                <Interactive3DCard maxTilt={1.2} className="h-full">
                   <article
-                    className="glass-card-interactive surface-card differential-card scroll-perf-card scroll-snap-card card-snap-item accent-border-subtle relative rounded-2xl bg-[#0B101D] border border-slate-800/80 hover:border-indigo-400/50 h-full w-full p-5 sm:p-6 md:p-8 flex flex-col justify-between group shadow-2xl shadow-black/60 bracket-panel transition-colors"
+                    className="glass-card-interactive surface-card differential-card scroll-perf-card scroll-snap-card card-snap-item relative rounded-2xl bg-[#090E23] border border-blue-500/20 hover:border-blue-400/50 h-full w-full p-5 sm:p-6 md:p-8 flex flex-col justify-between group shadow-2xl shadow-black/80 bracket-panel transition-all"
                   >
                     <div>
                       <div className="flex items-center justify-between gap-2.5 mb-5">
                         <div
-                          className={`w-11 h-11 rounded-xl flex items-center justify-center transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-300 ${
+                          className={`w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300 ${
                             item.isWhatsApp
                               ? 'bg-[#25D366] text-white shadow-md shadow-emerald-950/40'
-                              : 'bg-indigo-950/80 border border-indigo-500/30 text-indigo-300'
+                              : 'bg-blue-950/80 border border-blue-500/30 text-blue-400 shadow-[0_0_12px_rgba(59,130,246,0.25)]'
                           }`}
                         >
                           {item.isWhatsApp ? (
@@ -145,12 +190,12 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
                             <Icon className="w-5 h-5" aria-hidden="true" />
                           )}
                         </div>
-                        <span className="font-mono text-xs font-bold text-slate-400 group-hover:text-indigo-300 transition-colors">
+                        <span className="font-mono text-xs font-bold text-blue-400/80 group-hover:text-blue-300 transition-colors">
                           0{index + 1}
                         </span>
                       </div>
 
-                      <h3 className="font-display text-lg font-bold tracking-tight text-white mb-2.5 group-hover:text-indigo-100 transition-colors">
+                      <h3 className="font-display text-lg font-bold tracking-tight text-white mb-2.5 group-hover:text-blue-100 transition-colors">
                         {item.title}
                       </h3>
                       <p className="text-sm text-slate-300 leading-relaxed font-normal">
@@ -159,42 +204,30 @@ export const DifferentialsSection: React.FC<DifferentialsSectionProps> = () => {
                     </div>
 
                     <div className="mt-6 pt-3.5 border-t border-white/[0.08] flex items-center gap-1.5 text-xs text-slate-400">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-indigo-400" aria-hidden="true" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-blue-400" aria-hidden="true" />
                       <span className="font-medium text-slate-300">Padrão ēloSites</span>
                     </div>
                   </article>
                 </Interactive3DCard>
-              </motion.div>
+              </BiReveal>
             );
           })}
         </div>
 
-        {/* Aviso de responsabilidade e alinhamento estratégico posicionado abaixo do último card */}
-        <div className="mt-10 sm:mt-12 max-w-2xl mx-auto text-center px-4">
-          <p className="inline-flex items-center justify-center gap-2.5 text-xs sm:text-sm text-indigo-200/90 leading-relaxed bg-indigo-950/40 border border-indigo-500/20 rounded-xl px-4 sm:px-5 py-3 shadow-md">
-            <CheckCircle2
-              className="w-4 h-4 text-indigo-400 shrink-0"
-              aria-hidden="true"
-            />
-            <span>
-              O site apoia sua divulgação. Você continua responsável por atrair pessoas, atender os contatos e conduzir as vendas.
-            </span>
-          </p>
-        </div>
-
-        {/* CTA Contextual de Diferenciais com espaçamento proporcional */}
-        <div className="mt-8 sm:mt-10 flex items-center justify-center">
-          <a
-            id="diferenciais-cta-whatsapp"
-            href={whatsappUrl(SITE_CONFIG.diferenciaisWhatsappMessage)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="cta-primary inline-flex items-center justify-center text-center gap-2.5 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl text-sm sm:text-base font-bold text-white shadow-lg shadow-indigo-600/30 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] cursor-pointer whitespace-nowrap"
-          >
-            <WhatsAppIcon className="w-4 h-4 text-emerald-300 shrink-0" />
-            <span className="whitespace-nowrap">Falar sobre um site para meu negócio</span>
-          </a>
-        </div>
+        {/* Aviso de responsabilidade e alinhamento estratégico */}
+        <BiReveal direction="up" delay={150}>
+          <div className="mt-10 sm:mt-12 max-w-2xl mx-auto text-center px-4">
+            <p className="inline-flex items-center justify-center gap-2.5 text-xs sm:text-sm text-blue-200/90 leading-relaxed bg-blue-950/40 border border-blue-500/25 rounded-xl px-4 sm:px-5 py-3 shadow-md">
+              <CheckCircle2
+                className="w-4 h-4 text-blue-400 shrink-0"
+                aria-hidden="true"
+              />
+              <span>
+                O site apoia sua divulgação. Você continua responsável por atrair pessoas, atender os contatos e conduzir as vendas.
+              </span>
+            </p>
+          </div>
+        </BiReveal>
       </div>
     </section>
   );

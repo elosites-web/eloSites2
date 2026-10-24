@@ -4,24 +4,25 @@ import type { ScreenId } from './types';
 type Loader = () => Promise<unknown>;
 
 const screenLoaders: Partial<Record<ScreenId, Loader>> = {
-  portfolio: () =>
-    Promise.all([
-      import('./components/PortfolioSection'),
-      import('./components/TestimonialsSection'),
-    ]),
+  inicio: () => import('./components/SpecialtiesSection'),
   servicos: () => import('./components/ServicesSection'),
+  'solucoes-web': () => import('./components/SpecialtiesSection'),
+  portfolio: () => import('./components/PortfolioSection'),
+  avaliacoes: () => import('./components/TestimonialsSection'),
   processo: () =>
     Promise.all([
       import('./components/ProcessSection'),
       import('./components/DifferentialsSection'),
     ]),
   orcamento: () => import('./components/ProjectBriefBookingSection'),
+  'parceria-trafego': () => import('./components/PaidTrafficPartnershipSection'),
+  'trafego-pago': () => import('./components/PaidTrafficPartnershipSection'),
   faq: () =>
     Promise.all([
       import('./components/FaqSection'),
       import('./components/ContactCtaSection'),
+      import('./components/DigitalCardSection'),
     ]),
-  'parceria-trafego': () => import('./components/PaidTrafficPartnershipSection'),
 };
 
 function slowConnection(): boolean {

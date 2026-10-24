@@ -11,12 +11,16 @@ export interface NavItem {
 export type ScreenId =
   | 'home'
   | 'inicio'
-  | 'portfolio'
   | 'servicos'
+  | 'solucoes-web'
+  | 'solucoes'
+  | 'portfolio'
+  | 'avaliacoes'
   | 'processo'
   | 'orcamento'
-  | 'faq'
-  | 'parceria-trafego';
+  | 'parceria-trafego'
+  | 'trafego-pago'
+  | 'faq';
 
 export interface ScreenMeta {
   id: ScreenId;
@@ -41,15 +45,24 @@ export const SCREENS: ScreenMeta[] = [
   {
     id: 'inicio',
     number: '02',
-    title: 'Início',
-    shortTitle: 'Início',
-    badge: 'Início',
-    description: 'Proposta de valor, demonstração interativa e o padrão de engenharia da ēloSites.',
+    title: 'Sobre a ēloSites',
+    shortTitle: 'Sobre',
+    badge: 'Sobre',
+    description: 'Apresentação institucional, especialidades em desenvolvimento web e o fundador da ēloSites.',
     iconName: 'Sparkles',
   },
   {
-    id: 'portfolio',
+    id: 'servicos',
     number: '03',
+    title: 'Serviços & Condições Comerciais',
+    shortTitle: 'Serviços',
+    badge: 'Serviços Comerciais',
+    description: 'Formatos de sites, orçamento sob medida, 20% à vista e parcelamento em até 12x.',
+    iconName: 'Briefcase',
+  },
+  {
+    id: 'portfolio',
+    number: '04',
     title: 'Portfólio de Projetos Reais',
     shortTitle: 'Portfólio',
     badge: 'Projetos no Ar',
@@ -57,26 +70,26 @@ export const SCREENS: ScreenMeta[] = [
     iconName: 'LayoutGrid',
   },
   {
-    id: 'servicos',
-    number: '04',
-    title: 'Serviços & Condições Comerciais',
-    shortTitle: 'Serviços',
-    badge: 'Formatos & Pagamento',
-    description: '3 formatos de sites, orçamento sob medida, 20% à vista e parcelamento em até 12x.',
-    iconName: 'Briefcase',
+    id: 'avaliacoes',
+    number: '05',
+    title: 'Avaliações de Clientes Reais',
+    shortTitle: 'Avaliações',
+    badge: 'Social Proof & Clientes Reais',
+    description: 'Depoimentos autênticos e avaliações 5 estrelas de clientes que colocaram o site no ar.',
+    iconName: 'Star',
   },
   {
     id: 'processo',
-    number: '05',
+    number: '06',
     title: 'Como Funciona o Processo & Diferenciais',
-    shortTitle: 'Como funciona',
+    shortTitle: 'Como Funciona',
     badge: 'Processo & Diferenciais',
     description: 'Da ideia ao site no ar em 4 etapas ágeis e os diferenciais estratégicos da ēloSites.',
     iconName: 'Workflow',
   },
   {
     id: 'orcamento',
-    number: '06',
+    number: '07',
     title: 'Briefing & Agendamento',
     shortTitle: 'Orçamento',
     badge: 'Simulação Rápida',
@@ -84,22 +97,22 @@ export const SCREENS: ScreenMeta[] = [
     iconName: 'CalendarCheck',
   },
   {
+    id: 'parceria-trafego',
+    number: '08',
+    title: 'Tráfego Pago & Gestão de Leads',
+    shortTitle: 'Tráfego Pago',
+    badge: 'Tráfego Pago',
+    description: 'Parceria recomendada com Thomaz (TrueThomaz.BM) para Meta Ads, geração de leads e consultoria comercial.',
+    iconName: 'TrendingUp',
+  },
+  {
     id: 'faq',
-    number: '07',
+    number: '09',
     title: 'Perguntas Frequentes (FAQ) & Contato',
     shortTitle: 'FAQ & Contato',
     badge: 'Dúvidas & Contato',
     description: 'Respostas diretas sobre prazos, domínio, hospedagem, pagamentos e canais de atendimento.',
     iconName: 'HelpCircle',
-  },
-  {
-    id: 'parceria-trafego',
-    number: '08',
-    title: 'Parceria Estratégica | Tráfego Pago & Gestão de Leads',
-    shortTitle: 'Parceria | Tráfego Pago',
-    badge: 'Tráfego Pago',
-    description: 'Parceria recomendada com Thomaz (TrueThomaz.BM) para Meta Ads, geração de leads e consultoria comercial.',
-    iconName: 'TrendingUp',
   },
 ];
 
@@ -168,7 +181,9 @@ export interface ProjectBriefData {
   businessName: string;
   segment: string;
   projectType: string;
-  description: string;
+  budgetRange: string;
+  idea: string;
+  projectDetails?: string;
   whatsappContact: string;
   agreedToLgpd: boolean;
 }
@@ -189,8 +204,8 @@ export const SITE_CONFIG = {
   name: 'ēloSites',
   domain: 'elosites.ia.br',
   canonicalUrl: 'https://elosites.ia.br',
-  tagline: 'Criação de sites profissionais com SEO técnico, foco em conversão e arquitetura de alta performance.',
-  subtagline: 'Desenvolvemos a presença digital completa e estratégica para pequenos negócios e profissionais liberais.',
+  tagline: 'ēloSites | Estúdio de Desenvolvimento Web — Landing pages e sites institucionais responsivos com interfaces sob medida, integração com WhatsApp e SEO técnico.',
+  subtagline: 'Desenvolvemos a presença digital estratégica para pequenos negócios e profissionais liberais.',
   email: 'contato@elosites.ia.br',
   // Número oficial da ēloSites
   whatsappNumber: '5511995722584',
@@ -210,7 +225,7 @@ export const SITE_CONFIG = {
 
   // 4) Serviços - Landing Page (Tela 03)
   landingPageWhatsappMessage:
-    'Olá! 🎯 Tenho interesse no formato *Landing Page de Alta Conversão* da *ēloSites*.\n\nPreciso de uma página única estratégica, veloz e otimizada para campanhas e captação de clientes no WhatsApp. Como podemos iniciar?',
+    'Olá! 🎯 Tenho interesse no formato *Landing Page* da *ēloSites*.\n\nPreciso de uma página única estratégica, veloz e otimizada para captação de clientes no WhatsApp. Como podemos iniciar?',
 
   // 5) Serviços - Site Institucional (Tela 03)
   siteInstitucionalWhatsappMessage:
@@ -218,7 +233,7 @@ export const SITE_CONFIG = {
 
   // 6) Serviços - Projeto Personalizado (Tela 03)
   personalizadoWhatsappMessage:
-    'Olá! ⚡ Gostaria de conversar sobre um *Projeto Sob Medida / Personalizado* com a *ēloSites*.\n\nTenho requisitos específicos para o meu negócio e busco uma solução web exclusiva de alta performance.',
+    'Olá! ⚡ Gostaria de conversar sobre um *Projeto Personalizado* com a *ēloSites*.\n\nTenho requisitos específicos de frontend para o meu negócio e busco uma solução web sob medida.',
 
   // 7) Processo / Como Funciona (Tela 04)
   processoWhatsappMessage:
@@ -238,7 +253,7 @@ export const SITE_CONFIG = {
 
   // 11) Balão Flutuante e Botão WhatsApp Fixo
   floatingWhatsappMessage:
-    'Olá! 🚀 Preciso de um site profissional para o meu negócio.\n\nGostaria de tirar algumas dúvidas rápidas diretamente com a equipe da *ēloSites*!',
+    'Olá! 🚀 Preciso de um site profissional para o meu negócio.\n\nGostaria de tirar algumas dúvidas rápidas diretamente com o fundador da *ēloSites*!',
 
   // 12) Modal de Navegação
   mobileMenuWhatsappMessage:
@@ -259,13 +274,14 @@ export const SITE_CONFIG = {
 
 export const NAVIGATION_ITEMS: NavItem[] = [
   { label: 'Home', href: '#home', id: 'nav-home' },
-  { label: 'Início', href: '#inicio', id: 'nav-inicio' },
-  { label: 'Portfólio', href: '#portfolio', id: 'nav-portfolio' },
+  { label: 'Sobre', href: '#inicio', id: 'nav-inicio' },
   { label: 'Serviços', href: '#servicos', id: 'nav-servicos' },
-  { label: 'Como funciona', href: '#processo', id: 'nav-processo' },
+  { label: 'Portfólio', href: '#portfolio', id: 'nav-portfolio' },
+  { label: 'Avaliações', href: '#avaliacoes', id: 'nav-avaliacoes' },
+  { label: 'Como Funciona', href: '#processo', id: 'nav-processo' },
   { label: 'Orçamento', href: '#orcamento', id: 'nav-orcamento' },
+  { label: 'Tráfego Pago', href: '#parceria-trafego', id: 'nav-parceria-trafego' },
   { label: 'FAQ & Contato', href: '#faq', id: 'nav-faq' },
-  { label: 'Parceria | Tráfego Pago', href: '#parceria-trafego', id: 'nav-parceria-trafego' },
 ];
 
 export {
