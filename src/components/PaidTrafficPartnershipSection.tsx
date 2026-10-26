@@ -80,20 +80,18 @@ export const PaidTrafficPartnershipSection: React.FC<PaidTrafficPartnershipSecti
     <section
       id={id}
       tabIndex={-1}
-      className="section-auto-contain pt-24 pb-20 sm:pt-28 sm:pb-24 lg:pt-32 lg:pb-28 bg-[#050814] relative border-t border-blue-500/15 overflow-x-clip scroll-mt-20 sm:scroll-mt-24 focus:outline-none"
+      className="section-auto-contain pt-24 pb-20 sm:pt-28 sm:pb-24 lg:pt-32 lg:pb-28 bg-[#09090b] relative border-t border-white/10 overflow-x-clip scroll-mt-20 sm:scroll-mt-24 focus:outline-none"
     >
       {/* Elementos visuais sutis de fundo */}
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-500/30 to-transparent pointer-events-none" />
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(700px,100%)] h-[400px] bg-blue-600/[0.08] blur-[150px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-1/3 right-10 w-96 h-96 bg-indigo-600/[0.08] blur-[140px] rounded-full pointer-events-none" />
 
       <div className="page-shell page-x relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto space-y-12 sm:space-y-16">
           {/* Cabeçalho da Seção com BiReveal */}
           <BiReveal direction="up">
             <div className="text-center space-y-4 max-w-3xl mx-auto">
-              <div className="section-kicker inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-950/70 border border-blue-500/35 text-blue-300 text-xs sm:text-sm font-semibold uppercase tracking-wider shadow-[0_0_15px_rgba(59,130,246,0.25)]">
-                <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse shadow-[0_0_8px_#3b82f6]" />
+              <div className="section-kicker inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-blue-300 text-xs sm:text-sm font-semibold uppercase tracking-wider shadow-none">
+                <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse shadow-none" />
                 <span>PARCERIA ESTRATÉGICA</span>
               </div>
 
@@ -105,7 +103,7 @@ export const PaidTrafficPartnershipSection: React.FC<PaidTrafficPartnershipSecti
 
               <p className="text-base sm:text-lg text-slate-300/95 leading-relaxed font-normal max-w-2xl mx-auto">
                 Ter um site profissional é um passo importante para fortalecer sua presença digital.
-                Com uma <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#38bdf8] via-[#818cf8] to-[#a855f7] font-semibold">estratégia de tráfego pago</span> e um processo comercial bem estruturado, seu
+                Com uma <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a5b4fc] via-[#818cf8] to-[#818cf8] font-semibold">estratégia de tráfego pago</span> e um processo comercial bem estruturado, seu
                 negócio pode alcançar novas pessoas, gerar oportunidades e transformar conversas em
                 possíveis vendas.
               </p>
@@ -114,7 +112,7 @@ export const PaidTrafficPartnershipSection: React.FC<PaidTrafficPartnershipSecti
 
           {/* Destaque da Parceria ēloSites + TrueThomaz.BM com BiReveal */}
           <BiReveal direction="up" delay={100}>
-            <div className="glass-panel bracket-panel rounded-2xl p-6 sm:p-8 lg:p-10 border border-blue-500/25 bg-[#090E23] relative shadow-2xl">
+            <div className="glass-panel bracket-panel rounded-2xl p-6 sm:p-8 lg:p-10 border border-white/10 bg-[#111113] relative shadow-2xl">
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 lg:gap-10">
                 <div className="space-y-3.5 max-w-2xl">
                   <div className="inline-flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-wider text-emerald-400">
@@ -134,7 +132,7 @@ export const PaidTrafficPartnershipSection: React.FC<PaidTrafficPartnershipSecti
 
                 <div className="shrink-0 flex flex-col items-start lg:items-end justify-center pt-2 lg:pt-0 border-t lg:border-t-0 lg:border-l border-white/[0.08] lg:pl-8">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600/30 via-indigo-600/25 to-blue-500/30 border border-blue-500/40 flex items-center justify-center font-display font-bold text-lg text-blue-300 shadow-inner">
+                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600/30 via-indigo-600/25 to-blue-500/30 border border-white/10 flex items-center justify-center font-display font-bold text-lg text-blue-300 shadow-inner">
                       TT
                     </div>
                     <div className="text-left">
@@ -142,7 +140,7 @@ export const PaidTrafficPartnershipSection: React.FC<PaidTrafficPartnershipSecti
                       <span className="block text-xs text-slate-400">TrueThomaz.BM</span>
                     </div>
                   </div>
-                  <span className="mt-3 text-[11px] font-mono text-blue-300/90 bg-blue-950/80 px-2.5 py-1 rounded-md border border-blue-500/30">
+                  <span className="mt-3 text-[11px] font-mono text-blue-300/90 bg-white/[0.04] px-2.5 py-1 rounded-md border border-white/10">
                     Parceiro Homologado
                   </span>
                 </div>
@@ -179,11 +177,11 @@ export const PaidTrafficPartnershipSection: React.FC<PaidTrafficPartnershipSecti
                       scrollMarginTop: 'clamp(4.5rem, 12vh, 6.5rem)',
                     }}
                   >
-                    <div className="glass-panel glass-card-interactive benefit-card scroll-perf-card scroll-snap-card card-snap-item bracket-panel rounded-2xl p-6 sm:p-7 flex flex-col justify-between bg-[#090E23] border border-blue-500/20 hover:border-blue-400/50 shadow-2xl shadow-black/80 transition-all duration-300 group h-full">
+                    <div className="glass-panel glass-card-interactive benefit-card scroll-perf-card scroll-snap-card card-snap-item bracket-panel rounded-2xl p-6 sm:p-7 flex flex-col justify-between bg-[#111113] border border-white/10 hover:border-white/20 shadow-2xl shadow-black/80 transition-all duration-300 group h-full">
                       <div className="space-y-4">
                         <div className="flex items-center justify-between gap-3">
                           <div
-                            className={`w-12 h-12 rounded-xl bg-gradient-to-br ${item.accent} border border-blue-500/30 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300`}
+                            className={`w-12 h-12 rounded-xl bg-gradient-to-br ${item.accent} border border-white/10 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300`}
                           >
                             <IconComponent className={`w-6 h-6 ${item.iconColor}`} />
                           </div>
@@ -210,9 +208,9 @@ export const PaidTrafficPartnershipSection: React.FC<PaidTrafficPartnershipSecti
 
           {/* Apoio Complementar e Boas Práticas com BiReveal */}
           <BiReveal direction="up" delay={150}>
-            <div className="rounded-2xl p-4 sm:p-5 bg-[#090E23] border border-blue-500/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-300">
+            <div className="rounded-2xl p-4 sm:p-5 bg-[#111113] border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-300">
               <div className="flex items-start sm:items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-blue-950/80 border border-blue-500/30 flex items-center justify-center shrink-0 mt-0.5 sm:mt-0">
+                <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/10 flex items-center justify-center shrink-0 mt-0.5 sm:mt-0">
                   <ShieldCheck className="w-4 h-4 text-blue-400" />
                 </div>
                 <p className="leading-relaxed">
@@ -227,10 +225,8 @@ export const PaidTrafficPartnershipSection: React.FC<PaidTrafficPartnershipSecti
 
           {/* Cartão de Preço / Condição Especial de Entrada com BiReveal */}
           <BiReveal direction="up" delay={200}>
-            <div className="relative rounded-3xl p-6 sm:p-8 lg:p-10 bg-gradient-to-b from-[#0B1228] via-[#090E23] to-[#050814] border border-blue-500/35 shadow-[0_0_40px_-10px_rgba(59,130,246,0.3)] overflow-hidden">
+            <div className="relative rounded-3xl p-6 sm:p-8 lg:p-10 bg-gradient-to-b from-[#111113] via-[#111113] to-[#09090b] border border-white/10 shadow-none overflow-hidden">
               {/* Brilho decorativo de fundo */}
-              <div className="absolute top-0 right-0 w-80 h-80 bg-blue-500/10 blur-[100px] pointer-events-none rounded-full" />
-              <div className="absolute bottom-0 left-0 w-72 h-72 bg-indigo-500/10 blur-[90px] pointer-events-none rounded-full" />
 
               <div className="relative z-10 space-y-7">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/[0.08]">
@@ -291,7 +287,7 @@ export const PaidTrafficPartnershipSection: React.FC<PaidTrafficPartnershipSecti
                     href={partnershipWhatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-3 px-6 sm:px-8 py-4 sm:py-4.5 rounded-2xl text-base sm:text-lg font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-400/40 shadow-xl shadow-emerald-950/50 hover:shadow-[0_0_26px_rgba(37,211,102,0.65)] pressable min-h-12 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] cursor-pointer group select-none"
+                    className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-3 px-6 sm:px-8 py-4 sm:py-4.5 rounded-2xl text-base sm:text-lg font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-400/40 shadow-xl shadow-emerald-950/50 hover:shadow-none pressable min-h-12 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] cursor-pointer group select-none"
                     aria-label="Quero conhecer a condição especial — Falar com a ēloSites pelo WhatsApp"
                   >
                     <WhatsAppIcon className="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:scale-110 transition-transform shrink-0" />

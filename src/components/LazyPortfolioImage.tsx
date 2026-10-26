@@ -89,10 +89,10 @@ export const LazyPortfolioImage: React.FC<LazyPortfolioImageProps> = ({
       {/* Placeholder sutil enquanto a imagem ainda não entrou na margem de 500px ou não terminou de decodificar */}
       {!isLoaded && !hasError && (
         <div
-          className="absolute inset-0 bg-[#070b18] flex items-center justify-center animate-pulse z-0 pointer-events-none"
+          className="absolute inset-0 bg-[#0c0c0e] flex items-center justify-center animate-pulse z-0 pointer-events-none"
           aria-hidden="true"
         >
-          <div className="w-8 h-8 rounded-full border border-blue-500/20 bg-blue-950/30 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-full border border-white/10 bg-white/[0.04] flex items-center justify-center">
             <span className="w-2 h-2 rounded-full bg-blue-500/50" />
           </div>
         </div>

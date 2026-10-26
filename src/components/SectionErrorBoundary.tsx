@@ -35,7 +35,7 @@ export class SectionErrorBoundary extends React.Component<
   render() {
     if (this.state.failed) {
       return (
-        <section className="py-24 sm:py-32 bg-[#0B0F19]/80 border-t border-white/[0.05]">
+        <section className="py-24 sm:py-32 bg-[#0c0c0e]/80 border-t border-white/[0.05]">
           <div className="max-w-7xl mx-auto px-4 sm:px-8">
             <div className="max-w-xl mx-auto text-center space-y-5">
               <p className="text-base sm:text-lg text-slate-300">

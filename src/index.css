@@ -1,9 +1,111 @@
 @import "tailwindcss";
 
 @theme {
-  --font-display: 'Space Grotesk', system-ui, -apple-system, 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
-  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
+  --font-display: 'Inter Tight', 'Inter', system-ui, -apple-system, 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
+  --font-sans: 'Inter', system-ui, -apple-system, 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
+
+  /* Paleta minimalista: grafite neutro + um único acento índigo (herdado da logo).
+     As famílias slate/blue/indigo/... são remapeadas para manter o markup existente. */
+  --color-slate-50: #fafafa;
+  --color-slate-100: #f4f4f5;
+  --color-slate-200: #e4e4e7;
+  --color-slate-300: #d4d4d8;
+  --color-slate-400: #a1a1aa;
+  --color-slate-500: #71717a;
+  --color-slate-600: #52525b;
+  --color-slate-700: #3f3f46;
+  --color-slate-800: #27272a;
+  --color-slate-900: #18181b;
+  --color-slate-950: #09090b;
+  --color-blue-50: #f1f2ff;
+  --color-blue-100: #e4e6ff;
+  --color-blue-200: #cdd1ff;
+  --color-blue-300: #adb4fb;
+  --color-blue-400: #8d95f4;
+  --color-blue-500: #6f76e8;
+  --color-blue-600: #5a60d6;
+  --color-blue-700: #484db3;
+  --color-blue-800: #2f3270;
+  --color-blue-900: #1d1f45;
+  --color-blue-950: #131428;
+  --color-indigo-50: #f1f2ff;
+  --color-indigo-100: #e4e6ff;
+  --color-indigo-200: #cdd1ff;
+  --color-indigo-300: #adb4fb;
+  --color-indigo-400: #8d95f4;
+  --color-indigo-500: #6f76e8;
+  --color-indigo-600: #5a60d6;
+  --color-indigo-700: #484db3;
+  --color-indigo-800: #2f3270;
+  --color-indigo-900: #1d1f45;
+  --color-indigo-950: #131428;
+  --color-cyan-50: #f1f2ff;
+  --color-cyan-100: #e4e6ff;
+  --color-cyan-200: #cdd1ff;
+  --color-cyan-300: #adb4fb;
+  --color-cyan-400: #8d95f4;
+  --color-cyan-500: #6f76e8;
+  --color-cyan-600: #5a60d6;
+  --color-cyan-700: #484db3;
+  --color-cyan-800: #2f3270;
+  --color-cyan-900: #1d1f45;
+  --color-cyan-950: #131428;
+  --color-sky-50: #f1f2ff;
+  --color-sky-100: #e4e6ff;
+  --color-sky-200: #cdd1ff;
+  --color-sky-300: #adb4fb;
+  --color-sky-400: #8d95f4;
+  --color-sky-500: #6f76e8;
+  --color-sky-600: #5a60d6;
+  --color-sky-700: #484db3;
+  --color-sky-800: #2f3270;
+  --color-sky-900: #1d1f45;
+  --color-sky-950: #131428;
+  --color-violet-50: #f1f2ff;
+  --color-violet-100: #e4e6ff;
+  --color-violet-200: #cdd1ff;
+  --color-violet-300: #adb4fb;
+  --color-violet-400: #8d95f4;
+  --color-violet-500: #6f76e8;
+  --color-violet-600: #5a60d6;
+  --color-violet-700: #484db3;
+  --color-violet-800: #2f3270;
+  --color-violet-900: #1d1f45;
+  --color-violet-950: #131428;
+  --color-purple-50: #f1f2ff;
+  --color-purple-100: #e4e6ff;
+  --color-purple-200: #cdd1ff;
+  --color-purple-300: #adb4fb;
+  --color-purple-400: #8d95f4;
+  --color-purple-500: #6f76e8;
+  --color-purple-600: #5a60d6;
+  --color-purple-700: #484db3;
+  --color-purple-800: #2f3270;
+  --color-purple-900: #1d1f45;
+  --color-purple-950: #131428;
+  --color-fuchsia-50: #f1f2ff;
+  --color-fuchsia-100: #e4e6ff;
+  --color-fuchsia-200: #cdd1ff;
+  --color-fuchsia-300: #adb4fb;
+  --color-fuchsia-400: #8d95f4;
+  --color-fuchsia-500: #6f76e8;
+  --color-fuchsia-600: #5a60d6;
+  --color-fuchsia-700: #484db3;
+  --color-fuchsia-800: #2f3270;
+  --color-fuchsia-900: #1d1f45;
+  --color-fuchsia-950: #131428;
+  --color-teal-50: #f1f2ff;
+  --color-teal-100: #e4e6ff;
+  --color-teal-200: #cdd1ff;
+  --color-teal-300: #adb4fb;
+  --color-teal-400: #8d95f4;
+  --color-teal-500: #6f76e8;
+  --color-teal-600: #5a60d6;
+  --color-teal-700: #484db3;
+  --color-teal-800: #2f3270;
+  --color-teal-900: #1d1f45;
+  --color-teal-950: #131428;
 }
 
 :root {
@@ -28,25 +130,25 @@
   --reveal-delay: 0ms;
   --stagger: 45ms;
 
-  /* Design Tokens Oficiais — Identidade Visual og-image.png & tokens.css */
-  --cor-fundo: #050814;
-  --cor-fundo-rgb: 5, 8, 20;
-  --cor-superficie: #090e23;
-  --cor-superficie-hover: #0e1738;
-  --cor-superficie-elevada: #111a3e;
-  --cor-primaria: #3b82f6;
-  --cor-primaria-hover: #2563eb;
-  --cor-acento: #6366f1;
-  --cor-acento-violet: #7c3aed;
-  --cor-glow: rgba(59, 130, 246, 0.4);
-  --cor-borda: rgba(59, 130, 246, 0.2);
-  --cor-borda-hover: rgba(59, 130, 246, 0.45);
+  /* Design tokens — grafite neutro, bordas finas e acento índigo discreto */
+  --cor-fundo: #09090b;
+  --cor-fundo-rgb: 9, 9, 11;
+  --cor-superficie: #111113;
+  --cor-superficie-hover: #16161a;
+  --cor-superficie-elevada: #18181b;
+  --cor-primaria: #6f76e8;
+  --cor-primaria-hover: #5a60d6;
+  --cor-acento: #8d95f4;
+  --cor-acento-violet: #8d95f4;
+  --cor-glow: rgba(141, 149, 244, 0.12);
+  --cor-borda: rgba(255, 255, 255, 0.08);
+  --cor-borda-hover: rgba(255, 255, 255, 0.18);
 
-  /* Cor de destaque dinâmica e adaptativa por seção */
-  --accent-color: #3b82f6;
-  --accent-color-rgb: 59, 130, 246;
-  --accent-glow: rgba(59, 130, 246, 0.35);
-  --accent-border: rgba(59, 130, 246, 0.3);
+  /* Cor de destaque única (usada com moderação) */
+  --accent-color: #8d95f4;
+  --accent-color-rgb: 141, 149, 244;
+  --accent-glow: rgba(141, 149, 244, 0.12);
+  --accent-border: rgba(255, 255, 255, 0.1);
 }
 
 /* Otimização de renderização e economia de GPU/memória com content-visibility */
@@ -72,33 +174,10 @@
   transition: background-image 0.6s var(--ease);
 }
 
-/* Configuração Global de Fontes: font-display swap para renderização imediata sem texto invisível (FOIT) */
-@font-face {
-  font-family: 'Plus Jakarta Sans';
-  font-style: normal;
-  font-weight: 300 800;
-  font-display: swap;
-  src: local('Plus Jakarta Sans'), local('PlusJakartaSans');
-}
-
-@font-face {
-  font-family: 'Space Grotesk';
-  font-style: normal;
-  font-weight: 500 700;
-  font-display: swap;
-  src: local('Space Grotesk'), local('SpaceGrotesk');
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  font-style: normal;
-  font-weight: 400 500;
-  font-display: swap;
-  src: local('JetBrains Mono'), local('JetBrainsMono');
-}
 
 html {
-  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
+  background-color: #09090b;
   color-scheme: dark;
   scroll-behavior: smooth;
   font-synthesis: none;
@@ -106,6 +185,15 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: clip;
+}
+
+h1,
+h2,
+h3 {
+  font-family: 'Inter Tight', 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
 }
 
 body {
@@ -177,38 +265,45 @@ article {
 }
 
 .font-display {
-  font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  font-family: 'Inter Tight', 'Inter', system-ui, -apple-system, sans-serif;
+  letter-spacing: -0.02em;
 }
 
 .font-mono-code {
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* Glass panel floating aesthetic com aceleração por hardware e estética obsidian profunda */
-.glass-panel {
-  background-color: rgba(9, 14, 35, 0.88);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(59, 130, 246, 0.16);
-  box-shadow:
-    0 12px 32px -10px rgba(0, 0, 0, 0.7),
-    0 0 20px -8px rgba(59, 130, 246, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+/* Fundo discreto e estático (substitui o antigo fundo WebGL): luz suave no topo + grade finíssima */
+.calm-backdrop {
+  background-image:
+    radial-gradient(60% 55% at 50% 0%, rgba(141, 149, 244, 0.07), transparent 70%),
+    linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: auto, 72px 72px, 72px 72px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 35%, transparent 100%);
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 35%, transparent 100%);
 }
 
-/* Superfície de vidro e obsidian "premium": realce superior, bordas finas com brilho elétrico e transições rápidas */
+/* Painel translúcido: grafite fosco, borda de 1px, sem brilho */
+.glass-panel {
+  background-color: rgba(17, 17, 19, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 24px 48px -24px rgba(0, 0, 0, 0.6);
+}
+
+/* Cartão plano: superfície grafite, borda fina que clareia no hover */
 .surface-card {
   position: relative;
   background-color: var(--cor-superficie);
   border: 1px solid var(--cor-borda);
-  transition: border-color 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+  transition: border-color 0.25s var(--ease-out), background-color 0.25s var(--ease-out), transform 0.25s var(--ease-out);
 }
 
 .surface-card:hover {
   border-color: var(--cor-borda-hover);
-  box-shadow:
-    0 14px 40px -12px rgba(0, 0, 0, 0.8),
-    0 0 28px -6px rgba(59, 130, 246, 0.3);
+  background-color: var(--cor-superficie-hover);
 }
 
 .surface-card::after {
@@ -217,17 +312,13 @@ article {
   inset: 0;
   border-radius: inherit;
   pointer-events: none;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07) 0%, rgba(59, 130, 246, 0.04) 20%, transparent 60%);
-  opacity: 0.95;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.025) 0%, transparent 40%);
 }
 
-/* Superfície sólida (sem vidro/blur), identidade escura dos cartões de Serviços com fundo obsidian puro */
+/* Superfície sólida sem blur */
 .card-solid {
-  background-color: #090e23;
-  border: 1px solid rgba(59, 130, 246, 0.16);
-  box-shadow:
-    0 10px 30px -10px rgba(0, 0, 0, 0.7),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  background-color: #111113;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* Animação suave e orgânica de levitação/flutuação com oscilação sutil de opacidade (0.9 a 1.0) */
@@ -246,14 +337,12 @@ article {
 .section-kicker,
 .founder-badge,
 .elo-logo-floating {
-  animation: floatingSoft 6.5s ease-in-out infinite;
-  will-change: transform, opacity;
+  animation: none;
 }
 
 .section-kicker {
   font-family: 'JetBrains Mono', monospace;
   letter-spacing: 0.14em;
-  animation-duration: 6.8s;
 }
 
 .founder-badge {
@@ -287,27 +376,27 @@ article {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(129, 140, 248, 0.35) 50%,
+    rgba(255, 255, 255, 0.14) 50%,
     transparent 100%
   );
   border: 0;
 }
 
-/* Cantos técnicos (colchetes) em painéis destacados — puro CSS, sem palavras. */
+/* Painéis destacados: os antigos cantos decorativos foram removidos no visual minimalista. */
 .bracket-panel {
   position: relative;
 }
 
 .bracket-panel::before,
 .bracket-panel::after {
-  content: "";
+  content: none;
   position: absolute;
   width: 18px;
   height: 18px;
   pointer-events: none;
   border-style: solid;
   border-width: 0;
-  border-color: rgba(165, 180, 252, 0.4);
+  border-color: rgba(255, 255, 255, 0.18);
 }
 
 .bracket-panel::before {
@@ -338,7 +427,7 @@ article {
 
 @media (max-width: 768px) {
   .glass-panel {
-    background-color: rgba(11, 16, 29, 0.94);
+    background-color: rgba(17, 17, 19, 0.94);
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
   }
@@ -403,16 +492,15 @@ article {
 
 /* Subtle tech grid pattern for backdrop */
 .tech-grid-pattern {
-  background-image: radial-gradient(rgba(99, 102, 241, 0.12) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
 /* Enhanced global focus-visible styles with subtle inner glow effect without layout boundary shifts */
 *:focus-visible {
-  outline: 2px solid #6366f1;
-  outline-offset: 2px;
-  box-shadow: inset 0 0 10px rgba(129, 140, 248, 0.35), inset 0 0 2px rgba(165, 180, 252, 0.5);
-  transition: box-shadow var(--dur-press) var(--ease-out), outline-color var(--dur-press) var(--ease-out);
+  outline: 2px solid #8d95f4;
+  outline-offset: 3px;
+  transition: outline-color var(--dur-press) var(--ease-out);
 }
 
 /* Subtle continuous breathing pulse for floating WhatsApp button */
@@ -512,7 +600,7 @@ article {
   }
   50% {
     transform: scale(1.045) translateZ(0);
-    box-shadow: 0 8px 26px rgba(147, 51, 234, 0.6), 0 0 0 10px rgba(99, 102, 241, 0);
+    box-shadow: 0 8px 26px rgba(99, 102, 241, 0.6), 0 0 0 10px rgba(99, 102, 241, 0);
   }
 }
 
@@ -627,32 +715,30 @@ button:not(.text-left):not([class*="text-left"]) > span:not(.text-left):not([cla
   text-align: center;
 }
 
-/* Botões de CTA Principal - Gradiente Elétrico Cobalto & Azul com efeito Neon Glow Premium */
+/* CTA principal: sólido, plano, sem brilho. Acento índigo da marca. */
 .cta-primary {
-  background-image: linear-gradient(135deg, #2563eb 0%, #3b82f6 50%, #6366f1 100%) !important;
-  background-color: #2563eb !important;
+  background-image: none !important;
+  background-color: #6f76e8 !important;
   color: #ffffff !important;
-  border: 1px solid rgba(147, 197, 253, 0.5) !important;
-  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4), 0 0 20px rgba(59, 130, 246, 0.35), 0 0 2px rgba(99, 102, 241, 0.3) !important;
-  letter-spacing: 0.015em;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  box-shadow: none !important;
+  letter-spacing: 0.005em;
+  text-shadow: none;
   transition: transform var(--dur-press) var(--ease-out),
-              box-shadow var(--dur-hover) var(--ease-out),
+              background-color var(--dur-hover) var(--ease),
               border-color var(--dur-hover) var(--ease);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .cta-primary:hover {
-    background-image: linear-gradient(135deg, #1d4ed8 0%, #2563eb 50%, #4f46e5 100%) !important;
-    border-color: rgba(191, 219, 254, 0.9) !important;
-    box-shadow: 0 6px 24px rgba(37, 99, 235, 0.6), 0 0 32px rgba(59, 130, 246, 0.7), 0 0 50px rgba(99, 102, 241, 0.45), 0 0 2px rgba(255, 255, 255, 0.6) !important;
-    transform: translateY(-2px);
+    background-color: #8088f0 !important;
+    border-color: rgba(255, 255, 255, 0.28) !important;
+    transform: translateY(-1px);
   }
 }
 
 .cta-primary:active {
-  transform: translateY(0) scale(0.97) !important;
-  box-shadow: 0 2px 10px rgba(37, 99, 235, 0.5), 0 0 36px rgba(59, 130, 246, 0.9), 0 0 54px rgba(99, 102, 241, 0.6) !important;
+  transform: translateY(0) scale(0.98) !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -675,7 +761,7 @@ a[id*="whatsapp"] {
 @media (hover: hover) and (pointer: fine) {
   button:hover > svg,
   a:hover > svg {
-    filter: drop-shadow(0 0 6px rgba(129, 140, 248, 0.65));
+    filter: none;
     transition: filter 0.25s ease;
   }
 
@@ -683,7 +769,7 @@ a[id*="whatsapp"] {
   a[href*="whatsapp.com"]:hover > svg,
   button[id*="whatsapp"]:hover > svg,
   a[id*="whatsapp"]:hover > svg {
-    filter: drop-shadow(0 0 8px rgba(74, 222, 128, 0.85));
+    filter: none;
   }
 }
 
@@ -1212,13 +1298,13 @@ a[id*="whatsapp"] {
   max-height: 18vh;
   object-fit: contain;
   /* Glow minimalista e refinado alinhado às cores do logo e botão de menu (roxo e índigo) */
-  filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.22)) drop-shadow(0 0 22px rgba(99, 102, 241, 0.15));
+  filter: none;
   transition: filter 0.35s ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .group:hover .hero-home-logo {
-    filter: drop-shadow(0 0 14px rgba(168, 85, 247, 0.35)) drop-shadow(0 0 28px rgba(99, 102, 241, 0.22));
+    filter: none;
   }
 }
 
@@ -1432,7 +1518,7 @@ a[id*="whatsapp"] {
   gap: 0.55rem;
   padding: 0.45rem 0.95rem;
   border-radius: 9999px;
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.94) 0%, rgba(11, 16, 29, 0.97) 50%, rgba(30, 27, 75, 0.45) 100%);
+  background: linear-gradient(135deg, rgba(17, 17, 19, 0.94) 0%, rgba(17, 17, 19, 0.97) 50%, rgba(24, 24, 32, 0.45) 100%);
   border: 1px solid rgba(255, 255, 255, 0.13);
   box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.09);
   backdrop-filter: blur(10px);
@@ -1450,7 +1536,7 @@ a[id*="whatsapp"] {
   .audience-pill:hover {
     transform: translateY(-2px);
     border-color: rgba(165, 180, 252, 0.6);
-    background: linear-gradient(135deg, rgba(30, 27, 75, 0.95) 0%, rgba(15, 23, 42, 0.95) 100%);
+    background: linear-gradient(135deg, rgba(24, 24, 32, 0.95) 0%, rgba(17, 17, 19, 0.95) 100%);
     box-shadow: 0 8px 24px -4px rgba(99, 102, 241, 0.35),
                 0 0 18px -2px rgba(129, 140, 248, 0.35),
                 inset 0 1px 0 rgba(255, 255, 255, 0.18);
@@ -1496,15 +1582,15 @@ a[id*="whatsapp"] {
   }
 }
 
-/* ===== Fundo estático azul marinho (#080D1A) com grade tecnológica sutil ===== */
+/* ===== Fundo estático azul marinho (#09090b) com grade tecnológica sutil ===== */
 html,
 body,
 #root {
   min-height: 100%;
-  background-color: #080D1A;
+  background-color: #09090b;
   background-image:
-    linear-gradient(to right, rgba(148, 163, 184, 0.035) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(148, 163, 184, 0.035) 1px, transparent 1px);
+    linear-gradient(to right, rgba(161, 161, 170, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(161, 161, 170, 0.035) 1px, transparent 1px);
   background-size: 40px 40px;
   background-position: center top;
   color: #f1f5f9;
@@ -1561,7 +1647,7 @@ html[data-in-app="true"] .nav-menu-modal-container {
 
 html[data-motion-tier="none"] .glass-panel[class*="backdrop-blur"],
 html[data-in-app="true"] .glass-panel[class*="backdrop-blur"] {
-  background-color: rgba(11, 16, 29, 0.94);
+  background-color: rgba(17, 17, 19, 0.94);
 }
 
 /* Efeito de rolagem contínua para InfiniteMarquee */

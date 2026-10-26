@@ -1,5 +1,5 @@
 // Service Worker básico para ēloSites — Caching e Suporte Offline
-const CACHE_NAME = 'elosites-cache-v3';
+const CACHE_NAME = 'elosites-cache-v4';
 
 // Recursos estáticos essenciais do shell
 const STATIC_ASSETS = [

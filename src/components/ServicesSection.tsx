@@ -301,11 +301,9 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
   return (
     <section
       id="servicos"
-      className="section-auto-contain pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32 lg:pb-20 bg-[#090D16]/30 backdrop-blur-[0.5px] relative"
+      className="section-auto-contain pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32 lg:pb-20 bg-[#111113]/30 backdrop-blur-[0.5px] relative"
     >
       {/* Luz ambiente de fundo */}
-      <div className="absolute top-1/3 left-0 w-80 h-80 bg-indigo-500/[0.07] blur-[130px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-1/4 right-0 w-80 h-80 bg-purple-500/[0.07] blur-[130px] rounded-full pointer-events-none" />
 
       <div className="page-shell page-x relative w-full">
         {/* Cabeçalho da Seção */}
@@ -321,7 +319,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
               className="font-display text-3xl sm:text-4xl lg:text-[2.75rem] font-bold tracking-[-0.03em] text-white text-balance leading-tight"
             />
             <p className="text-base sm:text-lg text-slate-300/95 leading-relaxed">
-              Cada projeto recebe um <strong className="text-transparent bg-clip-text bg-gradient-to-r from-[#38bdf8] via-[#818cf8] to-[#a855f7] font-bold">orçamento personalizado</strong> considerando escopo, seções e conteúdo necessário. Sem mensalidades surpresa e com opções de parcelamento no cartão ou desconto à vista no PIX.
+              Cada projeto recebe um <strong className="text-transparent bg-clip-text bg-gradient-to-r from-[#a5b4fc] via-[#818cf8] to-[#818cf8] font-bold">orçamento personalizado</strong> considerando escopo, seções e conteúdo necessário. Sem mensalidades surpresa e com opções de parcelamento no cartão ou desconto à vista no PIX.
             </p>
           </div>
 
@@ -342,15 +340,15 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                 >
                   <Interactive3DCard maxTilt={1.2} allowDrag={true} animatedBorder={index === 0} className="h-full w-full min-w-0 max-w-full lg:row-span-5 lg:grid lg:grid-rows-subgrid">
                     <article
-                      className="glass-card-interactive surface-card service-card scroll-perf-card scroll-snap-card card-snap-item relative rounded-2xl bg-[#090E23] border border-blue-500/20 hover:border-blue-400/50 p-5 sm:p-6 md:p-8 flex flex-col space-y-5 lg:space-y-0 lg:row-span-5 lg:grid lg:grid-rows-subgrid shadow-2xl shadow-black/80 bracket-panel transition-all h-full w-full min-w-0 max-w-full box-border"
+                      className="glass-card-interactive surface-card service-card scroll-perf-card scroll-snap-card card-snap-item relative rounded-2xl bg-[#111113] border border-white/10 hover:border-white/20 p-5 sm:p-6 md:p-8 flex flex-col space-y-5 lg:space-y-0 lg:row-span-5 lg:grid lg:grid-rows-subgrid shadow-2xl shadow-black/80 bracket-panel transition-all h-full w-full min-w-0 max-w-full box-border"
                     >
                       {/* Linha 1: Topo do card + Título + Descrição com Fade-In suave */}
                       <div className="space-y-4 lg:pb-4">
                         <div className="flex items-center justify-between gap-2.5 min-w-0">
-                          <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-blue-950/80 border border-blue-500/30 flex items-center justify-center text-blue-400 shrink-0 shadow-[0_0_12px_rgba(59,130,246,0.25)]">
+                          <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center text-blue-400 shrink-0 shadow-none">
                             <Icon className="w-5 h-5 sm:w-6 sm:h-6" aria-hidden="true" />
                           </div>
-                          <span className="text-[10px] min-[380px]:text-xs font-mono text-blue-300 bg-blue-950/90 px-2.5 min-[380px]:px-3 py-1 rounded-full border border-blue-500/40 font-medium whitespace-nowrap shrink-0">
+                          <span className="text-[10px] min-[380px]:text-xs font-mono text-blue-300 bg-white/[0.04] px-2.5 min-[380px]:px-3 py-1 rounded-full border border-white/10 font-medium whitespace-nowrap shrink-0">
                             {service.badge}
                           </span>
                         </div>
@@ -437,7 +435,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                           rel="noopener noreferrer"
                           strength={3}
                           glowColor="rgba(99, 102, 241, 0.4)"
-                          className="cta-primary w-full inline-flex items-center justify-center text-center gap-1.5 sm:gap-2 py-3.5 px-3 sm:px-4 rounded-xl text-xs sm:text-[13px] md:text-sm font-semibold text-white transition-all shadow-lg shadow-indigo-600/25 min-h-12"
+                          className="cta-primary w-full inline-flex items-center justify-center text-center gap-1.5 sm:gap-2 py-3.5 px-3 sm:px-4 rounded-xl text-xs sm:text-[13px] md:text-sm font-semibold text-white transition-all shadow-lg shadow-black/40 min-h-12"
                           ariaLabel={service.ctaLabel}
                         >
                           <WhatsAppIcon className="w-4 h-4 text-emerald-300 shrink-0" />
@@ -463,7 +461,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                   window.location.hash = 'solucoes-web';
                 }
               }}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-cyan-300 bg-cyan-950/40 hover:bg-cyan-950/70 border border-cyan-500/30 hover:border-cyan-400 transition-all cursor-pointer shadow-sm hover:shadow-[0_0_18px_rgba(34,211,238,0.35)] hover:scale-102 active:scale-98"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-cyan-300 bg-white/[0.04] hover:bg-white/[0.04] border border-white/10 hover:border-cyan-400 transition-all cursor-pointer shadow-sm hover:shadow-none hover:scale-102 active:scale-98"
             >
               <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
               <span>CONHECER NOSSAS ESPECIALIDADES NA SEÇÃO &apos;SOBRE&apos;</span>
@@ -498,9 +496,9 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                 className="h-full scroll-snap-card card-snap-item"
               >
                 <Interactive3DCard maxTilt={1.0} className="h-full">
-                  <div className="glass-card-interactive surface-card service-card scroll-perf-card scroll-snap-card card-snap-item relative rounded-2xl bg-[#090E23] border border-blue-500/20 hover:border-blue-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/80 bracket-panel transition-all">
+                  <div className="glass-card-interactive surface-card service-card scroll-perf-card scroll-snap-card card-snap-item relative rounded-2xl bg-[#111113] border border-white/10 hover:border-white/20 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/80 bracket-panel transition-all">
                     <FadeInBlock delay={40} className="space-y-3">
-                      <div className="w-10 h-10 rounded-xl bg-blue-950/80 border border-blue-500/30 flex items-center justify-center text-blue-400 shadow-[0_0_10px_rgba(59,130,246,0.2)]">
+                      <div className="w-10 h-10 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center text-blue-400 shadow-none">
                         <Split className="w-5 h-5" />
                       </div>
                       <h4 className="text-base font-bold text-white">50% Início + 50% Entrega</h4>
@@ -509,7 +507,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                       </p>
                     </FadeInBlock>
                     <div className="mt-auto pt-4">
-                      <div className="text-[11px] font-mono text-blue-300 bg-blue-950/40 px-2.5 py-1 rounded border border-blue-500/20 text-center">
+                      <div className="text-[11px] font-mono text-blue-300 bg-white/[0.04] px-2.5 py-1 rounded border border-white/10 text-center">
                         Ideal para fluxo de caixa
                       </div>
                     </div>
@@ -524,9 +522,9 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                 className="h-full scroll-snap-card card-snap-item"
               >
                 <Interactive3DCard maxTilt={1.0} className="h-full">
-                  <div className="glass-card-interactive surface-card service-card scroll-perf-card scroll-snap-card card-snap-item relative rounded-2xl bg-[#090E23] border border-emerald-500/40 hover:border-emerald-400/70 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/80 bracket-panel transition-all bg-gradient-to-b from-emerald-950/20 to-[#090E23]">
+                  <div className="glass-card-interactive surface-card service-card scroll-perf-card scroll-snap-card card-snap-item relative rounded-2xl bg-[#111113] border border-emerald-500/40 hover:border-emerald-400/70 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/80 bracket-panel transition-all bg-gradient-to-b from-emerald-950/20 to-[#111113]">
                     <FadeInBlock delay={60} className="space-y-3">
-                      <div className="w-10 h-10 rounded-xl bg-emerald-950/90 border border-emerald-500/40 flex items-center justify-center text-emerald-300 shadow-[0_0_10px_rgba(16,185,129,0.2)]">
+                      <div className="w-10 h-10 rounded-xl bg-emerald-950/90 border border-emerald-500/40 flex items-center justify-center text-emerald-300 shadow-none">
                         <Percent className="w-5 h-5" />
                       </div>
                       <div className="flex items-center justify-between gap-1.5 flex-wrap">
@@ -555,9 +553,9 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                 className="h-full scroll-snap-card card-snap-item"
               >
                 <Interactive3DCard maxTilt={1.0} className="h-full">
-                  <div className="glass-card-interactive surface-card service-card scroll-perf-card scroll-snap-card card-snap-item relative rounded-2xl bg-[#090E23] border border-blue-500/20 hover:border-blue-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/80 bracket-panel transition-all">
+                  <div className="glass-card-interactive surface-card service-card scroll-perf-card scroll-snap-card card-snap-item relative rounded-2xl bg-[#111113] border border-white/10 hover:border-white/20 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/80 bracket-panel transition-all">
                     <FadeInBlock delay={80} className="space-y-3">
-                      <div className="w-10 h-10 rounded-xl bg-blue-950/80 border border-blue-500/30 flex items-center justify-center text-blue-400 shadow-[0_0_10px_rgba(59,130,246,0.2)]">
+                      <div className="w-10 h-10 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center text-blue-400 shadow-none">
                         <CreditCard className="w-5 h-5" />
                       </div>
                       <h4 className="text-base font-bold text-white">Até 5x Sem Juros no Cartão</h4>
@@ -566,7 +564,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                       </p>
                     </FadeInBlock>
                     <div className="mt-auto pt-4">
-                      <div className="text-[11px] font-mono text-blue-300 bg-blue-950/40 px-2.5 py-1 rounded border border-blue-500/20 text-center">
+                      <div className="text-[11px] font-mono text-blue-300 bg-white/[0.04] px-2.5 py-1 rounded border border-white/10 text-center">
                         1 Entrada + 4 Parcelas Fixas
                       </div>
                     </div>
@@ -581,9 +579,9 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                 className="h-full scroll-snap-card card-snap-item"
               >
                 <Interactive3DCard maxTilt={1.0} className="h-full">
-                  <div className="glass-card-interactive surface-card service-card scroll-perf-card scroll-snap-card card-snap-item relative rounded-2xl bg-[#090E23] border border-blue-500/20 hover:border-blue-400/50 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/80 bracket-panel transition-all">
+                  <div className="glass-card-interactive surface-card service-card scroll-perf-card scroll-snap-card card-snap-item relative rounded-2xl bg-[#111113] border border-white/10 hover:border-white/20 p-5 sm:p-6 flex flex-col justify-between h-full shadow-2xl shadow-black/80 bracket-panel transition-all">
                     <FadeInBlock delay={100} className="space-y-3">
-                      <div className="w-10 h-10 rounded-xl bg-blue-950/80 border border-blue-500/30 flex items-center justify-center text-blue-400 shadow-[0_0_10px_rgba(59,130,246,0.2)]">
+                      <div className="w-10 h-10 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center text-blue-400 shadow-none">
                         <Calendar className="w-5 h-5" />
                       </div>
                       <h4 className="text-base font-bold text-white">De 6x até 12x no Cartão</h4>
@@ -604,7 +602,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
             {/* SIMULADOR INTERATIVO DE CONDIÇÕES (100% estável para cliques e slider) */}
             <BiReveal direction="up" delay={150} className="mt-8 w-full">
               <Interactive3DCard maxTilt={0} className="w-full">
-                <div className="glass-card-interactive surface-card service-card scroll-perf-card relative rounded-2xl bg-[#090E23] border border-blue-500/25 hover:border-blue-400/50 p-6 sm:p-8 shadow-2xl shadow-black/80 bracket-panel transition-all">
+                <div className="glass-card-interactive surface-card service-card scroll-perf-card relative rounded-2xl bg-[#111113] border border-white/10 hover:border-white/20 p-6 sm:p-8 shadow-2xl shadow-black/80 bracket-panel transition-all">
                 <div className="flex flex-col lg:flex-row items-center justify-between gap-6 pb-6 border-b border-white/[0.08]">
                   <FadeInBlock delay={30} className="space-y-1 text-center lg:text-left">
                     <div className="inline-flex items-center gap-1.5 text-xs text-indigo-400 font-semibold uppercase">
@@ -629,7 +627,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                           onClick={() => setSimulatedValue(preset.value)}
                           className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] cursor-pointer ${
                             isActive
-                              ? 'bg-indigo-600 text-white shadow shadow-indigo-500/30 border border-indigo-400/40'
+                              ? 'bg-indigo-600 text-white shadow shadow-black/40 border border-white/10'
                               : 'bg-slate-900 text-slate-400 hover:text-white border border-white/[0.06]'
                           }`}
                         >
@@ -645,7 +643,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                   <div className="flex flex-wrap justify-between items-center gap-2 text-sm">
                     <div className="flex items-center gap-2 flex-wrap">
                       <span className="text-slate-400 font-medium">Valor orçado simulado:</span>
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-950/80 border border-indigo-500/30 text-indigo-300">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-white/[0.04] border border-white/10 text-indigo-300">
                         {getCurrentRangeLabel(simulatedValue)}
                       </span>
                     </div>
@@ -726,7 +724,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateToOr
                       <button
                         type="button"
                         onClick={onNavigateToOrcamento}
-                        className="w-full sm:w-auto min-h-12 sm:min-h-0 inline-flex items-center justify-center text-center gap-2 px-5 py-3 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-blue-600 via-sky-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 border border-blue-400/40 shadow-lg shadow-blue-500/25 transition-all duration-200 hover:scale-105 cursor-pointer"
+                        className="w-full sm:w-auto min-h-12 sm:min-h-0 inline-flex items-center justify-center text-center gap-2 px-5 py-3 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-blue-600 via-sky-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 border border-white/10 shadow-lg shadow-black/40 transition-all duration-200 hover:scale-105 cursor-pointer"
                       >
                         <span className="text-center">Montar Briefing</span>
                         <ArrowRight className="w-3.5 h-3.5" />

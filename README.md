@@ -11,6 +11,7 @@ Produção: https://elosites.ia.br (hospedado na Netlify; o endereço com `www` 
 - Tailwind CSS 4 (plugin `@tailwindcss/vite`)
 - `motion` (animações) e `embla-carousel` (carrossel)
 - `lucide-react` (ícones)
+- Fontes: Inter e Inter Tight (títulos), JetBrains Mono (rótulos), via Google Fonts
 - Service Worker próprio (`public/sw.js`) para cache offline, ativo só em produção
 
 ## Requisitos
@@ -53,6 +54,10 @@ src/
   components/         Telas e componentes (Hero, Portfólio, Serviços, FAQ, etc.)
 ```
 
+## Identidade visual
+
+Visual minimalista: grafite neutro (`#09090b`, `#111113`), bordas de 1px e um único acento índigo, herdado da logo. Os tokens ficam em `@theme` e `:root` no `src/index.css`. As famílias `slate`, `blue`, `indigo`, `cyan` e `purple` do Tailwind são remapeadas ali para essa paleta, então as classes existentes seguem valendo. O fundo da Home, do menu e do rodapé é CSS estático (`.calm-backdrop`); não há mais WebGL nem `three`.
+
 ## Como o site funciona
 
 - **Telas em vez de rotas.** A navegação troca de tela por hash (`#home`, `#inicio`, `#portfolio`, `#servicos`, `#processo`, `#orcamento`, `#faq`, `#parceria-trafego`), definido em `SCREENS` (`src/types.ts`). Telas secundárias e modais são carregados sob demanda.
@@ -86,7 +91,7 @@ O site é publicado a partir da branch `main`. Configuração esperada:
 
 Depois de publicar, confira no celular a Home, o menu, o Portfólio, os Serviços, o FAQ e o botão do WhatsApp.
 
-**Service Worker:** ao trocar ou renomear arquivos listados no pré-cache de `public/sw.js`, aumente o número em `CACHE_NAME` (hoje `elosites-cache-v3`) para os visitantes receberem a versão nova.
+**Service Worker:** ao trocar ou renomear arquivos listados no pré-cache de `public/sw.js`, aumente o número em `CACHE_NAME` (hoje `elosites-cache-v4`) para os visitantes receberem a versão nova.
 
 ## Fluxo de trabalho com Git
 

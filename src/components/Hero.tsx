@@ -35,7 +35,6 @@ import {
 import { Interactive3DCard } from './Interactive3DCard';
 import { InfiniteMarquee } from './InfiniteMarquee';
 import { BiReveal } from './BiReveal';
-import { FluidRippleBackground } from './FluidRippleBackground';
 import { TypewriterSlogan } from './TypewriterSlogan';
 
 interface HeroProps {
@@ -108,19 +107,14 @@ export const Hero: React.FC<HeroProps> = ({
   }, [heavyMotion]);
 
   return (
-    <div className="w-full bg-[#050814]">
-      {/* 1. TELA HOME: Apenas a logo flutuante da ēloSites centralizada sobre o fundo de espaço-tempo com grade azul distorcida */}
+    <div className="w-full bg-[#09090b]">
       {(mode === 'home' || mode === 'all') && (
         <section
           id="home"
           className="hero-home-viewport min-h-[320px] sm:min-h-[460px] md:min-h-[560px] h-[100dvh] w-full flex flex-col items-center justify-center relative select-none px-4 overflow-hidden pointer-events-none"
         >
-          {/* Fundo de grade azul de espaço-tempo com distorção contínua (exatamente igual ao fundo do menu aberto) */}
-          <FluidRippleBackground variant="contained" className="absolute inset-0 z-0 opacity-75 pointer-events-none" />
+          <div aria-hidden="true" className="calm-backdrop absolute inset-0 z-0 pointer-events-none" />
 
-          {/* Halos luminosos elétricos inspirados na og-image.png */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-blue-600/15 blur-[140px] rounded-full pointer-events-none" />
-          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[250px] bg-indigo-600/20 blur-[100px] rounded-full pointer-events-none" />
 
           <AnimatePresence>
             {!isMenuOpen && (
@@ -170,7 +164,7 @@ export const Hero: React.FC<HeroProps> = ({
                     alt="ēloSites"
                     width={1360}
                     height={337}
-                    className="hero-home-logo w-auto object-contain relative z-10 drop-shadow-[0_0_35px_rgba(59,130,246,0.35)]"
+                    className="hero-home-logo w-auto object-contain relative z-10 drop-shadow-none"
                   />
                   {/* Texto minimalista proporcional ao espaço do logotipo e do contêiner */}
                   <span className="hero-home-subtitle text-slate-400 group-hover:text-blue-300 select-none transition-colors duration-300 relative z-10">
@@ -190,9 +184,7 @@ export const Hero: React.FC<HeroProps> = ({
           className="relative pt-20 pb-16 sm:pt-24 sm:pb-20 lg:pt-28 lg:pb-24 overflow-hidden"
         >
           {/* Fundo técnico com gradiente e luzes volumétricas azuis da og-image.png */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,rgba(37,99,235,0.22),rgba(5,8,20,0))] pointer-events-none" />
-          <div className="absolute top-1/4 right-10 w-[500px] h-[400px] bg-blue-600/12 blur-[140px] rounded-full pointer-events-none" />
-          <div className="absolute bottom-10 left-10 w-[450px] h-[350px] bg-indigo-600/10 blur-[130px] rounded-full pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,rgba(99, 102, 241,0.22),rgba(9, 9, 11,0))] pointer-events-none" />
 
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
@@ -202,7 +194,7 @@ export const Hero: React.FC<HeroProps> = ({
                 
                 {/* Brand Wordmark & Tagline Kicker */}
                 <BiReveal direction="left" delay={50}>
-                  <div className="floating-badge inline-flex items-center gap-3 px-3.5 py-1.5 rounded-full bg-blue-950/50 border border-blue-500/25 shadow-[0_0_20px_-4px_rgba(59,130,246,0.3)] backdrop-blur-md">
+                  <div className="floating-badge inline-flex items-center gap-3 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 shadow-none backdrop-blur-md">
                     <span className="relative flex h-2 w-2">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75" />
                       <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-400" />
@@ -222,8 +214,8 @@ export const Hero: React.FC<HeroProps> = ({
                 <BiReveal direction="up" delay={200}>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 pt-2 w-full max-w-xl">
                     {/* Pilar 1 */}
-                    <div className="flex flex-col items-center text-center p-3 rounded-xl bg-slate-900/60 border border-blue-500/15 shadow-sm backdrop-blur-sm group hover:border-blue-400/40 transition-colors">
-                      <div className="w-8 h-8 rounded-lg bg-blue-950/70 border border-blue-500/30 flex items-center justify-center text-blue-400 mb-2 shadow-[0_0_12px_rgba(59,130,246,0.25)] group-hover:scale-110 transition-transform">
+                    <div className="flex flex-col items-center text-center p-3 rounded-xl bg-slate-900/60 border border-white/10 shadow-sm backdrop-blur-sm group hover:border-white/20 transition-colors">
+                      <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/10 flex items-center justify-center text-blue-400 mb-2 shadow-none group-hover:scale-110 transition-transform">
                         <Monitor className="w-4 h-4" />
                       </div>
                       <span className="text-xs font-semibold text-white text-center">Design moderno</span>
@@ -231,8 +223,8 @@ export const Hero: React.FC<HeroProps> = ({
                     </div>
 
                     {/* Pilar 2 */}
-                    <div className="flex flex-col items-center text-center p-3 rounded-xl bg-slate-900/60 border border-blue-500/15 shadow-sm backdrop-blur-sm group hover:border-blue-400/40 transition-colors">
-                      <div className="w-8 h-8 rounded-lg bg-blue-950/70 border border-blue-500/30 flex items-center justify-center text-blue-400 mb-2 shadow-[0_0_12px_rgba(59,130,246,0.25)] group-hover:scale-110 transition-transform">
+                    <div className="flex flex-col items-center text-center p-3 rounded-xl bg-slate-900/60 border border-white/10 shadow-sm backdrop-blur-sm group hover:border-white/20 transition-colors">
+                      <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/10 flex items-center justify-center text-blue-400 mb-2 shadow-none group-hover:scale-110 transition-transform">
                         <Zap className="w-4 h-4" />
                       </div>
                       <span className="text-xs font-semibold text-white text-center">Performance</span>
@@ -240,8 +232,8 @@ export const Hero: React.FC<HeroProps> = ({
                     </div>
 
                     {/* Pilar 3 */}
-                    <div className="flex flex-col items-center text-center p-3 rounded-xl bg-slate-900/60 border border-blue-500/15 shadow-sm backdrop-blur-sm group hover:border-blue-400/40 transition-colors">
-                      <div className="w-8 h-8 rounded-lg bg-blue-950/70 border border-blue-500/30 flex items-center justify-center text-blue-400 mb-2 shadow-[0_0_12px_rgba(59,130,246,0.25)] group-hover:scale-110 transition-transform">
+                    <div className="flex flex-col items-center text-center p-3 rounded-xl bg-slate-900/60 border border-white/10 shadow-sm backdrop-blur-sm group hover:border-white/20 transition-colors">
+                      <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/10 flex items-center justify-center text-blue-400 mb-2 shadow-none group-hover:scale-110 transition-transform">
                         <Search className="w-4 h-4" />
                       </div>
                       <span className="text-xs font-semibold text-white text-center">SEO técnico</span>
@@ -249,8 +241,8 @@ export const Hero: React.FC<HeroProps> = ({
                     </div>
 
                     {/* Pilar 4 */}
-                    <div className="flex flex-col items-center text-center p-3 rounded-xl bg-slate-900/60 border border-blue-500/15 shadow-sm backdrop-blur-sm group hover:border-blue-400/40 transition-colors">
-                      <div className="w-8 h-8 rounded-lg bg-blue-950/70 border border-blue-500/30 flex items-center justify-center text-blue-400 mb-2 shadow-[0_0_12px_rgba(59,130,246,0.25)] group-hover:scale-110 transition-transform">
+                    <div className="flex flex-col items-center text-center p-3 rounded-xl bg-slate-900/60 border border-white/10 shadow-sm backdrop-blur-sm group hover:border-white/20 transition-colors">
+                      <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/10 flex items-center justify-center text-blue-400 mb-2 shadow-none group-hover:scale-110 transition-transform">
                         <Smartphone className="w-4 h-4" />
                       </div>
                       <span className="text-xs font-semibold text-white text-center">100% responsivo</span>
@@ -266,7 +258,7 @@ export const Hero: React.FC<HeroProps> = ({
                       href={heroWhatsappUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="cta-primary w-full sm:w-auto px-7 py-3.5 rounded-xl font-semibold text-white inline-flex items-center justify-center gap-2.5 shadow-[0_0_24px_rgba(37,99,235,0.45)] hover:shadow-[0_0_36px_rgba(59,130,246,0.65)] cursor-pointer group text-sm sm:text-base"
+                      className="cta-primary w-full sm:w-auto px-7 py-3.5 rounded-xl font-semibold text-white inline-flex items-center justify-center gap-2.5 shadow-none hover:shadow-none cursor-pointer group text-sm sm:text-base"
                     >
                       <span>Solicitar orçamento</span>
                       <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -275,7 +267,7 @@ export const Hero: React.FC<HeroProps> = ({
                     <button
                       type="button"
                       onClick={handleScrollToPortfolio}
-                      className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-slate-900/80 border border-white/10 hover:border-blue-400/40 text-slate-200 hover:text-white transition-all text-sm sm:text-base font-medium inline-flex items-center justify-center gap-2 cursor-pointer backdrop-blur-sm"
+                      className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-slate-900/80 border border-white/10 hover:border-white/20 text-slate-200 hover:text-white transition-all text-sm sm:text-base font-medium inline-flex items-center justify-center gap-2 cursor-pointer backdrop-blur-sm"
                     >
                       <Sparkles className="w-4 h-4 text-blue-400" />
                       <span>Conhecer projetos reais</span>
@@ -292,13 +284,13 @@ export const Hero: React.FC<HeroProps> = ({
                     
                     {/* Barra de Alternância Interativa entre [ Preview do Site ] e [ Código React ] */}
                     <div className="flex items-center justify-between mb-3 px-2">
-                      <div className="inline-flex p-1 rounded-xl bg-slate-950/80 border border-blue-500/20 backdrop-blur-md">
+                      <div className="inline-flex p-1 rounded-xl bg-slate-950/80 border border-white/10 backdrop-blur-md">
                         <button
                           type="button"
                           onClick={() => setActiveTab('preview')}
                           className={`px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
                             activeTab === 'preview'
-                              ? 'bg-blue-600 text-white shadow-[0_0_12px_rgba(37,99,235,0.5)]'
+                              ? 'bg-blue-600 text-white shadow-none'
                               : 'text-slate-400 hover:text-slate-200'
                           }`}
                         >
@@ -309,7 +301,7 @@ export const Hero: React.FC<HeroProps> = ({
                           onClick={() => setActiveTab('code')}
                           className={`px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer flex items-center gap-1.5 ${
                             activeTab === 'code'
-                              ? 'bg-blue-600 text-white shadow-[0_0_12px_rgba(37,99,235,0.5)]'
+                              ? 'bg-blue-600 text-white shadow-none'
                               : 'text-slate-400 hover:text-slate-200'
                           }`}
                         >
@@ -318,7 +310,7 @@ export const Hero: React.FC<HeroProps> = ({
                         </button>
                       </div>
 
-                      <div className="hidden sm:flex items-center gap-2 text-[11px] font-mono text-blue-300/80 bg-blue-950/40 border border-blue-500/20 px-2.5 py-1 rounded-lg">
+                      <div className="hidden sm:flex items-center gap-2 text-[11px] font-mono text-blue-300/80 bg-white/[0.04] border border-white/10 px-2.5 py-1 rounded-lg">
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                         <span>Build 100% OK</span>
                       </div>
@@ -326,10 +318,10 @@ export const Hero: React.FC<HeroProps> = ({
 
                     {/* MOCKUP DO LAPTOP 3D (com estilo metálico escuro da og-image.png) */}
                     <Interactive3DCard maxTilt={5} animatedBorder={true}>
-                      <div className="relative rounded-2xl bg-[#090E23] border border-blue-500/25 p-2 shadow-2xl shadow-black/80 backdrop-blur-xl">
+                      <div className="relative rounded-2xl bg-[#111113] border border-white/10 p-2 shadow-2xl shadow-black/80 backdrop-blur-xl">
                         
                         {/* Moldura da Tela do Laptop */}
-                        <div className="rounded-xl overflow-hidden bg-[#030712] border border-white/10 shadow-inner relative min-h-[300px] sm:min-h-[340px]">
+                        <div className="rounded-xl overflow-hidden bg-[#0c0c0e] border border-white/10 shadow-inner relative min-h-[300px] sm:min-h-[340px]">
                           
                           {/* Topbar do Navegador/IDE */}
                           <div className="flex items-center justify-between px-3 py-2 bg-slate-950/80 border-b border-white/[0.08]">
@@ -347,7 +339,7 @@ export const Hero: React.FC<HeroProps> = ({
 
                           {/* Conteúdo Interno da Tela */}
                           {activeTab === 'preview' ? (
-                            <div className="relative p-4 sm:p-6 flex flex-col justify-between min-h-[260px] sm:min-h-[300px] bg-gradient-to-br from-[#050814] via-[#090E23] to-[#0D1535] overflow-hidden">
+                            <div className="relative p-4 sm:p-6 flex flex-col justify-between min-h-[260px] sm:min-h-[300px] bg-gradient-to-br from-[#09090b] via-[#111113] to-[#111113] overflow-hidden">
                               {/* Efeito de onda azul cobalto (inspirado no wallpaper da tela do laptop em og-image.png) */}
                               <div className="absolute inset-0 opacity-40 pointer-events-none">
                                 <svg
@@ -368,12 +360,12 @@ export const Hero: React.FC<HeroProps> = ({
                                   />
                                   <defs>
                                     <linearGradient id="blueWave" x1="0" y1="0" x2="1" y2="1">
-                                      <stop offset="0%" stopColor="#3b82f6" />
-                                      <stop offset="100%" stopColor="#1d4ed8" />
+                                      <stop offset="0%" stopColor="#6366f1" />
+                                      <stop offset="100%" stopColor="#4338ca" />
                                     </linearGradient>
                                     <linearGradient id="indigoWave" x1="0" y1="0" x2="1" y2="1">
                                       <stop offset="0%" stopColor="#6366f1" />
-                                      <stop offset="100%" stopColor="#7c3aed" />
+                                      <stop offset="100%" stopColor="#6366f1" />
                                     </linearGradient>
                                   </defs>
                                 </svg>
@@ -382,7 +374,7 @@ export const Hero: React.FC<HeroProps> = ({
                               {/* Mini Barra de Navegação Interna da Tela */}
                               <div className="relative z-10 flex items-center justify-between pb-3 border-b border-white/10">
                                 <div className="flex items-center gap-1.5">
-                                  <div className="w-5 h-5 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-[10px] font-bold text-white shadow-[0_0_8px_#3b82f6]">
+                                  <div className="w-5 h-5 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-[10px] font-bold text-white shadow-none">
                                     ē
                                   </div>
                                   <span className="font-bold text-xs tracking-tight text-white">ēloSites</span>
@@ -399,7 +391,7 @@ export const Hero: React.FC<HeroProps> = ({
                               <div className="relative z-10 my-auto py-4 space-y-2.5 max-w-sm">
                                 <h2 className="text-xl sm:text-2xl font-extrabold text-white leading-tight">
                                   Sites que geram{' '}
-                                  <span className="text-blue-400 drop-shadow-[0_0_12px_rgba(59,130,246,0.5)]">
+                                  <span className="text-blue-400 drop-shadow-none">
                                     resultados.
                                   </span>
                                 </h2>
@@ -411,7 +403,7 @@ export const Hero: React.FC<HeroProps> = ({
                                     href={heroWhatsappUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-[11px] font-semibold shadow-[0_0_14px_rgba(37,99,235,0.6)] cursor-pointer"
+                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-[11px] font-semibold shadow-none cursor-pointer"
                                   >
                                     <span>Solicitar orçamento</span>
                                     <ArrowRight className="w-3 h-3" />
@@ -441,7 +433,7 @@ export const Hero: React.FC<HeroProps> = ({
                             </div>
                           ) : (
                             /* Modo Código React (Visual IDE da og-image.png) */
-                            <div className="p-4 font-mono text-xs leading-relaxed text-slate-300 bg-[#030712] overflow-x-auto min-h-[260px] sm:min-h-[300px]">
+                            <div className="p-4 font-mono text-xs leading-relaxed text-slate-300 bg-[#0c0c0e] overflow-x-auto min-h-[260px] sm:min-h-[300px]">
                               <div className="space-y-1 text-slate-400">
                                 <p className="text-slate-500">// Arquitetura limpa com React 19 + TypeScript</p>
                                 <p>
@@ -495,9 +487,9 @@ export const Hero: React.FC<HeroProps> = ({
             </div>
 
             {/* BANNER DESLIZANTE INTERATIVO (MOUSE OU TOUCH) DOS NICHOS */}
-            <div className="mt-14 pt-8 border-t border-blue-500/15 scroll-fade-card">
+            <div className="mt-14 pt-8 border-t border-white/10 scroll-fade-card">
               <div className="text-center mb-5 flex items-center justify-center">
-                <span className="floating-badge inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-950/90 border border-cyan-400/50 text-cyan-300 text-xs sm:text-sm font-semibold tracking-wider uppercase font-mono shadow-[0_0_22px_rgba(34,211,238,0.35)] backdrop-blur-md">
+                <span className="floating-badge inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.04] border border-white/10 text-cyan-300 text-xs sm:text-sm font-semibold tracking-wider uppercase font-mono shadow-none backdrop-blur-md">
                   <Sparkles className="w-4 h-4 text-cyan-400 animate-pulse shrink-0" aria-hidden="true" />
                   <span>Sites sob medida para o seu negócio</span>
                 </span>

@@ -51,7 +51,7 @@ const SPECIALTIES: SpecialtyItem[] = [
     ],
     technicalClarification:
       'Código autoral desenvolvido com componentes reutilizáveis, dispensando templates engessados ou construtores de arrastar-e-soltar que comprometem o desempenho.',
-    tagColor: 'from-blue-500/20 to-cyan-500/10 text-cyan-300 border-cyan-500/30',
+    tagColor: 'bg-white/[0.04] text-slate-300 border-white/10',
   },
   {
     id: 'ui-ux-design',
@@ -67,7 +67,7 @@ const SPECIALTIES: SpecialtyItem[] = [
     ],
     technicalClarification:
       'Foco em design prático de interface e arquitetura de informação clara para valorizar os serviços apresentados e facilitar a decisão de contato do visitante.',
-    tagColor: 'from-purple-500/20 to-indigo-500/10 text-purple-300 border-purple-500/30',
+    tagColor: 'bg-white/[0.04] text-slate-300 border-white/10',
   },
   {
     id: 'funcionalidades-interatividade',
@@ -83,7 +83,7 @@ const SPECIALTIES: SpecialtyItem[] = [
     ],
     technicalClarification:
       'Formulários com validação no navegador e mensagens personalizadas para facilitar o contato pelo WhatsApp, proporcionando agilidade e uma experiência fluida para o cliente.',
-    tagColor: 'from-emerald-500/20 to-teal-500/10 text-emerald-300 border-emerald-500/30',
+    tagColor: 'bg-white/[0.04] text-slate-300 border-white/10',
   },
   {
     id: 'seo-tecnico-performance',
@@ -101,7 +101,7 @@ const SPECIALTIES: SpecialtyItem[] = [
     ],
     technicalClarification:
       'Implementação de boas práticas estruturais e semânticas para facilitar a leitura e indexação pelos mecanismos de busca, com transparência e critérios técnicos.',
-    tagColor: 'from-amber-500/20 to-yellow-500/10 text-amber-300 border-amber-500/30',
+    tagColor: 'bg-white/[0.04] text-slate-300 border-white/10',
   },
   {
     id: 'integracoes-mensuracao',
@@ -117,7 +117,7 @@ const SPECIALTIES: SpecialtyItem[] = [
     ],
     technicalClarification:
       'A ativação de tags requer os identificadores fornecidos pelo cliente e segue boas práticas de privacidade e aviso de consentimento quando dados de navegação são coletados.',
-    tagColor: 'from-sky-500/20 to-blue-500/10 text-sky-300 border-sky-500/30',
+    tagColor: 'bg-white/[0.04] text-slate-300 border-white/10',
   },
   {
     id: 'tecnologias-stack',
@@ -134,7 +134,7 @@ const SPECIALTIES: SpecialtyItem[] = [
     ],
     technicalClarification:
       'Seleção técnica orientada às reais necessidades do projeto; cada solução adota o conjunto exato de ferramentas que assegura velocidade, clareza e manutenção.',
-    tagColor: 'from-indigo-500/20 to-violet-500/10 text-indigo-300 border-indigo-500/30',
+    tagColor: 'bg-white/[0.04] text-slate-300 border-white/10',
   },
 ];
 
@@ -162,17 +162,15 @@ export const SpecialtiesSection: React.FC<SpecialtiesSectionProps> = ({ onNaviga
     <section
       id="solucoes-web"
       aria-labelledby="specialties-heading"
-      className="section-auto-contain pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32 lg:pb-24 min-h-[90vh] bg-[#050814]/70 border-t border-blue-500/15 relative overflow-hidden"
+      className="section-auto-contain pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32 lg:pb-24 min-h-[90vh] bg-[#09090b]/70 border-t border-white/10 relative overflow-hidden"
     >
       {/* Luz ambiente de fundo */}
-      <div className="absolute top-1/4 -left-20 w-96 h-96 bg-blue-600/[0.08] blur-[140px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-purple-600/[0.08] blur-[140px] rounded-full pointer-events-none" />
 
       <div className="page-shell page-x max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Cabeçalho da Seção */}
         <BiReveal direction="up">
           <div className="max-w-3xl mx-auto text-center space-y-4 mb-12 sm:mb-16">
-            <div className="section-kicker inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-blue-500/30 text-cyan-300 text-xs sm:text-sm font-semibold uppercase shadow-[0_0_15px_rgba(34,211,238,0.2)]">
+            <div className="section-kicker inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-white/10 text-cyan-300 text-xs sm:text-sm font-semibold uppercase shadow-none">
               <Sparkles className="w-3.5 h-3.5 text-cyan-400" aria-hidden="true" />
               <span>Soluções Web & Especialidades</span>
             </div>
@@ -185,7 +183,7 @@ export const SpecialtiesSection: React.FC<SpecialtiesSectionProps> = ({ onNaviga
             />
 
             <p className="text-base sm:text-lg text-slate-300/95 leading-relaxed">
-              A <strong>ēloSites</strong> desenvolve landing pages, sites institucionais e <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#38bdf8] via-[#818cf8] to-[#a855f7] font-semibold">experiências web interativas</span>, combinando interfaces responsivas, navegação intuitiva, funcionalidades de frontend e SEO técnico para apresentar negócios com clareza e facilitar o contato com seus clientes.
+              A <strong>ēloSites</strong> desenvolve landing pages, sites institucionais e <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a5b4fc] via-[#818cf8] to-[#818cf8] font-semibold">experiências web interativas</span>, combinando interfaces responsivas, navegação intuitiva, funcionalidades de frontend e SEO técnico para apresentar negócios com clareza e facilitar o contato com seus clientes.
             </p>
           </div>
         </BiReveal>
@@ -197,7 +195,7 @@ export const SpecialtiesSection: React.FC<SpecialtiesSectionProps> = ({ onNaviga
             onClick={() => setActiveCategory('all')}
             className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
               activeCategory === 'all'
-                ? 'bg-blue-600 text-white shadow-[0_0_14px_rgba(59,130,246,0.5)] border border-blue-400/40'
+                ? 'bg-blue-600 text-white shadow-none border border-white/10'
                 : 'bg-slate-900/80 text-slate-400 hover:text-white border border-white/[0.08]'
             }`}
           >
@@ -210,7 +208,7 @@ export const SpecialtiesSection: React.FC<SpecialtiesSectionProps> = ({ onNaviga
               onClick={() => setActiveCategory(spec.id)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer hidden md:inline-flex items-center gap-1.5 ${
                 activeCategory === spec.id
-                  ? 'bg-blue-600 text-white shadow-[0_0_14px_rgba(59,130,246,0.5)] border border-blue-400/40'
+                  ? 'bg-blue-600 text-white shadow-none border border-white/10'
                   : 'bg-slate-900/80 text-slate-400 hover:text-white border border-white/[0.08]'
               }`}
             >
@@ -233,12 +231,12 @@ export const SpecialtiesSection: React.FC<SpecialtiesSectionProps> = ({ onNaviga
               >
                 <Interactive3DCard maxTilt={1.5} className="h-full">
                   <article
-                    className="glass-card-interactive surface-card service-card relative rounded-2xl bg-[#090E23]/95 border border-blue-500/20 hover:border-blue-400/50 p-6 sm:p-7 flex flex-col justify-between h-full shadow-2xl shadow-black/80 bracket-panel transition-all duration-300 group"
+                    className="glass-card-interactive surface-card service-card relative rounded-2xl bg-[#111113]/95 border border-white/10 hover:border-white/20 p-6 sm:p-7 flex flex-col justify-between h-full shadow-2xl shadow-black/80 bracket-panel transition-all duration-300 group"
                   >
                     {/* Linha superior: Ícone e Badge */}
                     <div className="space-y-4">
                       <div className="flex items-center justify-between gap-3">
-                        <div className="w-12 h-12 rounded-xl bg-blue-950/80 border border-blue-500/30 flex items-center justify-center text-blue-400 shadow-[0_0_14px_rgba(59,130,246,0.25)] group-hover:scale-105 transition-transform">
+                        <div className="w-12 h-12 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center text-blue-400 shadow-none group-hover:scale-105 transition-transform">
                           <Icon className="w-6 h-6 text-cyan-400" aria-hidden="true" />
                         </div>
                         <span
@@ -328,7 +326,7 @@ export const SpecialtiesSection: React.FC<SpecialtiesSectionProps> = ({ onNaviga
             href={ctaUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-semibold text-white bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-300/40 shadow-lg shadow-emerald-950/50 hover:shadow-[0_0_24px_rgba(37,211,102,0.6)] transition-all cursor-pointer text-sm sm:text-base group"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-semibold text-white bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-300/40 shadow-lg shadow-emerald-950/50 hover:shadow-none transition-all cursor-pointer text-sm sm:text-base group"
           >
             <WhatsAppIcon className="w-4 h-4 text-white" />
             <span>Conversar sobre meu projeto</span>
@@ -339,7 +337,7 @@ export const SpecialtiesSection: React.FC<SpecialtiesSectionProps> = ({ onNaviga
             <button
               type="button"
               onClick={onNavigateToContact}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-medium text-slate-200 bg-slate-900/90 hover:text-white border border-white/[0.1] hover:border-blue-400/40 transition-all text-sm sm:text-base cursor-pointer"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-medium text-slate-200 bg-slate-900/90 hover:text-white border border-white/[0.1] hover:border-white/20 transition-all text-sm sm:text-base cursor-pointer"
             >
               <span>Ver portfólio de projetos</span>
             </button>

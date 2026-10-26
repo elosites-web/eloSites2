@@ -28,9 +28,9 @@ const TECHNOLOGIES: TechItem[] = [
     name: 'React',
     description: 'Biblioteca UI para interfaces dinâmicas',
     category: 'Componentes & Estado',
-    tagColor: 'text-cyan-400 bg-cyan-950/40 border-cyan-500/30',
-    borderHover: 'hover:border-cyan-400/60',
-    glowColor: 'group-hover:shadow-[0_0_20px_rgba(34,211,238,0.25)]',
+    tagColor: 'text-slate-300 bg-white/[0.04] border-white/10',
+    borderHover: 'hover:border-white/20',
+    glowColor: 'group-hover:shadow-none',
     renderIcon: () => (
       <svg
         className="w-6 h-6 text-cyan-400"
@@ -54,11 +54,11 @@ const TECHNOLOGIES: TechItem[] = [
     name: 'TypeScript',
     description: 'Tipagem estática e segurança de código',
     category: 'Segurança Estrutural',
-    tagColor: 'text-blue-400 bg-blue-950/40 border-blue-500/30',
-    borderHover: 'hover:border-blue-400/60',
-    glowColor: 'group-hover:shadow-[0_0_20px_rgba(59,130,246,0.25)]',
+    tagColor: 'text-slate-300 bg-white/[0.04] border-white/10',
+    borderHover: 'hover:border-white/20',
+    glowColor: 'group-hover:shadow-none',
     renderIcon: () => (
-      <div className="w-6 h-6 rounded flex items-center justify-center font-mono font-bold text-xs bg-blue-500/20 text-blue-400 border border-blue-500/40">
+      <div className="w-6 h-6 rounded flex items-center justify-center font-mono font-bold text-xs bg-white/[0.04] text-blue-400 border border-white/10">
         TS
       </div>
     ),
@@ -68,9 +68,9 @@ const TECHNOLOGIES: TechItem[] = [
     name: 'JavaScript',
     description: 'Lógica e interatividade moderna',
     category: 'ESNext Nativo',
-    tagColor: 'text-amber-300 bg-amber-950/40 border-amber-500/30',
-    borderHover: 'hover:border-amber-400/60',
-    glowColor: 'group-hover:shadow-[0_0_20px_rgba(251,191,36,0.25)]',
+    tagColor: 'text-slate-300 bg-white/[0.04] border-white/10',
+    borderHover: 'hover:border-white/20',
+    glowColor: 'group-hover:shadow-none',
     renderIcon: () => (
       <div className="w-6 h-6 rounded flex items-center justify-center font-mono font-bold text-xs bg-amber-500/20 text-amber-300 border border-amber-500/40">
         JS
@@ -82,9 +82,9 @@ const TECHNOLOGIES: TechItem[] = [
     name: 'HTML5 Semântico',
     description: 'Estruturação acessível e SEO',
     category: 'Arquitetura Web',
-    tagColor: 'text-orange-400 bg-orange-950/40 border-orange-500/30',
-    borderHover: 'hover:border-orange-400/60',
-    glowColor: 'group-hover:shadow-[0_0_20px_rgba(249,115,22,0.25)]',
+    tagColor: 'text-slate-300 bg-white/[0.04] border-white/10',
+    borderHover: 'hover:border-white/20',
+    glowColor: 'group-hover:shadow-none',
     renderIcon: () => <FileCode2 className="w-6 h-6 text-orange-400" aria-hidden="true" />,
   },
   {
@@ -92,9 +92,9 @@ const TECHNOLOGIES: TechItem[] = [
     name: 'Tailwind CSS',
     description: 'Estilização performática e responsiva',
     category: 'Design System',
-    tagColor: 'text-sky-400 bg-sky-950/40 border-sky-500/30',
-    borderHover: 'hover:border-sky-400/60',
-    glowColor: 'group-hover:shadow-[0_0_20px_rgba(56,189,248,0.25)]',
+    tagColor: 'text-slate-300 bg-white/[0.04] border-white/10',
+    borderHover: 'hover:border-white/20',
+    glowColor: 'group-hover:shadow-none',
     renderIcon: () => <Layers className="w-6 h-6 text-sky-400" aria-hidden="true" />,
   },
   {
@@ -102,9 +102,9 @@ const TECHNOLOGIES: TechItem[] = [
     name: 'Vite',
     description: 'Build veloz e empacotamento otimizado',
     category: 'Bundler Moderno',
-    tagColor: 'text-purple-400 bg-purple-950/40 border-purple-500/30',
-    borderHover: 'hover:border-purple-400/60',
-    glowColor: 'group-hover:shadow-[0_0_20px_rgba(168,85,247,0.25)]',
+    tagColor: 'text-slate-300 bg-white/[0.04] border-white/10',
+    borderHover: 'hover:border-white/20',
+    glowColor: 'group-hover:shadow-none',
     renderIcon: () => <Zap className="w-6 h-6 text-purple-400" aria-hidden="true" />,
   },
   {
@@ -112,9 +112,9 @@ const TECHNOLOGIES: TechItem[] = [
     name: 'SEO Técnico',
     description: 'Schema.org, metadados e indexação',
     category: 'Visibilidade no Google',
-    tagColor: 'text-emerald-400 bg-emerald-950/40 border-emerald-500/30',
-    borderHover: 'hover:border-emerald-400/60',
-    glowColor: 'group-hover:shadow-[0_0_20px_rgba(16,185,129,0.25)]',
+    tagColor: 'text-slate-300 bg-white/[0.04] border-white/10',
+    borderHover: 'hover:border-white/20',
+    glowColor: 'group-hover:shadow-none',
     renderIcon: () => <Search className="w-6 h-6 text-emerald-400" aria-hidden="true" />,
   },
   {
@@ -122,9 +122,9 @@ const TECHNOLOGIES: TechItem[] = [
     name: 'Integração com WhatsApp',
     description: 'Links diretos, CTAs contextuais e mensagens personalizadas',
     category: 'Conversão Comercial',
-    tagColor: 'text-emerald-300 bg-emerald-950/40 border-emerald-500/30',
-    borderHover: 'hover:border-emerald-400/60',
-    glowColor: 'group-hover:shadow-[0_0_20px_rgba(37,211,102,0.25)]',
+    tagColor: 'text-slate-300 bg-white/[0.04] border-white/10',
+    borderHover: 'hover:border-white/20',
+    glowColor: 'group-hover:shadow-none',
     renderIcon: () => <WhatsAppIcon className="w-6 h-6 text-emerald-400" aria-hidden="true" />,
   },
 ];
@@ -141,24 +141,24 @@ interface TechStackCardProps {
 export const TechStackCard: React.FC<TechStackCardProps> = ({ className = '' }) => {
   return (
     <BiReveal direction="up" delay={50} className={`w-full ${className}`}>
-      <div className="relative w-full rounded-3xl p-6 sm:p-8 lg:p-10 bg-[#070b1a]/95 border border-blue-500/25 shadow-2xl shadow-black/80 backdrop-blur-xl overflow-hidden group hover:border-blue-500/40 transition-all duration-300">
+      <div className="relative w-full rounded-3xl p-6 sm:p-8 lg:p-10 bg-[#0c0c0e]/95 border border-white/10 shadow-2xl shadow-black/80 backdrop-blur-xl overflow-hidden group hover:border-white/20 transition-all duration-300">
         {/* Cantoneiras decorativas técnicas nos vértices (top-left & bottom-right) */}
         <div
-          className="absolute top-3.5 left-3.5 w-4 h-4 border-t-2 border-l-2 border-cyan-400/40 rounded-tl pointer-events-none"
+          className="absolute top-3.5 left-3.5 w-4 h-4 border-t-2 border-l-2 border-white/10 rounded-tl pointer-events-none"
           aria-hidden="true"
         />
         <div
-          className="absolute bottom-3.5 right-3.5 w-4 h-4 border-b-2 border-r-2 border-cyan-400/40 rounded-br pointer-events-none"
+          className="absolute bottom-3.5 right-3.5 w-4 h-4 border-b-2 border-r-2 border-white/10 rounded-br pointer-events-none"
           aria-hidden="true"
         />
 
         {/* Halos de luz ambiente volumétrica ciano e cobalto */}
         <div
-          className="absolute -top-28 -left-28 w-80 h-80 bg-cyan-500/10 blur-[110px] rounded-full pointer-events-none"
+          className="absolute -top-28 -left-28 w-80 h-80 bg-white/[0.04] blur-[110px] rounded-full pointer-events-none"
           aria-hidden="true"
         />
         <div
-          className="absolute -bottom-28 -right-28 w-80 h-80 bg-blue-600/10 blur-[110px] rounded-full pointer-events-none"
+          className="absolute -bottom-28 -right-28 w-80 h-80 bg-white/[0.04] blur-[110px] rounded-full pointer-events-none"
           aria-hidden="true"
         />
 
@@ -184,11 +184,11 @@ export const TechStackCard: React.FC<TechStackCardProps> = ({ className = '' }) 
 
           {/* Badge no Canto Superior Direito: Frontend Moderno e Responsivo */}
           <div className="shrink-0 self-start lg:self-center">
-            <div className="inline-flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-2.5 px-4 py-2.5 rounded-2xl bg-[#050814]/90 border border-cyan-500/30 text-xs font-mono text-cyan-300 shadow-lg shadow-cyan-950/40">
+            <div className="inline-flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-2.5 px-4 py-2.5 rounded-2xl bg-[#09090b]/90 border border-white/10 text-xs font-mono text-cyan-300 shadow-lg shadow-black/40">
               <div className="flex items-center gap-2">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400 shadow-[0_0_8px_#34d399]" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400 shadow-none" />
                 </span>
                 <span className="font-semibold text-white">Frontend moderno e responsivo</span>
               </div>
@@ -203,7 +203,7 @@ export const TechStackCard: React.FC<TechStackCardProps> = ({ className = '' }) 
           {TECHNOLOGIES.map((tech) => (
             <div
               key={tech.id}
-              className={`group relative rounded-2xl p-4 sm:p-5 bg-[#050814]/80 border border-blue-500/20 ${tech.borderHover} ${tech.glowColor} transition-all duration-300 min-h-[175px] sm:min-h-[185px] flex flex-col items-center text-center justify-center hover:-translate-y-1`}
+              className={`group relative rounded-2xl p-4 sm:p-5 bg-[#09090b]/80 border border-white/10 ${tech.borderHover} ${tech.glowColor} transition-all duration-300 min-h-[175px] sm:min-h-[185px] flex flex-col items-center text-center justify-center hover:-translate-y-1`}
             >
               {/* Efeito de brilho de fundo no hover */}
               <div

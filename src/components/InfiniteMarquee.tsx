@@ -225,12 +225,12 @@ export const InfiniteMarquee: React.FC<InfiniteMarqueeProps> = ({
       {items.map((item, idx) => (
         <div
           key={idx}
-          className={`flex items-center gap-2.5 px-3.5 sm:px-4 py-2 rounded-xl bg-[#090E23]/90 border border-blue-500/20 hover:border-cyan-400/50 hover:bg-[#0E1527] transition-colors duration-200 text-xs sm:text-sm font-medium text-slate-300 backdrop-blur-md shadow-md shadow-black/40 select-none ${itemClassName}`}
+          className={`flex items-center gap-2.5 px-3.5 sm:px-4 py-2 rounded-xl bg-[#111113]/90 border border-white/10 hover:border-white/20 hover:bg-[#111113] transition-colors duration-200 text-xs sm:text-sm font-medium text-slate-300 backdrop-blur-md shadow-md shadow-black/40 select-none ${itemClassName}`}
         >
           {item.icon && <span className="text-cyan-400 shrink-0">{item.icon}</span>}
           <span className="tracking-wide text-slate-100 whitespace-nowrap">{item.text}</span>
           {item.badge && (
-            <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-950/90 text-cyan-300 border border-blue-500/30 font-mono font-medium shrink-0">
+            <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/[0.04] text-cyan-300 border border-white/10 font-mono font-medium shrink-0">
               {item.badge}
             </span>
           )}
@@ -252,7 +252,7 @@ export const InfiniteMarquee: React.FC<InfiniteMarqueeProps> = ({
             }}
             aria-label="Deslizar para a direita (voltar itens)"
             title="Deslizar para a direita"
-            className="pointer-events-auto p-1.5 rounded-full bg-slate-950/80 border border-blue-500/30 text-cyan-300 hover:text-white hover:bg-blue-600/60 shadow-lg shadow-black/60 transition-transform active:scale-95 cursor-pointer backdrop-blur-md"
+            className="pointer-events-auto p-1.5 rounded-full bg-slate-950/80 border border-white/10 text-cyan-300 hover:text-white hover:bg-blue-600/60 shadow-lg shadow-black/60 transition-transform active:scale-95 cursor-pointer backdrop-blur-md"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
@@ -265,7 +265,7 @@ export const InfiniteMarquee: React.FC<InfiniteMarqueeProps> = ({
             }}
             aria-label="Deslizar para a esquerda (avançar itens)"
             title="Deslizar para a esquerda"
-            className="pointer-events-auto p-1.5 rounded-full bg-slate-950/80 border border-blue-500/30 text-cyan-300 hover:text-white hover:bg-blue-600/60 shadow-lg shadow-black/60 transition-transform active:scale-95 cursor-pointer backdrop-blur-md"
+            className="pointer-events-auto p-1.5 rounded-full bg-slate-950/80 border border-white/10 text-cyan-300 hover:text-white hover:bg-blue-600/60 shadow-lg shadow-black/60 transition-transform active:scale-95 cursor-pointer backdrop-blur-md"
           >
             <ChevronRight className="w-4 h-4" />
           </button>

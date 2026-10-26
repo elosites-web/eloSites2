@@ -128,11 +128,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
   return (
     <Interactive3DCard maxTilt={1.2} animatedBorder={true} className="h-full">
-      <article className="glass-card-interactive surface-card portfolio-card scroll-perf-card relative rounded-2xl bg-[#090E23] border border-blue-500/20 hover:border-blue-400/50 flex flex-col h-full overflow-hidden group lg:row-span-8 lg:grid lg:grid-rows-subgrid shadow-2xl shadow-black/80 bracket-panel transition-all">
+      <article className="glass-card-interactive surface-card portfolio-card scroll-perf-card relative rounded-2xl bg-[#111113] border border-white/10 hover:border-white/20 flex flex-col h-full overflow-hidden group lg:row-span-8 lg:grid lg:grid-rows-subgrid shadow-2xl shadow-black/80 bracket-panel transition-all">
         {/* Top Header / Informações */}
-        <div className="p-6 sm:p-7 border-b border-white/[0.06] bg-[#070B1A]/80 space-y-4 lg:row-span-5 lg:grid lg:grid-rows-subgrid">
+        <div className="p-6 sm:p-7 border-b border-white/[0.06] bg-[#0c0c0e]/80 space-y-4 lg:row-span-5 lg:grid lg:grid-rows-subgrid">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <span className="text-[11px] font-mono uppercase bg-blue-950/70 text-blue-300 border border-blue-500/30 px-3 py-1 rounded-full font-semibold">
+          <span className="text-[11px] font-mono uppercase bg-white/[0.04] text-blue-300 border border-white/10 px-3 py-1 rounded-full font-semibold">
             {project.badge}
           </span>
           <span className="inline-flex items-center gap-1.5 text-xs text-emerald-400 font-medium bg-emerald-950/40 border border-emerald-500/20 px-2.5 py-0.5 rounded-full">
@@ -181,7 +181,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           {project.tags.map((tag) => (
             <span
               key={tag}
-              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-slate-900/90 border border-blue-500/15 text-[11px] font-medium text-slate-300"
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-slate-900/90 border border-white/10 text-[11px] font-medium text-slate-300"
             >
               <CheckCircle2 className="w-3 h-3 text-blue-400" aria-hidden="true" />
               {tag}
@@ -191,17 +191,17 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       </div>
 
       {/* Visual Mockup Area com Seletor */}
-      <div className="p-4 sm:p-5 bg-[#04060E] flex-1 flex flex-col justify-between space-y-4 lg:flex-none lg:row-span-3 lg:grid lg:grid-rows-subgrid">
+      <div className="p-4 sm:p-5 bg-[#09090b] flex-1 flex flex-col justify-between space-y-4 lg:flex-none lg:row-span-3 lg:grid lg:grid-rows-subgrid">
         {/* Controles de visualização: Composto, Desktop, Mobile */}
         <div className="flex items-center justify-between gap-2 border-b border-white/[0.06] pb-3 lg:justify-center lg:gap-3">
-          <div className="flex items-center gap-1 bg-slate-900/90 p-1 rounded-xl border border-blue-500/15 text-xs font-medium">
+          <div className="flex items-center gap-1 bg-slate-900/90 p-1 rounded-xl border border-white/10 text-xs font-medium">
             <button
               type="button"
               onClick={() => setViewMode('composite')}
               aria-label="Ver mockup composto sobreposto"
               className={`flex items-center justify-center text-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-all ${
                 viewMode === 'composite'
-                  ? 'bg-blue-600 text-white font-semibold shadow-[0_0_10px_rgba(37,99,235,0.5)]'
+                  ? 'bg-blue-600 text-white font-semibold shadow-none'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
@@ -214,7 +214,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               aria-label="Ver imagem desktop"
               className={`flex items-center justify-center text-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-all ${
                 viewMode === 'desktop'
-                  ? 'bg-blue-600 text-white font-semibold shadow-[0_0_10px_rgba(37,99,235,0.5)]'
+                  ? 'bg-blue-600 text-white font-semibold shadow-none'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
@@ -227,7 +227,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               aria-label="Ver imagem mobile"
               className={`flex items-center justify-center text-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-all ${
                 viewMode === 'mobile'
-                  ? 'bg-blue-600 text-white font-semibold shadow-[0_0_10px_rgba(37,99,235,0.5)]'
+                  ? 'bg-blue-600 text-white font-semibold shadow-none'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
@@ -261,7 +261,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           {viewMode === 'composite' && (
             <div className="relative w-full h-full flex items-center justify-center py-2">
               {/* Desktop Window Frame com largura total expandida */}
-              <div className="w-full rounded-xl overflow-hidden border border-white/[0.12] bg-[#0c101a] shadow-2xl shadow-black/80 transition-transform duration-300 group-hover:scale-[1.01]">
+              <div className="w-full rounded-xl overflow-hidden border border-white/[0.12] bg-[#111113] shadow-2xl shadow-black/80 transition-transform duration-300 group-hover:scale-[1.01]">
                 {/* Browser topbar */}
                 <div className="px-3 py-1.5 bg-slate-900 border-b border-white/[0.08] flex items-center gap-2">
                   <div className="flex items-center gap-1.5">
@@ -292,7 +292,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
               {/* Mobile Phone Mockup Sobreposto com 3D Breakout de Profundidade */}
               <div
-                className="absolute right-1 sm:right-2 -bottom-1 sm:bottom-0 w-[36%] sm:w-[33%] max-w-[155px] sm:max-w-[170px] rounded-[20px] p-1.5 sm:p-2 bg-[#090d16] border-2 border-indigo-400/50 shadow-[0_20px_50px_rgba(0,0,0,0.95)] shadow-indigo-950/60 breakout-layer-front cursor-zoom-in z-20 hover:scale-105 transition-all duration-300"
+                className="absolute right-1 sm:right-2 -bottom-1 sm:bottom-0 w-[36%] sm:w-[33%] max-w-[155px] sm:max-w-[170px] rounded-[20px] p-1.5 sm:p-2 bg-[#111113] border-2 border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.95)] shadow-black/40 breakout-layer-front cursor-zoom-in z-20 hover:scale-105 transition-all duration-300"
                 style={{ transform: 'translateZ(38px)' }}
                 onClick={() => onOpenZoom(project.mobileImage, `${project.title} - Mobile`)}
                 title="Clique para ampliar versão mobile"
@@ -309,7 +309,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                   />
                 </div>
                 {/* Badge visual */}
-                <div className="absolute -bottom-2 -left-2 bg-indigo-600 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow border border-indigo-400/30">
+                <div className="absolute -bottom-2 -left-2 bg-indigo-600 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow border border-white/10">
                   📱 Mobile
                 </div>
               </div>
@@ -318,7 +318,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
           {/* MODO 2: APENAS DESKTOP */}
           {viewMode === 'desktop' && (
-            <div className="w-full rounded-xl overflow-hidden border border-white/[0.12] bg-[#0c101a] shadow-xl">
+            <div className="w-full rounded-xl overflow-hidden border border-white/[0.12] bg-[#111113] shadow-xl">
               <div className="px-3 py-2 bg-slate-900 border-b border-white/[0.08] flex items-center justify-between gap-2">
                 <div className="flex items-center gap-1.5">
                   <span className="w-2.5 h-2.5 rounded-full bg-rose-500" />
@@ -351,7 +351,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           {viewMode === 'mobile' && (
             <div className="flex items-center justify-center py-2 w-full">
               <div
-                className="w-[210px] sm:w-[240px] max-w-full rounded-[26px] p-2 sm:p-2.5 bg-[#090d16] border-2 border-indigo-500/50 shadow-2xl shadow-black cursor-zoom-in"
+                className="w-[210px] sm:w-[240px] max-w-full rounded-[26px] p-2 sm:p-2.5 bg-[#111113] border-2 border-white/10 shadow-2xl shadow-black cursor-zoom-in"
                 onClick={() => onOpenZoom(project.mobileImage, `${project.title} - Mobile`)}
               >
                 {/* Speaker pill */}
@@ -400,7 +400,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             )}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center text-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-[#25D366] hover:bg-[#20bd5a] text-white border border-emerald-400/40 shadow-md shadow-emerald-950/40 hover:shadow-[0_0_20px_rgba(37,211,102,0.6)] active:shadow-[0_0_28px_rgba(37,211,102,0.8)] hover:-translate-y-0.5 active:translate-y-0 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-200"
+            className="inline-flex items-center justify-center text-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-[#25D366] hover:bg-[#20bd5a] text-white border border-emerald-400/40 shadow-md shadow-emerald-950/40 hover:shadow-none active:shadow-none hover:-translate-y-0.5 active:translate-y-0 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-200"
           >
             <WhatsAppIcon className="w-3.5 h-3.5 text-white" />
             <span className="text-white drop-shadow-sm text-center">Quero similar</span>
@@ -437,11 +437,9 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
   return (
     <section
       id="portfolio"
-      className="section-auto-contain pt-24 pb-3 sm:pt-28 sm:pb-4 lg:pt-32 lg:pb-5 bg-[#090D16]/30 backdrop-blur-[0.5px] relative"
+      className="section-auto-contain pt-24 pb-3 sm:pt-28 sm:pb-4 lg:pt-32 lg:pb-5 bg-[#111113]/30 backdrop-blur-[0.5px] relative"
     >
       {/* Luz ambiente de fundo */}
-      <div className="absolute top-1/4 left-0 w-96 h-96 bg-indigo-500/[0.08] blur-[140px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-10 right-0 w-96 h-96 bg-violet-600/[0.08] blur-[140px] rounded-full pointer-events-none" />
 
       <div className="page-shell page-x relative w-full">
         {/* Cabeçalho da Seção / Tela */}
@@ -457,7 +455,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
               className="font-display text-3xl sm:text-4xl lg:text-[2.75rem] font-bold tracking-[-0.03em] text-white text-balance leading-tight"
             />
             <p className="text-base sm:text-lg text-slate-300/95 leading-relaxed">
-              Explore nossos trabalhos recentes com alternador de tela Desktop e Mobile ou visualize o mockup composto sobreposto. Todos os projetos contam com código limpo, SEO técnico e <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#38bdf8] via-[#818cf8] to-[#a855f7] font-semibold">carregamento instantâneo</span>.
+              Explore nossos trabalhos recentes com alternador de tela Desktop e Mobile ou visualize o mockup composto sobreposto. Todos os projetos contam com código limpo, SEO técnico e <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a5b4fc] via-[#818cf8] to-[#818cf8] font-semibold">carregamento instantâneo</span>.
             </p>
 
             {/* Filtros de Categoria */}
@@ -467,7 +465,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
                 onClick={() => setFilter('all')}
                 className={`inline-flex items-center justify-center text-center px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] ${
                   filter === 'all'
-                    ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
+                    ? 'bg-indigo-600 text-white shadow-lg shadow-black/40'
                     : 'bg-slate-900/80 text-slate-400 hover:text-white border border-white/[0.06]'
                 }`}
               >
@@ -478,7 +476,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
                 onClick={() => setFilter('landing')}
                 className={`inline-flex items-center justify-center text-center px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] ${
                   filter === 'landing'
-                    ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
+                    ? 'bg-indigo-600 text-white shadow-lg shadow-black/40'
                     : 'bg-slate-900/80 text-slate-400 hover:text-white border border-white/[0.06]'
                 }`}
               >
@@ -489,7 +487,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
                 onClick={() => setFilter('institutional')}
                 className={`inline-flex items-center justify-center text-center px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] ${
                   filter === 'institutional'
-                    ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
+                    ? 'bg-indigo-600 text-white shadow-lg shadow-black/40'
                     : 'bg-slate-900/80 text-slate-400 hover:text-white border border-white/[0.06]'
                 }`}
               >
@@ -539,7 +537,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
           className="mt-4 sm:mt-5 w-full"
         >
           <Interactive3DCard maxTilt={3} className="w-full">
-            <div className="glass-card-interactive surface-card portfolio-card scroll-perf-card p-6 sm:p-7 md:p-8 rounded-2xl bg-[#090E23] border border-blue-500/25 hover:border-blue-400/50 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 shadow-2xl shadow-black/80 bracket-panel transition-all">
+            <div className="glass-card-interactive surface-card portfolio-card scroll-perf-card p-6 sm:p-7 md:p-8 rounded-2xl bg-[#111113] border border-white/10 hover:border-white/20 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 shadow-2xl shadow-black/80 bracket-panel transition-all">
               <div className="space-y-2 text-left w-full lg:max-w-xl">
                 <h3 className="text-xl sm:text-2xl font-bold text-white font-display">
                   Gostou do nível dos projetos da ēloSites?
@@ -554,7 +552,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
                   <button
                     type="button"
                     onClick={onNavigateToServices}
-                    className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-2 px-5 py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 border border-blue-400/40 shadow-lg shadow-blue-600/30 hover:shadow-[0_0_24px_rgba(59,130,246,0.55)] active:shadow-[0_0_32px_rgba(124,58,237,0.7)] hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+                    className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-2 px-5 py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 border border-white/10 shadow-lg shadow-black/40 hover:shadow-none active:shadow-none hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
                   >
                     <span className="text-center">Ver Formatos & Condições</span>
                     <ArrowRight className="w-4 h-4 text-white" />
@@ -566,7 +564,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
                   rel="noopener noreferrer"
                   strength={12}
                   glowColor="rgba(37, 211, 102, 0.45)"
-                  className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-2.5 px-6 py-3 rounded-xl text-sm font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-400/40 shadow-lg shadow-emerald-950/40 hover:shadow-[0_0_24px_rgba(37,211,102,0.65)] hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
+                  className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-2.5 px-6 py-3 rounded-xl text-sm font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-400/40 shadow-lg shadow-emerald-950/40 hover:shadow-none hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
                   ariaLabel="Solicitar Orçamento no WhatsApp"
                 >
                   <WhatsAppIcon className="w-4 h-4 text-white" />

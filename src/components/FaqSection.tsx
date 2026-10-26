@@ -64,14 +64,14 @@ export const FaqSection: React.FC = () => {
   return (
     <section
       id="faq"
-      className="section-auto-contain pt-24 pb-10 sm:pt-28 sm:pb-12 lg:pt-32 lg:pb-14 bg-[#050814] relative border-t border-blue-500/15 overflow-x-clip"
+      className="section-auto-contain pt-24 pb-10 sm:pt-28 sm:pb-12 lg:pt-32 lg:pb-14 bg-[#09090b] relative border-t border-white/10 overflow-x-clip"
     >
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-400/20 to-transparent pointer-events-none" />
       <div className="page-shell page-x max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <BiReveal direction="up">
             <div className="text-center space-y-4 mb-16">
-              <div className="section-kicker inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-950/70 border border-blue-500/30 text-blue-300 text-xs sm:text-sm font-semibold uppercase shadow-[0_0_15px_rgba(59,130,246,0.25)]">
+              <div className="section-kicker inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-blue-300 text-xs sm:text-sm font-semibold uppercase shadow-none">
                 <HelpCircle className="w-3.5 h-3.5 text-blue-400" aria-hidden="true" />
                 <span>Perguntas frequentes</span>
               </div>
@@ -81,7 +81,7 @@ export const FaqSection: React.FC = () => {
                 className="font-display text-3xl sm:text-4xl lg:text-[2.75rem] font-bold tracking-[-0.03em] text-white text-balance"
               />
               <p className="text-base sm:text-lg text-slate-300/95 leading-relaxed max-w-2xl mx-auto">
-                Respostas diretas sobre pagamento, publicação, domínio, manutenção e <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#38bdf8] via-[#818cf8] to-[#a855f7] font-semibold">controle do site</span>.
+                Respostas diretas sobre pagamento, publicação, domínio, manutenção e <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a5b4fc] via-[#818cf8] to-[#818cf8] font-semibold">controle do site</span>.
               </p>
             </div>
           </BiReveal>
@@ -99,10 +99,10 @@ export const FaqSection: React.FC = () => {
                   className="h-full"
                 >
                   <div
-                    className={`rounded-2xl overflow-hidden transition-all duration-300 border bracket-panel relative bg-[#090E23] ${
+                    className={`rounded-2xl overflow-hidden transition-all duration-300 border bracket-panel relative bg-[#111113] ${
                       isOpen
-                        ? 'border-blue-400/60 shadow-[0_0_24px_rgba(59,130,246,0.25)]'
-                        : 'border-blue-500/15 hover:border-blue-400/40'
+                        ? 'border-white/10 shadow-none'
+                        : 'border-white/10 hover:border-white/20'
                     }`}
                   >
                     <h3>
@@ -122,7 +122,7 @@ export const FaqSection: React.FC = () => {
                           transition={{ duration: isReduced ? 0 : 0.35, ease: [0.16, 1, 0.3, 1] }}
                           className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 transition-colors ${
                             isOpen
-                              ? 'bg-blue-600 text-white shadow-[0_0_12px_rgba(37,99,235,0.6)]'
+                              ? 'bg-blue-600 text-white shadow-none'
                               : 'bg-slate-800/80 text-blue-300'
                           }`}
                         >

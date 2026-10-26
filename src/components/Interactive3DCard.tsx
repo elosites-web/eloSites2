@@ -92,7 +92,7 @@ export const Interactive3DCard: React.FC<Interactive3DCardProps> = ({
       if (glare && glareRef.current) {
         const gx = Math.round((x / rect.width) * 100);
         const gy = Math.round((y / rect.height) * 100);
-        glareRef.current.style.background = `radial-gradient(circle 280px at ${gx}% ${gy}%, rgba(59, 130, 246, 0.12), transparent 70%)`;
+        glareRef.current.style.background = `radial-gradient(circle 280px at ${gx}% ${gy}%, rgba(129, 140, 248, 0.12), transparent 70%)`;
         glareRef.current.style.opacity = '1';
       }
     });

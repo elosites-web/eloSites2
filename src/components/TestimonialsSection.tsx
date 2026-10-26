@@ -296,11 +296,9 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
     <section
       id="avaliacoes"
       aria-label="Avaliações de Clientes e Prova Social"
-      className="section-auto-contain pt-24 pb-14 sm:pt-28 sm:pb-16 lg:pt-32 lg:pb-20 bg-[#050814] relative border-t border-blue-500/15 overflow-hidden"
+      className="section-auto-contain pt-24 pb-14 sm:pt-28 sm:pb-16 lg:pt-32 lg:pb-20 bg-[#09090b] relative border-t border-white/10 overflow-hidden"
     >
       {/* Luzes ambiente de fundo azul elétrico e cobalto */}
-      <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-96 h-96 bg-blue-600/[0.08] blur-[150px] rounded-full pointer-events-none" />
-      <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-96 h-96 bg-indigo-600/[0.08] blur-[150px] rounded-full pointer-events-none" />
 
       <div className="page-shell page-x relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Cabeçalho da Seção com Reveal Suave */}
@@ -322,7 +320,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
           }}
           className="max-w-3xl mx-auto text-center space-y-3 mb-8 sm:mb-10"
         >
-          <div className="section-kicker inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-950/70 border border-blue-500/30 text-blue-300 text-xs font-semibold uppercase shadow-[0_0_15px_rgba(59,130,246,0.25)]">
+          <div className="section-kicker inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 text-blue-300 text-xs font-semibold uppercase shadow-none">
             <Sparkles className="w-3.5 h-3.5 text-blue-400" aria-hidden="true" />
             <span>Social Proof & Clientes Reais</span>
           </div>
@@ -334,7 +332,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
           />
 
           <p className="text-xs sm:text-sm md:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed">
-            Depoimentos autênticos de quem confiou na ēloSites para construir sua presença digital com <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#38bdf8] via-[#818cf8] to-[#a855f7] font-semibold">código profissional</span>, performance máxima e foco em conversão.
+            Depoimentos autênticos de quem confiou na ēloSites para construir sua presença digital com <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a5b4fc] via-[#818cf8] to-[#818cf8] font-semibold">código profissional</span>, performance máxima e foco em conversão.
           </p>
 
           {/* Destaque de métricas de confiabilidade */}
@@ -377,7 +375,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
                 onClick={() => setSelectedTag(tag.id)}
                 className={`relative px-3 sm:px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/60 ${
                   isTagActive
-                    ? 'bg-blue-600/30 text-blue-200 border border-blue-400/50 shadow-[0_0_14px_rgba(59,130,246,0.3)]'
+                    ? 'bg-blue-600/30 text-blue-200 border border-white/10 shadow-none'
                     : 'bg-slate-900/80 text-slate-400 hover:text-white border border-white/[0.08] hover:border-white/20'
                 }`}
                 aria-pressed={isTagActive}
@@ -472,8 +470,8 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
                       }}
                       className={`relative rounded-2xl bracket-panel overflow-hidden [backface-visibility:hidden] select-none flex flex-col justify-between ${
                         isActive
-                          ? 'bg-[#090E23] border border-blue-500/60 shadow-[0_12px_36px_-6px_rgba(59,130,246,0.4)] ring-1 ring-blue-400/40 cursor-default'
-                          : 'bg-[#060A1A]/90 border border-blue-500/15 hover:border-blue-400/40 shadow-xl cursor-pointer hover:opacity-85'
+                          ? 'bg-[#111113] border border-white/10 shadow-[0_12px_36px_-6px_rgba(129, 140, 248,0.4)] ring-1 ring-blue-400/40 cursor-default'
+                          : 'bg-[#0c0c0e]/90 border border-white/10 hover:border-white/20 shadow-xl cursor-pointer hover:opacity-85'
                       }`}
                       aria-label={`Depoimento de ${item.name}`}
                     >
@@ -488,7 +486,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
                       {/* Dica de clique para focar no card lateral */}
                       {!isActive && !prefersReduced && (
                         <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/40 backdrop-blur-[1px] opacity-0 hover:opacity-100 transition-opacity rounded-2xl">
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900/90 border border-blue-400/50 text-blue-300 text-xs font-semibold shadow-lg">
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900/90 border border-white/10 text-blue-300 text-xs font-semibold shadow-lg">
                             <RotateCw className="w-3.5 h-3.5 text-blue-400" />
                             Girar e centralizar
                           </span>
@@ -500,7 +498,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
                         {/* Top Bar do Card: Categoria, Estrelas e Contador */}
                         <div className="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-white/[0.08]">
                           <div className="flex items-center gap-2">
-                            <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-blue-950/80 border border-blue-400/30 text-blue-300 text-[10px] sm:text-[11px] font-semibold">
+                            <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-white/[0.04] border border-white/10 text-blue-300 text-[10px] sm:text-[11px] font-semibold">
                               <ShieldCheck className="w-3 h-3 text-emerald-400 shrink-0" aria-hidden="true" />
                               <span>{item.category}</span>
                             </div>
@@ -520,14 +518,14 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
                               {[...Array(item.rating)].map((_, starIdx) => (
                                 <Star
                                   key={starIdx}
-                                  className="w-3 h-3 fill-amber-400 drop-shadow-[0_0_4px_rgba(251,191,36,0.5)]"
+                                  className="w-3 h-3 fill-amber-400 drop-shadow-none"
                                   aria-hidden="true"
                                 />
                               ))}
                             </div>
 
                             {/* Contador de Slides */}
-                            <div className="font-mono text-[10px] text-blue-300 px-1.5 py-0.5 rounded bg-slate-900/90 border border-blue-500/20">
+                            <div className="font-mono text-[10px] text-blue-300 px-1.5 py-0.5 rounded bg-slate-900/90 border border-white/10">
                               0{idx + 1} / 0{total}
                             </div>
                           </div>
@@ -536,7 +534,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
                         {/* Citação compacta e elegante */}
                         <div className="relative flex-1 flex flex-col justify-center">
                           <Quote className="w-4 h-4 text-blue-400/30 mb-1 shrink-0" aria-hidden="true" />
-                          <blockquote className="text-xs sm:text-[13px] md:text-sm text-slate-100 leading-snug italic border-l-2 border-blue-500/40 pl-3">
+                          <blockquote className="text-xs sm:text-[13px] md:text-sm text-slate-100 leading-snug italic border-l-2 border-white/10 pl-3">
                             "{item.quote}"
                           </blockquote>
                         </div>
@@ -545,7 +543,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
                         <div className="pt-2.5 border-t border-white/[0.08] flex items-center justify-between gap-3">
                           <div className="flex items-center gap-2.5 min-w-0">
                             <div className="relative shrink-0">
-                              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-gradient-to-br from-blue-600/30 via-indigo-600/30 to-purple-600/30 border border-blue-400/40 flex items-center justify-center text-blue-200 font-bold font-mono text-xs shadow-inner">
+                              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-gradient-to-br from-blue-600/30 via-indigo-600/30 to-purple-600/30 border border-white/10 flex items-center justify-center text-blue-200 font-bold font-mono text-xs shadow-inner">
                                 {getInitials(item.name)}
                               </div>
                               <CheckCircle2
@@ -593,7 +591,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
               className={`inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium border shadow-sm transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] group focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 ${
                 total <= 1
                   ? 'opacity-30 cursor-not-allowed border-slate-800 text-slate-500'
-                  : 'bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white border-purple-500/20 hover:border-purple-400/50 hover:shadow-[0_0_15px_rgba(168,85,247,0.25)] cursor-pointer'
+                  : 'bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white border-white/10 hover:border-white/20 hover:shadow-none cursor-pointer'
               }`}
             >
               <ChevronLeft className={`w-4 h-4 ${total <= 1 ? 'text-slate-600' : 'text-purple-400 group-hover:text-purple-300 group-hover:-translate-x-0.5'} transition-transform`} />
@@ -609,7 +607,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
                   onClick={toggleAutoplay}
                   aria-label={isPlaying ? 'Pausar rotação automática' : 'Iniciar rotação automática'}
                   title={isPlaying ? 'Pausar rotação automática' : 'Iniciar rotação automática'}
-                  className="p-1.5 rounded-full bg-slate-900/80 border border-purple-500/20 text-slate-400 hover:text-purple-300 hover:border-purple-400/50 transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400"
+                  className="p-1.5 rounded-full bg-slate-900/80 border border-white/10 text-slate-400 hover:text-purple-300 hover:border-white/20 transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400"
                 >
                   {isPlaying ? (
                     <Pause className="w-3.5 h-3.5 text-purple-400" />
@@ -621,7 +619,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
 
               {/* Indicadores dos slides minimalistas com identidade visual roxo ēloSites */}
               <div
-                className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/60 border border-purple-500/15 backdrop-blur-sm"
+                className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/60 border border-white/10 backdrop-blur-sm"
                 role="tablist"
                 aria-label="Indicadores dos slides de depoimentos"
               >
@@ -639,10 +637,10 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
                       disabled={total <= 1}
                       className={`h-2 rounded-full transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,width,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 ${
                         total <= 1
-                          ? 'w-6 bg-gradient-to-r from-purple-500 to-indigo-500 shadow-[0_0_12px_rgba(168,85,247,0.7)] cursor-default'
+                          ? 'w-6 bg-gradient-to-r from-purple-500 to-indigo-500 shadow-none cursor-default'
                           : isCurrent
-                          ? 'w-6 bg-gradient-to-r from-purple-500 to-indigo-500 shadow-[0_0_12px_rgba(168,85,247,0.7)] cursor-pointer'
-                          : 'w-2 bg-slate-700/80 hover:bg-slate-500 hover:border-purple-400/40 cursor-pointer'
+                          ? 'w-6 bg-gradient-to-r from-purple-500 to-indigo-500 shadow-none cursor-pointer'
+                          : 'w-2 bg-slate-700/80 hover:bg-slate-500 hover:border-white/20 cursor-pointer'
                       }`}
                     />
                   );
@@ -666,7 +664,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
               className={`inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium border shadow-sm transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] group focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 ${
                 total <= 1
                   ? 'opacity-30 cursor-not-allowed border-slate-800 text-slate-500'
-                  : 'bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white border-purple-500/20 hover:border-purple-400/50 hover:shadow-[0_0_15px_rgba(168,85,247,0.25)] cursor-pointer'
+                  : 'bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white border-white/10 hover:border-white/20 hover:shadow-none cursor-pointer'
               }`}
             >
               <span className="hidden xs:inline text-center">Próximo</span>
@@ -708,7 +706,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
               href={whatsappUrl(SITE_CONFIG.portfolioWhatsappMessage)}
               target="_blank"
               rel="noopener noreferrer"
-              className="cta-primary inline-flex items-center justify-center text-center gap-2 px-5 py-3 rounded-xl text-xs sm:text-sm font-semibold text-white transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] shadow-lg shadow-cyan-600/20 cursor-pointer"
+              className="cta-primary inline-flex items-center justify-center text-center gap-2 px-5 py-3 rounded-xl text-xs sm:text-sm font-semibold text-white transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] shadow-lg shadow-black/40 cursor-pointer"
             >
               <WhatsAppIcon className="w-4 h-4 text-emerald-300" />
               <span className="text-center">Conversar no WhatsApp</span>

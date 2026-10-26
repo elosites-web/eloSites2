@@ -248,14 +248,14 @@ export const SitemapModal: React.FC<SitemapModalProps> = ({
         aria-modal="true"
         aria-labelledby="sitemap-modal-title"
         tabIndex={-1}
-        className="glass-panel rounded-2xl w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden text-slate-300 border border-blue-500/30 bg-[#090E23]"
+        className="glass-panel rounded-2xl w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden text-slate-300 border border-white/10 bg-[#111113]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
         <div className="flex items-start justify-between p-4 sm:p-5 border-b border-slate-800 bg-slate-950/70">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-blue-500/20 text-blue-300 border border-blue-500/30">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-white/[0.04] text-blue-300 border border-white/10">
                 <Globe className="w-3 h-3" />
                 XML Sitemaps 0.9
               </span>
@@ -344,7 +344,7 @@ export const SitemapModal: React.FC<SitemapModalProps> = ({
             <button
               type="button"
               onClick={handleDownloadXml}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600/90 hover:bg-indigo-500 text-white font-medium transition-colors cursor-pointer border border-indigo-400/40 shadow-sm"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600/90 hover:bg-indigo-500 text-white font-medium transition-colors cursor-pointer border border-white/10 shadow-sm"
               title="Baixar arquivo sitemap.xml"
             >
               <Download className="w-3.5 h-3.5" />
@@ -361,7 +361,7 @@ export const SitemapModal: React.FC<SitemapModalProps> = ({
                 <span>Arquivo gerado dinamicamente com base no domínio atual</span>
                 <span className="font-mono text-indigo-300">{sitemapEntries.length} nós de URL cadastrados</span>
               </div>
-              <div className="relative rounded-xl border border-slate-800 bg-[#070B14] p-4 overflow-x-auto text-xs font-mono leading-relaxed text-slate-300 shadow-inner">
+              <div className="relative rounded-xl border border-slate-800 bg-[#0c0c0e] p-4 overflow-x-auto text-xs font-mono leading-relaxed text-slate-300 shadow-inner">
                 <pre className="whitespace-pre">
                   <code>{sitemapXml}</code>
                 </pre>
@@ -428,7 +428,7 @@ export const SitemapModal: React.FC<SitemapModalProps> = ({
 
           {activeTab === 'gsc' && (
             <div className="space-y-4 text-xs sm:text-sm text-slate-300">
-              <div className="p-4 rounded-xl bg-indigo-950/30 border border-indigo-500/20 space-y-2">
+              <div className="p-4 rounded-xl bg-white/[0.04] border border-white/10 space-y-2">
                 <h4 className="font-bold text-white flex items-center gap-2">
                   <Globe className="w-4 h-4 text-indigo-400" />
                   Passo a passo para envio no Google Search Console
