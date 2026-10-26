@@ -2,7 +2,6 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { EloLogo } from './EloLogo';
 import { WhatsAppIcon } from './WhatsAppIcon';
-import { FluidRippleBackground } from './FluidRippleBackground';
 import { NAVIGATION_ITEMS, SITE_CONFIG, whatsappUrl } from '../types';
 import { Mail, ArrowUp } from 'lucide-react';
 
@@ -61,9 +60,8 @@ export const Footer: React.FC<FooterProps> = ({
   };
 
   return (
-    <footer className="relative bg-gradient-to-b from-[#0e1b48] via-[#0b163b] to-[#08112e] border-t border-blue-400/30 text-slate-300 text-sm pb-[3px] overflow-hidden">
-      {/* Fundo de grade azul de espaço-tempo com curvatura e distorção contínua */}
-      <FluidRippleBackground variant="contained" className="absolute inset-0 z-0 opacity-50 pointer-events-none" />
+    <footer className="relative bg-[#0c0c0e] border-t border-white/10 text-slate-300 text-sm pb-[3px] overflow-hidden">
+      <div aria-hidden="true" className="calm-backdrop absolute inset-0 z-0 pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-16 pb-16 sm:pb-20">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10">
@@ -87,7 +85,7 @@ export const Footer: React.FC<FooterProps> = ({
                 href={footerWhatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 min-w-0 inline-flex items-center justify-center text-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-2.5 rounded-lg bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-300/40 text-white shadow-lg shadow-emerald-950/40 hover:shadow-[0_0_22px_rgba(37,211,102,0.65)] active:scale-[0.97] transition-transform duration-150 text-[11px] sm:text-xs font-semibold tracking-wide cursor-pointer"
+                className="flex-1 min-w-0 inline-flex items-center justify-center text-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-2.5 rounded-lg bg-[#25D366] hover:bg-[#20bd5a] border border-emerald-300/40 text-white shadow-lg shadow-emerald-950/40 hover:shadow-none active:scale-[0.97] transition-transform duration-150 text-[11px] sm:text-xs font-semibold tracking-wide cursor-pointer"
               >
                 <WhatsAppIcon className="w-4 h-4 text-white shrink-0" />
                 <span className="text-white drop-shadow-sm text-center truncate sm:whitespace-normal">Falar no WhatsApp</span>
@@ -97,7 +95,7 @@ export const Footer: React.FC<FooterProps> = ({
                 <a
                   id="footer-email-link"
                   href={`mailto:${SITE_CONFIG.email}`}
-                  className="flex-1 min-w-0 inline-flex items-center justify-center text-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-2.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-blue-500/50 hover:shadow-[0_0_15px_rgba(59,130,246,0.35)] transition-colors text-[11px] sm:text-xs font-medium"
+                  className="flex-1 min-w-0 inline-flex items-center justify-center text-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-2.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-white/20 hover:shadow-none transition-colors text-[11px] sm:text-xs font-medium"
                 >
                   <Mail className="w-4 h-4 text-blue-400 shrink-0" />
                   <span className="text-center truncate sm:whitespace-normal">{SITE_CONFIG.email}</span>
@@ -171,15 +169,15 @@ export const Footer: React.FC<FooterProps> = ({
                       }}
                       className={`text-left transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] duration-200 relative flex items-center gap-2 py-0.5 cursor-pointer group hover:-translate-y-0.5 hover:translate-x-1 ${
                         isActive
-                          ? 'text-cyan-300 font-semibold drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]'
-                          : 'text-slate-400 hover:text-cyan-300 hover:drop-shadow-[0_0_10px_rgba(34,211,238,0.65)]'
+                          ? 'text-cyan-300 font-semibold drop-shadow-none'
+                          : 'text-slate-400 hover:text-cyan-300 hover:drop-shadow-none'
                       }`}
                     >
                       {isActive && (
                         <motion.span
                           layoutId="footer-active-nav-dot"
                           transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                          className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_#22d3ee] shrink-0"
+                          className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-none shrink-0"
                         />
                       )}
                       <span className="transition-transform duration-200">{item.label}</span>
@@ -217,7 +215,7 @@ export const Footer: React.FC<FooterProps> = ({
             <div className="pt-2 text-[11px] text-slate-400 flex items-center gap-2">
               <span className="relative flex h-2 w-2 shrink-0">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-400 animate-pulse shadow-[0_0_8px_#22d3ee]" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-400 animate-pulse shadow-none" />
               </span>
               <span>Engenharia frontend moderna • Código limpo e sob medida</span>
             </div>

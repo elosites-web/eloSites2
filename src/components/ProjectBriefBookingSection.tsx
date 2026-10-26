@@ -217,7 +217,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
         particleCount: 65,
         spread: 60,
         origin: { y: 0.7 },
-        colors: ['#06b6d4', '#6366f1', '#a855f7', '#10b981'],
+        colors: ['#8d95f4', '#6366f1', '#818cf8', '#10b981'],
       });
     } catch {}
 
@@ -278,7 +278,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
         particleCount: 55,
         spread: 50,
         origin: { y: 0.7 },
-        colors: ['#06b6d4', '#6366f1', '#a855f7', '#10b981'],
+        colors: ['#8d95f4', '#6366f1', '#818cf8', '#10b981'],
       });
     } catch {}
 
@@ -315,16 +315,15 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
   return (
     <section
       id="briefing-agendamento"
-      className="section-auto-contain pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32 lg:pb-20 bg-[#050814] relative border-t border-blue-500/15 overflow-x-clip"
+      className="section-auto-contain pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32 lg:pb-20 bg-[#09090b] relative border-t border-white/10 overflow-x-clip"
     >
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-500/30 to-transparent pointer-events-none" />
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[min(720px,100%)] h-[380px] bg-blue-600/[0.08] blur-[150px] rounded-full pointer-events-none" />
 
       <div className="page-shell page-x relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="text-center space-y-4 mb-12 sm:mb-16">
-            <div className="section-kicker inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-950/70 border border-blue-500/30 text-blue-300 text-xs font-semibold uppercase shadow-[0_0_15px_rgba(59,130,246,0.25)]">
+            <div className="section-kicker inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-blue-300 text-xs font-semibold uppercase shadow-none">
               <Sparkles className="w-3.5 h-3.5 text-blue-400" aria-hidden="true" />
               <span>Planejamento Estratégico & Agendamento</span>
             </div>
@@ -336,12 +335,12 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
             />
 
             <p className="text-base sm:text-lg text-slate-300/95 leading-relaxed max-w-2xl mx-auto">
-              Preencha um briefing rápido para receber uma <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#38bdf8] via-[#818cf8] to-[#a855f7] font-semibold">proposta personalizada</span> ou escolha um horário para alinharmos tudo em uma chamada online de 30 minutos sem compromisso.
+              Preencha um briefing rápido para receber uma <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a5b4fc] via-[#818cf8] to-[#818cf8] font-semibold">proposta personalizada</span> ou escolha um horário para alinharmos tudo em uma chamada online de 30 minutos sem compromisso.
             </p>
           </div>
 
           {/* Segmented Control / Tabs (Emil Kowalski Sliding Pill Pattern) */}
-          <div className="max-w-md mx-auto mb-10 p-1.5 rounded-2xl bg-slate-950/80 border border-blue-500/25 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] grid grid-cols-2 gap-1.5 relative">
+          <div className="max-w-md mx-auto mb-10 p-1.5 rounded-2xl bg-slate-950/80 border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] grid grid-cols-2 gap-1.5 relative">
             <button
               type="button"
               onClick={() => setActiveTab('briefing')}
@@ -353,7 +352,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                 <motion.span
                   layoutId="active-tab-highlight"
                   transition={{ type: 'spring', duration: 0.35, bounce: 0.12 }}
-                  className="absolute inset-0 rounded-xl bg-blue-600 shadow-[0_4px_16px_rgba(37,99,235,0.5)] border border-blue-400/50 z-[-1]"
+                  className="absolute inset-0 rounded-xl bg-blue-600 shadow-[0_4px_16px_rgba(99, 102, 241,0.5)] border border-white/10 z-[-1]"
                 />
               )}
               <FileText className="w-4 h-4 shrink-0" />
@@ -371,7 +370,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                 <motion.span
                   layoutId="active-tab-highlight"
                   transition={{ type: 'spring', duration: 0.35, bounce: 0.12 }}
-                  className="absolute inset-0 rounded-xl bg-blue-600 shadow-[0_4px_16px_rgba(37,99,235,0.5)] border border-blue-400/50 z-[-1]"
+                  className="absolute inset-0 rounded-xl bg-blue-600 shadow-[0_4px_16px_rgba(99, 102, 241,0.5)] border border-white/10 z-[-1]"
                 />
               )}
               <Calendar className="w-4 h-4 shrink-0" />
@@ -387,7 +386,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
             viewport={{ once: true, amount: 0.08, margin: '0px 0px -40px 0px' }}
             className="w-full"
           >
-            <div className="surface-card rounded-3xl p-6 sm:p-10 relative overflow-hidden bracket-panel bg-[#090E23] border border-blue-500/25 shadow-2xl">
+            <div className="surface-card rounded-3xl p-6 sm:p-10 relative overflow-hidden bracket-panel bg-[#111113] border border-white/10 shadow-2xl">
             <div className="absolute top-0 right-0 w-80 h-80 bg-blue-500/[0.05] blur-3xl pointer-events-none rounded-full" />
 
             <AnimatePresence mode="wait">
@@ -424,7 +423,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                             setBriefingData({ ...briefingData, contactName: e.target.value })
                           }
                           placeholder="Ex: Carlos Eduardo"
-                          className="w-full px-4 py-3 rounded-xl bg-slate-950/90 border border-blue-500/20 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops]"
+                          className="w-full px-4 py-3 rounded-xl bg-slate-950/90 border border-white/10 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops]"
                         />
                         {formErrors.contactName && (
                           <p className="mt-1 text-xs text-rose-400">{formErrors.contactName}</p>
@@ -443,7 +442,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                             setBriefingData({ ...briefingData, whatsappContact: e.target.value })
                           }
                           placeholder="Ex: (11) 99999-9999"
-                          className="w-full px-4 py-3 rounded-xl bg-slate-950/90 border border-blue-500/20 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops]"
+                          className="w-full px-4 py-3 rounded-xl bg-slate-950/90 border border-white/10 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops]"
                         />
                         {formErrors.whatsappContact && (
                           <p className="mt-1 text-xs text-rose-400">{formErrors.whatsappContact}</p>
@@ -465,7 +464,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                             setBriefingData({ ...briefingData, businessName: e.target.value })
                           }
                           placeholder="Ex: Barbearia Navalha & Estilo"
-                          className="w-full px-4 py-3 rounded-xl bg-slate-950/90 border border-blue-500/20 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops]"
+                          className="w-full px-4 py-3 rounded-xl bg-slate-950/90 border border-white/10 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops]"
                         />
                         {formErrors.businessName && (
                           <p className="mt-1 text-xs text-rose-400">{formErrors.businessName}</p>
@@ -482,7 +481,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                             onChange={(e) =>
                               setBriefingData({ ...briefingData, segment: e.target.value })
                             }
-                            className="w-full px-4 py-3 rounded-xl bg-slate-950/90 border border-blue-500/20 text-white text-sm focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] appearance-none cursor-pointer"
+                            className="w-full px-4 py-3 rounded-xl bg-slate-950/90 border border-white/10 text-white text-sm focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] appearance-none cursor-pointer"
                           >
                             {segmentsList.map((item) => (
                               <option key={item} value={item} className="bg-slate-900 text-white">
@@ -513,7 +512,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                             onChange={(e) =>
                               setBriefingData({ ...briefingData, projectType: e.target.value })
                             }
-                            className="w-full px-4 py-3 rounded-xl bg-slate-950/90 border border-blue-500/20 text-white text-sm focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] appearance-none cursor-pointer"
+                            className="w-full px-4 py-3 rounded-xl bg-slate-950/90 border border-white/10 text-white text-sm focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] appearance-none cursor-pointer"
                           >
                             {projectTypesList.map((item) => (
                               <option key={item} value={item} className="bg-slate-900 text-white">
@@ -541,7 +540,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                             onChange={(e) =>
                               setBriefingData({ ...briefingData, budgetRange: e.target.value })
                             }
-                            className="w-full px-4 py-3 rounded-xl bg-slate-950/90 border border-blue-500/20 text-white text-sm focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] appearance-none cursor-pointer"
+                            className="w-full px-4 py-3 rounded-xl bg-slate-950/90 border border-white/10 text-white text-sm focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] appearance-none cursor-pointer"
                           >
                             {budgetRangesList.map((item) => (
                               <option key={item} value={item} className="bg-slate-900 text-white">
@@ -575,7 +574,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                           setBriefingData({ ...briefingData, idea: e.target.value })
                         }
                         placeholder="O que você gostaria de criar e qual é o principal objetivo?"
-                        className="w-full px-4 py-3 rounded-xl bg-slate-950/90 border border-blue-500/20 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] resize-y"
+                        className="w-full px-4 py-3 rounded-xl bg-slate-950/90 border border-white/10 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] resize-y"
                       />
                     </div>
 
@@ -595,7 +594,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                           setBriefingData({ ...briefingData, projectDetails: e.target.value })
                         }
                         placeholder="Prazos, referências, funcionalidades desejadas e outras informações..."
-                        className="w-full px-4 py-3 rounded-xl bg-slate-950/90 border border-blue-500/20 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] resize-y"
+                        className="w-full px-4 py-3 rounded-xl bg-slate-950/90 border border-white/10 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate,scale,rotate,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,--tw-gradient-stops] resize-y"
                       />
                     </div>
 
@@ -713,7 +712,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                                       ? 'border-2 border-rose-500/80 focus:border-rose-400 focus:ring-1 focus:ring-rose-500/30'
                                       : nameVal.status === 'success'
                                       ? 'border border-emerald-500/70 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400/40'
-                                      : 'border border-blue-500/20 focus:border-blue-400 focus:ring-1 focus:ring-blue-400'
+                                      : 'border border-white/10 focus:border-blue-400 focus:ring-1 focus:ring-blue-400'
                                   }`}
                                 />
                                 <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none flex items-center">
@@ -758,7 +757,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                                   className={`w-full pl-4 pr-10 py-3 rounded-xl bg-slate-950/90 text-white text-sm placeholder:text-slate-500 focus:outline-none transition-all ${
                                     businessVal.status === 'success'
                                       ? 'border border-emerald-500/70 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400/40'
-                                      : 'border border-blue-500/20 focus:border-blue-400 focus:ring-1 focus:ring-blue-400'
+                                      : 'border border-white/10 focus:border-blue-400 focus:ring-1 focus:ring-blue-400'
                                   }`}
                                 />
                                 <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none flex items-center">
@@ -807,7 +806,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                                       ? 'border-2 border-rose-500/80 focus:border-rose-400 focus:ring-1 focus:ring-rose-500/30'
                                       : contactVal.status === 'success'
                                       ? 'border border-emerald-500/70 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400/40'
-                                      : 'border border-blue-500/20 focus:border-blue-400 focus:ring-1 focus:ring-blue-400'
+                                      : 'border border-white/10 focus:border-blue-400 focus:ring-1 focus:ring-blue-400'
                                   }`}
                                 />
                                 <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none flex items-center">
@@ -857,7 +856,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                                       ? 'border-2 border-rose-500/80 focus:border-rose-400 focus:ring-1 focus:ring-rose-500/30'
                                       : dateVal.status === 'success'
                                       ? 'border border-emerald-500/70 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400/40'
-                                      : 'border border-blue-500/20 focus:border-blue-400 focus:ring-1 focus:ring-blue-400'
+                                      : 'border border-white/10 focus:border-blue-400 focus:ring-1 focus:ring-blue-400'
                                   }`}
                                 />
                                 <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none flex items-center">
@@ -894,7 +893,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                                   onChange={(e) =>
                                     setBookingData({ ...bookingData, preferredTimeSlot: e.target.value })
                                   }
-                                  className="w-full px-4 py-3 rounded-xl bg-slate-950/90 border border-blue-500/20 text-white text-sm focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all appearance-none cursor-pointer"
+                                  className="w-full px-4 py-3 rounded-xl bg-slate-950/90 border border-white/10 text-white text-sm focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all appearance-none cursor-pointer"
                                 >
                                   {timeSlotsList.map((slot) => (
                                     <option key={slot} value={slot} className="bg-slate-900 text-white">
@@ -962,7 +961,7 @@ export const ProjectBriefBookingSection: React.FC<ProjectBriefBookingSectionProp
                                   onChange={(e) =>
                                     setBookingData({ ...bookingData, meetingTopic: e.target.value })
                                   }
-                                  className="w-full px-4 py-3 rounded-xl bg-slate-950/90 border border-blue-500/20 text-white text-sm focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all appearance-none cursor-pointer"
+                                  className="w-full px-4 py-3 rounded-xl bg-slate-950/90 border border-white/10 text-white text-sm focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all appearance-none cursor-pointer"
                                 >
                                   {meetingTopicsList.map((topic) => (
                                     <option key={topic} value={topic} className="bg-slate-900 text-white">

@@ -100,8 +100,8 @@ export const ScreenshotLightbox: React.FC<ScreenshotLightboxProps> = ({
             <span
               className={`shrink-0 text-[10px] font-mono uppercase px-2 py-0.5 rounded-full font-semibold border ${
                 isMobileScreenshot
-                  ? 'bg-indigo-950/80 text-indigo-300 border-indigo-500/30'
-                  : 'bg-blue-950/80 text-blue-300 border-blue-500/30'
+                  ? 'bg-white/[0.04] text-indigo-300 border-white/10'
+                  : 'bg-white/[0.04] text-blue-300 border-white/10'
               }`}
             >
               {isMobileScreenshot ? 'Mobile' : 'Desktop'}
@@ -123,8 +123,8 @@ export const ScreenshotLightbox: React.FC<ScreenshotLightboxProps> = ({
         <div
           className={`relative ${
             isMobileScreenshot
-              ? 'w-full max-w-sm sm:max-w-md rounded-[26px] p-2 sm:p-2.5 bg-[#090d16] border-2 border-indigo-500/40'
-              : 'w-full max-w-5xl rounded-xl border border-white/[0.12] bg-[#0c101a]'
+              ? 'w-full max-w-sm sm:max-w-md rounded-[26px] p-2 sm:p-2.5 bg-[#111113] border-2 border-white/10'
+              : 'w-full max-w-5xl rounded-xl border border-white/[0.12] bg-[#111113]'
           } shadow-2xl overflow-hidden`}
           onClick={(e) => e.stopPropagation()}
         >

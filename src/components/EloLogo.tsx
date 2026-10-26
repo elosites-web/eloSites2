@@ -88,7 +88,7 @@ export const EloLogo: React.FC<EloLogoProps> = ({
       fetchPriority="high"
       onLoad={handleImageLoad}
       className={`${heights} w-auto shrink-0 object-contain ${
-        isMenu ? 'drop-shadow-[0_0_24px_rgba(59,130,246,0.45)]' : ''
+        isMenu ? 'drop-shadow-none' : ''
       } ${className}`}
     />
   );
@@ -106,7 +106,7 @@ export const EloLogo: React.FC<EloLogoProps> = ({
         <span
           className={`inline-block w-max max-w-none text-center font-bold uppercase select-none whitespace-nowrap leading-none ${
             isMenu
-              ? 'bg-gradient-to-r from-[#a855f7] via-[#818cf8] to-[#38bdf8] bg-clip-text text-transparent drop-shadow-[0_0_12px_rgba(129,140,248,0.45)]'
+              ? 'bg-gradient-to-r from-[#818cf8] via-[#818cf8] to-[#a5b4fc] bg-clip-text text-transparent drop-shadow-none'
               : 'text-slate-300'
           } ${taglineSizes} ${taglineClassName}`}
         >

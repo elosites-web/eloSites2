@@ -101,14 +101,14 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
       <div className="min-h-full w-full flex items-start justify-center p-3 sm:p-6 md:p-8 py-6 sm:py-10">
         <div
           ref={dialogRef}
-          className="relative w-full max-w-4xl glass-panel bg-[#070B1A] border border-white/[0.12] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-200 my-auto sm:my-4"
+          className="relative w-full max-w-4xl glass-panel bg-[#0c0c0e] border border-white/[0.12] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-200 my-auto sm:my-4"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header Sticky do Modal (com título, tags e botão de fechar acessível) */}
           <div className="sticky top-0 z-30 p-5 sm:p-6 bg-slate-950/95 backdrop-blur-md border-b border-white/[0.08] flex items-start justify-between gap-4 shrink-0 shadow-lg shadow-black/40">
             <div className="space-y-2 min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="text-[11px] font-mono uppercase bg-indigo-950/80 text-indigo-300 border border-indigo-500/30 px-3 py-1 rounded-full font-semibold">
+                <span className="text-[11px] font-mono uppercase bg-white/[0.04] text-indigo-300 border border-white/10 px-3 py-1 rounded-full font-semibold">
                   {project.badge}
                 </span>
                 <span className="inline-flex items-center gap-1.5 text-xs text-emerald-400 font-medium bg-emerald-950/40 border border-emerald-500/20 px-2.5 py-0.5 rounded-full">
@@ -211,7 +211,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
             </div>
 
             {/* Seção 2: SOLUTION / SOLUÇÃO */}
-            <div className="p-5 sm:p-6 rounded-xl bg-indigo-950/20 border border-indigo-500/20 space-y-4">
+            <div className="p-5 sm:p-6 rounded-xl bg-white/[0.04] border border-white/10 space-y-4">
               <div className="flex items-center gap-2.5 text-indigo-400">
                 <Lightbulb className="w-5 h-5 shrink-0" />
                 <h3 className="text-base sm:text-lg font-bold font-display uppercase tracking-wide text-white">
@@ -285,7 +285,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                 href={project.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-500 shadow-lg shadow-indigo-600/30 transition-all border border-indigo-400/30 group"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-500 shadow-lg shadow-black/40 transition-all border border-white/10 group"
               >
                 <span>Ver Projeto Ao Vivo</span>
                 <ExternalLink className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />

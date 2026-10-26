@@ -84,7 +84,7 @@ export const ReadingProgressBar: React.FC<ReadingProgressBarProps> = ({ currentS
       aria-valuemax={100}
     >
       <motion.div
-        className="h-full relative bg-gradient-to-r from-blue-600 via-sky-400 to-indigo-500 shadow-[0_0_12px_rgba(59,130,246,0.9),0_0_6px_rgba(56,189,248,0.8)] rounded-r-full"
+        className="h-full relative bg-gradient-to-r from-blue-600 via-sky-400 to-indigo-500 shadow-none rounded-r-full"
         style={{ width }}
       >
         {/* Flare luminoso translúcido na borda de ataque da barra */}
@@ -95,7 +95,7 @@ export const ReadingProgressBar: React.FC<ReadingProgressBarProps> = ({ currentS
 
         {/* Pontinha da barra levemente brilhante: exatamente do tamanho da espessura da barra */}
         <div
-          className="absolute right-0 top-0 h-full aspect-square rounded-full bg-white shadow-[0_0_4px_#ffffff,0_0_8px_#38bdf8,0_0_12px_#3b82f6] pointer-events-none"
+          className="absolute right-0 top-0 h-full aspect-square rounded-full bg-white shadow-none pointer-events-none"
           aria-hidden="true"
         />
       </motion.div>

@@ -92,13 +92,13 @@ export const TypewriterSlogan: React.FC<TypewriterSloganProps> = ({
       <span aria-hidden="true" className="inline">
         <span>{typedPrefix}</span>
         {typedHighlight && (
-          <span className="bg-gradient-to-r from-blue-400 via-sky-300 to-indigo-300 bg-clip-text text-transparent drop-shadow-[0_0_25px_rgba(59,130,246,0.45)]">
+          <span className="bg-gradient-to-r from-blue-400 via-sky-300 to-indigo-300 bg-clip-text text-transparent drop-shadow-none">
             {typedHighlight}
           </span>
         )}
         {/* Cursor elétrico de digitação da ēloSites estilo terminal neon */}
         <span
-          className={`inline-block w-[3px] sm:w-[3.5px] lg:w-[4px] h-[0.76em] ml-1 sm:ml-1.5 align-baseline rounded-full bg-cyan-400 shadow-[0_0_12px_rgba(34,211,238,0.95),0_0_22px_rgba(59,130,246,0.8)] transition-opacity duration-500 ${
+          className={`inline-block w-[3px] sm:w-[3.5px] lg:w-[4px] h-[0.76em] ml-1 sm:ml-1.5 align-baseline rounded-full bg-cyan-400 shadow-none transition-opacity duration-500 ${
             isComplete
               ? 'animate-pulse opacity-70'
               : 'animate-typewriter-cursor opacity-100'

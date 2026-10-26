@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { EloLogo } from './EloLogo';
-import { FluidRippleBackground } from './FluidRippleBackground';
 import { ScreenId, SCREENS } from '../types';
 import { preloadScreen } from '../preloadScreens';
 
@@ -103,14 +102,14 @@ export const Header: React.FC<HeaderProps> = ({
         <span
           className={`absolute left-0 top-1/2 w-full h-[3px] rounded-full origin-center transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] ${
             isMenuOpen
-              ? '-translate-y-1/2 rotate-45 bg-gradient-to-r from-[#a855f7] via-[#818cf8] to-[#3b82f6] shadow-[0_0_8px_rgba(168,85,247,0.5)]'
-              : '-translate-y-[8.5px] rotate-0 bg-gradient-to-r from-[#a855f7] via-[#818cf8] to-[#3b82f6] shadow-[0_0_8px_rgba(168,85,247,0.4)]'
+              ? '-translate-y-1/2 rotate-45 bg-gradient-to-r from-[#818cf8] via-[#818cf8] to-[#6366f1] shadow-none'
+              : '-translate-y-[8.5px] rotate-0 bg-gradient-to-r from-[#818cf8] via-[#818cf8] to-[#6366f1] shadow-none'
           }`}
         />
 
         {/* Traço do meio (degradê branco de 'Sites', alinhado estritamente à esquerda) */}
         <span
-          className={`absolute left-0 top-1/2 -translate-y-1/2 h-[3px] rounded-full origin-left bg-gradient-to-r from-white via-slate-100 to-slate-200 shadow-[0_0_8px_rgba(255,255,255,0.6)] transition-all duration-200 ease-out ${
+          className={`absolute left-0 top-1/2 -translate-y-1/2 h-[3px] rounded-full origin-left bg-gradient-to-r from-white via-slate-100 to-slate-200 shadow-none transition-all duration-200 ease-out ${
             isMenuOpen ? 'w-0 opacity-0 scale-x-0' : 'w-[17px] opacity-100 scale-x-100 group-hover:w-[20px]'
           }`}
         />
@@ -119,8 +118,8 @@ export const Header: React.FC<HeaderProps> = ({
         <span
           className={`absolute left-0 top-1/2 w-full h-[3px] rounded-full origin-center transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] ${
             isMenuOpen
-              ? '-translate-y-1/2 -rotate-45 bg-gradient-to-r from-[#3b82f6] via-[#818cf8] to-[#a855f7] shadow-[0_0_8px_rgba(59,130,246,0.5)]'
-              : 'translate-y-[5.5px] rotate-0 bg-gradient-to-r from-[#3b82f6] via-[#818cf8] to-[#a855f7] shadow-[0_0_8px_rgba(59,130,246,0.4)]'
+              ? '-translate-y-1/2 -rotate-45 bg-gradient-to-r from-[#6366f1] via-[#818cf8] to-[#818cf8] shadow-none'
+              : 'translate-y-[5.5px] rotate-0 bg-gradient-to-r from-[#6366f1] via-[#818cf8] to-[#818cf8] shadow-none'
           }`}
         />
       </div>
@@ -145,7 +144,7 @@ export const Header: React.FC<HeaderProps> = ({
       {!isHome && !isMenuOpen && (
         <header
           id="header-nav"
-          className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-[#050814]/90 backdrop-blur-md border-b border-blue-500/20 py-2 sm:py-2.5 shadow-xl shadow-black/60 pointer-events-auto"
+          className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-[#09090b]/90 backdrop-blur-md border-b border-white/10 py-2 sm:py-2.5 shadow-xl shadow-black/60 pointer-events-auto"
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             <div className="flex items-center justify-between gap-4 sm:gap-6 min-h-[46px]">
@@ -178,11 +177,10 @@ export const Header: React.FC<HeaderProps> = ({
           role="dialog"
           aria-modal="true"
           aria-label="Menu de Navegação das Seções ēloSites"
-          className="nav-menu-modal-container fixed inset-0 z-[100] flex flex-col items-center justify-between pt-4 sm:pt-6 pb-6 sm:pb-8 px-4 bg-[#050814]/92 backdrop-blur-xl animate-in fade-in duration-200 select-none overflow-y-auto overscroll-contain"
+          className="nav-menu-modal-container fixed inset-0 z-[100] flex flex-col items-center justify-between pt-4 sm:pt-6 pb-6 sm:pb-8 px-4 bg-[#09090b]/92 backdrop-blur-xl animate-in fade-in duration-200 select-none overflow-y-auto overscroll-contain"
           onClick={handleCloseMenuWithoutNav}
         >
-          {/* Fundo de grade azul de espaço-tempo com bolha em movimento contínuo e aleatório */}
-          <FluidRippleBackground variant="contained" className="absolute inset-0 z-0 opacity-70 pointer-events-none" />
+          <div aria-hidden="true" className="calm-backdrop absolute inset-0 z-0 pointer-events-none" />
 
           {/* Botão de Fechar ('X') que sobe e desce junto com o scroll das seções */}
           <header
@@ -250,7 +248,7 @@ export const Header: React.FC<HeaderProps> = ({
                       }`}
                     >
                       {isActive && (
-                        <span className="w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0 shadow-[0_0_8px_#3b82f6]" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0 shadow-none" />
                       )}
                       <span
                         className={`font-display text-[17px] sm:text-[19px] md:text-[22px] tracking-tight transition-colors duration-200 ${
